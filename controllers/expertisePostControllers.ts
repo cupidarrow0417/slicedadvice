@@ -1,5 +1,6 @@
-import type { NextApiRequest, NextApiResponse } from 'next'
+import type { NextApiRequest, NextApiResponse, NextApiHandler } from 'next'
 import ExpertisePost from '../models/expertisePost'
+import ErrorHandler from '../utils/errorhandler'
 
 console.log("ExpertisePost: ", ExpertisePost);
 
@@ -23,16 +24,13 @@ const allExpertisePosts = async (req: NextApiRequest, res: NextApiResponse) => {
 }
 
 //Get single expertisePost => GET /api/expertisePosts/:id
-const getSingleExpertisePost = async (req: NextApiRequest, res: NextApiResponse) => {
+const getSingleExpertisePost = async (req: NextApiRequest, res: NextApiResponse, next: (arg0: ErrorHandler) => any) => {
 
     try {
         const expertisePost = await ExpertisePost.findById(req.query.id);
     
         if (!expertisePost) {
-            return res.status(404).json({
-                success: false,
-                error: 'Expertise Post not found with this ID'
-            })
+            return next(new ErrorHandler('Room not found with this ID', 404));
         } 
 
         res.status(200).json({
