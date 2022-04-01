@@ -1,14 +1,23 @@
-import type { NextPage } from 'next'
-import Head from 'next/head'
-import Image from 'next/image'
-import Nav from '../components/Nav';
+import { GetServerSideProps } from 'next'
+import Home from '../components/Home'
+import Layout from '../components/layout/Layout'
+import { getExpertisePosts } from '../redux/actions/expertisePostActions'
+import { wrapper } from '../redux/store'
 
-const Home: NextPage = () => {
+
+export default function Index() {
   return (
-    <div className="w-screen h-screen">
-      <Nav />
-    </div>
+    <Layout>
+      <Home />
+    </Layout>
   )
 }
 
-export default Home
+export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps(store => async ({ req }) => {
+  try {
+      await store.dispatch(getExpertisePosts(req))
+      return { props: {} }
+  } catch (e) {
+      return { props: {} }
+  }
+})

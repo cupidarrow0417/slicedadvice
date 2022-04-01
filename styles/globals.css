@@ -2,6 +2,30 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
+/* body {
   background-color: #F5EDED;
+} */
+
+
+/* Workaround for Next.js image styling */
+
+/* For expertise post cards, which appear on discovery feeds. */
+.expertisePostCardImageWrapper {
+  box-sizing: content-box;
 }
+
+.expertisePostCardImageWrapper > span {
+  border-radius: 0.75rem;
+}
+
+/* For expertise post detail pages. */
+.expertisePostDetailImageWrapper {
+  box-sizing: content-box;
+}
+
+.expertisePostDetailImageWrapper > span {
+  border-radius: 0.75rem;
+  
+}
+
+

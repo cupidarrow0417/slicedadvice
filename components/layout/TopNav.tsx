@@ -2,7 +2,9 @@ import { Fragment } from 'react'
 import Image from 'next/image'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline'
-import logoTransparent from '../public/images/SlicedAdviceLogoTransparent.png'
+import { SearchIcon } from '@heroicons/react/solid'
+import logoTransparent from '../../public/images/SlicedAdviceLogoTransparent.svg'
+import Link from 'next/link'
 
 const navigation = [
   { name: 'Explore', href: '#', current: true },
@@ -14,14 +16,14 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function Nav() {
+export default function TopNav() {
   return (
-    <Disclosure as="nav" className="bg-brand-bg-light-offset shadow-md">
+    <Disclosure as="nav" className="bg-brand-bg-light shadow-md">
       {({ open }) => (
         <>
           <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
             <div className="relative flex items-center justify-between h-16">
-              <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
+              <div className="inset-y-0 left-0 flex items-center sm:hidden">
                 {/* Mobile menu button*/}
                 <Disclosure.Button className="inline-flex items-center justify-center p-2 rounded-md text-black hover:text-white hover:bg-brand-primary focus:outline-none focus:ring-2 focus:ring-inset focus:ring-brand-primary/40">
                   <span className="sr-only">Open main menu</span>
@@ -34,12 +36,16 @@ export default function Nav() {
               </div>
               <div className="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
                 <div className="flex-shrink-0 flex items-center">
-                  <Image
-                    src={logoTransparent}
-                    width={161}
-                    height={36}
-                    alt="SlicedAdvice"
-                  />
+                  <Link href="/">
+                    <a>
+                      <Image
+                      src={logoTransparent}
+                      width={152}
+                      height={36}
+                      alt="SlicedAdvice"
+                      />
+                    </a>
+                  </Link>
                 </div>
                 <div className="hidden sm:block sm:ml-6">
                   <div className="flex space-x-4">
@@ -59,7 +65,24 @@ export default function Nav() {
                   </div>
                 </div>
               </div>
-              <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+              <div className="z-0 hidden md:w-30 md:block lg:w-80">
+                <label htmlFor="search" className="sr-only">
+                  Search
+                </label>
+                <div className="relative">
+                  <div className="pointer-events-none absolute inset-y-0 left-0 pl-3 flex items-center">
+                    <SearchIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
+                  </div>
+                  <input
+                    id="search"
+                    name="search"
+                    className="block w-full bg-white border border-gray-300 rounded-md py-2 pl-10 pr-3 text-sm placeholder-gray-500 focus:outline-none focus:text-gray-900 focus:placeholder-gray-400 focus:ring-1 focus:ring-brand-primary focus:border-brand-primary sm:text-sm"
+                    placeholder="Search for advice..."
+                    type="search"
+                  />
+                </div>
+              </div>
+              <div className="inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                 {/* <button
                   type="button"
                   className="bg-brand-bg-dark p-1 rounded-full text-black hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-brand-primary focus:ring-white"
@@ -126,25 +149,35 @@ export default function Nav() {
               </div>
             </div>
           </div>
-
-          <Disclosure.Panel className="sm:hidden">
-            <div className="px-2 pt-2 pb-3 space-y-1">
-              {navigation.map((item) => (
-                <Disclosure.Button
-                  key={item.name}
-                  as="a"
-                  href={item.href}
-                  className={classNames(
-                    item.current ? 'bg-brand-primary text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                    'block px-3 py-2 rounded-md text-base font-medium'
-                  )}
-                  aria-current={item.current ? 'page' : undefined}
-                >
-                  {item.name}
-                </Disclosure.Button>
-              ))}
-            </div>
-          </Disclosure.Panel>
+          
+          <Transition
+            as={Fragment}
+            enter="transition ease-out duration-100"
+            enterFrom="transform opacity-0 scale-95"
+            enterTo="transform opacity-100 scale-100"
+            leave="transition ease-in duration-75"
+            leaveFrom="transform opacity-100 scale-100"
+            leaveTo="transform opacity-0 scale-95"
+          >
+            <Disclosure.Panel className="sm:hidden">
+              <div className="px-2 pt-2 pb-3 space-y-1">
+                {navigation.map((item) => (
+                  <Disclosure.Button
+                    key={item.name}
+                    as="a"
+                    href={item.href}
+                    className={classNames(
+                      item.current ? 'bg-brand-primary text-white' : 'text-black hover:bg-brand-primary/10',
+                      'block px-3 py-2 rounded-md text-base font-medium'
+                    )}
+                    aria-current={item.current ? 'page' : undefined}
+                  >
+                    {item.name}
+                  </Disclosure.Button>
+                ))}
+              </div>
+            </Disclosure.Panel>
+          </Transition>
         </>
       )}
     </Disclosure>

@@ -6,7 +6,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        'brand-bg-light': '#F5EDED',
+        'brand-bg-light': '#FFFFFF',
         'brand-bg-light-offset': '#FDF4F4',
         'brand-bg-dark': '#E3CCCC',
         'brand-primary': '#D72323',
@@ -14,5 +14,7 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/forms'),
+  ],
 }

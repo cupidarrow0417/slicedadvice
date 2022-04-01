@@ -1,8 +1,9 @@
 import nc from 'next-connect'
 import dbConnect from '../../../config/dbConnect';
 import { getSingleExpertisePost, updateSingleExpertisePost, deleteSingleExpertisePost } from '../../../controllers/expertisePostControllers'
+import onError from '../../../middlewares/errors'
 
-const handler = nc();
+const handler = nc({ onError });
 
 dbConnect();
 

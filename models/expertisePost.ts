@@ -101,7 +101,5 @@ const expertisePostSchema = new mongoose.Schema<ExpertisePostInterface>({
     }
 });
 
-console.log("mongoose.models.ExpertisePost currently: ", mongoose.models.ExpertisePost)
 
-// 3. Create a Model.
-export default mongoose.models.ExpertisePost || mongoose.model<ExpertisePostInterface>("Expertise Post", expertisePostSchema);
+export default mongoose.models['Expertise Post'] || mongoose.model<ExpertisePostInterface>("Expertise Post", expertisePostSchema);
