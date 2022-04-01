@@ -25,7 +25,33 @@
 
 .expertisePostDetailImageWrapper > span {
   border-radius: 0.75rem;
-  
+  width: 100%;
+  height: 100%;
 }
+
+
+/* .rating-outer {
+  display: inline-block;
+  position: relative;
+  font-family: FontAwesome;
+  color: #e61e4d;
+}
+
+.rating-outer::before {
+}
+
+.rating-inner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 0;
+  border: 1px solid black;
+}
+
+.rating-inner::before {
+  color: #e61e4d;
+} */
 
 
