@@ -1,21 +1,28 @@
 import { useState } from "react";
 import Link from "next/link";
-import { signIn } from "next-auth/react";
+import { getSession, signIn } from "next-auth/react";
 import { toast } from "react-toastify";
-import Router from "next/router";
 
 import ButtonLoader from "../layout/ButtonLoader";
+import Router, { useRouter } from "next/router";
 
-const Login = () => {
+interface LoginInterface {
+    redirectContextStr: string;
+}
+
+const Login = ({ redirectContextStr }: LoginInterface) => {
+    console.log("contextStr in Login Component: ", redirectContextStr);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
+    const { query: queryParams } = useRouter();
 
     const submitHandler = async (e: any) => {
         e.preventDefault();
 
         setLoading(true);
 
+        //await the signIn
         const result: any = await signIn("credentials", {
             redirect: false,
             email,
@@ -24,10 +31,15 @@ const Login = () => {
 
         setLoading(false);
 
-        console.log("Result: ", result);
-
         if (result.error) {
             toast.error(result.error);
+        }
+
+        //else, successful login! Redirect to either the
+        //homepage or the returnUrl (the url from which the user
+        //was sent to the sign in page from)
+        if (queryParams.returnUrl) {
+            Router.push(queryParams.returnUrl.toString());
         } else {
             Router.push("/");
         }
@@ -35,7 +47,12 @@ const Login = () => {
     return (
         <div className="flex flex-col justify-center">
             <div className="sm:mx-auto sm:w-full sm:max-w-md">
-                <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+                <p className="mt-2 text-center text-sm text-gray-600">
+                    {redirectContextStr !== ""
+                        ? `To continue to the ${redirectContextStr},`
+                        : ""}
+                </p>
+                <h2 className="mt-1 text-center text-3xl font-extrabold text-gray-900">
                     Sign in to your account
                 </h2>
                 <p className="mt-2 text-center text-sm text-gray-600">
@@ -104,6 +121,7 @@ const Login = () => {
                                     id="remember-me"
                                     name="remember-me"
                                     type="checkbox"
+                                    checked={true}
                                     className="h-4 w-4 text-brand-primary-light focus:ring-brand-primary-light/70 border-gray-300 rounded"
                                 />
                                 <label

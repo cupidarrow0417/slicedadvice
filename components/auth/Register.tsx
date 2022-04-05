@@ -6,6 +6,7 @@ import ButtonLoader from "../layout/ButtonLoader";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { registerUser, clearErrors } from "../../redux/actions/userActions";
 import Link from "next/link";
+import { getSession } from "next-auth/react";
 
 const Register = () => {
     const dispatch = useAppDispatch();
