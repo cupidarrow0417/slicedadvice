@@ -1,5 +1,4 @@
 import axios from 'axios'
-import { NextApiRequest } from 'next'
 import absoluteUrl from 'next-absolute-url'
 import {
     ALL_EXPERTISE_POSTS_SUCCESS,

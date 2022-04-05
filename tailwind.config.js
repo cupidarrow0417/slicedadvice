@@ -7,7 +7,7 @@ module.exports = {
     extend: {
       colors: {
         'brand-bg-light': '#FFFFFF',
-        'brand-bg-light-offset': '#FDF4F4',
+        'brand-bg-light-offset': 'rgb(249 250 251)',
         'brand-bg-dark': '#E3CCCC',
         'brand-primary': '#D72323',
         'brand-primary-light': '#E24B4B',
