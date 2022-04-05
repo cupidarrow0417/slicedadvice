@@ -48,7 +48,7 @@ export const authReducer = (state = { user: null }, action: any) => {
             }
         case LOAD_USER_FAIL:
             return {
-                loading: true,
+                loading: false,
                 isAuthenticated: false,
                 error: action.payload
             }

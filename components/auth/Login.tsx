@@ -7,15 +7,14 @@ import Router from "next/router";
 import ButtonLoader from "../layout/ButtonLoader";
 
 const Login = () => {
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
-    const [loading, setLoading] = useState(false)
-
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [loading, setLoading] = useState(false);
 
     const submitHandler = async (e: any) => {
         e.preventDefault();
 
-        setLoading(true)
+        setLoading(true);
 
         const result: any = await signIn("credentials", {
             redirect: false,
@@ -23,8 +22,7 @@ const Login = () => {
             password,
         });
 
-        setLoading(false)
-
+        setLoading(false);
 
         console.log("Result: ", result);
 
@@ -42,13 +40,11 @@ const Login = () => {
                 </h2>
                 <p className="mt-2 text-center text-sm text-gray-600">
                     Or{" "}
-                    <a
-                        className="font-medium text-brand-primary-light hover:text-brand-primary-light/70"
-                    >
-                        <Link href="/register">
+                    <Link href="/register">
+                        <a className="font-medium text-brand-primary-light hover:text-brand-primary-light/70">
                             create a new account
-                        </Link>
-                    </a>
+                        </a>
+                    </Link>
                 </p>
             </div>
 
@@ -134,7 +130,7 @@ const Login = () => {
                                 className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-brand-primary-light hover:bg-brand-primary-light/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-primary-light/70"
                                 disabled={loading ? true : false}
                             >
-                                {loading ? <ButtonLoader /> : 'Sign in'}
+                                {loading ? <ButtonLoader /> : "Sign in"}
                             </button>
                         </div>
                     </form>

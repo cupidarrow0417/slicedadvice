@@ -16,12 +16,17 @@ const Register = () => {
         password: "",
     });
 
+
     const { name, email, password } = user;
 
     const [avatar, setAvatar] = useState("");
-    const [avatarPreview, setAvatarPreview] = useState('/images/default_avatar.jpeg');
+    const [avatarPreview, setAvatarPreview] = useState(
+        "/images/default_avatar.jpeg"
+    );
 
-    const { success, error, loading } = useAppSelector((state) => state.auth);
+    const { success, error, loading } = useAppSelector((state) => {
+        return state.auth;
+    });
 
     useEffect(() => {
         if (success) {
@@ -29,8 +34,13 @@ const Register = () => {
         }
 
         if (error) {
-            toast.error(error);
-            dispatch(clearErrors);
+            //toast all errors except for the navbar checking for a user.
+            //that sends an error technically, but we don't care about it
+            //in the context of this registration page.
+            if (error !== 'Login first to access this resource!') {
+                toast.error(error);
+                dispatch(clearErrors);
+            }
         }
     }, [dispatch, success, error]);
 
@@ -48,21 +58,21 @@ const Register = () => {
     };
 
     const onChange = (e: any) => {
-        if (e.target.name === 'avatar') {
-            const reader: any = new FileReader()
+        if (e.target.name === "avatar") {
+            const reader: any = new FileReader();
 
             reader.onload = () => {
                 if (reader.readyState === 2) {
-                    setAvatar(reader.result)
-                    setAvatarPreview(reader.result)
+                    setAvatar(reader.result);
+                    setAvatarPreview(reader.result);
                 }
-            }
-            reader.readAsDataURL(e.target.files[0])
-            console.log("e.target", e.target.files[0])
+            };
+            reader.readAsDataURL(e.target.files[0]);
+            console.log("e.target", e.target.files[0]);
         } else {
-            setUser({ ...user, [e.target.name]: e.target.value })
+            setUser({ ...user, [e.target.name]: e.target.value });
         }
-    }
+    };
 
     return (
         <div className="flex flex-col justify-center">
@@ -72,13 +82,11 @@ const Register = () => {
                 </h2>
                 <p className="mt-2 text-center text-sm text-gray-600">
                     Or{" "}
-                    <a
-                        className="font-medium text-brand-primary-light hover:text-brand-primary-light/70"
-                    >
-                        <Link href="/login">
+                    <Link href="/login">
+                        <a className="font-medium text-brand-primary-light hover:text-brand-primary-light/70">
                             login to an existing one
-                        </Link>
-                    </a>
+                        </a>
+                    </Link>
                 </p>
             </div>
 
@@ -271,7 +279,7 @@ const Register = () => {
                                         id="formFile"
                                         name="avatar"
                                         onChange={onChange}
-                                        accept='images/*'
+                                        accept="images/*"
                                     />
                                 </div>
                             </div>
@@ -315,12 +323,12 @@ const Register = () => {
                         </div>
 
                         <div>
-                        <button
+                            <button
                                 type="submit"
                                 className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-brand-primary-light hover:bg-brand-primary-light/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-primary-light/70"
                                 disabled={loading ? true : false}
                             >
-                                {loading ? <ButtonLoader /> : 'Register'}
+                                {loading ? <ButtonLoader /> : "Register"}
                             </button>
                         </div>
                     </form>
