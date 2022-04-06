@@ -1,9 +1,12 @@
 import { GetServerSideProps } from "next"
 import { getSession } from 'next-auth/react'
-
-const UpdateProfilePage = () => {
+import Settings from "../../components/user/Settings"
+import Layout from "../../components/layout/Layout"
+const UserSettingsPage = () => {
   return (
-    <div>User Profile</div>
+    <Layout>
+        <Settings />
+    </Layout>
   )
 }
 
@@ -13,7 +16,7 @@ export async function getServerSideProps<GetServerSideProps>(context: any) {
     if (!session) {
         return {
             redirect: {
-                destination: `/login?returnUrl=/me/update&returnContext=profile%20update%20page`,
+                destination: `/login?returnUrl=/me/settings&returnContext=user%20settings%20page`,
                 permanent: false
             }
         }
@@ -27,5 +30,5 @@ export async function getServerSideProps<GetServerSideProps>(context: any) {
 
 
 
-export default UpdateProfilePage
+export default UserSettingsPage
 

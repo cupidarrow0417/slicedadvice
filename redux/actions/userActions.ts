@@ -8,6 +8,11 @@ import {
     LOAD_USER_SUCCESS,
     LOAD_USER_FAIL,
 
+    UPDATE_USER_PROFILE_REQUEST,
+    UPDATE_USER_PROFILE_SUCCESS,
+    UPDATE_USER_PROFILE_FAIL,
+
+
     CLEAR_ERRORS
 } from '../constants/userConstants'
 
@@ -57,6 +62,42 @@ export const loadUser = () => async(dispatch: any) => {
         })
     }
 }
+
+export const updateUserProfile = (userData: any) => async(dispatch: any) => {
+    try {
+        dispatch({ type: UPDATE_USER_PROFILE_REQUEST })
+
+        const config = {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }
+        const { data } = await axios.put(`/api/me/update`, userData, config)
+
+        dispatch({
+            type: UPDATE_USER_PROFILE_SUCCESS,
+            payload: data.user
+        })
+
+        //Import for the Settings.tsx component, as after pressing save, 
+        //we don't want the user state in the authReducer to overwrite
+        //the user in the userReducer. So also update the user state in 
+        //the userReducer side as well.
+        dispatch({
+            type: LOAD_USER_SUCCESS,
+            payload: data.user
+        })
+    } catch (error: any) {
+        dispatch({
+            type: UPDATE_USER_PROFILE_FAIL,
+            payload: error.response.data.message
+        })
+    }
+}
+
+
+
+
 
 /**
  * This function is used to clear the errors from the state

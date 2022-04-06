@@ -45,8 +45,44 @@ const registerUser = catchAsyncErrors(async (req: NextApiRequest, res: NextApiRe
 
 //Current user profile => /api/me
 const currentUserProfile = catchAsyncErrors(async (req: any, res: NextApiResponse) => {
-    console.log('req.user', req.user)
     const user = await User.findById(req.user._id)
+    res.status(200).json({
+        success: true,
+        user
+    })
+})
+
+//Update user profile => /api/me/update
+const updateUserProfile = catchAsyncErrors(async (req: any, res: NextApiResponse) => {
+    const user = await User.findById(req.user._id)
+
+    if (user) {
+        user.name = req.body.name
+        user.email = req.body.email
+
+        if (req.body.password) {
+            user.password = req.body.password
+        }
+        if (req.body.avatar !== '') {
+            const image_id = user.avatar.public_id
+            //Delete user's previous avatar
+            await cloudinary.uploader.destroy(image_id)
+
+            //Upload user's new avatar
+            const result = await cloudinary.uploader.upload(req.body.avatar, {
+                folder: 'slicedadvice/avatars',
+                width: '150',
+                crop: 'scale'
+            })
+
+            user.avatar = {
+                public_id: result.public_id,
+                url: result.secure_url
+            }
+        }
+        await user.save()
+    }
+
     res.status(200).json({
         success: true,
         user
@@ -56,5 +92,6 @@ const currentUserProfile = catchAsyncErrors(async (req: any, res: NextApiRespons
 
 export {
     registerUser,
-    currentUserProfile
+    currentUserProfile,
+    updateUserProfile,
 }

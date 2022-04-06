@@ -11,7 +11,7 @@ interface LoginInterface {
 }
 
 const Login = ({ redirectContextStr }: LoginInterface) => {
-    console.log("contextStr in Login Component: ", redirectContextStr);
+
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
@@ -122,6 +122,7 @@ const Login = ({ redirectContextStr }: LoginInterface) => {
                                     name="remember-me"
                                     type="checkbox"
                                     checked={true}
+                                    onChange={() => true}
                                     className="h-4 w-4 text-brand-primary-light focus:ring-brand-primary-light/70 border-gray-300 rounded"
                                 />
                                 <label
