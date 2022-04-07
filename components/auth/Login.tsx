@@ -33,16 +33,19 @@ const Login = ({ redirectContextStr }: LoginInterface) => {
 
         if (result.error) {
             toast.error(result.error);
+        } else if (queryParams.returnUrl) {
+            //else, successful login! Redirect to either the
+            //homepage or the returnUrl (the url from which the user
+            //was sent to the sign in page from)
+            Router.push(queryParams.returnUrl.toString());
+        } else {
+            Router.push("/");
         }
 
         //else, successful login! Redirect to either the
         //homepage or the returnUrl (the url from which the user
         //was sent to the sign in page from)
-        if (queryParams.returnUrl) {
-            Router.push(queryParams.returnUrl.toString());
-        } else {
-            Router.push("/");
-        }
+        
     };
     return (
         <div className="flex flex-col justify-center">

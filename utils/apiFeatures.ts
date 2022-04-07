@@ -15,8 +15,6 @@ class APIFeatures {
             }
         } : {}
 
-        // console.log(category)
-
         this.query = this.query.find({ ...category })
         return this
     }
@@ -30,7 +28,6 @@ class APIFeatures {
         const removeFields = ['category']
         removeFields.forEach(el => delete queryCopy[el])
 
-        console.log(queryCopy)
         this.query = this.query.find(queryCopy)
         return this
     }

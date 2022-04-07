@@ -47,7 +47,6 @@ export default NextAuth({
                     throw new Error('Invalid Email or Password')
                 }
                 
-                console.log('user in authorize() method of [...nextauth].ts', user)
                 //Checks passed, return
                 return Promise.resolve(user)
             }
@@ -59,7 +58,6 @@ export default NextAuth({
             return Promise.resolve(token)
         },
         session: async ({session, user, token}: any) => {
-            console.log("YOOOO: ", token)
 
             session.user = token.user
             return Promise.resolve(session)

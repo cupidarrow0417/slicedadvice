@@ -24,6 +24,7 @@ const Register = () => {
     const [avatarPreview, setAvatarPreview] = useState(
         "/images/default_avatar.jpeg"
     );
+    const [confirmPassword, setConfirmPassword] = useState('')
 
     const { success, error, loading } = useAppSelector((state) => {
         return state.auth;
@@ -48,14 +49,18 @@ const Register = () => {
     const submitHandler = (e: any) => {
         e.preventDefault();
 
-        const userData = {
-            name,
-            email,
-            password,
-            avatar,
-        };
-
-        dispatch(registerUser(userData));
+        if (password === confirmPassword) {
+            const userData = {
+                name,
+                email,
+                password,
+                avatar,
+            };
+    
+            dispatch(registerUser(userData));
+        } else {
+            toast.error('Please try confirming the password again.')
+        }
     };
 
     const onChange = (e: any) => {
@@ -69,7 +74,8 @@ const Register = () => {
                 }
             };
             reader.readAsDataURL(e.target.files[0]);
-            console.log("e.target", e.target.files[0]);
+        } else if (e.target.name === "confirm-password") {
+            setConfirmPassword(e.target.value)
         } else {
             setUser({ ...user, [e.target.name]: e.target.value });
         }
@@ -248,6 +254,27 @@ const Register = () => {
                                     required
                                     className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-brand-primary-light/70 focus:border-brand-primary-light/70 sm:text-sm"
                                     value={password}
+                                    onChange={onChange}
+                                />
+                            </div>
+                        </div>
+                        <div>
+                            <div className="flex justify-between">
+                                <label
+                                    htmlFor="password"
+                                    className="block text-sm font-medium text-gray-700"
+                                >
+                                    Confirm Password
+                                </label>
+                            </div>
+                            <div className="mt-1">
+                                <input
+                                    id="confirm-password"
+                                    name="confirm-password"
+                                    type="password"
+                                    required
+                                    className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-brand-primary-light/70 focus:border-brand-primary-light/70 sm:text-sm"
+                                    
                                     onChange={onChange}
                                 />
                             </div>

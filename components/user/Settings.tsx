@@ -20,6 +20,14 @@ import {
     ViewGridAddIcon,
 } from "@heroicons/react/outline";
 
+const navigation = [
+    { name: "Account", href: "#", icon: UserCircleIcon, current: true },
+    // { name: "Password", href: "#", icon: KeyIcon, current: false },
+    { name: "Billing", href: "#", icon: CreditCardIcon, current: false },
+    // { name: "Team", href: "#", icon: UserGroupIcon, current: false },
+    // { name: "Integrations", href: "#", icon: ViewGridAddIcon, current: false },
+];
+
 export default function Settings() {
     const dispatch = useAppDispatch();
 
@@ -28,13 +36,14 @@ export default function Settings() {
         email: "",
         password: "",
     });
-
     const { name, email, password } = user;
-
     const [avatar, setAvatar] = useState("");
     const [avatarPreview, setAvatarPreview] = useState(
         "/images/default_avatar.jpeg"
     );
+    const [confirmPassword, setConfirmPassword] = useState('')
+
+
 
     const { user: authUser, loading: authLoading } = useAppSelector((state) => {
         return state.auth;
@@ -45,6 +54,9 @@ export default function Settings() {
         user: userAfterUpdating,
         loading: userLoading,
     } = useAppSelector((state) => state.user);
+
+
+
 
     useEffect(() => {
         if (userAfterUpdating) {
@@ -77,14 +89,19 @@ export default function Settings() {
     const submitHandler = (e: any) => {
         e.preventDefault();
 
-        const userData = {
-            name,
-            email,
-            password,
-            avatar,
-        };
-
-        dispatch(updateUserProfile(userData));
+        if (password === confirmPassword) {
+            const userData = {
+                name,
+                email,
+                password,
+                avatar,
+            };
+    
+            dispatch(updateUserProfile(userData));
+        } else {
+            toast.error('Please try confirming the new password again.')
+        }
+    
     };
 
     const onChange = (e: any) => {
@@ -98,6 +115,8 @@ export default function Settings() {
                 }
             };
             reader.readAsDataURL(e.target.files[0]);
+        } else if (e.target.name === "confirm-password") {
+            setConfirmPassword(e.target.value)
         } else {
             setUser({ ...user, [e.target.name]: e.target.value });
         }
@@ -187,6 +206,44 @@ export default function Settings() {
                                             autoComplete="email"
                                             onChange={onChange}
                                             className="focus:ring-brand-primary-light focus:border-brand-primary-light flex-grow block w-full min-w-0 rounded-md sm:text-sm border-gray-300"
+                                        />
+                                    </div>
+                                </div>
+                                <div className="col-span-3 sm:col-span-2">
+                                    <label
+                                        htmlFor="password"
+                                        className="block text-sm font-medium text-gray-700"
+                                    >
+                                        New Password
+                                    </label>
+                                    <div className="mt-1">
+                                        <input
+                                            id="password"
+                                            name="password"
+                                            type="password"
+                                            autoComplete="current-password"
+                                            className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-brand-primary-light focus:border-brand-primary-light sm:text-sm"
+                                            // value={password}
+                                            onChange={onChange}
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="col-span-3 sm:col-span-2">
+                                    <label
+                                        htmlFor="password"
+                                        className="block text-sm font-medium text-gray-700"
+                                    >
+                                        Confirm New Password
+                                    </label>
+                                    <div className="mt-1">
+                                        <input
+                                            id="confirm-password"
+                                            name="confirm-password"
+                                            type="password"
+                                            className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-brand-primary-light focus:border-brand-primary-light sm:text-sm"
+                                            
+                                            onChange={onChange}
                                         />
                                     </div>
                                 </div>
@@ -456,14 +513,6 @@ export default function Settings() {
         </div>
     );
 }
-
-const navigation = [
-    { name: "Account", href: "#", icon: UserCircleIcon, current: true },
-    { name: "Password", href: "#", icon: KeyIcon, current: false },
-    { name: "Billing", href: "#", icon: CreditCardIcon, current: false },
-    // { name: "Team", href: "#", icon: UserGroupIcon, current: false },
-    // { name: "Integrations", href: "#", icon: ViewGridAddIcon, current: false },
-];
 
 function classNames(...classes: any[]) {
     return classes.filter(Boolean).join(" ");
