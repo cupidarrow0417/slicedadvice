@@ -1,21 +1,29 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { getSession, signIn } from "next-auth/react";
 import { toast } from "react-toastify";
 
 import ButtonLoader from "../layout/ButtonLoader";
 import Router, { useRouter } from "next/router";
+import { useAppSelector } from "../../redux/hooks";
 
 interface LoginInterface {
     redirectContextStr: string;
 }
 
 const Login = ({ redirectContextStr }: LoginInterface) => {
-
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
     const { query: queryParams } = useRouter();
+
+    const { message } = useAppSelector((state) => state.resetPassword);
+
+    useEffect(() => {
+        if (message) {
+            toast.success(message);
+        }
+    }, [message]);
 
     const submitHandler = async (e: any) => {
         e.preventDefault();
@@ -31,6 +39,7 @@ const Login = ({ redirectContextStr }: LoginInterface) => {
 
         setLoading(false);
 
+        console.log("result in submitHandler of Login.tsx", result);
         if (result.error) {
             toast.error(result.error);
         } else if (queryParams.returnUrl) {
@@ -41,11 +50,6 @@ const Login = ({ redirectContextStr }: LoginInterface) => {
         } else {
             Router.push("/");
         }
-
-        //else, successful login! Redirect to either the
-        //homepage or the returnUrl (the url from which the user
-        //was sent to the sign in page from)
-        
     };
     return (
         <div className="flex flex-col justify-center">
@@ -137,12 +141,11 @@ const Login = ({ redirectContextStr }: LoginInterface) => {
                             </div>
 
                             <div className="text-sm">
-                                <a
-                                    href="#"
-                                    className="font-medium text-brand-primary-light hover:text-brand-primary-light/70"
-                                >
-                                    Forgot your password?
-                                </a>
+                                <Link href="/password/forgot">
+                                    <a className="font-medium text-brand-primary-light hover:text-brand-primary-light/70">
+                                        Forgot your password?
+                                    </a>
+                                </Link>
                             </div>
                         </div>
 

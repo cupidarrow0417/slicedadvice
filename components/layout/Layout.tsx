@@ -16,7 +16,7 @@ const Layout = ({children, title = 'SlicedAdvice - Marketplace for Bite-Sized Ex
         </Head>
 
         <TopNav />
-        <div className="max-w-7xl mx-auto p-4 pb-10 sm:px-6 lg:px-8 bg-brand-bg-light-offset">
+        <div className="max-w-7xl mx-auto p-4 sm:px-6 lg:px-8 bg-brand-bg-light-offset">
           {children}
         </div>
         <Footer />

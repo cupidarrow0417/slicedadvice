@@ -26,7 +26,7 @@ const ExpertisePostDetails = () => {
       <Head>
         <title>{expertisePost?.title} | SlicedAdvice</title>
       </Head>
-      <div className="flex flex-col items-start gap-5 py-6 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="flex flex-col items-start gap-5 p-4 max-w-7xl mx-auto sm:px-6 lg:px-8">
         <Breadcrumbs />
         <h1 className="text-2xl font-semibold">
           {expertisePost["title"]}

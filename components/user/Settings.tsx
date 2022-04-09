@@ -9,8 +9,6 @@ import {
     clearErrors,
 } from "../../redux/actions/userActions";
 import { UPDATE_USER_PROFILE_RESET } from "../../redux/constants/userConstants";
-import Link from "next/link";
-import { getSession } from "next-auth/react";
 
 import {
     CreditCardIcon,
@@ -41,9 +39,7 @@ export default function Settings() {
     const [avatarPreview, setAvatarPreview] = useState(
         "/images/default_avatar.jpeg"
     );
-    const [confirmPassword, setConfirmPassword] = useState('')
-
-
+    const [confirmPassword, setConfirmPassword] = useState("");
 
     const { user: authUser, loading: authLoading } = useAppSelector((state) => {
         return state.auth;
@@ -54,9 +50,6 @@ export default function Settings() {
         user: userAfterUpdating,
         loading: userLoading,
     } = useAppSelector((state) => state.user);
-
-
-
 
     useEffect(() => {
         if (userAfterUpdating) {
@@ -96,12 +89,11 @@ export default function Settings() {
                 password,
                 avatar,
             };
-    
+
             dispatch(updateUserProfile(userData));
         } else {
-            toast.error('Please try confirming the new password again.')
+            toast.error("Passwords do not match. Please try again.");
         }
-    
     };
 
     const onChange = (e: any) => {
@@ -116,7 +108,7 @@ export default function Settings() {
             };
             reader.readAsDataURL(e.target.files[0]);
         } else if (e.target.name === "confirm-password") {
-            setConfirmPassword(e.target.value)
+            setConfirmPassword(e.target.value);
         } else {
             setUser({ ...user, [e.target.name]: e.target.value });
         }
@@ -242,7 +234,6 @@ export default function Settings() {
                                             name="confirm-password"
                                             type="password"
                                             className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-brand-primary-light focus:border-brand-primary-light sm:text-sm"
-                                            
                                             onChange={onChange}
                                         />
                                     </div>

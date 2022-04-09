@@ -4,7 +4,7 @@ import Settings from "../../components/user/Settings"
 import Layout from "../../components/layout/Layout"
 const UserSettingsPage = () => {
   return (
-    <Layout>
+    <Layout title='Account Settings | SlicedAdvice'>
         <Settings />
     </Layout>
   )
