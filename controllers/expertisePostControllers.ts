@@ -7,7 +7,7 @@ import APIFeatures from '../utils/apiFeatures'
 
 //Get all expertisePosts => GET /api/expertisePosts
 const allExpertisePosts = catchAsyncErrors(async (req: NextApiRequest, res: NextApiResponse) => {
-    const resPerPage = 4
+    const resPerPage = 20
     const expertisePostsCount = await ExpertisePost.countDocuments()
 
     //search with optional queries, handled via .search() method.

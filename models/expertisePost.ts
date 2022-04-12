@@ -58,12 +58,9 @@ const expertisePostSchema = new mongoose.Schema<ExpertisePostInterface>({
         required: [true, 'Please enter advice category'],
         enum: {
             values: [
-                'Writing',
                 'College Application',
-                'Leadership',
-                'Sports',
-                'Music',
-                'Career',
+                'Career Growth',
+                'Personal Development',
                 'Other'
             ],
             message: 'Please select a correct advice category.'

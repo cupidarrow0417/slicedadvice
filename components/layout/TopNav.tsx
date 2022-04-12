@@ -1,18 +1,44 @@
 import { Fragment, useEffect } from "react";
 import Image from "next/image";
-import { Disclosure, Menu, Transition } from "@headlessui/react";
+import { Disclosure, Menu, Transition, Popover } from "@headlessui/react";
 import { BellIcon, MenuIcon, XIcon } from "@heroicons/react/outline";
 import { SearchIcon } from "@heroicons/react/solid";
+import { ChevronDownIcon } from "@heroicons/react/solid";
 import logoTransparent from "../../public/images/SlicedAdviceLogoTransparent.svg";
 import Link from "next/link";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { loadUser } from "../../redux/actions/userActions";
 import { signOut } from "next-auth/react";
+import Flyout from "../Flyout";
 
 const navigation = [
-    { name: "Explore", href: "#", current: true },
-    { name: "Categories", href: "#", current: false },
-    { name: "Blog", href: "#", current: false },
+    { name: "Explore", href: "/", flyout: false },
+    {
+        name: "Categories",
+        href: "/categories",
+        flyout: true,
+        children: [
+            {
+                categoryName: "Career Growth",
+                href: "#",
+                description:
+                    "Grow your career with advice from accomplished professionals.",
+            },
+            {
+                categoryName: "College Application",
+                href: "#",
+                description:
+                    "Get guidance on your application from experienced applicants.",
+            },
+            {
+                categoryName: "Personal Development",
+                href: "#",
+                description:
+                    "Cultivate the life you want to live with knowledgable experts.",
+            },
+        ],
+    },
+    { name: "Blog", href: "#", flyout: false },
 ];
 
 function classNames(...classes: string[]) {
@@ -59,8 +85,8 @@ export default function TopNav() {
                                     )}
                                 </Disclosure.Button>
                             </div>
-                            <div className="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
-                                <div className="flex-shrink-0 flex items-center">
+                            <div className="flex-1 flex items-center justify-center sm:justify-start">
+                                <div className="flex-shrink-0 flex justify-center items-center mt-1">
                                     <Link href="/">
                                         <a>
                                             <Image
@@ -74,25 +100,24 @@ export default function TopNav() {
                                 </div>
                                 <div className="hidden sm:block sm:ml-6">
                                     <div className="flex space-x-4">
-                                        {navigation.map((item) => (
-                                            <a
-                                                key={item.name}
-                                                href={item.href}
-                                                className={classNames(
-                                                    item.current
-                                                        ? "bg-brand-primary-light text-white"
-                                                        : "text-gray-800 hover:bg-brand-primary-light hover:text-white",
-                                                    "px-3 py-2 rounded-md text-sm font-medium"
-                                                )}
-                                                aria-current={
-                                                    item.current
-                                                        ? "page"
-                                                        : undefined
-                                                }
-                                            >
-                                                {item.name}
-                                            </a>
-                                        ))}
+                                        {navigation.map((item, index) =>
+                                            item.flyout ? (
+                                                <Flyout
+                                                    name={item.name}
+                                                    href={item.href}
+                                                    children={item.children}
+                                                />
+                                            ) : (
+                                                <Link
+                                                    href={item.href}
+                                                    key={item.name}
+                                                >
+                                                    <a className="text-gray-800 hover:bg-brand-primary-light hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+                                                        {item.name}
+                                                    </a>
+                                                </Link>
+                                            )
+                                        )}
                                     </div>
                                 </div>
                             </div>
@@ -224,24 +249,85 @@ export default function TopNav() {
                     >
                         <Disclosure.Panel className="sm:hidden">
                             <div className="px-2 pt-2 pb-3 space-y-1">
-                                {navigation.map((item) => (
-                                    <Disclosure.Button
-                                        key={item.name}
-                                        as="a"
-                                        href={item.href}
-                                        className={classNames(
-                                            item.current
-                                                ? "bg-brand-primary text-white"
-                                                : "text-black hover:bg-brand-primary/10",
-                                            "block px-3 py-2 rounded-md text-base font-medium"
-                                        )}
-                                        aria-current={
-                                            item.current ? "page" : undefined
-                                        }
-                                    >
-                                        {item.name}
-                                    </Disclosure.Button>
-                                ))}
+                                {navigation.map((item) =>
+                                    item.flyout ? (
+                                        <>
+                                            <Disclosure.Button
+                                                key={item.name}
+                                                as="a"
+                                                href={item.href}
+                                                className="text-black hover:bg-brand-primary-light hover:text-white focus:bg-brand-primary-light focus:text-white
+                                            block px-3 py-2 rounded-md text-base font-medium"
+                                            >
+                                                {item.name}
+                                            </Disclosure.Button>
+
+                                            {/* Refactor this someday :) 
+                                            This is the children category sections. */}
+                                            <Disclosure.Button
+                                                key={
+                                                    item.children?.at(0)
+                                                        ?.categoryName
+                                                }
+                                                as="a"
+                                                href={
+                                                    item.children?.at(0)?.href
+                                                }
+                                                className="text-black hover:bg-brand-primary-light hover:text-white focus:bg-brand-primary-light focus:text-white
+                                        block px-3 py-2 rounded-md text-base font-medium ml-5"
+                                            >
+                                                {
+                                                    item.children?.at(0)
+                                                        ?.categoryName
+                                                }
+                                            </Disclosure.Button>
+                                            <Disclosure.Button
+                                                key={
+                                                    item.children?.at(1)
+                                                        ?.categoryName
+                                                }
+                                                as="a"
+                                                href={
+                                                    item.children?.at(1)?.href
+                                                }
+                                                className="text-black hover:bg-brand-primary-light hover:text-white focus:bg-brand-primary-light focus:text-white
+                                    block px-3 py-2 rounded-md text-base font-medium ml-5"
+                                            >
+                                                {
+                                                    item.children?.at(1)
+                                                        ?.categoryName
+                                                }
+                                            </Disclosure.Button>
+                                            <Disclosure.Button
+                                                key={
+                                                    item.children?.at(2)
+                                                        ?.categoryName
+                                                }
+                                                as="a"
+                                                href={
+                                                    item.children?.at(2)?.href
+                                                }
+                                                className="text-black hover:bg-brand-primary-light hover:text-white focus:bg-brand-primary-light focus:text-white
+                                            block px-3 py-2 rounded-md text-base font-medium ml-5"
+                                            >
+                                                {
+                                                    item.children?.at(2)
+                                                        ?.categoryName
+                                                }
+                                            </Disclosure.Button>
+                                        </>
+                                    ) : (
+                                        <Disclosure.Button
+                                            key={item.name}
+                                            as="a"
+                                            href={item.href}
+                                            className="text-black hover:bg-brand-primary-light hover:text-white focus:bg-brand-primary-light focus:text-white
+                                            block px-3 py-2 rounded-md text-base font-medium"
+                                        >
+                                            {item.name}
+                                        </Disclosure.Button>
+                                    )
+                                )}
                             </div>
                         </Disclosure.Panel>
                     </Transition>

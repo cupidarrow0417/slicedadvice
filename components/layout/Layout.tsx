@@ -1,4 +1,5 @@
 import Head from "next/head"
+import { ElementType } from "react"
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 

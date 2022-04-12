@@ -7,10 +7,12 @@ import { toast } from "react-toastify";
 
 import { clearErrors } from "../redux/actions/expertisePostActions";
 import Image from "next/image";
+import Link from "next/link";
+import Shelf from "./Shelf";
 
 const Home = () => {
     const dispatch = useAppDispatch();
-    const { expertisePosts, error } = useAppSelector(
+    const { allExpertisePosts, error } = useAppSelector(
         (state) => state.allExpertisePosts
     );
 
@@ -23,19 +25,21 @@ const Home = () => {
 
     return (
         <div className="flex flex-col gap-6">
-            <div className="flex flex-col-reverse md:flex-row justify-center gap-10 items-center w-full h-[90vh] md:h-[450px] bg-brand-primary/10 rounded-3xl mt-2 py-9">
-                <div className="flex flex-col justify-center items-center md:items-start gap-6 w-4/5 md:w-2/5">
-                    <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-center md:text-left">
+            <div className="flex flex-col-reverse md:flex-row justify-center gap-10 items-center w-full h-[90vh] md:h-[450px] bg-white border-[1px] border-black/10 shadow-sm rounded-3xl mt-2 py-9">
+                <div className="flex flex-col justify-center items-center md:items-start gap-7 w-4/5 md:w-2/5">
+                    <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-center md:text-left sm:tracking-tight ">
                         A marketplace for bite-sized expert advice
                     </h1>
-                    <p className="text-l md:text-xl lg:text-2xl font-light opacity-70 text-center md:text-left">
+                    <p className="text-l md:text-xl lg:text-2xl font-light opacity-60 text-center md:text-left -mt-3">
                         Affordable for advice seekers, convenient for experts.
                     </p>
                     <div className="flex gap-2">
-                        <button className="rounded-xl bg-brand-primary-light text-white p-3 font-semibold text-xs md:text-sm lg:text-base">
-                            Browse advice &rarr;
-                        </button>
-                        <button className="rounded-xl bg-black/80 text-white p-3 font-semibold text-xs md:text-sm lg:text-base">
+                        <Link href="/categories">
+                            <button className="rounded-xl bg-brand-primary-light text-white p-3 font-semibold text-xs md:text-sm lg:text-base">
+                                Browse advice &rarr;
+                            </button>
+                        </Link>
+                        <button className="rounded-xl bg-black/90 text-white p-3 font-semibold text-xs md:text-sm lg:text-base">
                             Give paid advice &rarr;
                         </button>
                     </div>
@@ -49,16 +53,15 @@ const Home = () => {
                     />
                 </div>
             </div>
-            <h1 className="text-4xl">Explore</h1>
-            <div className="flex gap-5 flex-wrap">
-                {expertisePosts &&
-                    expertisePosts.map((expertisePost: any) => (
+            <Shelf title="Explore" link="#">
+                {allExpertisePosts &&
+                    allExpertisePosts.map((expertisePost: any) => (
                         <ExpertisePostCard
                             key={expertisePost._id}
                             expertisePost={expertisePost}
                         />
                     ))}
-            </div>
+            </Shelf>
         </div>
     );
 };
