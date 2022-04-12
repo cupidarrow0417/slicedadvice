@@ -274,7 +274,7 @@ export default function TopNav() {
                                                     item.children?.at(0)?.href
                                                 }
                                                 className="text-black hover:bg-brand-primary-light hover:text-white focus:bg-brand-primary-light focus:text-white
-                                        block px-3 py-2 rounded-md text-base font-medium ml-5"
+                                        block px-3 py-2 rounded-md text-base font-medium ml-4"
                                             >
                                                 {
                                                     item.children?.at(0)
@@ -291,7 +291,7 @@ export default function TopNav() {
                                                     item.children?.at(1)?.href
                                                 }
                                                 className="text-black hover:bg-brand-primary-light hover:text-white focus:bg-brand-primary-light focus:text-white
-                                    block px-3 py-2 rounded-md text-base font-medium ml-5"
+                                    block px-3 py-2 rounded-md text-base font-medium ml-4"
                                             >
                                                 {
                                                     item.children?.at(1)
@@ -308,7 +308,7 @@ export default function TopNav() {
                                                     item.children?.at(2)?.href
                                                 }
                                                 className="text-black hover:bg-brand-primary-light hover:text-white focus:bg-brand-primary-light focus:text-white
-                                            block px-3 py-2 rounded-md text-base font-medium ml-5"
+                                            block px-3 py-2 rounded-md text-base font-medium ml-4"
                                             >
                                                 {
                                                     item.children?.at(2)

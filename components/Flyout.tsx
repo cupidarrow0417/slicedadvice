@@ -31,20 +31,18 @@ export default function Flyout({ name, href, children }: FlyoutInterface) {
         <Popover className="relative">
             {({ open }) => (
                 <>
-                    <Link href={href}>
-                        <Popover.Button
-                            className="flex hover:bg-brand-primary-light hover:text-white px-3 py-2 rounded-md text-sm font-medium cursor-default"
-                            onClick={() => router.push('/categories')}
-                            onMouseEnter={() => setIsShowing(true)}
-                            onMouseLeave={() => setIsShowing(false)}
-                        >
-                            <span>{name}</span>
-                            <ChevronDownIcon
-                                className="ml-2 mt-[1px] h-5 w-5 group-hover:text-white"
-                                aria-hidden="true"
-                            />
-                        </Popover.Button>
-                    </Link>
+                    <Popover.Button
+                        className="flex hover:bg-brand-primary-light hover:text-white px-3 py-2 rounded-md text-sm font-medium cursor-default"
+                        onClick={() => router.push("/categories")}
+                        onMouseEnter={() => setIsShowing(true)}
+                        onMouseLeave={() => setIsShowing(false)}
+                    >
+                        <span>{name}</span>
+                        <ChevronDownIcon
+                            className="ml-2 mt-[1px] h-5 w-5 group-hover:text-white"
+                            aria-hidden="true"
+                        />
+                    </Popover.Button>
                     <Transition
                         as={Fragment}
                         enter="transition ease-out duration-200"
@@ -62,20 +60,33 @@ export default function Flyout({ name, href, children }: FlyoutInterface) {
                         >
                             <div className="bg-transparent w-full h-2"></div>
                             <div className="rounded-xl shadow-md overflow-hidden border-[1px] border-black/10">
-                                <div className="relative grid gap-6 bg-white px-5 py-6 sm:gap-8 sm:p-8">
+                                <div className="relative grid gap-3 bg-white px-5 py-6">
+                                    <Link href={href}>
+                                            <a
+                                                key={name}
+                                                className="p-3 block rounded-md hover:bg-gray-50 transition ease-in-out duration-150"
+                                            >
+                                                <p className="text-xl font-medium text-brand-primary">
+                                                    See all categories &rarr;
+                                                </p>
+                                            </a>
+                                            
+                                        </Link>
+                                        <div className=" w-11/12 m-auto h-[1px] bg-black/10"></div>
                                     {children?.map((item: any) => (
-                                        <a
-                                            key={item.categoryName}
-                                            href={item.href}
-                                            className="-m-3 p-3 block rounded-md hover:bg-gray-50 transition ease-in-out duration-150"
-                                        >
-                                            <p className="text-base font-medium text-gray-900">
-                                                {item.categoryName}
-                                            </p>
-                                            <p className="mt-1 text-sm text-gray-500">
-                                                {item.description}
-                                            </p>
-                                        </a>
+                                        <Link href={item.href}>
+                                            <a
+                                                key={item.categoryName}
+                                                className="p-3 block rounded-md hover:bg-gray-50 transition ease-in-out duration-150"
+                                            >
+                                                <p className="text-base font-medium text-gray-900">
+                                                    {item.categoryName}
+                                                </p>
+                                                <p className="mt-1 text-sm text-gray-500">
+                                                    {item.description}
+                                                </p>
+                                            </a>
+                                        </Link>
                                     ))}
                                 </div>
                             </div>

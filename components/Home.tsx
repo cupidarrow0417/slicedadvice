@@ -27,7 +27,7 @@ const Home = () => {
         <div className="flex flex-col gap-6">
             <div className="flex flex-col-reverse md:flex-row justify-center gap-10 items-center w-full h-[90vh] md:h-[450px] bg-white border-[1px] border-black/10 shadow-sm rounded-3xl mt-2 py-9">
                 <div className="flex flex-col justify-center items-center md:items-start gap-7 w-4/5 md:w-2/5">
-                    <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-center md:text-left sm:tracking-tight ">
+                    <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-center md:text-left sm:tracking-tight ">
                         A marketplace for bite-sized expert advice
                     </h1>
                     <p className="text-l md:text-xl lg:text-2xl font-light opacity-60 text-center md:text-left -mt-3">
