@@ -39,9 +39,11 @@ const Home = () => {
                                 Browse advice &rarr;
                             </button>
                         </Link>
-                        <button className="rounded-xl bg-black/90 text-white p-3 font-semibold text-xs md:text-sm lg:text-base">
-                            Give paid advice &rarr;
-                        </button>
+                        <Link href="/dashboard/expert/home">
+                            <button className="rounded-xl bg-black/90 text-white p-3 font-semibold text-xs md:text-sm lg:text-base">
+                                Give paid advice &rarr;
+                            </button>
+                        </Link>
                     </div>
                 </div>
                 <div>

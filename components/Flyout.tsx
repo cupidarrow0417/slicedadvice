@@ -9,7 +9,7 @@ function classNames(...classes: string[]) {
 }
 
 interface ChildrenInterface {
-    categoryName: string;
+    name: string;
     href: string;
     description: string;
 }
@@ -18,13 +18,19 @@ interface FlyoutInterface {
     name: string;
     href: string;
     children: Array<ChildrenInterface> | undefined;
+    headerText: string | null | undefined;
 }
 
 // A Flyout is a resuable component that represents a button that can either
 // be clicked to navigate directly to the page or hovered over to peek into
 // the contents of the page. It is first used on the top nav bar on desktop +
 // tablets, for the Categories button.
-export default function Flyout({ name, href, children }: FlyoutInterface) {
+export default function Flyout({
+    name,
+    href,
+    children,
+    headerText,
+}: FlyoutInterface) {
     // Adds hover capability to flyout instead of default onClick
     const [isShowing, setIsShowing] = useState(false);
     return (
@@ -61,26 +67,31 @@ export default function Flyout({ name, href, children }: FlyoutInterface) {
                             <div className="bg-transparent w-full h-2"></div>
                             <div className="rounded-xl shadow-md overflow-hidden border-[1px] border-black/10">
                                 <div className="relative grid gap-3 bg-white px-5 py-6">
-                                    <Link href={href}>
-                                            <a
-                                                key={name}
-                                                className="p-3 block rounded-md hover:bg-gray-50 transition ease-in-out duration-150"
-                                            >
-                                                <p className="text-xl font-medium text-brand-primary">
-                                                    See all categories &rarr;
-                                                </p>
-                                            </a>
-                                            
-                                        </Link>
-                                        <div className=" w-11/12 m-auto h-[1px] bg-black/10"></div>
+                                    {headerText && (
+                                        <>
+                                            {/* Only render headerText if it exists */}
+                                            <Link href={href}>
+                                                <a
+                                                    key={name}
+                                                    className="p-3 block rounded-md hover:bg-gray-50 transition ease-in-out duration-150"
+                                                >
+                                                    <p className="text-xl font-medium text-brand-primary">
+                                                        {headerText} &rarr;
+                                                    </p>
+                                                </a>
+                                            </Link>
+                                            {/* Line Break */}
+                                            <div className=" w-11/12 m-auto h-[1px] bg-black/10"></div>
+                                        </>
+                                    )}
                                     {children?.map((item: any) => (
                                         <Link href={item.href}>
                                             <a
-                                                key={item.categoryName}
+                                                key={item.name}
                                                 className="p-3 block rounded-md hover:bg-gray-50 transition ease-in-out duration-150"
                                             >
                                                 <p className="text-base font-medium text-gray-900">
-                                                    {item.categoryName}
+                                                    {item.name}
                                                 </p>
                                                 <p className="mt-1 text-sm text-gray-500">
                                                     {item.description}

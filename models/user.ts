@@ -7,6 +7,7 @@ interface UserInterface {
     name: String;
     email: String;
     password: any;
+    stripeId: String;
     avatar: Object;
     role: String;
     createdAt: Date;
@@ -32,6 +33,7 @@ const userSchema = new mongoose.Schema<UserInterface>({
         minLength: [6, "Your password must be longer than 6 characters"],
         select: false,
     },
+    stripeId: String,
     avatar: {
         public_id: {
             type: String,

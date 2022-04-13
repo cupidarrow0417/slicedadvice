@@ -19,26 +19,41 @@ const navigation = [
         flyout: true,
         children: [
             {
-                categoryName: "Career Growth",
+                name: "Career Growth",
                 href: "#",
                 description:
                     "Grow your career with advice from accomplished professionals.",
             },
             {
-                categoryName: "College Application",
+                name: "College Application",
                 href: "#",
                 description:
                     "Get guidance on your application from experienced applicants.",
             },
             {
-                categoryName: "Personal Development",
+                name: "Personal Development",
                 href: "#",
                 description:
                     "Cultivate the life you want to live with knowledgable experts.",
             },
         ],
+        headerText: 'See all categories'
     },
-    { name: "Blog", href: "#", flyout: false },
+    { name: "Dashboard", href: "#", flyout: true, children: [
+        {
+            name: "For Experts",
+            href: "/dashboard/expert/home",
+            description:
+                "Answer submissions, setup payments, and manage the monetization of your expertise.",
+        },
+        {
+            name: "For Advice Seekers",
+            href: "#",
+            description:
+                "Review and manage the submissions you've sent.",
+        },
+    ],
+},
 ];
 
 function classNames(...classes: string[]) {
@@ -106,6 +121,7 @@ export default function TopNav() {
                                                     name={item.name}
                                                     href={item.href}
                                                     children={item.children}
+                                                    headerText={item.headerText}
                                                 />
                                             ) : (
                                                 <Link
@@ -121,7 +137,7 @@ export default function TopNav() {
                                     </div>
                                 </div>
                             </div>
-                            <div className="z-0 hidden md:w-30 md:block lg:w-80">
+                            <div className="z-0 hidden md:block sm:w-28 md:w-32 lg:w-80">
                                 <label htmlFor="search" className="sr-only">
                                     Search
                                 </label>
@@ -267,7 +283,7 @@ export default function TopNav() {
                                             <Disclosure.Button
                                                 key={
                                                     item.children?.at(0)
-                                                        ?.categoryName
+                                                        ?.name
                                                 }
                                                 as="a"
                                                 href={
@@ -278,13 +294,13 @@ export default function TopNav() {
                                             >
                                                 {
                                                     item.children?.at(0)
-                                                        ?.categoryName
+                                                        ?.name
                                                 }
                                             </Disclosure.Button>
                                             <Disclosure.Button
                                                 key={
                                                     item.children?.at(1)
-                                                        ?.categoryName
+                                                        ?.name
                                                 }
                                                 as="a"
                                                 href={
@@ -295,13 +311,13 @@ export default function TopNav() {
                                             >
                                                 {
                                                     item.children?.at(1)
-                                                        ?.categoryName
+                                                        ?.name
                                                 }
                                             </Disclosure.Button>
                                             <Disclosure.Button
                                                 key={
                                                     item.children?.at(2)
-                                                        ?.categoryName
+                                                        ?.name
                                                 }
                                                 as="a"
                                                 href={
@@ -312,7 +328,7 @@ export default function TopNav() {
                                             >
                                                 {
                                                     item.children?.at(2)
-                                                        ?.categoryName
+                                                        ?.name
                                                 }
                                             </Disclosure.Button>
                                         </>
