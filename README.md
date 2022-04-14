@@ -28,10 +28,10 @@
   <a href="#license">License</a>
 </p>
 
-<h1>Summary </h1>
+## Summary
 SlicedAdvice is a platform that lets users submit quick, bite-sized submissions to experts. Users receive affordable, valuable advice while busy experts finally get a way to conveniently monetize their expertise. An expert could be anyone: heroes, celebrities, academic pioneers, and most importantly, you.
 
-<h1>Technical Specifications </h1>
+## Technical Specifications 
 * Next.js - For frontend and API
   - Next-auth for authentification
 * Tailwind CSS for styling
