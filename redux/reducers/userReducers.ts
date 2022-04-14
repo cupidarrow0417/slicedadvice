@@ -15,6 +15,12 @@ import {
     RESET_PASSWORD_REQUEST,
     RESET_PASSWORD_SUCCESS,
     RESET_PASSWORD_FAIL,
+    SETUP_PAYOUTS_LINK_REQUEST,
+    SETUP_PAYOUTS_LINK_SUCCESS,
+    SETUP_PAYOUTS_LINK_FAIL,
+    CHECK_STRIPE_ACCOUNT_FIELD_REQUEST,
+    CHECK_STRIPE_ACCOUNT_FIELD_SUCCESS,
+    CHECK_STRIPE_ACCOUNT_FIELD_FAIL,
     CLEAR_ERRORS,
 } from "../constants/userConstants";
 
@@ -161,12 +167,85 @@ export const resetPasswordReducer = (state = {}, action: any) => {
             return {
                 loading: false,
                 success: action.payload.success,
-                message: action.payload.message
+                message: action.payload.message,
             };
 
         case RESET_PASSWORD_FAIL:
             return {
                 loading: false,
+                error: action.payload,
+            };
+
+        case CLEAR_ERRORS:
+            return {
+                ...state,
+                error: null,
+            };
+        default:
+            return state;
+    }
+};
+
+/**
+ * This function handles the state of the request to get the Stripe Setup Payouts Link.
+ * @param state - This is the current state of the reducer.
+ * @param {any} action - any - This is the action that is being dispatched.
+ */
+export const getStripeSetupPayoutsLinkReducer = (state = {}, action: any) => {
+    switch (action.type) {
+        case SETUP_PAYOUTS_LINK_REQUEST:
+            return {
+                loading: true,
+            };
+
+        case SETUP_PAYOUTS_LINK_SUCCESS:
+            return {
+                loading: false,
+                success: true,
+                accountLink: action.payload.accountLink.url
+            };
+
+        case SETUP_PAYOUTS_LINK_FAIL:
+            return {
+                loading: false,
+                success: false,
+                error: action.payload,
+            };
+
+        case CLEAR_ERRORS:
+            return {
+                ...state,
+                error: null,
+            };
+        default:
+            return state;
+    }
+};
+
+/**
+ * This function handles the state of the request to check a Stripe
+ * account field on a current user
+ * @param state - This is the current state of the reducer.
+ * @param {any} action - any - This is the action that is being dispatched.
+ */
+ export const checkStripeAccountFieldReducer = (state = {}, action: any) => {
+    switch (action.type) {
+        case CHECK_STRIPE_ACCOUNT_FIELD_REQUEST:
+            return {
+                loading: true,
+            };
+
+        case CHECK_STRIPE_ACCOUNT_FIELD_SUCCESS:
+            return {
+                loading: false,
+                success: true,
+                accountField: action.payload.accountField
+            };
+
+        case CHECK_STRIPE_ACCOUNT_FIELD_FAIL:
+            return {
+                loading: false,
+                success: false,
                 error: action.payload,
             };
 

@@ -15,6 +15,12 @@ import {
     RESET_PASSWORD_REQUEST,
     RESET_PASSWORD_SUCCESS,
     RESET_PASSWORD_FAIL,
+    SETUP_PAYOUTS_LINK_REQUEST,
+    SETUP_PAYOUTS_LINK_SUCCESS,
+    SETUP_PAYOUTS_LINK_FAIL,
+    CHECK_STRIPE_ACCOUNT_FIELD_REQUEST,
+    CHECK_STRIPE_ACCOUNT_FIELD_SUCCESS,
+    CHECK_STRIPE_ACCOUNT_FIELD_FAIL,
     CLEAR_ERRORS,
 } from "../constants/userConstants";
 
@@ -95,7 +101,6 @@ export const updateUserProfile = (userData: any) => async (dispatch: any) => {
     }
 };
 
-
 //Forgot Password Action
 export const forgotPassword = (email: any) => async (dispatch: any) => {
     try {
@@ -106,13 +111,16 @@ export const forgotPassword = (email: any) => async (dispatch: any) => {
                 "Content-Type": "application/json",
             },
         };
-        const { data } = await axios.post(`/api/password/forgot`, email, config);
+        const { data } = await axios.post(
+            `/api/password/forgot`,
+            email,
+            config
+        );
 
         dispatch({
             type: FORGOT_PASSWORD_SUCCESS,
-            payload: data.message
+            payload: data.message,
         });
-
     } catch (error: any) {
         dispatch({
             type: FORGOT_PASSWORD_FAIL,
@@ -121,33 +129,96 @@ export const forgotPassword = (email: any) => async (dispatch: any) => {
     }
 };
 
-
 //Reset Password Action
-export const resetPassword = (password: any, token: any) => async (dispatch: any) => {
+export const resetPassword =
+    (password: any, token: any) => async (dispatch: any) => {
+        try {
+            dispatch({ type: RESET_PASSWORD_REQUEST });
+
+            const config = {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            };
+            const { data } = await axios.put(
+                `/api/password/reset/${token}`,
+                password,
+                config
+            );
+
+            dispatch({
+                type: RESET_PASSWORD_SUCCESS,
+                payload: data,
+            });
+        } catch (error: any) {
+            dispatch({
+                type: RESET_PASSWORD_FAIL,
+                payload: error.response.data.message,
+            });
+        }
+    };
+
+// This action creates a Stripe Connect Express Account
+// and returns an Onboarding Link for the user.
+export const getStripeSetupPayoutsLink = () => async (dispatch: any) => {
     try {
-        dispatch({ type: RESET_PASSWORD_REQUEST });
+        dispatch({
+            type: SETUP_PAYOUTS_LINK_REQUEST,
+        });
 
         const config = {
             headers: {
                 "Content-Type": "application/json",
             },
         };
-        const { data } = await axios.put(`/api/password/reset/${token}`, password, config);
+        const { data } = await axios.post(`/api/stripe/payouts/link`, config);
 
+        // Redirect Link to Connect Onboarding Successfully created
+        // Return data as payload
         dispatch({
-            type: RESET_PASSWORD_SUCCESS,
+            type: SETUP_PAYOUTS_LINK_SUCCESS,
             payload: data
         });
-
     } catch (error: any) {
         dispatch({
-            type: RESET_PASSWORD_FAIL,
+            type: SETUP_PAYOUTS_LINK_FAIL,
             payload: error.response.data.message,
         });
     }
 };
 
 
+// This action checks and returns a specific inputted field on 
+// a user's Stripe Express Account.
+export const checkStripeAccountField= (field: { field: string }) => async (dispatch: any) => {
+    try {
+        dispatch({
+            type: CHECK_STRIPE_ACCOUNT_FIELD_REQUEST,
+        });
+
+        const config = {
+            headers: {
+                "Content-Type": "application/json",
+            },
+        };
+
+        const { data } = await axios.post(`/api/stripe/check`, field, config);
+
+        // If no errors, dispatch success. This does NOT necessarily 
+        // mean that the requested field is true. Check tht via the 
+        // action.payload.accountField boolean.
+        dispatch({
+            type: CHECK_STRIPE_ACCOUNT_FIELD_SUCCESS,
+            payload: data
+        });
+        
+    } catch (error: any) {
+        dispatch({
+            type: CHECK_STRIPE_ACCOUNT_FIELD_FAIL,
+            payload: error.response.data.message,
+        });
+    }
+};
 
 /**
  * This function is used to clear the errors from the state

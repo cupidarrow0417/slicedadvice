@@ -38,8 +38,7 @@ const Login = ({ redirectContextStr }: LoginInterface) => {
         });
 
         setLoading(false);
-
-        console.log("result in submitHandler of Login.tsx", result);
+        
         if (result.error) {
             toast.error(result.error);
         } else if (queryParams.returnUrl) {

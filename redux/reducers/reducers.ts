@@ -11,10 +11,13 @@ import {
     userReducer,
     forgotPasswordReducer,
     resetPasswordReducer,
+    getStripeSetupPayoutsLinkReducer,
+    checkStripeAccountFieldReducer,
 } from "./userReducers";
 
 /* Creating a new reducer that combines all of the individual reducers into one. */
 const reducer = combineReducers({
+    // Expertise Post Global State
     allExpertisePosts: allExpertisePostsReducer,
     allCareerGrowthExpertisePosts: allCareerGrowthExpertisePostsReducer,
     allCollegeApplicationExpertisePosts:
@@ -22,10 +25,14 @@ const reducer = combineReducers({
     allPersonalDevelopmentExpertisePosts:
         allPersonalDevelopmentExpertisePostsReducer,
     expertisePostDetails: expertisePostDetailsReducer,
+
+    // User global state
     auth: authReducer,
     user: userReducer,
     forgotPassword: forgotPasswordReducer,
     resetPassword: resetPasswordReducer,
+    stripeSetupPayoutsLink: getStripeSetupPayoutsLinkReducer,
+    checkStripeAccountField: checkStripeAccountFieldReducer,
 });
 
 export default reducer;

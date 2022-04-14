@@ -1,13 +1,12 @@
-import NextAuth from 'next-auth'
-import CredentialProvider from 'next-auth/providers/credentials'
+import NextAuth from "next-auth";
+import CredentialProvider from "next-auth/providers/credentials";
 
-import UserModel from '../../../models/user'
-import dbConnect from '../../../config/dbConnect'
-import { userInfo } from 'os'
+import UserModel from "../../../models/user";
+import dbConnect from "../../../config/dbConnect";
 
 export default NextAuth({
     session: {
-        strategy: 'jwt'
+        strategy: "jwt",
     },
     providers: [
         CredentialProvider({
@@ -18,50 +17,54 @@ export default NextAuth({
             // e.g. domain, username, password, 2FA token, etc.
             // You can pass any HTML attribute to the <input> tag through the object.
             credentials: {
-                email: { label: "Email", type: "text", placeholder: "email@domain.com" },
-                password: {  label: "Password", type: "password" }
+                email: {
+                    label: "Email",
+                    type: "text",
+                    placeholder: "email@domain.com",
+                },
+                password: { label: "Password", type: "password" },
             },
             async authorize(credentials) {
+                dbConnect();
 
-                dbConnect()
-
-                const email = credentials?.email
-                const password = credentials?.password
+                const email = credentials?.email;
+                const password = credentials?.password;
 
                 //Check if email and password is entered
                 if (!email || !password) {
-                    throw new Error('Please enter your email or password')
+                    throw new Error("Please enter your email or password");
                 }
 
                 //Find user in the database
-                const user = await UserModel.findOne({ email }).select('+password')
+                const user = await UserModel.findOne({ email }).select(
+                    "+password"
+                );
 
                 if (!user) {
-                    throw new Error('Invalid Email or Password')
+                    throw new Error("Invalid Email or Password");
                 }
 
                 //Check if password is correct
-                const isPasswordMatched = await user.comparePassword(password)
+                const isPasswordMatched = await user.comparePassword(password);
 
                 if (!isPasswordMatched) {
-                    throw new Error('Invalid Email or Password')
+                    throw new Error("Invalid Email or Password");
                 }
-                
+
                 //Checks passed, return
-                return Promise.resolve(user)
-            }
-        })
+                return Promise.resolve(user);
+            },
+        }),
     ],
     callbacks: {
-        jwt: async ({token, user}) =>  {
-            user && (token.user = user)
-            return Promise.resolve(token)
+        jwt: async ({ token, user }) => {
+            user && (token.user = user);
+            return Promise.resolve(token);
         },
-        session: async ({session, user, token}: any) => {
-
-            session.user = token.user
-            return Promise.resolve(session)
-        }
+        session: async ({ session, user, token }: any) => {
+            session.user = token.user;
+            return Promise.resolve(session);
+        },
     },
-    secret: process.env.NEXTAUTH_SECRET
-})
+    secret: process.env.NEXTAUTH_SECRET,
+});

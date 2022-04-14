@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Dialog, Menu, Transition } from "@headlessui/react";
 import {
     ClockIcon,
@@ -18,6 +18,8 @@ import DashboardSidebar from "../DashboardSidebar";
 import HomeExpertDashboard from "./HomeExpertDashboard";
 import SubmissionsExpertDashboard from "./SubmissionsExpertDashboard";
 import PaymentsExpertDashboard from "./PaymentsExpertDashboard";
+import { useAppDispatch } from "../../../redux/hooks";
+import { loadUser } from "../../../redux/actions/userActions";
 
 const navigation = [
     { name: "Home", href: "/dashboard/expert/home", icon: HomeIcon, current: false },
@@ -32,7 +34,11 @@ interface ExpertDashboardInterface {
 export default function ExpertDashboard({
     currentPage,
 }: ExpertDashboardInterface) {
-    const [sidebarOpen, setSidebarOpen] = useState(false);
+    const dispatch = useAppDispatch();
+
+    useEffect(() => {
+        dispatch(loadUser());
+    }, [dispatch]);
 
     return (
         <>

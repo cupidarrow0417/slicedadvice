@@ -1,11 +1,12 @@
 import { GetServerSideProps } from "next";
 import { getSession } from "next-auth/react";
 import ExpertDashboard from "../../../components/dashboard/experts/ExpertDashboard";
+import RefreshStripeMessage from "../../../components/dashboard/experts/RefreshStripeMessage";
 import Layout from "../../../components/layout/Layout";
-const ExpertDashboardHomePage = () => {
+const StripeConnectOnboardingRefreshPage = () => {
     return (
-        <Layout title="Home | Expert Dashboard | SlicedAdvice">
-            <ExpertDashboard currentPage="Home" />
+        <Layout title="Redirecting to Stripe | SlicedAdvice">
+            <RefreshStripeMessage />
         </Layout>
     );
 };
@@ -16,7 +17,7 @@ export async function getServerSideProps<GetServerSideProps>(context: any) {
     if (!session) {
         return {
             redirect: {
-                destination: `/login?returnUrl=/dashboard/expert/home&returnContext=expert%20dashboard%20home%20page`,
+                destination: `/login?returnUrl=/dashboard/expert/refresh&returnContext=expert%20payout%20onboarding%20flow`,
                 permanent: false,
             },
         };
@@ -27,4 +28,4 @@ export async function getServerSideProps<GetServerSideProps>(context: any) {
     };
 }
 
-export default ExpertDashboardHomePage;
+export default StripeConnectOnboardingRefreshPage;
