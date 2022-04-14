@@ -120,6 +120,7 @@ export default function TopNav() {
                                                 <Flyout
                                                     name={item.name}
                                                     href={item.href}
+                                                    key={item.name}
                                                     children={item.children}
                                                     headerText={item.headerText}
                                                 />
@@ -267,9 +268,8 @@ export default function TopNav() {
                             <div className="px-2 pt-2 pb-3 space-y-1">
                                 {navigation.map((item) =>
                                     item.flyout ? (
-                                        <>
+                                        <div key={item.name}>
                                             <Disclosure.Button
-                                                key={item.name}
                                                 as="a"
                                                 href={item.href}
                                                 className="text-black hover:bg-brand-primary-light hover:text-white focus:bg-brand-primary-light focus:text-white
@@ -331,7 +331,7 @@ export default function TopNav() {
                                                         ?.name
                                                 }
                                             </Disclosure.Button>
-                                        </>
+                                        </div>
                                     ) : (
                                         <Disclosure.Button
                                             key={item.name}

@@ -85,9 +85,9 @@ export default function Flyout({
                                         </>
                                     )}
                                     {children?.map((item: any) => (
-                                        <Link href={item.href}>
+                                        <Link href={item.href} key={item.name}>
                                             <a
-                                                key={item.name}
+                                                
                                                 className="p-3 block rounded-md hover:bg-gray-50 transition ease-in-out duration-150"
                                             >
                                                 <p className="text-base font-medium text-gray-900">
