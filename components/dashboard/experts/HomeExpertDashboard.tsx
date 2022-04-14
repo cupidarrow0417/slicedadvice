@@ -63,7 +63,9 @@ const HomeExpertDashboard = () => {
                 {!chargesEnabled ? (
                     <SetupPayoutsAlert />
                 ) : (
-                    <h1>{`Charges have been enabled! Woohoo! Click new post to create your first expertise posting. `}</h1>
+                    <div className="flex justify-center items-center rounded-xl border-y-[1px] sm:border-x-[1px] border-black/10 bg-white w-full p-9">
+                        <h1>{`Charges have been enabled! Woohoo! Click the "New Post" button to create your first expertise posting. `}</h1>
+                    </div>
                 )}
             </div>
         </div>

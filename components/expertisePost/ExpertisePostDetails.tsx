@@ -26,15 +26,15 @@ const ExpertisePostDetails = () => {
       <Head>
         <title>{expertisePost?.title} | SlicedAdvice</title>
       </Head>
-      <div className="flex flex-col items-start gap-5 p-4 max-w-7xl mx-auto sm:px-6 lg:px-8">
+      <div className="flex flex-col items-start gap-5 p-4 max-w-2xl lg:max-w-7xl mx-auto sm:px-6 lg:px-8 ">
         <Breadcrumbs />
         <h1 className="text-2xl font-semibold">
           {expertisePost["title"]}
         </h1>
         <RatingsWidget expertisePost={expertisePost} />
 
-        <div className="flex flex-col md:flex-row justify-start items-center w-full gap-7 mt-3 ">
-          <div className="expertisePostDetailImageWrapper w-4/5 self-center">
+        <div className="flex flex-col lg:flex-row justify-start lg:justify-around items-center w-full gap-7 mt-3 ">
+          <div className="expertisePostDetailImageWrapper w-4/5 max-w-lg self-center">
             {
               expertisePost["images"][0] &&
               <Image
@@ -46,13 +46,16 @@ const ExpertisePostDetails = () => {
               />
             }
           </div>
-          <div className="flex flex-col self-start w-full md:max-w-lg">
+          <div className="flex flex-col gap-5 self-start w-full md:max-w-2xl mx-auto">
             <h1 className="text-xl font-medium">
               Description
             </h1>
             <p className="font-light opacity-60">
               {expertisePost["description"]}
             </p>
+            {/* Line Break */}
+            <div className=" w-full m-auto h-[1px] bg-black/10"></div>
+            
           </div>
         </div>
       </div>
