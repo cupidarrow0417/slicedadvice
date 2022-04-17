@@ -9,6 +9,9 @@ import {
     ALL_PERSONAL_DEVELOPMENT_EXPERTISE_POSTS_FAIL,
     EXPERTISE_POST_DETAIL_SUCCESS,
     EXPERTISE_POST_DETAIL_FAIL,
+    CREATE_EXPERTISE_POST_REQUEST,
+    CREATE_EXPERTISE_POST_SUCCESS,
+    CREATE_EXPERTISE_POST_FAIL,
     CLEAR_ERRORS,
 } from "../constants/expertisePostConstants";
 
@@ -175,6 +178,38 @@ export const expertisePostDetailsReducer = (
             return {
                 error: action.payload,
             };
+        case CLEAR_ERRORS:
+            return {
+                ...state,
+                error: null,
+            };
+        default:
+            return state;
+    }
+};
+
+
+export const createExpertisePostReducer = (
+    state = { },
+    action: any
+) => {
+    switch (action.type) {
+        case CREATE_EXPERTISE_POST_REQUEST:
+            return {
+                loading: true,
+            };
+        case CREATE_EXPERTISE_POST_SUCCESS:
+            return {
+                loading: false,
+                success: true,
+                expertisePostId: action.payload.expertisePostId,
+            };
+        case CREATE_EXPERTISE_POST_FAIL:
+            return {
+                loading: false,
+                success: false,
+                error: action.payload
+            }
         case CLEAR_ERRORS:
             return {
                 ...state,

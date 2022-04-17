@@ -30,6 +30,17 @@
 }
 
 
+/* To remove arrows on Number inputs */
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+    -webkit-appearance: none; 
+    margin: 0; 
+}
+
+input[type=number] {
+  -moz-appearance:textfield;
+}
+
 /* .rating-outer {
   display: inline-block;
   position: relative;

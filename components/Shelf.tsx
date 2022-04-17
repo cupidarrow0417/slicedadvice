@@ -25,7 +25,7 @@ const Shelf = ({ children, title, link }: ShelfPropsInterface) => {
                     </button>
                 </Link>
             </div>
-            <div className="flex gap-5 w-full overflow-x-scroll snap-x snap-mandatory pb-4 pt-[2px]">
+            <div className="flex gap-5 w-full overflow-x-scroll pb-4 pt-[2px]">
                 {children}
             </div>
         </div>

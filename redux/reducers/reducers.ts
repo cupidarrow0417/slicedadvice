@@ -5,6 +5,7 @@ import {
     allCollegeApplicationExpertisePostsReducer,
     allPersonalDevelopmentExpertisePostsReducer,
     expertisePostDetailsReducer,
+    createExpertisePostReducer,
 } from "./expertisePostReducers";
 import {
     authReducer,
@@ -25,6 +26,7 @@ const reducer = combineReducers({
     allPersonalDevelopmentExpertisePosts:
         allPersonalDevelopmentExpertisePostsReducer,
     expertisePostDetails: expertisePostDetailsReducer,
+    createExpertisePost: createExpertisePostReducer,
 
     // User global state
     auth: authReducer,

@@ -2,11 +2,15 @@
 import { ChevronRightIcon, HomeIcon } from '@heroicons/react/solid'
 import Link from 'next/link'
 
-const pages = [
+const samplePages = [
   { name: 'College Application', href: '#', current: false }
 ]
 
-export default function Breadcrumbs() {
+interface BreadcrumbsInterface {
+  pages: { name: string, href: string, current: boolean}[]
+}
+
+export default function Breadcrumbs({ pages }: BreadcrumbsInterface) {
   return (
     <nav className="flex" aria-label="Breadcrumb">
       <ol role="list" className="flex items-center space-x-4">
@@ -20,7 +24,7 @@ export default function Breadcrumbs() {
             </Link>
           </div>
         </li>
-        {pages.map((page) => (
+        {pages?.map((page) => (
           <li key={page.name}>
             <div className="flex items-center">
               <ChevronRightIcon className="flex-shrink-0 h-5 w-5 text-gray-400" aria-hidden="true" />

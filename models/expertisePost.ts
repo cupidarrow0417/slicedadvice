@@ -5,13 +5,14 @@ interface ExpertisePostInterface {
     title: string;
     description: string;
     pricePerSubmission: Number;
-    submissionTopics: string[];
+    submissionTypes: string[];
     ratings: Number;
     numOfReviews: Number;
     images: Array<Object>;
     category: String;
     reviews: Array<Object>;
     user: mongoose.Schema.Types.ObjectId;
+    stripeId: String;
     createdAt: Date;
 }
 
@@ -26,7 +27,10 @@ const expertisePostSchema = new mongoose.Schema<ExpertisePostInterface>({
     description: {
         type: String,
         required: [true, "Please enter a description for this post."],
-        maxLength: [1000, "Expertise post description cannot exceed 1000 characters."]
+        maxLength: [
+            1000,
+            "Expertise post description cannot exceed 1000 characters.",
+        ],
     },
     pricePerSubmission: {
         type: Number,
@@ -34,13 +38,15 @@ const expertisePostSchema = new mongoose.Schema<ExpertisePostInterface>({
         min: 1,
         default: 1,
     },
-    submissionTopics: {
-        type: [{ String }],
-        required: [
-            true,
-            "Please enter three examples of bite-sized submissions someone might send you.",
-        ],
-    },
+    submissionTypes: [
+        {
+            type: String,
+            required: [
+                true,
+                "Please enter at least one type of bite-sized submissions someone might send you.",
+            ],
+        },
+    ],
     ratings: {
         type: Number,
         default: 0,
@@ -99,12 +105,23 @@ const expertisePostSchema = new mongoose.Schema<ExpertisePostInterface>({
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
         required: false,
+        // The below option tells this plugin to always call `populate()` on
+        // `User`
+        autopopulate: true,
+    },
+    stripeId: {
+        type: String,
+        required: false,
     },
     createdAt: {
         type: Date,
         default: Date.now,
     },
 });
+
+// Library used for auto population of certain fields you call
+// autopopulate: true on in the mongoose.Schema
+expertisePostSchema.plugin(require("mongoose-autopopulate"));
 
 export default mongoose.models["Expertise Post"] ||
     mongoose.model<ExpertisePostInterface>(

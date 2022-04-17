@@ -5,8 +5,10 @@ import { useAppSelector } from "../../../redux/hooks";
 import ButtonLoader from "../../layout/ButtonLoader";
 import SetupPayoutsAlert from "./SetupPayoutsAlert";
 import Loader from "../../layout/Loader";
+import { useRouter } from "next/router";
 
 const HomeExpertDashboard = () => {
+    const router = useRouter();
     const { user, loading: authLoading } = useAppSelector(
         (state) => state.auth
     );
@@ -17,7 +19,7 @@ const HomeExpertDashboard = () => {
         return state.checkStripeAccountField;
     });
 
-    return authLoading || checkStripeAccountFieldLoading ? (
+    return (authLoading) ? (
         <div className="flex flex-col">
             <div className="bg-white px-4 py-4 flex items-center justify-between sm:px-6 rounded-t-xl lg:rounded-tl-none lg:px-8 border-b-[1px] border-black/10">
                 <Loader />
@@ -53,6 +55,7 @@ const HomeExpertDashboard = () => {
                             type="button"
                             className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-brand-primary-light hover:bg-brand-primary-light/90"
                             disabled={authLoading ? true : false}
+                            onClick={() => router.push('/expertisePost/create')}
                         >
                             {authLoading ? <ButtonLoader /> : "New Post"}
                         </button>

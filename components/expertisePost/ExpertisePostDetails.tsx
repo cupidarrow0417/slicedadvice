@@ -15,25 +15,49 @@ const ExpertisePostDetails = () => {
         (state) => state.expertisePostDetails
     );
 
+    const getCategoryHref = (categoryName: string) => {
+        switch (categoryName) {
+            case "Career Growth":
+                return "/categories/careerGrowth";
+            case "College Application":
+                return "/categories/collegeApplication";
+            case "Personal Development":
+                return "/categories/personalDevelopment";
+            case "Other":
+                return "/categories/other";
+            default:
+                return "#";
+        }
+    };
+
+    // Used for the Breadcrumbs component
+    const pages = [
+        {
+            name: expertisePost?.category,
+            href: getCategoryHref(expertisePost?.category),
+            current: false,
+        },
+    ];
+
     useEffect(() => {
         if (error) {
             toast.error(error);
             dispatch(clearErrors());
         }
-    }, []);
+    }, [error]);
     return (
         <div className="">
             <Head>
                 <title>{expertisePost?.title} | SlicedAdvice</title>
             </Head>
-            <div className="flex flex-col items-start gap-5 px-4 py-8 max-w-2xl lg:max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <Breadcrumbs />
+            <div className="flex flex-col items-start gap-5 px-4 py-4 max-w-2xl lg:max-w-7xl mx-auto sm:px-6 lg:px-8">
+                <Breadcrumbs pages={pages} />
                 <h1 className="text-2xl font-semibold">
                     {expertisePost["title"]}
                 </h1>
                 <RatingsWidget expertisePost={expertisePost} />
 
-                <div className="flex flex-col lg:flex-row justify-start lg:justify-around items-start w-full gap-7 mt-3 ">
+                <div className="flex flex-col lg:flex-row justify-start lg:justify-around items-start w-full gap-7 lg:-mt-2">
                     <div className="expertisePostDetailImageWrapper w-4/5 max-w-lg self-center">
                         {expertisePost["images"][0] && (
                             <Image
@@ -59,15 +83,16 @@ const ExpertisePostDetails = () => {
                                     Bite-sized submissions might include:
                                 </p>
                                 <ul className="list-disc">
-                                    <li className="text-lg font-semibold ">
-                                        Text Question
-                                    </li>
-                                    <li className="text-lg font-semibold ">
-                                        One Page Resume
-                                    </li>
-                                    <li className="text-lg font-semibold">
-                                        Paragraph from Essay
-                                    </li>
+                                    {expertisePost["submissionTypes"].map(
+                                        (type: string, index: number) => (
+                                            <li
+                                                className="text-xl font-semibold"
+                                                key={index}
+                                            >
+                                                {type}
+                                            </li>
+                                        )
+                                    )}
                                 </ul>
                             </div>
                             <div className="flex flex-col justify-center items-center gap-4 p-8 w-full sm:w-1/2 sm:h-60 bg-white rounded-xl border-[1px] border-black/10 shadow-md">
@@ -81,8 +106,8 @@ const ExpertisePostDetails = () => {
                                     </span>
                                 </div>
                                 <p className="text-sm font-light text-center opacity-60">
-                                    You'll get a response within 7 days, or you'll
-                                    never be charged.
+                                    You'll get a response within 7 days, or
+                                    you'll never be charged.
                                 </p>
                                 <button className="bg-brand-primary-light rounded-lg text-white w-full py-3 text-lg flex justify-center items-center">
                                     Send Submission

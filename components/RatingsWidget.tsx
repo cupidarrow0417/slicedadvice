@@ -5,7 +5,7 @@ const RatingsWidget = ({ expertisePost }: any) => {
     <div className="flex justify-center items-center gap-1">
         <div className="flex mt-[2px]">
             {[0, 1, 2, 3, 4].map((rating) => (
-                expertisePost.ratings > rating 
+                expertisePost?.ratings > rating 
                 ? <RatingStar key={rating} fill={true}/>
                 : <RatingStar key={rating} fill={false}/>
             ))}

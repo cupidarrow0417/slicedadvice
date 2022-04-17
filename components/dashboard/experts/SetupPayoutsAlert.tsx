@@ -99,7 +99,7 @@ const SetupPayoutsAlert = () => {
         return false;
     };
 
-    return authLoading ? (
+    return (authLoading || checkStripeAccountFieldLoading) ? (
         <Loader />
     ) : (
         <div className="flex justify-center items-center rounded-xl border-y-[1px] sm:border-x-[1px] border-black/10 bg-white w-full p-9">

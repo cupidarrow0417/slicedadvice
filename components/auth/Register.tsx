@@ -302,7 +302,12 @@ const Register = () => {
                                 />
                                 <div className="flex justify-center">
                                     <input
-                                        className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-brand-primary-light/70 focus:border-brand-primary-light/70 sm:text-sm"
+                                        className="appearance-none block px-3 w-full py-2 mt-4 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-brand-primary-light focus:border-brand-primary-light sm:text-sm
+                                        file:mr-4 file:py-2 file:px-4
+                                        file:rounded-full file:border-0
+                                        file:text-sm file:font-semibold
+                                        file:bg-brand-primary-light/5 file:text-brand-primary-light
+                                        hover:file:bg-brand-primary-light/10"
                                         type="file"
                                         id="formFile"
                                         name="avatar"

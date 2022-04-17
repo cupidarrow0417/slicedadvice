@@ -4,14 +4,17 @@ import {
     ALL_EXPERTISE_POSTS_SUCCESS,
     ALL_EXPERTISE_POSTS_FAIL,
     ALL_CAREER_GROWTH_EXPERTISE_POSTS_SUCCESS,
+    ALL_CAREER_GROWTH_EXPERTISE_POSTS_FAIL,
     ALL_COLLEGE_APPLICATION_EXPERTISE_POSTS_SUCCESS,
     ALL_COLLEGE_APPLICATION_EXPERTISE_POSTS_FAIL,
     ALL_PERSONAL_DEVELOPMENT_EXPERTISE_POSTS_SUCCESS,
+    ALL_PERSONAL_DEVELOPMENT_EXPERTISE_POSTS_FAIL,
     EXPERTISE_POST_DETAIL_SUCCESS,
     EXPERTISE_POST_DETAIL_FAIL,
+    CREATE_EXPERTISE_POST_REQUEST,
+    CREATE_EXPERTISE_POST_SUCCESS,
+    CREATE_EXPERTISE_POST_FAIL,
     CLEAR_ERRORS,
-    ALL_CAREER_GROWTH_EXPERTISE_POSTS_FAIL,
-    ALL_PERSONAL_DEVELOPMENT_EXPERTISE_POSTS_FAIL,
 } from "../constants/expertisePostConstants";
 
 /**
@@ -78,7 +81,6 @@ export const getExpertisePosts =
                     payload: error.response.data.message,
                 });
             }
-            
         }
     };
 
@@ -102,6 +104,43 @@ export const getExpertisePostDetails =
         } catch (error: any) {
             dispatch({
                 type: EXPERTISE_POST_DETAIL_FAIL,
+                payload: error.response.data.message,
+            });
+        }
+    };
+
+interface postDataInterface {
+    user: string;
+    stripeId: string;
+    title: string;
+    description: string;
+    submissionTypes: string[];
+    image: string;
+    pricePerSubmission: number;
+    category: string;
+}
+export const createExpertisePost =
+    (postData: postDataInterface) => async (dispatch: any) => {
+        try {
+            dispatch({
+                type: CREATE_EXPERTISE_POST_REQUEST
+            })
+
+            const config = {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }
+
+            const { data } = await axios.post(`/api/expertisePosts/`, postData, config);
+
+            dispatch({
+                type: CREATE_EXPERTISE_POST_SUCCESS,
+                payload: data
+            })
+        } catch (error: any) {
+            dispatch({
+                type: CREATE_EXPERTISE_POST_FAIL,
                 payload: error.response.data.message,
             });
         }

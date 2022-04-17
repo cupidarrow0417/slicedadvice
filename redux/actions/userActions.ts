@@ -177,7 +177,7 @@ export const getStripeSetupPayoutsLink = () => async (dispatch: any) => {
         // Return data as payload
         dispatch({
             type: SETUP_PAYOUTS_LINK_SUCCESS,
-            payload: data
+            payload: data,
         });
     } catch (error: any) {
         dispatch({
@@ -187,38 +187,41 @@ export const getStripeSetupPayoutsLink = () => async (dispatch: any) => {
     }
 };
 
-
-// This action checks and returns a specific inputted field on 
+// This action checks and returns a specific inputted field on
 // a user's Stripe Express Account.
-export const checkStripeAccountField= (field: { field: string }) => async (dispatch: any) => {
-    try {
-        dispatch({
-            type: CHECK_STRIPE_ACCOUNT_FIELD_REQUEST,
-        });
+export const checkStripeAccountField =
+    (field: { field: string }) => async (dispatch: any) => {
+        try {
+            dispatch({
+                type: CHECK_STRIPE_ACCOUNT_FIELD_REQUEST,
+            });
 
-        const config = {
-            headers: {
-                "Content-Type": "application/json",
-            },
-        };
+            const config = {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            };
 
-        const { data } = await axios.post(`/api/stripe/check`, field, config);
+            const { data } = await axios.post(
+                `/api/stripe/check`,
+                field,
+                config
+            );
 
-        // If no errors, dispatch success. This does NOT necessarily 
-        // mean that the requested field is true. Check tht via the 
-        // action.payload.accountField boolean.
-        dispatch({
-            type: CHECK_STRIPE_ACCOUNT_FIELD_SUCCESS,
-            payload: data
-        });
-        
-    } catch (error: any) {
-        dispatch({
-            type: CHECK_STRIPE_ACCOUNT_FIELD_FAIL,
-            payload: error.response.data.message,
-        });
-    }
-};
+            // If no errors, dispatch success. This does NOT necessarily
+            // mean that the requested field is true. Check tht via the
+            // action.payload.accountField boolean.
+            dispatch({
+                type: CHECK_STRIPE_ACCOUNT_FIELD_SUCCESS,
+                payload: data,
+            });
+        } catch (error: any) {
+            dispatch({
+                type: CHECK_STRIPE_ACCOUNT_FIELD_FAIL,
+                payload: error.response.data.message,
+            });
+        }
+    };
 
 /**
  * This function is used to clear the errors from the state
