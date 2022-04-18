@@ -8,12 +8,24 @@ import { clearErrors } from "../../redux/actions/expertisePostActions";
 import Breadcrumbs from "../Breadcrumbs";
 import Image from "next/image";
 import RatingsWidget from "../RatingsWidget";
+import Loader from "../layout/Loader";
 
 const ExpertisePostDetails = () => {
     const dispatch = useAppDispatch();
     const { expertisePost, error } = useAppSelector(
         (state) => state.expertisePostDetails
     );
+
+    // Check if user is logged in and is the owner of this post.
+    // They shouldn't be able to Send a Submission if so, of course.
+    const { user, loading } = useAppSelector((state) => {
+        return state.auth;
+    });
+
+    let userIsOwner: boolean = false;
+    if (user?._id === expertisePost?.user?._id) {
+        userIsOwner = true;
+    }
 
     const getCategoryHref = (categoryName: string) => {
         switch (categoryName) {
@@ -109,9 +121,15 @@ const ExpertisePostDetails = () => {
                                     You'll get a response within 7 days, or
                                     you'll never be charged.
                                 </p>
-                                <button className="bg-brand-primary-light rounded-lg text-white w-full py-3 text-lg flex justify-center items-center">
-                                    Send Submission
-                                </button>
+                                {loading ? (
+                                    <Loader />
+                                ) : userIsOwner ? (
+                                    ""
+                                ) : (
+                                    <button className="bg-brand-primary-light rounded-lg text-white w-full py-3 text-lg flex justify-center items-center">
+                                        Send Submission
+                                    </button>
+                                )}
                             </div>
                         </div>
                     </div>
