@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
-import Router from "next/router";
+import Router, { useRouter } from "next/router";
 
 import ButtonLoader from "../layout/ButtonLoader";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
@@ -10,13 +10,19 @@ import { getSession } from "next-auth/react";
 
 const Register = () => {
     const dispatch = useAppDispatch();
-
+    const { query: queryParams } = useRouter();
     const [user, setUser] = useState({
         name: "",
         email: "",
         password: "",
     });
 
+    // Build the login url with the optional redirect params,
+    // to handle redirects if the user clicks login.
+    let loginUrl: string = "/login";
+    if (queryParams.returnUrl && queryParams.returnContext) {
+        loginUrl += `?returnUrl=${queryParams.returnUrl.toString()}&returnContext=${queryParams.returnContext.toString()}`;
+    }
 
     const { name, email, password } = user;
 
@@ -24,7 +30,7 @@ const Register = () => {
     const [avatarPreview, setAvatarPreview] = useState(
         "/images/default_avatar.jpeg"
     );
-    const [confirmPassword, setConfirmPassword] = useState('')
+    const [confirmPassword, setConfirmPassword] = useState("");
 
     const { success, error, loading } = useAppSelector((state) => {
         return state.auth;
@@ -32,14 +38,14 @@ const Register = () => {
 
     useEffect(() => {
         if (success) {
-            Router.push("/login");
+            Router.push(loginUrl);
         }
 
         if (error) {
             //toast all errors except for the navbar checking for a user.
             //that sends an error technically, but we don't care about it
             //in the context of this registration page.
-            if (error !== 'Login first to access this resource!') {
+            if (error !== "Login first to access this resource!") {
                 toast.error(error);
                 dispatch(clearErrors);
             }
@@ -56,10 +62,10 @@ const Register = () => {
                 password,
                 avatar,
             };
-    
+
             dispatch(registerUser(userData));
         } else {
-            toast.error('Please try confirming the password again.')
+            toast.error("Please try confirming the password again.");
         }
     };
 
@@ -75,7 +81,7 @@ const Register = () => {
             };
             reader.readAsDataURL(e.target.files[0]);
         } else if (e.target.name === "confirm-password") {
-            setConfirmPassword(e.target.value)
+            setConfirmPassword(e.target.value);
         } else {
             setUser({ ...user, [e.target.name]: e.target.value });
         }
@@ -84,12 +90,17 @@ const Register = () => {
     return (
         <div className="flex flex-col justify-center">
             <div className="sm:mx-auto sm:w-full sm:max-w-md">
-                <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+                <p className="mt-2 text-center text-sm text-gray-600">
+                    {queryParams.returnContext
+                        ? `To continue to the ${queryParams.returnContext.toString()},`
+                        : ""}
+                </p>
+                <h2 className="mt-1 text-center text-3xl font-extrabold text-gray-900">
                     Create a new account
                 </h2>
                 <p className="mt-2 text-center text-sm text-gray-600">
                     Or{" "}
-                    <Link href="/login">
+                    <Link href={loginUrl}>
                         <a className="font-medium text-brand-primary-light hover:text-brand-primary-light/70">
                             login to an existing one
                         </a>
@@ -274,7 +285,6 @@ const Register = () => {
                                     type="password"
                                     required
                                     className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-brand-primary-light/70 focus:border-brand-primary-light/70 sm:text-sm"
-                                    
                                     onChange={onChange}
                                 />
                             </div>

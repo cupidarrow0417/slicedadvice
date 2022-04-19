@@ -3,9 +3,9 @@ import { Dialog, Menu, Transition } from "@headlessui/react";
 import {
     ClockIcon,
     HomeIcon,
-    MenuAlt1Icon,
+    InboxInIcon,
     ViewListIcon,
-    XIcon,
+    CashIcon,
 } from "@heroicons/react/outline";
 import {
     ChevronDownIcon,
@@ -23,8 +23,9 @@ import { loadUser } from "../../../redux/actions/userActions";
 
 const navigation = [
     { name: "Home", href: "/dashboard/expert/home", icon: HomeIcon, current: false },
-    { name: "Submissions", href: "/dashboard/expert/submissions", icon: ViewListIcon, current: false },
-    { name: "Payments", href: "/dashboard/expert/payments", icon: ClockIcon, current: false },
+    { name: "Your Posts", href: "/dashboard/expert/posts", icon: ViewListIcon, current: false},
+    { name: "Submissions", href: "/dashboard/expert/submissions", icon: InboxInIcon, current: false },
+    { name: "Payments", href: "/dashboard/expert/payments", icon: CashIcon, current: false },
 ];
 
 interface ExpertDashboardInterface {

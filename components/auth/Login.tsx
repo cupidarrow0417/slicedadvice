@@ -7,17 +7,21 @@ import ButtonLoader from "../layout/ButtonLoader";
 import Router, { useRouter } from "next/router";
 import { useAppSelector } from "../../redux/hooks";
 
-interface LoginInterface {
-    redirectContextStr: string;
-}
 
-const Login = ({ redirectContextStr }: LoginInterface) => {
+const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
     const { query: queryParams } = useRouter();
 
     const { message } = useAppSelector((state) => state.resetPassword);
+
+    // Build the register url with the optional redirect params,
+    // to handle redirects if the user clicks register.
+    let registerUrl: string = "/register";
+    if (queryParams.returnUrl && queryParams.returnContext) {
+        registerUrl += `?returnUrl=${queryParams.returnUrl.toString()}&returnContext=${queryParams.returnContext.toString()}`;
+    }
 
     useEffect(() => {
         if (message) {
@@ -38,7 +42,7 @@ const Login = ({ redirectContextStr }: LoginInterface) => {
         });
 
         setLoading(false);
-        
+
         if (result.error) {
             toast.error(result.error);
         } else if (queryParams.returnUrl) {
@@ -54,8 +58,8 @@ const Login = ({ redirectContextStr }: LoginInterface) => {
         <div className="flex flex-col justify-center">
             <div className="sm:mx-auto sm:w-full sm:max-w-md">
                 <p className="mt-2 text-center text-sm text-gray-600">
-                    {redirectContextStr !== ""
-                        ? `To continue to the ${redirectContextStr},`
+                    {queryParams.returnContext 
+                        ? `To continue to the ${queryParams.returnContext.toString()},`
                         : ""}
                 </p>
                 <h2 className="mt-1 text-center text-3xl font-extrabold text-gray-900">
@@ -63,7 +67,7 @@ const Login = ({ redirectContextStr }: LoginInterface) => {
                 </h2>
                 <p className="mt-2 text-center text-sm text-gray-600">
                     Or{" "}
-                    <Link href="/register">
+                    <Link href={registerUrl}>
                         <a className="font-medium text-brand-primary-light hover:text-brand-primary-light/70">
                             create a new account
                         </a>
