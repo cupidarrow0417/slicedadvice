@@ -189,6 +189,16 @@ export const expertisePostDetailsReducer = (
 };
 
 
+/**
+ * It returns an object with a loading property set to true if the action type is
+ * CREATE_EXPERTISE_POST_REQUEST, an object with a loading property set to false and a success property
+ * set to true if the action type is CREATE_EXPERTISE_POST_SUCCESS, an object with a loading property
+ * set to false and a success property set to false if the action type is CREATE_EXPERTISE_POST_FAIL,
+ * and the state if the action type is CLEAR_ERRORS
+ * @param state - The current state of the reducer.
+ * @param {any} action - any
+ * @returns The reducer is returning the state of the application.
+ */
 export const createExpertisePostReducer = (
     state = { },
     action: any

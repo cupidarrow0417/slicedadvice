@@ -9,13 +9,16 @@ import Breadcrumbs from "../Breadcrumbs";
 import Image from "next/image";
 import RatingsWidget from "../RatingsWidget";
 import Loader from "../layout/Loader";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 const ExpertisePostDetails = () => {
     const dispatch = useAppDispatch();
+    const { query: queryParams } = useRouter();
     const { expertisePost, error } = useAppSelector(
         (state) => state.expertisePostDetails
     );
-
+    
     // Check if user is logged in and is the owner of this post.
     // They shouldn't be able to Send a Submission if so, of course.
     const { user, loading } = useAppSelector((state) => {
@@ -126,9 +129,11 @@ const ExpertisePostDetails = () => {
                                 ) : userIsOwner ? (
                                     ""
                                 ) : (
-                                    <button className="bg-brand-primary-light rounded-lg text-white w-full py-3 text-lg flex justify-center items-center">
-                                        Send Submission
-                                    </button>
+                                    <Link href={`/expertisePost/book/singleTextResponse/${queryParams?.id}`}>
+                                        <a className="bg-brand-primary-light rounded-lg text-white w-full py-3 text-lg flex justify-center items-center">
+                                            Send Submission
+                                        </a>
+                                    </Link>
                                 )}
                             </div>
                         </div>
