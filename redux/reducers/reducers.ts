@@ -15,6 +15,9 @@ import {
     getStripeSetupPayoutsLinkReducer,
     checkStripeAccountFieldReducer,
 } from "./userReducers";
+import {
+    createStripePaymentIntentReducer,
+} from "./bookingReducers"
 
 /* Creating a new reducer that combines all of the individual reducers into one. */
 const reducer = combineReducers({
@@ -35,6 +38,9 @@ const reducer = combineReducers({
     resetPassword: resetPasswordReducer,
     stripeSetupPayoutsLink: getStripeSetupPayoutsLinkReducer,
     checkStripeAccountField: checkStripeAccountFieldReducer,
+
+    // Booking global state
+    createStripePaymentIntent: createStripePaymentIntentReducer,
 });
 
 export default reducer;

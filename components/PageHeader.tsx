@@ -8,7 +8,7 @@ interface PageHeaderInterface {
 
 const PageHeader = ({ pageName, heroPhrase, supportingText }: PageHeaderInterface) => {
     return (
-        <div className="text-center flex flex-col py-10 px-7 gap-5 bg-white rounded-3xl border-[1px] border-black/10">
+        <div className="text-center flex flex-col py-10 px-7 gap-5 bg-white rounded-3xl border-[1px] border-black/10 w-full">
             <p className="text-base font-semibold text-brand-primary-light tracking-wide uppercase">
                 {pageName}
             </p>
