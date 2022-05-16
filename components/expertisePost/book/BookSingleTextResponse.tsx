@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import Router, { useRouter } from "next/router";
@@ -6,7 +6,7 @@ import { PencilAltIcon } from "@heroicons/react/outline";
 import Link from "next/link";
 import PageHeader from "../../PageHeader";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
-import { createStripePaymentIntent } from "../../../redux/actions/bookingActions";
+import { cacheBookingData, createStripePaymentIntent } from "../../../redux/actions/bookingActions";
 import { toast } from "react-toastify";
 import Loader from "../../layout/Loader";
 import CheckoutForm from "./CheckoutForm";
@@ -24,15 +24,30 @@ const stripePromise = loadStripe(
 const BookSingleTextResponse = () => {
     const dispatch = useAppDispatch();
     const { query: queryParams } = useRouter();
+    // Holds text that user types in
+    const [textSubmission, setTextSubmission] = useState("");
+    // Holds the final submission once the user clicks continue to
+    // payment.
+    const [finalTextSubmission, setFinalTextSubmission] = useState("");
+    const [userClickedContinue, setUserClickedContinue] = useState(false);
     const { expertisePost, error } = useAppSelector(
         (state) => state.expertisePostDetails
     );
+    const { user, loading: authLoading } = useAppSelector((state) => {
+        return state.auth;
+    });
+
     const {
         clientSecret,
         loading: createStripePaymentIntentLoading,
         success: createStripePaymentIntentSuccess,
         error: createStripePaymentIntentError,
     } = useAppSelector((state) => state.createStripePaymentIntent);
+
+    const {
+        bookingData: cachedBookingData
+    } = useAppSelector((state) => state.cacheBookingData);
+
 
     // Calculate prices
     const pricePerSubmission: number = expertisePost?.pricePerSubmission;
@@ -42,13 +57,38 @@ const BookSingleTextResponse = () => {
     const serviceFee: number = parseFloat(serviceFeeString);
     const total: number = pricePerSubmission + serviceFee;
 
+    // First user step: user fills out a text submission
+    // and clicks continue.
+    const handleContinueClick = (e: any) => {
+        e.preventDefault();
+        setUserClickedContinue(true);
+        setFinalTextSubmission(textSubmission);
+    };
+
     useEffect(() => {
-        // Create PaymentIntent as soon as the page loads
-        const orderData = {
-            price: total,
-        };
-        dispatch(createStripePaymentIntent(orderData));
-    }, []);
+        if (userClickedContinue && user && expertisePost) {
+            // Create PaymentIntent as soon as the user clicks the
+            // continue button.
+
+            // This data will be passed into the global state
+            // as well as the Stripe Payment intent metadata
+            // for book keeping. Mainly though, we need it in the global 
+            // state because once the user is redirected to the 
+            // success page, we need to create a booking associated
+            // with this order data and the successful payment 
+            // intent.
+            const bookingData = {
+                price: total,
+                bookingType: "Single Text Response",
+                expertisePostId: expertisePost?._id,
+                customerId: user?._id,
+                status: "Pending Acceptance",
+                customerSubmission: finalTextSubmission,
+            };
+            dispatch(cacheBookingData(bookingData));
+            dispatch(createStripePaymentIntent(bookingData));
+        }
+    }, [userClickedContinue, user, expertisePost]);
 
     const appearance = {
         theme: "stripe",
@@ -56,6 +96,7 @@ const BookSingleTextResponse = () => {
     const options: any = {
         clientSecret,
         appearance,
+        loader: "always",
     };
 
     // Display errors if they appear during creation of
@@ -72,10 +113,6 @@ const BookSingleTextResponse = () => {
 
     // Check if user is logged in and is the owner of this post.
     // They shouldn't be able to Send a Submission if so, of course.
-    const { user, loading: authLoading } = useAppSelector((state) => {
-        return state.auth;
-    });
-
     if (user?._id === expertisePost?.user?._id) {
         Router.push("/");
     }
@@ -91,7 +128,12 @@ const BookSingleTextResponse = () => {
                 <Loader />
             ) : (
                 <>
-                    <div className="flex flex-col p-8 gap-6 bg-white w-full sm:w-[32rem] h-[32rem] border border-black rounded-xl">
+                    <div
+                        className={classNames(
+                            userClickedContinue ? "opacity-30" : "opacity-100",
+                            "flex flex-col p-8 gap-6 bg-white w-full sm:w-[32rem] h-[32rem] border border-black rounded-xl"
+                        )}
+                    >
                         {/* Header for Text Input */}
                         <div className="flex items-center gap-4">
                             <div className="flex items-center w-16 h-16 rounded-full bg-black/10">
@@ -117,82 +159,117 @@ const BookSingleTextResponse = () => {
                             // maxLength={maxDescriptionLength}
                             className="block px-3 py-2 h-full w-8/9 rounded-md placeholder-gray-400 resize-none focus:ring-0 border-transparent focus:border-transparent sm:text-md"
                             placeholder="Hi! I was wondering if you could give me advice about..."
-                            // value={description}
-                            // onChange={onChange}
+                            value={
+                                userClickedContinue
+                                    ? finalTextSubmission
+                                    : textSubmission
+                            }
+                            onChange={(e) => setTextSubmission(e.target.value)}
                         />
                         <Link href="#">
-                            <button className="rounded-xl bg-black text-white p-3 font-semibold text-md md:text-lg">
-                                Continue &darr;
+                            <button
+                                className={classNames(
+                                    textSubmission.length < 20
+                                        ? "opacity-40"
+                                        : "opacity-100",
+                                    `rounded-xl bg-black text-white p-3 font-semibold text-md md:text-lg`
+                                )}
+                                onClick={handleContinueClick}
+                                disabled={
+                                    textSubmission.length < 20 ? true : false
+                                }
+                            >
+                                {textSubmission.length < 20
+                                    ? "Type a question first!"
+                                    : "Continue to Payment"}
                             </button>
                         </Link>
                     </div>
-                    <div className="flex flex-col items-center p-8 mt-4 gap-6 bg-white w-full sm:w-[32rem] h-fit border border-black rounded-xl">
-                        <img
-                            className=" h-16 w-16 rounded-full"
-                            src={expertisePost.user.avatar.url}
-                            alt={`User Profile Pic for ${expertisePost.user.name}`}
-                        />
-                        <h1 className="text-2xl font-semibold w-fit text-center ">
-                            Personalized Expert Advice: Text Response
-                        </h1>
-                        <div className="w-full h-[1px] bg-black/10"></div>
+                    {userClickedContinue ? (
+                        <div className="transition-all">
+                            <div className="flex flex-col ">
+                                <p className="text-xs font-light">
+                                    {" "}
+                                    Want to edit your response? Simply copy it,
+                                    reload the page, and paste it back in.
+                                </p>
+                            </div>
 
-                        {/* Pricing Summary */}
-                        <div className="flex flex-col gap-3 w-full">
-                            <h1 className="text-xl font-semibold w-fit self-start">
-                                Summary
-                            </h1>
-                            <div className="flex justify-between w-full">
-                                <h1 className="text-lg font-semibold w-fit self-start opacity-40">
-                                    Text Response
+                            <div className="flex flex-col items-center p-8 mt-4 gap-6 bg-white w-full sm:w-[32rem] h-fit border border-black rounded-xl">
+                                <img
+                                    className=" h-16 w-16 rounded-full"
+                                    src={expertisePost.user.avatar.url}
+                                    alt={`User Profile Pic for ${expertisePost.user.name}`}
+                                />
+                                <h1 className="text-2xl font-semibold w-fit text-center ">
+                                    Personalized Expert Advice: Text Response
                                 </h1>
-                                <h1 className="text-lg font-semibold w-fit self-start opacity-40">
-                                    ${pricePerSubmission}
-                                </h1>
-                            </div>
-                            <div className="flex justify-between w-full">
-                                <h1 className="text-lg font-semibold w-fit self-start opacity-40">
-                                    Service Fee{" "}
-                                    <span className="text-base">
-                                        (2.9% + 0.3)
-                                    </span>
-                                </h1>
-                                <h1 className="text-lg font-semibold w-fit self-start opacity-40">
-                                    ${serviceFee}
-                                </h1>
-                            </div>
-                            <div className="flex justify-between w-full">
-                                <h1 className="text-xl font-semibold w-fit self-start">
-                                    Total Due
-                                </h1>
-                                <h1 className="text-xl font-semibold w-fit self-start">
-                                    ${total}
-                                </h1>
+                                <div className="w-full h-[1px] bg-black/10"></div>
+
+                                {/* Pricing Summary */}
+                                <div className="flex flex-col gap-3 w-full">
+                                    <h1 className="text-xl font-semibold w-fit self-start">
+                                        Summary
+                                    </h1>
+                                    <div className="flex justify-between w-full">
+                                        <h1 className="text-lg font-semibold w-fit self-start opacity-40">
+                                            Text Response
+                                        </h1>
+                                        <h1 className="text-lg font-semibold w-fit self-start opacity-40">
+                                            ${pricePerSubmission}
+                                        </h1>
+                                    </div>
+                                    <div className="flex justify-between w-full">
+                                        <h1 className="text-lg font-semibold w-fit self-start opacity-40">
+                                            Service Fee{" "}
+                                            <span className="text-base">
+                                                (2.9% + 0.3)
+                                            </span>
+                                        </h1>
+                                        <h1 className="text-lg font-semibold w-fit self-start opacity-40">
+                                            ${serviceFee}
+                                        </h1>
+                                    </div>
+                                    <div className="flex justify-between w-full">
+                                        <h1 className="text-xl font-semibold w-fit self-start">
+                                            Total Due
+                                        </h1>
+                                        <h1 className="text-xl font-semibold w-fit self-start">
+                                            ${total}
+                                        </h1>
+                                    </div>
+                                </div>
+                                <div className="w-full h-[1px] bg-black/10"></div>
+
+                                {/* Stripe Payment Element */}
+                                {createStripePaymentIntentLoading ? (
+                                    <Loader />
+                                ) : (
+                                    clientSecret && (
+                                        // REINSTANTIATE STRIPE ELEMENTS PROVIDER, as for payment intent, we require
+                                        // an options that contains the paymentIntentClientSecret for the current
+                                        // payment intent.
+                                        <Elements
+                                            options={options}
+                                            stripe={stripePromise}
+                                        >
+                                            <CheckoutForm />
+                                        </Elements>
+                                    )
+                                )}
                             </div>
                         </div>
-                        <div className="w-full h-[1px] bg-black/10"></div>
-
-                        {/* Stripe Payment Element */}
-                        {createStripePaymentIntentLoading ? (
-                            <Loader />
-                        ) : (
-                            clientSecret && (
-                                // REINSTANTIATE STRIPE ELEMENTS PROVIDER, as for payment intent, we require
-                                // an options that contains the paymentIntentClientSecret for the current
-                                // payment intent.
-                                <Elements
-                                    options={options}
-                                    stripe={stripePromise}
-                                >
-                                    <CheckoutForm />
-                                </Elements>
-                            )
-                        )}
-                    </div>
+                    ) : (
+                        ""
+                    )}
                 </>
             )}
         </div>
     );
 };
+
+function classNames(...classes: any[]) {
+    return classes.filter(Boolean).join(" ");
+}
 
 export default BookSingleTextResponse;

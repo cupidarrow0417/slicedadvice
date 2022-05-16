@@ -2,6 +2,8 @@ import { createStore, applyMiddleware } from 'redux'
 import { HYDRATE, createWrapper } from 'next-redux-wrapper'
 import thunkMiddleware from 'redux-thunk'
 import reducers from './reducers/reducers'
+import { persistStore, persistReducer } from 'redux-persist'
+import storage from '../utils/reduxPersistStorage'
 
 /**
  * If we're in development mode, we'll wrap our middleware with redux-devtools/extension's
@@ -28,7 +30,7 @@ const bindMiddleware = (middleware: any) => {
  * @param {any} action - The action object that was dispatched.
  * @returns The reducer function is being returned.
  */
-const reducer = (state: any, action: any) => {
+const rootReducer = (state: any, action: any) => {
     if (action.type === HYDRATE) {
         const nextState = {
             ...state,
@@ -40,17 +42,26 @@ const reducer = (state: any, action: any) => {
     }
 }
 
+// Redux persist config
+const persistConfig = {
+    key: 'root',
+    storage
+  }
+
+const persistedReducer = persistReducer(persistConfig, rootReducer)
+
 /**
  * It creates a store that uses the reducer and middleware we defined
  * @returns A store object.
  */
 const initStore = () => {
-    return createStore(reducer, bindMiddleware([thunkMiddleware]))
+    return createStore(persistedReducer, bindMiddleware([thunkMiddleware]))
 }
 
 //https://stackoverflow.com/a/67656911/16435056 to add Typescript functionality 
 //to Redux store
-const store = createStore(reducer, bindMiddleware([thunkMiddleware]))
+const store = createStore(persistedReducer, bindMiddleware([thunkMiddleware]))
+export const persistor = persistStore(store)
 export type RootState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch
 

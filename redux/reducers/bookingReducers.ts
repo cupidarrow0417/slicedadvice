@@ -2,7 +2,7 @@ import {
     CREATE_STRIPE_PAYMENT_INTENT_REQUEST,
     CREATE_STRIPE_PAYMENT_INTENT_SUCCESS,
     CREATE_STRIPE_PAYMENT_INTENT_FAIL,
-
+    CACHE_BOOKING_DATA,
     CLEAR_ERRORS,
 } from "../constants/bookingConstants";
 
@@ -46,6 +46,22 @@ import {
             return {
                 ...state,
                 error: null,
+            };
+        default:
+            return state;
+    }
+};
+
+
+export const cacheBookingDataReducer = (
+    state = { },
+    action: any
+) => {
+    switch (action.type) {
+        case CACHE_BOOKING_DATA:
+            return {
+                ...state,
+                bookingData: action.payload
             };
         default:
             return state;

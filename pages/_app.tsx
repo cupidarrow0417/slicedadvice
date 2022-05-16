@@ -1,6 +1,7 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
-import { wrapper } from "../redux/store";
+import { wrapper, persistor } from "../redux/store";
+import { PersistGate } from "redux-persist/integration/react";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 
@@ -13,9 +14,11 @@ const stripePromise = loadStripe(
 
 function MyApp({ Component, pageProps }: AppProps) {
     return (
-        <Elements stripe={stripePromise}>
-            <Component {...pageProps} />
-        </Elements>
+        <PersistGate loading={null} persistor={persistor}>
+            <Elements stripe={stripePromise}>
+                <Component {...pageProps} />
+            </Elements>
+        </PersistGate>
     );
 }
 

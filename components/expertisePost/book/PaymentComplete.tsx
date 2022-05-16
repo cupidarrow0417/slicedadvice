@@ -36,8 +36,8 @@ const PaymentComplete = () => {
 
     // DO SIG FIG STUFF LATER, FOR NOW JUST IGNORE THIS AS IT 
     // ISN'T ROUNDING PROPERLY
-    let serviceFeeCents = (totalCents - 30) * 0.029 + 30;
-    let subtotalCents = totalCents - serviceFeeCents;
+    // let serviceFeeCents = (totalCents - 30) * 0.029 + 30;
+    // let subtotalCents = totalCents - serviceFeeCents;
 
     return (
         <main className="relative lg:min-h-full">
@@ -59,7 +59,7 @@ const PaymentComplete = () => {
                             Thanks for booking!
                         </p>
                         <p className="mt-2 text-base text-gray-500">
-                            You haven't been charged yet, but hold has been put
+                            You haven't been charged yet, but a hold has been put
                             on your card. Your expert will be help you within 7
                             days, or you'll never be charged.
                         </p>

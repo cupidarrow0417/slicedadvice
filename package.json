@@ -32,6 +32,7 @@
     "react-redux": "^7.2.6",
     "react-toastify": "^8.2.0",
     "redux": "^4.1.2",
+    "redux-persist": "^6.0.0",
     "redux-thunk": "^2.4.1",
     "stripe": "^8.216.0",
     "validator": "^13.7.0"

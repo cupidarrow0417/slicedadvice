@@ -20,6 +20,10 @@ export default function CheckoutForm() {
         error: createStripePaymentIntentError,
     } = useAppSelector((state) => state.createStripePaymentIntent);
 
+    const {
+        bookingData
+    } = useAppSelector((state) => state.cacheBookingData);
+
     useEffect(() => {
         if (!stripe) {
             return;
@@ -28,7 +32,7 @@ export default function CheckoutForm() {
         if (!clientSecret) {
             return;
         }
-        
+
         stripe.retrievePaymentIntent(clientSecret).then(({ paymentIntent }) => {
             switch (paymentIntent?.status) {
                 // Inspect the PaymentIntent `status` to indicate the status of the payment
@@ -45,9 +49,9 @@ export default function CheckoutForm() {
                     toast.info("Your payment is processing.");
                     break;
                 case "requires_payment_method":
-                    // toast.error(
-                    //     "Please enter your payment method and information, and then try again."
-                    // );
+                    toast.error(
+                        "Please enter your payment method and information."
+                    );
                     break;
                 default:
                     toast.error("Something went wrong.");
@@ -66,14 +70,16 @@ export default function CheckoutForm() {
         }
 
         setIsLoading(true);
-        console.log("CLIENT SECRET", clientSecret);
+        
+
+        
         const { error } = await stripe.confirmPayment({
             elements,
             confirmParams: {
                 // Make sure to change this to your payment completion page
                 return_url: "http://localhost:3000/expertisePost/book/paymentComplete",
             },
-        });
+        })
 
         // This point will only be reached if there is an immediate error when
         // confirming the payment. Otherwise, your customer will be redirected to
@@ -91,7 +97,7 @@ export default function CheckoutForm() {
 
     return (
         <form id="payment-form" onSubmit={handleSubmit}>
-            <PaymentElement id="payment-element" />
+            <PaymentElement id="payment-element"/>
             <button
                 disabled={isLoading || !stripe || !elements}
                 className="rounded-xl bg-brand-primary-light mt-4  w-full text-white p-3 font-semibold text-md md:text-lg"
