@@ -13,7 +13,7 @@ const PaymentComplete = () => {
     const paymentIntentId = queryParams.payment_intent;
     const paymentIntentClientSecret =
         queryParams.payment_intent_client_secret!.toString();
-
+    const { bookingData } = useAppSelector((state) => state.cacheBookingData);
     useEffect(() => {
         if (!stripe) {
             return;
@@ -50,10 +50,12 @@ const PaymentComplete = () => {
             </div>
 
             <div>
+                
                 <div className="max-w-2xl mx-auto py-8 px-4 sm:px-6 lg:max-w-7xl lg:px-8 lg:py-32 lg:grid lg:grid-cols-2 lg:gap-x-8 xl:gap-x-24">
                     <div className="lg:col-start-2 flex flex-col gap-2">
                         <h1 className="text-sm font-medium text-brand-primary-light">
                             Payment intent successful
+                            {bookingData?.customerSubmission}
                         </h1>
                         <p className="mt-2 text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl">
                             Thanks for booking!
