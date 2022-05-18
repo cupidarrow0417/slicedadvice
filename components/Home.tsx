@@ -15,7 +15,6 @@ const Home = () => {
     const { allExpertisePosts, error } = useAppSelector(
         (state) => state.allExpertisePosts
     );
-
     useEffect(() => {
         if (error) {
             toast.error(error);
