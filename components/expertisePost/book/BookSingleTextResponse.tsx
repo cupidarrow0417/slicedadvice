@@ -79,6 +79,8 @@ const BookSingleTextResponse = () => {
             // intent.
             const bookingData = {
                 price: total,
+                pricePerSubmission: pricePerSubmission,
+                serviceFee: serviceFee,
                 bookingType: "Single Text Response",
                 expertisePostId: expertisePost?._id,
                 customerId: user?._id,

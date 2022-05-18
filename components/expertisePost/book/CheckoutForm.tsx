@@ -20,10 +20,7 @@ export default function CheckoutForm() {
         error: createStripePaymentIntentError,
     } = useAppSelector((state) => state.createStripePaymentIntent);
 
-    const {
-        bookingData
-    } = useAppSelector((state) => state.cacheBookingData);
-
+    
     useEffect(() => {
         if (!stripe) {
             return;
@@ -49,9 +46,9 @@ export default function CheckoutForm() {
                     toast.info("Your payment is processing.");
                     break;
                 case "requires_payment_method":
-                    toast.error(
-                        "Please enter your payment method and information."
-                    );
+                    // toast.error(
+                    //     "Please enter your payment method and information."
+                    // );
                     break;
                 default:
                     toast.error("Something went wrong.");
@@ -102,7 +99,7 @@ export default function CheckoutForm() {
                 disabled={isLoading || !stripe || !elements}
                 className="rounded-xl bg-brand-primary-light mt-4  w-full text-white p-3 font-semibold text-md md:text-lg"
             >
-                <span id="button-text">
+                <span id="button-text" className="flex justify-center">
                     {isLoading ? <ButtonLoader /> : "Pay now"}
                 </span>
             </button>

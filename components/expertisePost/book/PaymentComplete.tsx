@@ -34,7 +34,7 @@ const PaymentComplete = () => {
             });
     }, [stripe, paymentIntentClientSecret]);
 
-    // DO SIG FIG STUFF LATER, FOR NOW JUST IGNORE THIS AS IT 
+    // DO SIG FIG STUFF LATER, FOR NOW JUST IGNORE THIS AS IT
     // ISN'T ROUNDING PROPERLY
     // let serviceFeeCents = (totalCents - 30) * 0.029 + 30;
     // let subtotalCents = totalCents - serviceFeeCents;
@@ -50,20 +50,22 @@ const PaymentComplete = () => {
             </div>
 
             <div>
-                
                 <div className="max-w-2xl mx-auto py-8 px-4 sm:px-6 lg:max-w-7xl lg:px-8 lg:py-32 lg:grid lg:grid-cols-2 lg:gap-x-8 xl:gap-x-24">
                     <div className="lg:col-start-2 flex flex-col gap-2">
                         <h1 className="text-sm font-medium text-brand-primary-light">
                             Payment intent successful
-                            {bookingData?.customerSubmission}
                         </h1>
                         <p className="mt-2 text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl">
                             Thanks for booking!
                         </p>
                         <p className="mt-2 text-base text-gray-500">
-                            You haven't been charged yet, but a hold has been put
-                            on your card. Your expert will be help you within 7
-                            days, or you'll never be charged.
+                            You haven't been charged yet, but a hold has been
+                            put on your card. Your expert will be help you
+                            within 7 days, or you'll never be charged. To manage
+                            bookings, view responses, and more, check the{" "}
+                            <Link href="/dashboard/adviceSeekers/home">
+                                <a className="text-brand-primary-light">dashboard for advice seekers.</a>
+                            </Link>
                         </p>
                         {/* <dl className="mt-16 text-sm font-medium">
                             <dt className="text-gray-900">Tracking number</dt>
@@ -77,19 +79,19 @@ const PaymentComplete = () => {
                             </dl>
                         ) : (
                             <dl className="text-sm font-medium text-gray-500 space-y-6 border-gray-200 pt-6 mt-4">
-                                {/* <div className="flex justify-between">
+                                <div className="flex justify-between">
                                     <dt>Subtotal</dt>
                                     <dd className="text-gray-900">
-                                        ${(subtotalCents / 100)}
+                                        ${bookingData.pricePerSubmission}
                                     </dd>
                                 </div>
 
                                 <div className="flex justify-between">
                                     <dt>Service fee (0.29% + 0.3)</dt>
                                     <dd className="text-gray-900">
-                                        ${(serviceFeeCents / 100).toFixed(2)}
+                                        ${bookingData.serviceFee}
                                     </dd>
-                                </div> */}
+                                </div>
 
                                 {/* <div className="flex justify-between">
                                 <dt>Taxes</dt>
