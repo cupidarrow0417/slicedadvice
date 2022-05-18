@@ -19,7 +19,8 @@ const stripePromise = loadStripe(
 
 function MyApp({ Component, pageProps }: AppProps) {
     const store: any = useStore();
-    return process.browser ? (
+    const isBrowser = typeof window !== 'undefined';
+    return isBrowser ? (
         <PersistGate loading={null} persistor={store.__persistor}>
             <Elements stripe={stripePromise}>
                 <Component {...pageProps} />

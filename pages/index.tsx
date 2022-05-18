@@ -17,7 +17,7 @@ export default function Index() {
 export const getServerSideProps: GetServerSideProps =
     wrapper.getServerSideProps((store) => async ({ req }) => {
         try {
-            store.dispatch(getExpertisePosts(req));
+            await store.dispatch(getExpertisePosts(req));
             return { props: {} };
         } catch (e) {
             return { props: {} };

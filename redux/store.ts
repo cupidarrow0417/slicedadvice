@@ -5,14 +5,24 @@ import reducers from "./reducers/reducers";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "../utils/reduxPersistStorage";
 
-// BINDING MIDDLEWARE
-const bindMiddleware = (middleware: any) => {
-    if (process.env.NODE_ENV !== "production") {
-        const { composeWithDevTools } = require("@redux-devtools/extension");
-        return composeWithDevTools(applyMiddleware(...middleware));
+/**
+ * If we're in development mode, we'll wrap our middleware with redux-devtools/extension's
+ * composeWithDevTools. Otherwise, we'll just use applyMiddleware
+ * @param {any} middleware - An array of middleware functions.
+ * @returns A function that takes a reducer and returns a store.
+ */
+ const bindMiddleware = (middleware: any) => {
+
+    //if in dev mode, wrap with redux-devtools/extension
+    if (process.env.NODE_ENV !== 'production') {
+        const { composeWithDevTools } = require('@redux-devtools/extension')
+        return composeWithDevTools(applyMiddleware(...middleware))
     }
-    return applyMiddleware(...middleware);
-};
+
+    //else, in production.
+    return applyMiddleware(...middleware)
+}
+
 
 /**
  * If the action type is HYDRATE, it will merge the state with the payload. Otherwise, it will run the
@@ -27,6 +37,8 @@ const rootReducer = (state: any, action: any) => {
             ...state,
             ...action.payload,
         };
+        // IMPORTANT: on client side page navigation, persist 
+        // the global state we wish to not get deleted on hydration.
         if (state.cacheBookingData) {
             nextState.cacheBookingData = state.cacheBookingData;
         }
@@ -36,12 +48,22 @@ const rootReducer = (state: any, action: any) => {
     }
 };
 
+// Used to create persistedReducer
 const persistConfig = {
     key: "nextjs",
     whitelist: ["cacheBookingData"], // only counter will be persisted, add other reducers if needed
     storage, // if needed, use a safer storage
 };
+
 const persistedReducer = persistReducer(persistConfig, rootReducer); // Create a new reducer with our existing reducer
+
+
+/**
+ * If it's on server side, create a store. If it's on client side, create a store which will persist
+ * @param {any}  - isServer - This is a boolean value which is true if the store is being created on
+ * the server side.
+ * @returns A function which takes an object as an argument and returns a store.
+ */
 const makeStore = ({ isServer }: any) => {
     if (isServer) {
         //If it's on server side, create a store
