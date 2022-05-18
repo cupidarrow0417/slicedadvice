@@ -27,6 +27,9 @@ const rootReducer = (state: any, action: any) => {
             ...state,
             ...action.payload,
         };
+        if (state.cacheBookingData) {
+            nextState.cacheBookingData = state.cacheBookingData;
+        }
         return nextState;
     } else {
         return reducers(state, action);
