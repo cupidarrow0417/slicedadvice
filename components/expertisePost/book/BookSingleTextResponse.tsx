@@ -76,7 +76,7 @@ const BookSingleTextResponse = () => {
             // state because once the user is redirected to the 
             // success page, we need to create a booking associated
             // with this order data and the successful payment 
-            // intent.
+            // intent (only if the bookingCreated boolean is false)
             const bookingData = {
                 price: total,
                 pricePerSubmission: pricePerSubmission,
@@ -86,6 +86,7 @@ const BookSingleTextResponse = () => {
                 customerId: user?._id,
                 status: "Pending Acceptance",
                 customerSubmission: finalTextSubmission,
+                bookingCreated: false
             };
             dispatch(cacheBookingData(bookingData));
             dispatch(createStripePaymentIntent(bookingData));

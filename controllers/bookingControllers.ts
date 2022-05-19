@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse, NextApiHandler } from "next";
 import ErrorHandler from "../utils/errorhandler";
 import catchAsyncErrors from "../middlewares/catchAsyncErrors";
+import Booking from "../models/booking";
 
 // interface OrderDataInterface {
 //     price: number;
@@ -13,22 +14,19 @@ import catchAsyncErrors from "../middlewares/catchAsyncErrors";
 
 //Create new Stripe Payment Intent => POST /api/stripe/paymentIntent
 const createStripePaymentIntent = catchAsyncErrors(
-    async (req: NextApiRequest, res: NextApiResponse) => {
+    async (
+        req: NextApiRequest,
+        res: NextApiResponse,
+        next: (arg0: ErrorHandler) => any
+    ) => {
         // Most of these will be placed into the metadata
-        const {
-            price,
-            bookingType,
-            expertisePostId,
-            customerId,
-            status,
-            customerSubmission,
-        } = req.body;
+        const { price, bookingType, expertisePostId, customerId, status } =
+            req.body;
 
         // Set your secret key. Remember to switch to your live secret key in production.
         // See your keys here: https://dashboard.stripe.com/apikeys
         const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
-        console.log("REQ.BODY", customerSubmission);
         // Create a PaymentIntent with the order amount and currency
         // NOTE: "amount" is in CENTS, NOT dollars.
         const paymentIntent = await stripe.paymentIntents.create({
@@ -39,14 +37,20 @@ const createStripePaymentIntent = catchAsyncErrors(
             },
             capture_method: "manual",
             metadata: {
-                'bookingType': bookingType,
-                'expertisePostId': expertisePostId,
-                'customerId': customerId,
-                'status': status,
+                bookingType: bookingType,
+                expertisePostId: expertisePostId,
+                customerId: customerId,
+                status: status,
                 // 'customerSubmission': customerSubmission,
             },
-            description: `Booking from customer with id ${customerId} of type ${bookingType} for ${price} dollars.`
+            description: `Booking from customer with id ${customerId} of type ${bookingType} for ${price} dollars.`,
         });
+
+        if (!paymentIntent) {
+            return next(
+                new ErrorHandler("Payment Intent not created successfully", 400)
+            );
+        }
 
         res.status(200).json({
             success: true,
@@ -55,4 +59,56 @@ const createStripePaymentIntent = catchAsyncErrors(
     }
 );
 
-export { createStripePaymentIntent };
+// Booking Model Full Interface for reference
+// interface BookingInterface {
+//     expertisePost: mongoose.Schema.Types.ObjectId;
+//     bookingType: String;
+//     customer: mongoose.Schema.Types.ObjectId;
+//     status: String;
+//     createdAt: Date;
+//     stripePaymentIntentId: String;
+//     singleTextResponse: {
+//         customerSubmission: String;
+//         expertResponse: String;
+//     };
+// }
+
+//Create new Booking  => POST /api/bookings
+const createBooking = catchAsyncErrors(
+    async (
+        req: NextApiRequest,
+        res: NextApiResponse,
+        next: (arg0: ErrorHandler) => any
+    ) => {
+        const {
+            bookingType,
+            expertisePostId,
+            customerId,
+            status,
+            customerSubmission,
+            stripePaymentIntentId,
+        } = req.body;
+
+        const booking = await Booking.create({
+            bookingType,
+            customer: customerId,
+            expertisePost: expertisePostId,
+            status,
+            singleTextResponse: {
+                customerSubmission: customerSubmission,
+            },
+            stripePaymentIntentId: stripePaymentIntentId,
+        });
+
+        if (!booking) {
+            return next(new ErrorHandler("Booking could not be created", 400));
+        }
+
+        res.status(200).json({
+            success: true,
+            bookingId: booking._id,
+        });
+    }
+);
+
+export { createStripePaymentIntent, createBooking };

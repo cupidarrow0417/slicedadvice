@@ -8,7 +8,7 @@ import PaymentComplete from '../../../components/expertisePost/book/PaymentCompl
 
 export default function PaymentCompletePage() {
   return (
-    <Layout title="Create Expertise Post | SlicedAdvice">
+    <Layout title="Payment Complete | SlicedAdvice">
         <PaymentComplete />
     </Layout>
   )

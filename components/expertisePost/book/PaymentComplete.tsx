@@ -2,18 +2,28 @@ import { useStripe } from "@stripe/react-stripe-js";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import { useAppSelector } from "../../../redux/hooks";
+import { toast } from "react-toastify";
+import { cacheBookingData, clearErrors, createBooking } from "../../../redux/actions/bookingActions";
+import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import Loader from "../../layout/Loader";
 
 const PaymentComplete = () => {
+    const dispatch = useAppDispatch();
     const stripe = useStripe();
     const { query: queryParams } = useRouter();
+    const [paymentIntentId, setPaymentIntentId] = useState("");
+    const urlPaymentIntentId = queryParams.payment_intent;
     const [totalCents, setTotalCents] = useState(0);
     const [loading, setLoading] = useState(true);
-    const paymentIntentId = queryParams.payment_intent;
     const paymentIntentClientSecret =
         queryParams.payment_intent_client_secret!.toString();
     const { bookingData } = useAppSelector((state) => state.cacheBookingData);
+    const {
+        bookingId,
+        success: createBookingSuccess,
+        error: createBookingError,
+    } = useAppSelector((state) => state.createBooking);
+
     useEffect(() => {
         if (!stripe) {
             return;
@@ -27,18 +37,62 @@ const PaymentComplete = () => {
             .retrievePaymentIntent(paymentIntentClientSecret)
             .then(({ paymentIntent }) => {
                 // Set info about the payment that just occurred successfully, to display
-                // a summary to the customer.
+                // a summary to the customer. Also just an extra way for a developer to know
+                // that the cached booking data matches the actual payment intent. Technically
+                // not neccessary.
                 console.log("PAYMENT INTENT", paymentIntent);
                 setTotalCents(paymentIntent?.amount!);
+                setPaymentIntentId(paymentIntent?.id || "");
                 setLoading(false);
             });
     }, [stripe, paymentIntentClientSecret]);
 
-    // DO SIG FIG STUFF LATER, FOR NOW JUST IGNORE THIS AS IT
-    // ISN'T ROUNDING PROPERLY
-    // let serviceFeeCents = (totalCents - 30) * 0.029 + 30;
-    // let subtotalCents = totalCents - serviceFeeCents;
+    // Retrieve the cached booking data (if it exists) and create a booking model
+    // only if the boolean bookingCreated is false.
+    useEffect(() => {
+        if (bookingData && bookingData.bookingCreated === false && paymentIntentId !== "") {
+            // Set once and for all, bookingCreated to be true.
+            // This means that a booking will be created only once
+            // from this cacheBookingData.
+            const updatedBookingData = {
+                price: bookingData.price,
+                pricePerSubmission: bookingData.pricePerSubmission,
+                serviceFee: bookingData.serviceFee,
+                bookingType: bookingData.bookingType,
+                expertisePostId: bookingData.expertisePostId,
+                customerId: bookingData.customerId,
+                status: bookingData.status,
+                customerSubmission: bookingData.customerSubmission,
+                bookingCreated: true,
+            }
+            dispatch(cacheBookingData(updatedBookingData))
 
+            // dispatch the creation of a new booking model.
+            const finalBookingData = {
+                bookingType: bookingData.bookingType,
+                expertisePostId: bookingData.expertisePostId,
+                customerId: bookingData.customerId,
+                status: bookingData.status,
+                customerSubmission: bookingData.customerSubmission,
+                stripePaymentIntentId: paymentIntentId,
+            };
+            dispatch(createBooking(finalBookingData));
+        }
+    }, [bookingData, paymentIntentId]);
+
+    // Developer tool: To listen to createBooking process
+    // Also reiterates to the user that a booking model was 
+    // created.
+    useEffect(() => {
+        if (createBookingError) {
+            toast.error(createBookingError)
+            dispatch(clearErrors);
+        } 
+        if (createBookingSuccess && bookingId) {
+            // toast.success(`Successfully created a booking! The ID is ${bookingId}`)
+            toast.success("Successfully created a booking for advice!")
+        }
+    }, [bookingId, createBookingSuccess, createBookingError]);
     return (
         <main className="relative lg:min-h-full">
             <div className="h-80 overflow-hidden lg:absolute lg:w-1/2 lg:h-full lg:pr-4 xl:pr-12">
@@ -64,7 +118,9 @@ const PaymentComplete = () => {
                             within 7 days, or you'll never be charged. To manage
                             bookings, view responses, and more, check the{" "}
                             <Link href="/dashboard/adviceSeekers/home">
-                                <a className="text-brand-primary-light">dashboard for advice seekers.</a>
+                                <a className="text-brand-primary-light">
+                                    dashboard for advice seekers.
+                                </a>
                             </Link>
                         </p>
                         {/* <dl className="mt-16 text-sm font-medium">

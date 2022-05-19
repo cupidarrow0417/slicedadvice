@@ -54,7 +54,11 @@ const getSingleExpertisePost = catchAsyncErrors(
 
 //Create new expertisePost => POST /api/expertisePosts
 const createExpertisePost = catchAsyncErrors(
-    async (req: NextApiRequest, res: NextApiResponse) => {
+    async (
+        req: NextApiRequest,
+        res: NextApiResponse,
+        next: (arg0: ErrorHandler) => any
+    ) => {
         const {
             user,
             stripeId,
@@ -71,7 +75,6 @@ const createExpertisePost = catchAsyncErrors(
             crop: "scale",
         });
 
-
         const expertisePost = await ExpertisePost.create({
             user,
             stripeId,
@@ -85,8 +88,12 @@ const createExpertisePost = catchAsyncErrors(
             ],
             submissionTypes,
             pricePerSubmission,
-            category
+            category,
         });
+
+        if (!expertisePost) {
+            return next(new ErrorHandler("Expertise post not created successfully", 400));
+        }
 
         res.status(200).json({
             success: true,

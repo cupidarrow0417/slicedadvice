@@ -18,6 +18,7 @@ import {
 import {
     createStripePaymentIntentReducer,
     cacheBookingDataReducer,
+    createBookingReducer,
 } from "./bookingReducers"
 
 /* Creating a new reducer that combines all of the individual reducers into one. */
@@ -43,6 +44,7 @@ const reducer = combineReducers({
     // Booking global state
     createStripePaymentIntent: createStripePaymentIntentReducer,
     cacheBookingData: cacheBookingDataReducer,
+    createBooking: createBookingReducer,
 });
 
 export default reducer;
