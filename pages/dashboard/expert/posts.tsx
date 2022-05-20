@@ -3,14 +3,13 @@ import { getSession } from "next-auth/react";
 import ExpertDashboard from "../../../components/dashboard/experts/ExpertDashboard";
 import Layout from "../../../components/layout/Layout";
 import { wrapper } from "../../../redux/store";
-const ExpertDashboardSubmissionsPage = () => {
+const ExpertDashboardPostsPage = () => {
     return (
-        <Layout title="Submissions | Expert Dashboard | SlicedAdvice">
-            <ExpertDashboard currentPage="Submissions" />
+        <Layout title="Posts | Expert Dashboard | SlicedAdvice">
+            <ExpertDashboard currentPage="Posts" />
         </Layout>
     );
 };
-
 
 export const getServerSideProps: GetServerSideProps =
     wrapper.getServerSideProps((store) => async ({ req }) => {
@@ -19,7 +18,7 @@ export const getServerSideProps: GetServerSideProps =
         if (!session) {
             return {
                 redirect: {
-                    destination: `/login?returnUrl=/dashboard/expert/submissions&returnContext=expert%20dashboard%20submissions%20page`,
+                    destination: `/login?returnUrl=/dashboard/expert/posts&returnContext=expert%20dashboard%20posts%20page`,
                     permanent: false,
                 },
             };
@@ -32,4 +31,4 @@ export const getServerSideProps: GetServerSideProps =
         }
     });
 
-export default ExpertDashboardSubmissionsPage;
+export default ExpertDashboardPostsPage;
