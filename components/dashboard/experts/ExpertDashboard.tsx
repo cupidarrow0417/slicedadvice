@@ -20,10 +20,11 @@ import SubmissionsExpertDashboard from "./SubmissionsExpertDashboard";
 import PaymentsExpertDashboard from "./PaymentsExpertDashboard";
 import { useAppDispatch } from "../../../redux/hooks";
 import { loadUser } from "../../../redux/actions/userActions";
+import YourPostsExpertDashboard from "./PostsExpertDashboard";
 
 const navigation = [
     { name: "Home", href: "/dashboard/expert/home", icon: HomeIcon, current: false },
-    { name: "Your Posts", href: "/dashboard/expert/posts", icon: ViewListIcon, current: false},
+    { name: "Posts", href: "/dashboard/expert/posts", icon: ViewListIcon, current: false},
     { name: "Submissions", href: "/dashboard/expert/submissions", icon: InboxInIcon, current: false },
     { name: "Payments", href: "/dashboard/expert/payments", icon: CashIcon, current: false },
 ];
@@ -53,9 +54,9 @@ export default function ExpertDashboard({
                 <div className="flex flex-col w-full">
                     <main className="flex-1 border-[1px] rounded-xl lg:rounded-r-xl lg:rounded-l-none">
                         {currentPage === "Home" && <HomeExpertDashboard />}
+                        {currentPage === "Posts" && <YourPostsExpertDashboard />}
                         {currentPage === "Submissions" && <SubmissionsExpertDashboard />}
                         {currentPage === "Payments" && <PaymentsExpertDashboard />}
-
                     </main>
                 </div>
             </div>

@@ -6,6 +6,7 @@ import ButtonLoader from "../../layout/ButtonLoader";
 import SetupPayoutsAlert from "./SetupPayoutsAlert";
 import Loader from "../../layout/Loader";
 import { useRouter } from "next/router";
+import DashboardHeader from "../DashboardHeader";
 
 const HomeExpertDashboard = () => {
     const router = useRouter();
@@ -29,18 +30,7 @@ const HomeExpertDashboard = () => {
         <div className="flex flex-col">
             {/* Page title & actions */}
             <div className="bg-white px-4 py-4 flex items-center justify-between sm:px-6 rounded-t-xl lg:rounded-tl-none lg:px-8 border-b-[1px] border-black/10">
-                <div className="flex items-center min-w-0">
-                    <h1 className="text-2xl sm:text-3xl font-semibold leading-6 text-gray-900">
-                        <span className="text-brand-primary font-bold">
-                            Expert
-                        </span>
-                        {" " + "Home"}
-                    </h1>
-                    <ChevronDownIcon
-                        className="ml-1 mt-1 h-5 w-5 group-hover:text-white"
-                        aria-hidden="true"
-                    />
-                </div>
+                <DashboardHeader dashboardType="Expert" dashboardPage="Home" />
                 <div className="">
                     {/* <button
             type="button"

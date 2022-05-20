@@ -21,10 +21,9 @@ interface FlyoutInterface {
     headerText: string | null | undefined;
 }
 
-// A Flyout is a resuable component that represents a button that can either
-// be clicked to navigate directly to the page or hovered over to peek into
-// the contents of the page. It is first used on the top nav bar on desktop +
-// tablets, for the Categories button.
+// A Flyout is a resuable component that represents a button that can be clicked 
+// to opens a popup that contains subsection links. Useful for navigating.
+// It is first used on the top nav bar on desktop + tablets, for the Categories button.
 export default function Flyout({
     name,
     href,
