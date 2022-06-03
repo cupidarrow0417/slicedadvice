@@ -44,13 +44,13 @@ const navigation = [
             name: "For Experts",
             href: "/dashboard/expert/home",
             description:
-                "Answer submissions, setup payments, and manage the monetization of your expertise.",
+                "Complete bookings, setup payments, and manage the monetization of your expertise.",
         },
         {
             name: "For Advice Seekers",
             href: "#",
             description:
-                "Review and manage the submissions you've sent.",
+                "Review and manage your bookings for expertise.",
         },
     ],
 },

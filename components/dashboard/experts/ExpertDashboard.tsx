@@ -16,7 +16,7 @@ import {
 } from "@heroicons/react/solid";
 import DashboardSidebar from "../DashboardSidebar";
 import HomeExpertDashboard from "./HomeExpertDashboard";
-import SubmissionsExpertDashboard from "./SubmissionsExpertDashboard";
+import BookingsExpertDashboard from "./BookingsExpertDashboard";
 import PaymentsExpertDashboard from "./PaymentsExpertDashboard";
 import { useAppDispatch } from "../../../redux/hooks";
 import { loadUser } from "../../../redux/actions/userActions";
@@ -25,7 +25,7 @@ import YourPostsExpertDashboard from "./PostsExpertDashboard";
 const navigation = [
     { name: "Home", href: "/dashboard/expert/home", icon: HomeIcon, current: false },
     { name: "Posts", href: "/dashboard/expert/posts", icon: ViewListIcon, current: false},
-    { name: "Submissions", href: "/dashboard/expert/submissions", icon: InboxInIcon, current: false },
+    { name: "Bookings", href: "/dashboard/expert/bookings", icon: InboxInIcon, current: false },
     { name: "Payments", href: "/dashboard/expert/payments", icon: CashIcon, current: false },
 ];
 
@@ -55,7 +55,7 @@ export default function ExpertDashboard({
                     <main className="flex-1 border-[1px] rounded-xl lg:rounded-r-xl lg:rounded-l-none">
                         {currentPage === "Home" && <HomeExpertDashboard />}
                         {currentPage === "Posts" && <YourPostsExpertDashboard />}
-                        {currentPage === "Submissions" && <SubmissionsExpertDashboard />}
+                        {currentPage === "Bookings" && <BookingsExpertDashboard />}
                         {currentPage === "Payments" && <PaymentsExpertDashboard />}
                     </main>
                 </div>

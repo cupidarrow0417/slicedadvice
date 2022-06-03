@@ -59,20 +59,6 @@ const createStripePaymentIntent = catchAsyncErrors(
     }
 );
 
-// Booking Model Full Interface for reference
-// interface BookingInterface {
-//     expertisePost: mongoose.Schema.Types.ObjectId;
-//     bookingType: String;
-//     customer: mongoose.Schema.Types.ObjectId;
-//     status: String;
-//     createdAt: Date;
-//     stripePaymentIntentId: String;
-//     singleTextResponse: {
-//         customerSubmission: String;
-//         expertResponse: String;
-//     };
-// }
-
 //Create new Booking  => POST /api/bookings
 const createBooking = catchAsyncErrors(
     async (

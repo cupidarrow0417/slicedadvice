@@ -17,8 +17,8 @@ const navigationDropdownContents = [
         href: "/dashboard/expert/posts",
     },
     {
-        title: "Submissions",
-        href: "/dashboard/expert/submissions",
+        title: "Bookings",
+        href: "/dashboard/expert/bookings",
     },
     {
         title: "Payments",
