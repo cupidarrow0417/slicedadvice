@@ -52,7 +52,7 @@ export default NextAuth({
                 }
 
                 //Checks passed, return
-                return Promise.resolve(user);
+                return user
             },
         }),
     ],
