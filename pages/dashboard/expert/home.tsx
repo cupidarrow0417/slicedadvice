@@ -2,6 +2,7 @@ import { GetServerSideProps } from "next";
 import { getSession } from "next-auth/react";
 import ExpertDashboard from "../../../components/dashboard/experts/ExpertDashboard";
 import Layout from "../../../components/layout/Layout";
+import { getBookings } from "../../../redux/actions/bookingActions";
 import { wrapper } from "../../../redux/store";
 const ExpertDashboardHomePage = () => {
     return (
@@ -42,7 +43,7 @@ export const getServerSideProps: GetServerSideProps =
             };
         }
         try {
-            // await store.dispatch(getExpertisePosts(req));
+            // await store.dispatch(getBookings(req));
             return { props: { session } };
         } catch (e) {
             return { props: { session } };

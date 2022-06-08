@@ -38,10 +38,6 @@ export default function ExpertDashboard({
 }: ExpertDashboardInterface) {
     const dispatch = useAppDispatch();
 
-    useEffect(() => {
-        dispatch(loadUser());
-    }, [dispatch]);
-
     return (
         <>
             <div className="h-screen flex rounded-xl shadow-md">

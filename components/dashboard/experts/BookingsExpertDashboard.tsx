@@ -1,8 +1,33 @@
 import { ChevronDownIcon } from "@heroicons/react/solid";
-import React from "react";
+import React, { useEffect } from "react";
+import { toast } from "react-toastify";
+import { getBookings } from "../../../redux/actions/bookingActions";
+import { loadUser } from "../../../redux/actions/userActions";
+import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import DashboardHeader from "../DashboardHeader";
 
 const BookingsExpertDashboard = () => {
+    const dispatch = useAppDispatch();
+
+    const {
+        allBookingsCount,
+        filteredAllBookingsCount,
+        allBookings,
+        error: allBookingsError,
+    } = useAppSelector((state) => state.allBookings);
+
+    useEffect(() => {
+        if (allBookingsError) {
+            toast.error(allBookingsError);
+        }
+
+        if (allBookings) {
+            console.log(
+                `Successfully retrieved ${allBookingsCount} total bookings, ${filteredAllBookingsCount} after filtered. Bookings:`,
+                allBookings
+            );
+        }
+    }, [allBookingsError, allBookings]);
     return (
         <>
             {/* Page title & actions */}
@@ -18,6 +43,9 @@ const BookingsExpertDashboard = () => {
                 >
                     New Post
                 </button>
+            </div>
+            <div>
+                {/* <p>{allBookings}</p> */}
             </div>
         </>
     );

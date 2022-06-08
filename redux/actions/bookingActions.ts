@@ -9,6 +9,8 @@ import {
     CREATE_BOOKING_REQUEST,
     CREATE_BOOKING_SUCCESS,
     CREATE_BOOKING_FAIL,
+    ALL_BOOKINGS_SUCCESS,
+    ALL_BOOKINGS_FAIL,
 } from "../constants/bookingConstants";
 
 interface CacheBookingDataInterface {
@@ -109,6 +111,39 @@ export const createBooking =
         } catch (error: any) {
             dispatch({
                 type: CREATE_BOOKING_FAIL,
+                payload: error.response.data.message,
+            });
+        }
+    };
+
+/**
+ * It's a function that takes in a request object and a current page number, and returns a function
+ * that takes in a dispatch function, and dispatches an action to the reducer
+ * @param {any} [req=null] - any = null, currentPage: Number = 1
+ * @param {Number} [currentPage=1] - Number = 1
+ */
+export const getBookings =
+    (req: any = null, currentPage: Number = 1) =>
+    async (dispatch: any) => {
+        try {
+            // console.log("req in getBookings", req)
+            const { origin } = absoluteUrl(req);
+            // console.log("origin", origin);
+            let link = `${origin}/api/bookings?page=${currentPage}`;
+            // if (category) link = link.concat(`&category=${category}`);
+
+            const { data } = await axios.get(link);
+
+            console.log("data", data)
+            // Basic general query of bookings
+            dispatch({
+                type: ALL_BOOKINGS_SUCCESS,
+                payload: data,
+            });
+        } catch (error: any) {
+            // Basic general query of expertise posts.
+            dispatch({
+                type: ALL_BOOKINGS_FAIL,
                 payload: error.response.data.message,
             });
         }

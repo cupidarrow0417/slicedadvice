@@ -137,8 +137,8 @@ const CreateExpertisePost = () => {
         }
 
         const postData: postDataInterface = {
-            user: authUser._id,
-            stripeId: authUser.stripeId,
+            user: authUser?._id,
+            stripeId: authUser?.stripeId,
             title: title,
             description: description,
             submissionTypes: submissionTypes,

@@ -47,6 +47,7 @@ const registerUser = catchAsyncErrors(
 const currentUserProfile = catchAsyncErrors(
     async (req: any, res: NextApiResponse) => {
         const user = await User.findById(req.user._id);
+        console.log("Found user!")
         res.status(200).json({
             success: true,
             user,

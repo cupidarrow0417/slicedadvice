@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse, NextApiHandler } from "next";
 import ErrorHandler from "../utils/errorhandler";
 import catchAsyncErrors from "../middlewares/catchAsyncErrors";
 import Booking from "../models/booking";
+import APIFeatures from "../utils/apiFeatures";
 
 // interface OrderDataInterface {
 //     price: number;
@@ -97,4 +98,30 @@ const createBooking = catchAsyncErrors(
     }
 );
 
-export { createStripePaymentIntent, createBooking };
+//Get all bookings => GET /api/bookings
+const allBookings = catchAsyncErrors(
+    async (req: NextApiRequest, res: NextApiResponse, next: any) => {
+        console.log("HELLO WORLD")
+        const resPerPage = 20;
+        const bookingsCount = await Booking.countDocuments();
+        console.log("BookingsCount: ", bookingsCount)
+        //search with optional queries, handled via .search() method.
+        const apiFeatures = new APIFeatures(Booking.find(), req.query)
+
+        let bookings = await apiFeatures.query;
+        let filteredBookingsCount = bookings.length;
+
+        apiFeatures.pagination(resPerPage);
+        bookings = await apiFeatures.query.clone();
+
+        res.status(200).json({
+            success: true,
+            bookingsCount,
+            resPerPage,
+            filteredBookingsCount,
+            bookings,
+        });
+    }
+);
+
+export { createStripePaymentIntent, createBooking, allBookings };

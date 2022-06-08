@@ -6,6 +6,8 @@ import {
     CREATE_BOOKING_REQUEST,
     CREATE_BOOKING_SUCCESS,
     CREATE_BOOKING_FAIL,
+    ALL_BOOKINGS_SUCCESS,
+    ALL_BOOKINGS_FAIL,
     CLEAR_ERRORS,
 } from "../constants/bookingConstants";
 
@@ -100,6 +102,40 @@ export const createBookingReducer = (state = {}, action: any) => {
             return {
                 loading: false,
                 success: false,
+                error: action.payload,
+            };
+        case CLEAR_ERRORS:
+            return {
+                ...state,
+                error: null,
+            };
+        default:
+            return state;
+    }
+};
+
+/**
+ * It returns a new state object with the properties of the old state object and the new properties of
+ * the action object
+ * @param state - This is the initial state of the reducer.
+ * @param {any} action - any
+ * @returns The state is being returned.
+ */
+export const allBookingsReducer = (
+    state = { bookings: [] },
+    action: any
+) => {
+    switch (action.type) {
+        case ALL_BOOKINGS_SUCCESS:
+            return {
+                // allBookingsCount: action.payload.bookingsCount,
+                // resPerPage: action.payload.resPerPage,
+                // filteredAllBookingsCount:
+                //     action.payload.filteredBookingsCount,
+                allBookings: action.payload.bookings,
+            };
+        case ALL_BOOKINGS_FAIL:
+            return {
                 error: action.payload,
             };
         case CLEAR_ERRORS:

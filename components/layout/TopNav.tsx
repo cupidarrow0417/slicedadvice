@@ -10,6 +10,7 @@ import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { loadUser } from "../../redux/actions/userActions";
 import { signOut } from "next-auth/react";
 import Flyout from "../Flyout";
+import { toast } from "react-toastify";
 
 const navigation = [
     { name: "Explore", href: "/", flyout: false },
@@ -20,40 +21,43 @@ const navigation = [
         children: [
             {
                 name: "Career Growth",
-                href: "#",
+                href: "/#",
                 description:
                     "Grow your career with advice from accomplished professionals.",
             },
             {
                 name: "College Application",
-                href: "#",
+                href: "/#",
                 description:
                     "Get guidance on your application from experienced applicants.",
             },
             {
                 name: "Personal Development",
-                href: "#",
+                href: "/#",
                 description:
                     "Cultivate the life you want to live with knowledgable experts.",
             },
         ],
-        headerText: 'See all categories'
+        headerText: "See all categories",
     },
-    { name: "Dashboard", href: "#", flyout: true, children: [
-        {
-            name: "For Experts",
-            href: "/dashboard/expert/home",
-            description:
-                "Complete bookings, setup payments, and manage the monetization of your expertise.",
-        },
-        {
-            name: "For Advice Seekers",
-            href: "#",
-            description:
-                "Review and manage your bookings for expertise.",
-        },
-    ],
-},
+    {
+        name: "Dashboard",
+        href: "#",
+        flyout: true,
+        children: [
+            {
+                name: "For Experts",
+                href: "/dashboard/expert/home",
+                description:
+                    "Complete bookings, setup payments, and manage the monetization of your expertise.",
+            },
+            {
+                name: "For Advice Seekers",
+                href: "#",
+                description: "Review and manage your bookings for expertise.",
+            },
+        ],
+    },
 ];
 
 function classNames(...classes: string[]) {
@@ -63,15 +67,23 @@ function classNames(...classes: string[]) {
 export default function TopNav() {
     const dispatch = useAppDispatch();
 
-    const { user, loading } = useAppSelector((state) => state.auth);
+    const { user, loading, error } = useAppSelector((state) => state.auth);
 
     useEffect(() => {
-        dispatch(loadUser());
-    }, [dispatch]);
+        if (!user) {
+            dispatch(loadUser());
+        }
+    }, [dispatch, user]);
 
     const logoutHandler = () => {
         signOut();
     };
+
+    useEffect(() => {
+        if (error) {
+            toast.error(error);
+        }
+    }, [error]);
     return (
         <Disclosure
             as="nav"
@@ -269,79 +281,75 @@ export default function TopNav() {
                                 {navigation.map((item) =>
                                     item.flyout ? (
                                         <div key={item.name}>
-                                            <Disclosure.Button
-                                                as="a"
-                                                href={item.href}
+                                            <Link href={item.href}>
+                                                <a
+                                                    className="text-black hover:bg-brand-primary-light hover:text-white focus:bg-brand-primary-light focus:text-white
+                                            block px-3 py-2 rounded-md text-base font-medium"
+                                                >
+                                                    {item.name}
+                                                </a>
+                                            </Link>
+
+                                            {/* Refactor this someday :) 
+                                            This is the children category sections. */}
+                                            <Link
+                                                href={
+                                                    item.children?.at(0)?.href!
+                                                        ? item.children?.at(0)
+                                                              ?.href!
+                                                        : ""
+                                                }
+                                                key={item.children?.at(0)?.name}
+                                            >
+                                                <a
+                                                    className="text-black hover:bg-brand-primary-light hover:text-white focus:bg-brand-primary-light focus:text-white
+                                        block px-3 py-2 rounded-md text-base font-medium ml-4"
+                                                >
+                                                    {item.children?.at(0)?.name}
+                                                </a>
+                                            </Link>
+                                            <Link
+                                                href={
+                                                    item.children?.at(1)?.href!
+                                                        ? item.children?.at(1)
+                                                              ?.href!
+                                                        : ""
+                                                }
+                                                key={item.children?.at(1)?.name}
+                                            >
+                                                <a
+                                                    className="text-black hover:bg-brand-primary-light hover:text-white focus:bg-brand-primary-light focus:text-white
+                                    block px-3 py-2 rounded-md text-base font-medium ml-4"
+                                                >
+                                                    {item.children?.at(1)?.name}
+                                                </a>
+                                            </Link>
+                                            <Link
+                                                href={
+                                                    item.children?.at(2)?.href!
+                                                        ? item.children?.at(2)
+                                                              ?.href!
+                                                        : ""
+                                                }
+                                                key={item.children?.at(2)?.name}
+                                            >
+                                                <a
+                                                    className="text-black hover:bg-brand-primary-light hover:text-white focus:bg-brand-primary-light focus:text-white
+                                            block px-3 py-2 rounded-md text-base font-medium ml-4"
+                                                >
+                                                    {item.children?.at(2)?.name}
+                                                </a>
+                                            </Link>
+                                        </div>
+                                    ) : (
+                                        <Link href={item.href} key={item.name}>
+                                            <a
                                                 className="text-black hover:bg-brand-primary-light hover:text-white focus:bg-brand-primary-light focus:text-white
                                             block px-3 py-2 rounded-md text-base font-medium"
                                             >
                                                 {item.name}
-                                            </Disclosure.Button>
-
-                                            {/* Refactor this someday :) 
-                                            This is the children category sections. */}
-                                            <Disclosure.Button
-                                                key={
-                                                    item.children?.at(0)
-                                                        ?.name
-                                                }
-                                                as="a"
-                                                href={
-                                                    item.children?.at(0)?.href
-                                                }
-                                                className="text-black hover:bg-brand-primary-light hover:text-white focus:bg-brand-primary-light focus:text-white
-                                        block px-3 py-2 rounded-md text-base font-medium ml-4"
-                                            >
-                                                {
-                                                    item.children?.at(0)
-                                                        ?.name
-                                                }
-                                            </Disclosure.Button>
-                                            <Disclosure.Button
-                                                key={
-                                                    item.children?.at(1)
-                                                        ?.name
-                                                }
-                                                as="a"
-                                                href={
-                                                    item.children?.at(1)?.href
-                                                }
-                                                className="text-black hover:bg-brand-primary-light hover:text-white focus:bg-brand-primary-light focus:text-white
-                                    block px-3 py-2 rounded-md text-base font-medium ml-4"
-                                            >
-                                                {
-                                                    item.children?.at(1)
-                                                        ?.name
-                                                }
-                                            </Disclosure.Button>
-                                            <Disclosure.Button
-                                                key={
-                                                    item.children?.at(2)
-                                                        ?.name
-                                                }
-                                                as="a"
-                                                href={
-                                                    item.children?.at(2)?.href
-                                                }
-                                                className="text-black hover:bg-brand-primary-light hover:text-white focus:bg-brand-primary-light focus:text-white
-                                            block px-3 py-2 rounded-md text-base font-medium ml-4"
-                                            >
-                                                {
-                                                    item.children?.at(2)
-                                                        ?.name
-                                                }
-                                            </Disclosure.Button>
-                                        </div>
-                                    ) : (
-                                        <Disclosure.Button
-                                            key={item.name}
-                                            as="a"
-                                            href={item.href}
-                                            className="text-black hover:bg-brand-primary-light hover:text-white focus:bg-brand-primary-light focus:text-white
-                                            block px-3 py-2 rounded-md text-base font-medium"
-                                        >
-                                            {item.name}
-                                        </Disclosure.Button>
+                                            </a>
+                                        </Link>
                                     )
                                 )}
                             </div>
