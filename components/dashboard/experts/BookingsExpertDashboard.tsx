@@ -7,8 +7,6 @@ import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import DashboardHeader from "../DashboardHeader";
 
 const BookingsExpertDashboard = () => {
-    const dispatch = useAppDispatch();
-
     const {
         allBookingsCount,
         filteredAllBookingsCount,

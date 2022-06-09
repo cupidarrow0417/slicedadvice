@@ -101,7 +101,6 @@ const createBooking = catchAsyncErrors(
 //Get all bookings => GET /api/bookings
 const allBookings = catchAsyncErrors(
     async (req: NextApiRequest, res: NextApiResponse, next: any) => {
-        console.log("HELLO WORLD")
         const resPerPage = 20;
         const bookingsCount = await Booking.countDocuments();
         console.log("BookingsCount: ", bookingsCount)

@@ -132,9 +132,19 @@ export const getBookings =
             let link = `${origin}/api/bookings?page=${currentPage}`;
             // if (category) link = link.concat(`&category=${category}`);
 
-            const { data } = await axios.get(link);
+            // NOTE: having the config for axios is important.
+            // https://stackoverflow.com/a/69058105/16435056
+            // Requests originating from getServerSideProps, when passed
+            // into Axios, will be STRIPPED of the cookie headers. 
+            // Without cookie headers, authentication using getSession is impossible.
+            const { data } = await axios.get(link, {
+                withCredentials: true,
+                headers: {
+                    Cookie: req.headers.cookie,
+                },
+            });
 
-            console.log("data", data)
+            console.log("data", data);
             // Basic general query of bookings
             dispatch({
                 type: ALL_BOOKINGS_SUCCESS,

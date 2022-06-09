@@ -46,8 +46,12 @@ const registerUser = catchAsyncErrors(
 //Current user profile => /api/me
 const currentUserProfile = catchAsyncErrors(
     async (req: any, res: NextApiResponse) => {
-        const user = await User.findById(req.user._id);
-        console.log("Found user!")
+        // const user = await User.findById(req.user._id);
+        const user = await User.findOne({
+            email: req.user.email,
+            name: req.user.name,
+        });
+        console.log("Found user:", user);
         res.status(200).json({
             success: true,
             user,
@@ -58,7 +62,11 @@ const currentUserProfile = catchAsyncErrors(
 //Update user profile => /api/me/update
 const updateUserProfile = catchAsyncErrors(
     async (req: any, res: NextApiResponse) => {
-        const user = await User.findById(req.user._id);
+        // const user = await User.findById(req.user._id);
+        const user = await User.findOne({
+            email: req.user.email,
+            name: req.user.name,
+        });
 
         if (user) {
             user.name = req.body.name;
@@ -192,7 +200,11 @@ const getStripeSetupPayoutsLink = catchAsyncErrors(
         // for an existing stripe account, then eventually save
         // a new stripe account id and also prepopulate
         // values in their onboarding process
-        const user = await User.findById(req.user._id);
+        // const user = await User.findById(req.user._id);
+        const user = await User.findOne({
+            email: req.user.email,
+            name: req.user.name,
+        });
 
         // Set your secret key. Remember to switch to your live secret key in production.
         // See your keys here: https://dashboard.stripe.com/apikeys
@@ -239,7 +251,7 @@ const getStripeSetupPayoutsLink = catchAsyncErrors(
         }
 
         res.status(200).json({
-            accountLink: accountLink
+            accountLink: accountLink,
         });
     }
 );
@@ -250,7 +262,10 @@ const checkStripeAccountField = catchAsyncErrors(
         // Retrieve user via request (placed there during
         // the isAuthenticatedUser middleware), to retrieve
         // their Stripe account id.
-        const user = await User.findById(req.user._id);
+        const user = await User.findOne({
+            email: req.user.email,
+            name: req.user.name,
+        });
 
         // Set your secret key. Remember to switch to your live secret key in production.
         // See your keys here: https://dashboard.stripe.com/apikeys
@@ -283,7 +298,7 @@ const checkStripeAccountField = catchAsyncErrors(
                 )
             );
         }
-        
+
         res.status(200).json({
             accountField,
         });

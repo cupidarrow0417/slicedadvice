@@ -83,7 +83,10 @@ export default function TopNav() {
         if (error) {
             toast.error(error);
         }
-    }, [error]);
+        // if (user) {
+        //     console.log("User is: ", user)
+        // }
+    }, [error, user]);
     return (
         <Disclosure
             as="nav"
