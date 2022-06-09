@@ -128,10 +128,10 @@ export const allBookingsReducer = (
     switch (action.type) {
         case ALL_BOOKINGS_SUCCESS:
             return {
-                // allBookingsCount: action.payload.bookingsCount,
-                // resPerPage: action.payload.resPerPage,
-                // filteredAllBookingsCount:
-                //     action.payload.filteredBookingsCount,
+                allBookingsCount: action.payload.bookingsCount,
+                resPerPage: action.payload.resPerPage,
+                filteredAllBookingsCount:
+                    action.payload.filteredBookingsCount,
                 allBookings: action.payload.bookings,
             };
         case ALL_BOOKINGS_FAIL:

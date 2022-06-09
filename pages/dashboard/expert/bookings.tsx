@@ -24,7 +24,6 @@ export const getServerSideProps: GetServerSideProps =
                 },
             };
         }
-        console.log("Session found!", session);
         try {
             await store.dispatch(getBookings(req));
             return { props: { session } };
