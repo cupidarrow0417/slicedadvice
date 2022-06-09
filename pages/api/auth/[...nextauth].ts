@@ -1,5 +1,5 @@
 import NextAuth from "next-auth";
-import CredentialProvider from "next-auth/providers/credentials";
+import CredentialsProvider from "next-auth/providers/credentials";
 
 import UserModel from "../../../models/user";
 import dbConnect from "../../../config/dbConnect";
@@ -9,7 +9,7 @@ export default NextAuth({
         strategy: "jwt",
     },
     providers: [
-        CredentialProvider({
+        CredentialsProvider({
             // The name to display on the sign in form (e.g. "Sign in with...")
             name: "Credentials",
             // The credentials is used to generate a suitable form on the sign in page.
@@ -52,18 +52,33 @@ export default NextAuth({
                 }
 
                 //Checks passed, return
-                return user
+                return user;
             },
         }),
     ],
     callbacks: {
-        jwt: async ({ token, user }) => {
-            user && (token.user = user);
-            return Promise.resolve(token);
+        // async signIn({ user, account, profile, email, credentials }) {
+        //     const isAllowedToSignIn = true;
+        //     if (isAllowedToSignIn) {
+        //       return true
+        //     } else {
+        //       // Return false to display a default error message
+        //       return false
+        //       // Or you can return a URL to redirect to:
+        //       // return '/unauthorized'
+        //     }
+        //   },
+        async jwt({ token, account }) {
+            // Persist the OAuth access_token to the token right after signin
+            if (account) {
+                token.accessToken = account.access_token;
+            }
+            return token;
         },
-        session: async ({ session, user, token }: any) => {
-            session.user = token.user;
-            return Promise.resolve(session);
+        async session({ session, token, user }) {
+            // Send properties to the client, like an access_token from a provider.
+            session.accessToken = token.accessToken;
+            return session;
         },
     },
     secret: process.env.NEXTAUTH_SECRET,

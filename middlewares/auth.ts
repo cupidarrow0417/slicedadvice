@@ -11,7 +11,7 @@ const isAuthenticatedUser = catchAsyncErrors(async (req: any, res: any, next: an
         // console.log("nooooo req.cookies is null :(")
     }
     const session = await getSession({ req })
-
+    console.log("got Session!:", session)
     if (!session) {
         // console.log("not authenticated :( req: ", req)
         console.log("NOT AUTHENTICATED :(")
