@@ -1,7 +1,14 @@
 import { Fragment, useEffect } from "react";
 import Image from "next/image";
 import { Disclosure, Menu, Transition, Popover } from "@headlessui/react";
-import { BellIcon, MenuIcon, XIcon } from "@heroicons/react/outline";
+import {
+    BellIcon,
+    MenuIcon,
+    XIcon,
+    GlobeIcon,
+    ViewGridIcon,
+    TemplateIcon,
+} from "@heroicons/react/outline";
 import { SearchIcon } from "@heroicons/react/solid";
 import { ChevronDownIcon } from "@heroicons/react/solid";
 import logoTransparent from "../../public/images/SlicedAdviceLogoTransparent.svg";
@@ -13,11 +20,12 @@ import Flyout from "../Flyout";
 import { toast } from "react-toastify";
 
 const navigation = [
-    { name: "Explore", href: "/", flyout: false },
+    { name: "Explore", href: "/", icon: <GlobeIcon />, flyout: false },
     {
         name: "Categories",
         href: "/categories",
         flyout: true,
+        icon: <ViewGridIcon />,
         children: [
             {
                 name: "Career Growth",
@@ -44,6 +52,7 @@ const navigation = [
         name: "Dashboard",
         href: "#",
         flyout: true,
+        icon: <TemplateIcon />,
         children: [
             {
                 name: "For Experts",
@@ -283,13 +292,19 @@ export default function TopNav() {
                             <div className="px-2 pt-2 pb-3 space-y-1">
                                 {navigation.map((item) =>
                                     item.flyout ? (
+                                        // NAV ITEMS WITH CHILDREN HERE. GO BELOW FOR NON CHILDREN ITEMS.
                                         <div key={item.name}>
                                             <Link href={item.href}>
                                                 <a
-                                                    className="text-black hover:bg-brand-primary-light hover:text-white focus:bg-brand-primary-light focus:text-white
-                                            block px-3 py-2 rounded-md text-base font-medium"
+                                                    className="flex justify-start align-center gap-2 text-black hover:bg-brand-primary-light hover:text-white focus:bg-brand-primary-light focus:text-white
+                                            px-3 py-2 rounded-md text-base font-medium"
                                                 >
-                                                    {item.name}
+                                                    <div className="w-7 h-7">
+                                                        {item.icon}
+                                                    </div>
+                                                    <div className="mt-[1px]">
+                                                        {item.name}
+                                                    </div>
                                                 </a>
                                             </Link>
 
@@ -306,7 +321,7 @@ export default function TopNav() {
                                             >
                                                 <a
                                                     className="text-black hover:bg-brand-primary-light hover:text-white focus:bg-brand-primary-light focus:text-white
-                                        block px-3 py-2 rounded-md text-base font-medium ml-4"
+                                        block px-3 py-2 rounded-md text-base font-medium ml-12"
                                                 >
                                                     {item.children?.at(0)?.name}
                                                 </a>
@@ -322,7 +337,7 @@ export default function TopNav() {
                                             >
                                                 <a
                                                     className="text-black hover:bg-brand-primary-light hover:text-white focus:bg-brand-primary-light focus:text-white
-                                    block px-3 py-2 rounded-md text-base font-medium ml-4"
+                                    block px-3 py-2 rounded-md text-base font-medium ml-12"
                                                 >
                                                     {item.children?.at(1)?.name}
                                                 </a>
@@ -338,19 +353,25 @@ export default function TopNav() {
                                             >
                                                 <a
                                                     className="text-black hover:bg-brand-primary-light hover:text-white focus:bg-brand-primary-light focus:text-white
-                                            block px-3 py-2 rounded-md text-base font-medium ml-4"
+                                            block px-3 py-2 rounded-md text-base font-medium ml-12"
                                                 >
                                                     {item.children?.at(2)?.name}
                                                 </a>
                                             </Link>
                                         </div>
                                     ) : (
+                                        // ITEMS WITH NO CHILDREN HERE :)
                                         <Link href={item.href} key={item.name}>
                                             <a
-                                                className="text-black hover:bg-brand-primary-light hover:text-white focus:bg-brand-primary-light focus:text-white
-                                            block px-3 py-2 rounded-md text-base font-medium"
+                                                className="flex justify-start align-center gap-2 text-black hover:bg-brand-primary-light hover:text-white focus:bg-brand-primary-light focus:text-white
+                                            px-3 py-2 rounded-md text-base font-medium"
                                             >
-                                                {item.name}
+                                                <div className="w-7 h-7">
+                                                    {item.icon}
+                                                </div>
+                                                <div className="mt-[1px]">
+                                                    {item.name}
+                                                </div>
                                             </a>
                                         </Link>
                                     )
