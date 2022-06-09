@@ -103,7 +103,6 @@ const allBookings = catchAsyncErrors(
     async (req: NextApiRequest, res: NextApiResponse, next: any) => {
         const resPerPage = 20;
         const bookingsCount = await Booking.countDocuments();
-        console.log("BookingsCount: ", bookingsCount)
         //search with optional queries, handled via .search() method.
         const apiFeatures = new APIFeatures(Booking.find(), req.query)
 

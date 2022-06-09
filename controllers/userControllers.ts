@@ -46,12 +46,10 @@ const registerUser = catchAsyncErrors(
 //Current user profile => /api/me
 const currentUserProfile = catchAsyncErrors(
     async (req: any, res: NextApiResponse) => {
-        // const user = await User.findById(req.user._id);
         const user = await User.findOne({
             email: req.user.email,
             name: req.user.name,
         });
-        console.log("Found user:", user);
         res.status(200).json({
             success: true,
             user,

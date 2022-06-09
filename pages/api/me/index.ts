@@ -9,6 +9,5 @@ const handler = nc({ onError })
 dbConnect();
 
 handler.use(isAuthenticatedUser).get(currentUserProfile)
-// handler.get(currentUserProfile)
 
 export default handler
