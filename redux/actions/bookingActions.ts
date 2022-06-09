@@ -126,9 +126,7 @@ export const getBookings =
     (req: any = null, currentPage: Number = 1) =>
     async (dispatch: any) => {
         try {
-            // console.log("req in getBookings", req)
             const { origin } = absoluteUrl(req);
-            // console.log("origin", origin);
             let link = `${origin}/api/bookings?page=${currentPage}`;
             // if (category) link = link.concat(`&category=${category}`);
 
@@ -144,7 +142,6 @@ export const getBookings =
                 },
             });
 
-            console.log("data", data);
             // Basic general query of bookings
             dispatch({
                 type: ALL_BOOKINGS_SUCCESS,

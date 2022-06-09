@@ -2,14 +2,14 @@ import User from "../models/user";
 import ErrorHandler from "./errorhandler";
 
 const checkStripeField = async (
-    userId: string,
+    email: string,
     checkedField: string,
     next: any | undefined
 ) => {
     // Retrieve user via request (placed there during
     // the isAuthenticatedUser middleware), to retrieve
     // their Stripe account id.
-    const user = await User.findById(userId);
+    const user = await User.findOne({email: email});
 
     // Set your secret key. Remember to switch to your live secret key in production.
     // See your keys here: https://dashboard.stripe.com/apikeys

@@ -42,6 +42,17 @@ const BookingsExpertDashboard = () => {
                     New Post
                 </button>
             </div>
+            {/* {
+      singleTextResponse: [Object],
+      _id: '6287e2137f99ba689399a56a',
+      expertisePost: [Object],
+      bookingType: 'Single Text Response',
+      customer: [Object],
+      status: 'Pending Acceptance',
+      stripePaymentIntentId: 'pi_3L1aqJBEcP4VNna21rraFw5x',
+      createdAt: '2022-05-20T18:46:43.050Z',
+      __v: 0
+    }, */}
             <div>
                 {/* <p>{allBookings}</p> */}
             </div>
