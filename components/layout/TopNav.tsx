@@ -20,12 +20,12 @@ import Flyout from "../Flyout";
 import { toast } from "react-toastify";
 
 const navigation = [
-    { name: "Explore", href: "/", icon: <GlobeIcon />, flyout: false },
+    { name: "Explore", href: "/", icon: <GlobeIcon className="text-brand-primary-light"/>, flyout: false },
     {
         name: "Categories",
         href: "/categories",
         flyout: true,
-        icon: <ViewGridIcon />,
+        icon: <ViewGridIcon className="text-brand-primary-light"/>,
         children: [
             {
                 name: "Career Growth",
@@ -52,7 +52,7 @@ const navigation = [
         name: "Dashboard",
         href: "#",
         flyout: true,
-        icon: <TemplateIcon />,
+        icon: <TemplateIcon className="text-brand-primary-light"/>,
         children: [
             {
                 name: "For Experts",
@@ -103,7 +103,7 @@ export default function TopNav() {
         >
             {({ open }) => (
                 <>
-                    <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
+                    <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 brand">
                         <div className="relative flex items-center justify-between h-16">
                             <div className="inset-y-0 left-0 flex items-center sm:hidden">
                                 {/* Mobile menu button*/}
