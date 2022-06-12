@@ -41,7 +41,7 @@ const navigation = [
             },
             {
                 name: "Personal Development",
-                href: "/#",
+                href: "/categories/personal-development",
                 description:
                     "Cultivate the life you want to live with knowledgable experts.",
             },
