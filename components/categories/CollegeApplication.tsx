@@ -25,7 +25,7 @@ const CollegeApplication = () => {
     return (
         <div className="max-w-7xl mx-auto  flex flex-col gap-6">
             <PageHeader
-                pageName="CollegeApplication"
+                pageName="College Application"
                 heroPhrase="Get guidance on your application from experienced applicants."
                 supportingText="testText"
             />

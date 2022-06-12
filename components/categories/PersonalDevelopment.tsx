@@ -27,7 +27,7 @@ const PersonalDevelopment = () => {
     return (
         <div className="max-w-7xl mx-auto  flex flex-col gap-6">
             <PageHeader
-                pageName="PersonalDevelopment"
+                pageName="Personal Development"
                 heroPhrase="Cultivate the life you want to live with knowledgable experts."
                 supportingText="testText"
             />
