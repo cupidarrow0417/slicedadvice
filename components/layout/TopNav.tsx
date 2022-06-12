@@ -35,7 +35,7 @@ const navigation = [
             },
             {
                 name: "College Application",
-                href: "/#",
+                href: "/categories/college-application",
                 description:
                     "Get guidance on your application from experienced applicants.",
             },
