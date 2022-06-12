@@ -24,7 +24,7 @@ const CareerGrowth = () => {
         <div className="max-w-7xl mx-auto  flex flex-col gap-6">
             <PageHeader
                 pageName="Career Growth"
-                heroPhrase="Boost your trajectory with expertise from the most qualified in the planet."
+                heroPhrase="Boost your trajectory with expertise from accomplished professionals."
                 supportingText="testText"
             />
 

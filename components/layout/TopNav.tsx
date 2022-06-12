@@ -31,7 +31,7 @@ const navigation = [
                 name: "Career Growth",
                 href: "/categories/career-growth",
                 description:
-                    "Grow your career with advice from accomplished professionals.",
+                    "Boost your trajectory with expertise from accomplished professionals.",
             },
             {
                 name: "College Application",
