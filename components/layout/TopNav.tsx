@@ -29,7 +29,7 @@ const navigation = [
         children: [
             {
                 name: "Career Growth",
-                href: "/#",
+                href: "/categories/career-growth",
                 description:
                     "Grow your career with advice from accomplished professionals.",
             },

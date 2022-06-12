@@ -44,7 +44,7 @@ const Categories = () => {
                 supportingText="Ranging from career growth to personal development"
             />
 
-            <Shelf title="Career Growth" link="#">
+            <Shelf title="Career Growth" link="/categories/career-growth">
                 {careerGrowthExpertisePosts &&
                     careerGrowthExpertisePosts.map((expertisePost: any) => (
                         <ExpertisePostCard
@@ -58,7 +58,7 @@ const Categories = () => {
                     collegeApplicationExpertisePosts.map(
                         (expertisePost: any) => (
                             <ExpertisePostCard
-                                key={expertisePost._id}
+                                 key={expertisePost._id}
                                 expertisePost={expertisePost}
                             />
                         )
