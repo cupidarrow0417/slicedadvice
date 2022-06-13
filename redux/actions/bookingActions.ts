@@ -19,6 +19,7 @@ interface CacheBookingDataInterface {
     serviceFee: number;
     bookingType: String;
     expertisePostId: String;
+    expertId: String;
     customerId: String;
     status: String;
     customerSubmission: String;
