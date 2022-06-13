@@ -32,7 +32,7 @@ const PersonalDevelopment = () => {
                 supportingText="testText"
             />
 
-            <VerticalCardArray title="Personal Development" link="/categories/personal-development">
+            <VerticalCardArray title="Personal Development" link="/categories/personalDevelopment">
                 {personalDevelopmentExpertisePosts &&
                     personalDevelopmentExpertisePosts.map((expertisePost: any) => (
                         <ExpertisePostCard

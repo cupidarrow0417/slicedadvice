@@ -44,7 +44,7 @@ const Categories = () => {
                 supportingText="Ranging from career growth to personal development"
             />
 
-            <Shelf title="Career Growth" link="/categories/career-growth">
+            <Shelf title="Career Growth" link="/categories/careerGrowth">
                 {careerGrowthExpertisePosts &&
                     careerGrowthExpertisePosts.map((expertisePost: any) => (
                         <ExpertisePostCard
@@ -53,7 +53,7 @@ const Categories = () => {
                         />
                     ))}
             </Shelf>
-            <Shelf title="College Application" link="#">
+            <Shelf title="College Application" link="/categories/collegeApplication">
                 {collegeApplicationExpertisePosts &&
                     collegeApplicationExpertisePosts.map(
                         (expertisePost: any) => (
@@ -64,7 +64,7 @@ const Categories = () => {
                         )
                     )}
             </Shelf>
-            <Shelf title="Personal Development" link="#">
+            <Shelf title="Personal Development" link="/categories/personalDevelopment">
                 {personalDevelopmentExpertisePosts &&
                     personalDevelopmentExpertisePosts.map(
                         (expertisePost: any) => (

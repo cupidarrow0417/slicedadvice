@@ -28,7 +28,7 @@ const CareerGrowth = () => {
                 supportingText="testText"
             />
 
-            <VerticalCardArray title="Career Growth" link="/categories/career-growth">
+            <VerticalCardArray title="Career Growth" link="/categories/careerGrowth">
                 {careerGrowthExpertisePosts &&
                     careerGrowthExpertisePosts.map((expertisePost: any) => (
                         <ExpertisePostCard

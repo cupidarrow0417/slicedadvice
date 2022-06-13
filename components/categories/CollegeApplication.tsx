@@ -30,7 +30,7 @@ const CollegeApplication = () => {
                 supportingText="testText"
             />
 
-            <VerticalCardArray title="College Application" link="/categories/college-application">
+            <VerticalCardArray title="College Application" link="/categories/collegeApplication">
                 {collegeApplicationExpertisePosts &&
                     collegeApplicationExpertisePosts.map((expertisePost: any) => (
                         <ExpertisePostCard

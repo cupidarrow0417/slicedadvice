@@ -29,19 +29,19 @@ const navigation = [
         children: [
             {
                 name: "Career Growth",
-                href: "/categories/career-growth",
+                href: "/categories/careerGrowth",
                 description:
                     "Boost your trajectory with expertise from accomplished professionals.",
             },
             {
                 name: "College Application",
-                href: "/categories/college-application",
+                href: "/categories/collegeApplication",
                 description:
                     "Get guidance on your application from experienced applicants.",
             },
             {
                 name: "Personal Development",
-                href: "/categories/personal-development",
+                href: "/categories/personalDevelopment",
                 description:
                     "Cultivate the life you want to live with knowledgable experts.",
             },
