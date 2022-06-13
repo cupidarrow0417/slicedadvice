@@ -124,12 +124,14 @@ export const createBooking =
  * @param {Number} [currentPage=1] - Number = 1
  */
 export const getBookings =
-    (req: any = null, currentPage: Number = 1, title?: String) =>
+    (req: any = null, currentPage: Number = 1, title?: String, customer?: String, expert?: String) =>
     async (dispatch: any) => {
         try {
             const { origin } = absoluteUrl(req);
             let link = `${origin}/api/bookings?page=${currentPage}`;
             if (title) link = link.concat(`&title=${title}`);
+            if (customer) link = link.concat(`&customer=${customer}`);
+            if (expert) link = link.concat(`&expert=${expert}`);
 
             // NOTE: having the config for axios is important.
             // https://stackoverflow.com/a/69058105/16435056

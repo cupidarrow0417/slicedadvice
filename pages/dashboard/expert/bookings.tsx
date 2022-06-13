@@ -14,7 +14,7 @@ const ExpertDashboardBookingsPage = () => {
 
 export const getServerSideProps: GetServerSideProps =
     wrapper.getServerSideProps((store) => async ({ req }) => {
-        const session = await getSession({ req });
+        const session: any = await getSession({ req });
 
         if (!session) {
             return {
@@ -25,7 +25,7 @@ export const getServerSideProps: GetServerSideProps =
             };
         }
         try {
-            await store.dispatch(getBookings(req));
+            await store.dispatch(getBookings(req, 1, undefined, undefined, session.user._id));
             return { props: { session } };
         } catch (e) {
             return { props: { session } };
