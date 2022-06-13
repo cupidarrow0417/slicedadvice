@@ -1,8 +1,9 @@
-import NextAuth from "next-auth";
+import NextAuth, { User } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 import UserModel from "../../../models/user";
 import dbConnect from "../../../config/dbConnect";
+import { JWT } from "next-auth/jwt";
 
 export default NextAuth({
     session: {
@@ -57,27 +58,34 @@ export default NextAuth({
         }),
     ],
     callbacks: {
-        // async signIn({ user, account, profile, email, credentials }) {
-        //     const isAllowedToSignIn = true;
-        //     if (isAllowedToSignIn) {
-        //       return true
-        //     } else {
-        //       // Return false to display a default error message
-        //       return false
-        //       // Or you can return a URL to redirect to:
-        //       // return '/unauthorized'
-        //     }
-        //   },
+        async signIn({ user, account, profile, email, credentials }) {
+            const isAllowedToSignIn = true;
+            console.log("user", user);
+            if (isAllowedToSignIn) {
+              return true
+            } else {
+              // Return false to display a default error message
+              return false
+              // Or you can return a URL to redirect to:
+              // return '/unauthorized'
+            }
+          },
         async jwt({ token, account }) {
             // Persist the OAuth access_token to the token right after signin
-            if (account) {
-                token.accessToken = account.access_token;
+            console.log("token", token);
+            if (token.email) {
+                const user = await UserModel.findOne({ email: token.email });
+                if (user) {
+                    token._id = user._id;
+                }
             }
             return token;
         },
-        async session({ session, token, user }) {
+        async session({ session, token, user }: { session: any; token: JWT; user: User }) {
             // Send properties to the client, like an access_token from a provider.
-            session.accessToken = token.accessToken;
+            console.log("token", token);
+            session.user._id = token._id;
+            console.log("session", session);
             return session;
         },
     },
