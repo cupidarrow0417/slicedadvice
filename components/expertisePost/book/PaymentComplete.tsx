@@ -55,14 +55,18 @@ const PaymentComplete = () => {
             // This means that a booking will be created only once
             // from this cacheBookingData.
             const updatedBookingData = {
+                // This stuff stays the same
                 price: bookingData.price,
                 pricePerSubmission: bookingData.pricePerSubmission,
                 serviceFee: bookingData.serviceFee,
                 bookingType: bookingData.bookingType,
                 expertisePostId: bookingData.expertisePostId,
+                expertId: bookingData.expertId,
                 customerId: bookingData.customerId,
                 status: bookingData.status,
                 customerSubmission: bookingData.customerSubmission,
+
+                // Important part.
                 bookingCreated: true,
             }
             // Dispatch again to update the cacheBookingData's bookingCreated field.
@@ -73,6 +77,7 @@ const PaymentComplete = () => {
             const finalBookingData = {
                 bookingType: bookingData.bookingType,
                 expertisePostId: bookingData.expertisePostId,
+                expertId: bookingData.expertId,
                 customerId: bookingData.customerId,
                 status: bookingData.status,
                 customerSubmission: bookingData.customerSubmission,

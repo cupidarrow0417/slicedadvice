@@ -71,6 +71,7 @@ const createBooking = catchAsyncErrors(
         const {
             bookingType,
             expertisePostId,
+            expertId,
             customerId,
             status,
             customerSubmission,
@@ -79,6 +80,7 @@ const createBooking = catchAsyncErrors(
 
         const booking = await Booking.create({
             bookingType,
+            expert: expertId,
             customer: customerId,
             expertisePost: expertisePostId,
             status,

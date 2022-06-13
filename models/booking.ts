@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 interface BookingInterface {
     expertisePost: mongoose.Schema.Types.ObjectId;
     bookingType: String;
+    expert: mongoose.Schema.Types.ObjectId;
     customer: mongoose.Schema.Types.ObjectId;
     status: String;
     createdAt: Date;
@@ -31,6 +32,12 @@ const bookingSchema = new mongoose.Schema<BookingInterface>({
             values: ["Single Text Response"],
             message: "Please select a valid booking type.",
         },
+    },
+    expert: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: true,
+        autopopulate: true,
     },
     customer: {
         type: mongoose.Schema.Types.ObjectId,
