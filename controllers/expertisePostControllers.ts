@@ -3,7 +3,7 @@ let cloudinary = require("cloudinary").v2;
 import ExpertisePost from "../models/expertisePost";
 import ErrorHandler from "../utils/errorhandler";
 import catchAsyncErrors from "../middlewares/catchAsyncErrors";
-import APIFeatures from "../utils/apiFeatures";
+import { ExpertisePostAPIFeatures } from "../utils/apiFeatures";
 
 //Get all expertisePosts => GET /api/expertisePosts
 const allExpertisePosts = catchAsyncErrors(
@@ -12,7 +12,10 @@ const allExpertisePosts = catchAsyncErrors(
         const expertisePostsCount = await ExpertisePost.countDocuments();
 
         //search with optional queries, handled via .search() method.
-        const apiFeatures = new APIFeatures(ExpertisePost.find(), req.query)
+        const apiFeatures = new ExpertisePostAPIFeatures(
+            ExpertisePost.find(),
+            req.query
+        )
             .search()
             .filter();
 
@@ -92,7 +95,9 @@ const createExpertisePost = catchAsyncErrors(
         });
 
         if (!expertisePost) {
-            return next(new ErrorHandler("Expertise post not created successfully", 400));
+            return next(
+                new ErrorHandler("Expertise post not created successfully", 400)
+            );
         }
 
         res.status(200).json({

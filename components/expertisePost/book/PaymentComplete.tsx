@@ -65,6 +65,8 @@ const PaymentComplete = () => {
                 customerSubmission: bookingData.customerSubmission,
                 bookingCreated: true,
             }
+            // Dispatch again to update the cacheBookingData's bookingCreated field.
+            // In order to never create a booking twice.
             dispatch(cacheBookingData(updatedBookingData))
 
             // dispatch the creation of a new booking model.
