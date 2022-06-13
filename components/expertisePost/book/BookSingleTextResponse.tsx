@@ -83,6 +83,7 @@ const BookSingleTextResponse = () => {
                 serviceFee: serviceFee,
                 bookingType: "Single Text Response",
                 expertisePostId: expertisePost?._id,
+                expertId: expertisePost?.user?._id,
                 customerId: user?._id,
                 status: "Pending Acceptance",
                 customerSubmission: finalTextSubmission,
