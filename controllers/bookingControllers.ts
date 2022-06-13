@@ -21,7 +21,7 @@ const createStripePaymentIntent = catchAsyncErrors(
         next: (arg0: ErrorHandler) => any
     ) => {
         // Most of these will be placed into the metadata
-        const { price, bookingType, expertisePostId, customerId, status } =
+        const { price, bookingType, expertisePostId, expertId, customerId, status } =
             req.body;
 
         // Set your secret key. Remember to switch to your live secret key in production.
@@ -40,11 +40,12 @@ const createStripePaymentIntent = catchAsyncErrors(
             metadata: {
                 bookingType: bookingType,
                 expertisePostId: expertisePostId,
+                expertId: expertId,
                 customerId: customerId,
                 status: status,
                 // 'customerSubmission': customerSubmission,
             },
-            description: `Booking from customer with id ${customerId} of type ${bookingType} for ${price} dollars.`,
+            description: `Booking from customer with id ${customerId} of type ${bookingType} to expert with id ${expertId} for ${price} dollars.`,
         });
 
         if (!paymentIntent) {
