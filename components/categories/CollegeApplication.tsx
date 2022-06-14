@@ -23,11 +23,11 @@ const CollegeApplication = () => {
     }, [collegeApplicationError]);
 
     return (
-        <div className="max-w-7xl mx-auto  flex flex-col gap-6">
+        <div className="max-w-7xl mx-auto flex flex-col gap-6">
             <PageHeader
                 pageName="College Application"
                 heroPhrase="Get guidance on your application from experienced applicants."
-                supportingText="testText"
+                supportingText="Ranging from tailored essay advice to interview preparation tips"
             />
 
             <VerticalCardArray title="College Application" link="/categories/collegeApplication">
