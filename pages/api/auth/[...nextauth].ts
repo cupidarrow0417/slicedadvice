@@ -72,7 +72,6 @@ export default NextAuth({
           },
         async jwt({ token, account }) {
             // Persist the OAuth access_token to the token right after signin
-            console.log("token", token);
             if (token.email) {
                 const user = await UserModel.findOne({ email: token.email });
                 if (user) {
@@ -83,9 +82,7 @@ export default NextAuth({
         },
         async session({ session, token, user }: { session: any; token: JWT; user: User }) {
             // Send properties to the client, like an access_token from a provider.
-            console.log("token", token);
             session.user._id = token._id;
-            console.log("session", session);
             return session;
         },
     },

@@ -10,7 +10,13 @@ import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import ButtonLoader from "../../layout/ButtonLoader";
 import Loader from "../../layout/Loader";
 
-//Set
+// SetupPayoutsAlert is a reusable component primarily
+// used in the HomeExpertDashboard and PaymentsExpertDashboard
+// to visually notify the user that they need to setup payouts.
+// It isn't featured in the other expert dashboard pages because
+// the user can't even access those pages unless they have already
+// setup payouts, as I coded that into the frontend and the 
+// getServerSideProps function for those other pages.
 const SetupPayoutsAlert = () => {
     const dispatch = useAppDispatch();
 
@@ -36,22 +42,22 @@ const SetupPayoutsAlert = () => {
         return state.stripeSetupPayoutsLink;
     });
 
-    // Initial useEffect that checks for stripe id and dispatches
-    // redux action to check whether charges are enabled. Important
-    // for this component, as we want to display different messages
-    // based on those Stripe account fields.
-    useEffect(() => {
-        // Check if the user has charges enabled on their Stripe
-        // Connect account
-        if (user) {
-            if (user?.stripeId) {
-                const field: any = {
-                    field: "charges_enabled",
-                };
-                dispatch(checkStripeAccountField(field));
-            }
-        }
-    }, [user]);
+    // // Initial useEffect that checks for stripe id and dispatches
+    // // redux action to check whether charges are enabled. Important
+    // // for this component, as we want to display different messages
+    // // based on those Stripe account fields.
+    // useEffect(() => {
+    //     // Check if the user has charges enabled on their Stripe
+    //     // Connect account
+    //     if (user) {
+    //         if (user?.stripeId) {
+    //             const field: any = {
+    //                 field: "charges_enabled",
+    //             };
+    //             dispatch(checkStripeAccountField(field));
+    //         }
+    //     }
+    // }, [user]);
 
     // Use effect that checks status of the charges_enabled field, called above.
     // End goal is to figure out whether charges are enabled. The chargesEnabled
