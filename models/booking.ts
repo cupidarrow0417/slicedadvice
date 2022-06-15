@@ -21,7 +21,7 @@ const bookingSchema = new mongoose.Schema<BookingInterface>({
         ref: "Expertise Post",
         required: true,
         // The below option tells this plugin to always call `populate()` on
-        // `User`
+        // `expertisePost`
         autopopulate: true,
     },
     bookingType: {
