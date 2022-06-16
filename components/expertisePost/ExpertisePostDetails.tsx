@@ -55,39 +55,6 @@ const ExpertisePostDetails = () => {
             { rating: 2, count: (expertisePost.reviews).filter((x: any) => x.rating==2).length },
             { rating: 1, count: (expertisePost.reviews).filter((x: any) => x.rating==1).length },
         ],
-        featured: [
-            {
-                id: 1,
-                rating: 5,
-                content: `
-            <p>This is the bag of my dreams. I took it on my last vacation and was able to fit an absurd amount of snacks for the many long and hungry flights.</p>
-          `,
-                author: "Emily Selman",
-                avatarSrc:
-                    "https://images.unsplash.com/photo-1502685104226-ee32379fefbe?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=256&h=256&q=80",
-            },
-            {
-                id: 2,
-                rating: 4,
-                content: `
-            <p>This is the bag of my dreams. I took it on my last vacation and was able to fit an absurd amount of snacks for the many long and hungry flights.</p>
-          `,
-                author: "Emily Selman",
-                avatarSrc:
-                    "https://images.unsplash.com/photo-1502685104226-ee32379fefbe?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=256&h=256&q=80",
-            },
-            {
-                id: 3,
-                rating: 5,
-                content: `
-            <p>This is the bag of my dreams. I took it on my last vacation and was able to fit an absurd amount of snacks for the many long and hungry flights.</p>
-          `,
-                author: "Emily Selman",
-                avatarSrc:
-                    "https://images.unsplash.com/photo-1502685104226-ee32379fefbe?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=256&h=256&q=80",
-            },
-            // More reviews...
-        ],
     };
 
     // Used for the Breadcrumbs component
@@ -266,7 +233,7 @@ const ExpertisePostDetails = () => {
                                         {Math.round(
                                             (count.count / reviews.totalCount) *
                                                 100
-                                        )}
+                                        ) ? reviews.totalCount : 0}
                                         %
                                     </dd>
                                 </div>
