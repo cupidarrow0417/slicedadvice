@@ -6,8 +6,7 @@ interface ExpertisePostInterface {
     description: string;
     pricePerSubmission: Number;
     submissionTypes: string[];
-    ratings: Number;
-    numOfReviews: Number;
+    numOfReviews: Number; // We need to dynamically update this field
     images: Array<Object>;
     category: String;
     reviews: Array<Object>;
@@ -47,10 +46,6 @@ const expertisePostSchema = new mongoose.Schema<ExpertisePostInterface>({
             ],
         },
     ],
-    ratings: {
-        type: Number,
-        default: 0,
-    },
     numOfReviews: {
         type: Number,
         default: 0,
