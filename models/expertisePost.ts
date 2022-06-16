@@ -86,7 +86,7 @@ const expertisePostSchema = new mongoose.Schema<ExpertisePostInterface>({
             ref: "Review",
             required: false,
             // The below option tells this plugin to always call `populate()` on
-            // `reviews`
+            // `review`
             autopopulate: true,
         },
     ],

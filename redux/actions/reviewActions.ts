@@ -12,8 +12,9 @@ import {
 interface SubmittedReviewDataInterface {
     rating: Number;
     description: String;
-    expertisePost: String;
-    user: String;
+    expertisePostId: String;
+    userId: String;
+    status: String;
 }
 
 
