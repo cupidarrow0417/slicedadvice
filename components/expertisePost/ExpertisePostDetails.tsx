@@ -44,10 +44,18 @@ const ExpertisePostDetails = () => {
                 return "#";
         }
     };
+    
+    const average = function() {
+        var average: number = 0;
+        for (var i = 0; i < (expertisePost.reviews).length; i++) { 
+            average += expertisePost.reviews[i].rating;
+        }
+        return average /= (expertisePost.reviews).length;
+    }
 
     const reviews = {
-        average: 3.4,
         totalCount: (expertisePost.reviews).length,
+        average: average(),
         counts: [
             { rating: 5, count: (expertisePost.reviews).filter((x: any) => x.rating==5).length },
             { rating: 4, count: (expertisePost.reviews).filter((x: any) => x.rating==4).length },
@@ -56,6 +64,8 @@ const ExpertisePostDetails = () => {
             { rating: 1, count: (expertisePost.reviews).filter((x: any) => x.rating==1).length },
         ],
     };
+
+
 
     // Used for the Breadcrumbs component
     const pages = [
