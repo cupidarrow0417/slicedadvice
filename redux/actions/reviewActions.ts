@@ -19,7 +19,7 @@ interface SubmittedReviewDataInterface {
 
 
 export const createReview =
-    (bookingData: SubmittedReviewDataInterface) => async (dispatch: any) => {
+    (reviewData: SubmittedReviewDataInterface) => async (dispatch: any) => {
         try {
             dispatch({
                 type: CREATE_REVIEW_REQUEST,
@@ -34,8 +34,8 @@ export const createReview =
             // CHANGE THE DATA THAT IS PULLED
             const { data } = await axios.post(
                 `/api/reviews`,
-                // bookingData, 
-                // config
+                reviewData, 
+                config
             );
 
             dispatch({
