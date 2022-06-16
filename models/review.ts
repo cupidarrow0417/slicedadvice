@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 // 1. Create an interface representing a document in MongoDB.
 interface ReviewInterface {
     rating: Number; // Stars 1-5
-    description: string;
+    content: string;
     expertisePost: mongoose.Schema.Types.ObjectId; // more specificity?
     user: mongoose.Schema.Types.ObjectId;
     createdAt: Date;
@@ -16,7 +16,7 @@ const reviewSchema = new mongoose.Schema<ReviewInterface>({
         default: 0,
         required: [true, "Please enter a rating."],
     },
-    description: {
+    content: {
         type: String,
         required: false,
         maxLength: [
