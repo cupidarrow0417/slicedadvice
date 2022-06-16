@@ -3,6 +3,7 @@ import ErrorHandler from "../utils/errorhandler";
 import catchAsyncErrors from "../middlewares/catchAsyncErrors";
 import Review from "../models/review";
 import APIFeatures from "../utils/apiFeatures";
+import ExpertisePost from "../models/expertisePost";
 
 //Create new Booking  => POST /api/bookings
 const createReview = catchAsyncErrors(
@@ -39,6 +40,28 @@ const createReview = catchAsyncErrors(
     }
 );
 
+//Get single expertisePost => GET /api/expertisePosts/:id
+const getSinglePostReviews = catchAsyncErrors(
+    async (
+        req: NextApiRequest,
+        res: NextApiResponse,
+        next: (arg0: ErrorHandler) => any
+    ) => {
+        const expertisePost = await ExpertisePost.findById(req.query.id);
+        const reviews = expertisePost.reviews;
+
+        if (!expertisePost) {
+            return next(new ErrorHandler("Room not found with this ID", 404));
+        }
+
+        res.status(200).json({
+            success: true,
+            reviews,
+        });
+    }
+);
+
+
 //Get all bookings => GET /api/reviews
 const allReviews = catchAsyncErrors(
     async (req: NextApiRequest, res: NextApiResponse, next: any) => {
@@ -63,4 +86,4 @@ const allReviews = catchAsyncErrors(
     }
 );
 
-export { createReview, allReviews };
+export { createReview, getSinglePostReviews, allReviews };

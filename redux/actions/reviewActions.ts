@@ -4,6 +4,8 @@ import {
     CREATE_REVIEW_REQUEST,
     CREATE_REVIEW_SUCCESS,
     CREATE_REVIEW_FAIL,
+    POST_REVIEWS_SUCCESS,
+    POST_REVIEWS_FAIL,
     ALL_REVIEWS_SUCCESS,
     ALL_REVIEWS_FAIL,
     CLEAR_ERRORS
@@ -51,12 +53,37 @@ export const createReview =
     };
 
 /**
+ * Get the details of a single expertise post
+ * @param {any} req - any
+ * @param {any} id - The id of the post to fetch.
+ */
+export const getPostReviews =
+(req: any, id: any) => async (dispatch: any) => {
+    try {
+        const { origin } = absoluteUrl(req);
+        const { data } = await axios.get(
+            `${origin}/api/expertisePosts/${id}/reviews`
+        );
+
+        dispatch({
+            type: POST_REVIEWS_SUCCESS,
+            payload: data.reviews,
+        });
+    } catch (error: any) {
+        dispatch({
+            type: POST_REVIEWS_FAIL,
+            payload: error.response.data.message,
+        });
+    }
+};
+
+/**
  * It's a function that takes in a request object and a current page number, and returns a function
  * that takes in a dispatch function, and dispatches an action to the reducer
  * @param {any} [req=null] - any = null, currentPage: Number = 1
  * @param {Number} [currentPage=1] - Number = 1
  */
-export const getReviews =
+export const getAllReviews =
     (req: any = null, currentPage: Number = 1) =>
     async (dispatch: any) => {
         try {
@@ -76,13 +103,12 @@ export const getReviews =
                 },
             });
 
-            // Basic general query of bookings
             dispatch({
                 type: ALL_REVIEWS_SUCCESS,
                 payload: data,
             });
         } catch (error: any) {
-            // Basic general query of expertise posts.
+
             dispatch({
                 type: ALL_REVIEWS_FAIL,
                 payload: error.response.data.message,

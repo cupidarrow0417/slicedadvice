@@ -32,7 +32,7 @@ export const createReviewReducer = (state = {}, action: any) => {
             return {
                 loading: false,
                 success: true,
-                bookingId: action.payload.bookingId,
+                reviewId: action.payload.reviewId,
             };
         case CREATE_REVIEW_FAIL:
             return {
@@ -57,18 +57,18 @@ export const createReviewReducer = (state = {}, action: any) => {
  * @param {any} action - any
  * @returns The state is being returned.
  */
-export const allBookingsReducer = (
+export const allReviewsReducer = (
     state = { bookings: [] },
     action: any
 ) => {
     switch (action.type) {
         case ALL_REVIEWS_SUCCESS:
             return {
-                allBookingsCount: action.payload.bookingsCount,
+                allReviewsCount: action.payload.reviewsCount,
                 resPerPage: action.payload.resPerPage,
-                filteredAllBookingsCount:
-                    action.payload.filteredBookingsCount,
-                allBookings: action.payload.bookings,
+                filteredAllReviewsCount:
+                    action.payload.filteredReviewsCount,
+                allReviews: action.payload.reviews,
             };
         case ALL_REVIEWS_FAIL:
             return {
