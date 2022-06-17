@@ -19,6 +19,7 @@
     "bcryptjs": "^2.4.3",
     "cloudinary": "^1.29.0",
     "micro": "^9.3.4",
+    "moment": "^2.29.3",
     "mongoose": "^6.2.8",
     "mongoose-autopopulate": "^0.16.1",
     "next": "12.1.0",

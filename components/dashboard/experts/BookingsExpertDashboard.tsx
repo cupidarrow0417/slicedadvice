@@ -5,6 +5,7 @@ import { getBookings } from "../../../redux/actions/bookingActions";
 import { loadUser } from "../../../redux/actions/userActions";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import DashboardHeader from "../DashboardHeader";
+import PreviewSingleTextResponseBooking from "./bookingTypes/singleTextResponse/PreviewSingleTextResponseBooking";
 
 const BookingsExpertDashboard = () => {
     const {
@@ -28,33 +29,32 @@ const BookingsExpertDashboard = () => {
     }, [allBookingsError, allBookings]);
     return (
         <>
-            {/* Page title & actions */}
-            <div className="bg-white px-4 py-4 flex items-center justify-between sm:px-6 rounded-t-xl lg:rounded-tl-none lg:px-8 border-b-[1px] border-black/10">
+            <div className="bg-white w-full h-[4.5rem] px-4 py-4 flex items-center justify-between sm:px-6 rounded-t-xl lg:rounded-tl-none lg:px-8 border-b-[1px] border-black/10">
                 <DashboardHeader
                     dashboardType="Expert"
                     dashboardPage="Bookings"
                 />
-
-                <button
-                    type="button"
-                    className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-xs md:text-sm font-medium rounded-md text-white bg-brand-primary-light hover:bg-brand-primary-light/90"
-                >
-                    New Post
-                </button>
             </div>
-            {/* {
-      singleTextResponse: [Object],
-      _id: '6287e2137f99ba689399a56a',
-      expertisePost: [Object],
-      bookingType: 'Single Text Response',
-      customer: [Object],
-      status: 'Pending Acceptance',
-      stripePaymentIntentId: 'pi_3L1aqJBEcP4VNna21rraFw5x',
-      createdAt: '2022-05-20T18:46:43.050Z',
-      __v: 0
-    }, */}
-            <div>
-                {/* <p>{allBookings}</p> */}
+            {/* Main content */}
+            <div className="flex w-full h-[calc(100%-4.5rem)]">
+                <div className="flex flex-col gap-4 overflow-auto h-full w-2/5 p-4 border-r border-black/10">
+                    {allBookings !== null &&
+                        allBookings !== undefined &&
+                        allBookings.length > 0 &&
+                        allBookings.map((booking: any) => (
+                            <>
+                                <PreviewSingleTextResponseBooking
+                                    key={booking._id}
+                                    booking={booking}
+                                />
+                                <PreviewSingleTextResponseBooking
+                                    booking={booking}
+                                />
+                            </>
+                        ))}
+                </div>
+                <div className="h-full w-3/5 p-4">
+                </div>
             </div>
         </>
     );

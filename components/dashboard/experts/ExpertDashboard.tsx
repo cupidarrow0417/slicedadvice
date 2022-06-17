@@ -106,7 +106,7 @@ export default function ExpertDashboard({
                 </div>
                 {/* Main column */}
                 <div className="flex flex-col w-full">
-                    <main className="flex-1 border-[1px] rounded-xl lg:rounded-r-xl lg:rounded-l-none">
+                    <main className="flex-1 relative border-[1px] rounded-xl lg:rounded-r-xl lg:rounded-l-none overflow-hidden">
                         {currentPage === "Home" && <HomeExpertDashboard />}
                         {currentPage === "Posts" && chargesEnabled && (
                             <YourPostsExpertDashboard />
