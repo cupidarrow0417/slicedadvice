@@ -29,35 +29,37 @@ const PreviewSingleTextResponseBooking = ({ booking }: any) => {
 
     let parsedDate: any = moment(booking.createdAt).format("MMM Do, YYYY");
     return (
-        <div className="flex flex-col justify-between gap-4 border rounded-md w-full h-fit p-4 shadow-sm bg-white">
-            <div className="flex justify-between">
-                {/* Expertise Post and date */}
+        <div className="flex flex-col justify-between gap-4 border-y md:border rounded-lg w-full h-fit p-6 shadow-sm bg-white">
+            <div className="flex justify-between items-center">
+                {/* Booking Type and date */}
+                <p className="text-lg font-bold text-brand-primary-light">{booking.bookingType}</p>
+                <p className="text-xs opacity-50">{parsedDate}</p>
+            </div>
+            <div className="">
+                {/* Customer name and submission */}
+                From: {booking.customer.name}
+                <div className="p-2 w-full rounded-md border border-black/10 ">
+                    {booking.singleTextResponse.customerSubmission.slice(0, 75)}
+                    {booking.singleTextResponse.customerSubmission.length > 75 &&
+                            "..."}
+                </div>
+            </div>
+            <div className="flex justify-between items-center gap-2">
+                {/* Expertise Post and Action Buttons */}
+                <div className="flex gap-1">
                 <Link
                     href={`/expertisePost/${booking.expertisePost._id}`}
                     passHref={true}
                 >
                     <a
                         target="_blank"
-                        className="text-xs max-w-[10rem] text-brand-primary-light hover:opacity-70"
+                        className="text-xs max-w-[10rem] opacity-60 hover:opacity-100"
                     >
                         {booking.expertisePost.title.slice(0, slicePoint)}
                         {booking.expertisePost["title"].length > slicePoint &&
                             "..."}
                     </a>
                 </Link>
-                <p className="text-xs opacity-50">{parsedDate}</p>
-            </div>
-            <div>
-                From: {booking.customer.name}
-                <div className="italic p-2 w-full rounded-md border border-black/10 ">
-                    {booking.singleTextResponse.customerSubmission.slice(0, 75)}
-                    {booking.singleTextResponse.customerSubmission.length > 75 &&
-                            "..."}
-                </div>
-            </div>
-            <div className="flex justify-between items-center">
-                <p className="text-xs opacity-50">{booking.bookingType}</p>
-                <div className="flex gap-1">
                     <button
                         type="button"
                         className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-brand-primary-light hover:bg-brand-primary-light/90"

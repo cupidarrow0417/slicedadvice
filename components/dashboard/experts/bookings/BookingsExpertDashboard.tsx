@@ -1,10 +1,10 @@
 import { ChevronDownIcon } from "@heroicons/react/solid";
 import React, { useEffect } from "react";
 import { toast } from "react-toastify";
-import { getBookings } from "../../../redux/actions/bookingActions";
-import { loadUser } from "../../../redux/actions/userActions";
-import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
-import DashboardHeader from "../DashboardHeader";
+import { getBookings } from "../../../../redux/actions/bookingActions";
+import { loadUser } from "../../../../redux/actions/userActions";
+import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
+import DashboardHeader from "../../DashboardHeader";
 import PreviewSingleTextResponseBooking from "./bookingTypes/singleTextResponse/PreviewSingleTextResponseBooking";
 
 const BookingsExpertDashboard = () => {
@@ -37,7 +37,7 @@ const BookingsExpertDashboard = () => {
             </div>
             {/* Main content */}
             <div className="flex w-full h-[calc(100%-4.5rem)]">
-                <div className="flex flex-col gap-4 overflow-auto h-full w-2/5 p-4 border-r border-black/10">
+                <div className="flex flex-col gap-2 overflow-auto h-full w-full md:w-2/5 p-2 px-0 md:p-2 md:border-r border-black/10">
                     {allBookings !== null &&
                         allBookings !== undefined &&
                         allBookings.length > 0 &&
@@ -47,13 +47,13 @@ const BookingsExpertDashboard = () => {
                                     key={booking._id}
                                     booking={booking}
                                 />
-                                <PreviewSingleTextResponseBooking
-                                    booking={booking}
-                                />
                             </>
                         ))}
                 </div>
-                <div className="h-full w-3/5 p-4">
+                <div className="hidden md:flex h-full w-3/5 p-2">
+                    <div className="w-full h-full">
+
+                    </div>
                 </div>
             </div>
         </>
