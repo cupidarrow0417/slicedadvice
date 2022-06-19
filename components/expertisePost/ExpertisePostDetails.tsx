@@ -11,12 +11,18 @@ import RatingsWidget from "../RatingsWidget";
 import Loader from "../layout/Loader";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { getPostReviews } from "../../redux/actions/reviewActions";
 
 const ExpertisePostDetails = () => {
     const dispatch = useAppDispatch();
     const { query: queryParams } = useRouter();
-    const { expertisePost, error } = useAppSelector(
+
+    const { expertisePost, error: expertisePostError } = useAppSelector(
         (state) => state.expertisePostDetails
+    );
+    
+    const { reviews: test, error: reviewsError } = useAppSelector(
+        (state) => state.postReviews
     );
     
     // Check if user is logged in and is the owner of this post.
@@ -77,11 +83,19 @@ const ExpertisePostDetails = () => {
     ];
 
     useEffect(() => {
-        if (error) {
-            toast.error(error);
+        if (expertisePost) {
+            toast.error(expertisePost);
             dispatch(clearErrors());
         }
-    }, [error]);
+    }, [expertisePost]);
+
+    useEffect(() => {
+        if (test) {
+            toast.error(test);
+            dispatch(clearErrors());
+        }
+    }, [test]);
+
     return (
         <div className="">
             <Head>

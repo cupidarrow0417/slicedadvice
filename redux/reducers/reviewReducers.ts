@@ -2,6 +2,8 @@ import {
     CREATE_REVIEW_REQUEST,
     CREATE_REVIEW_SUCCESS,
     CREATE_REVIEW_FAIL,
+    POST_REVIEWS_SUCCESS,
+    POST_REVIEWS_FAIL,
     ALL_REVIEWS_SUCCESS,
     ALL_REVIEWS_FAIL,
     CLEAR_ERRORS
@@ -57,8 +59,42 @@ export const createReviewReducer = (state = {}, action: any) => {
  * @param {any} action - any
  * @returns The state is being returned.
  */
+ export const getPostReviewsReducer = (
+    state = { reviews: [] },
+    action: any
+) => {
+    switch (action.type) {
+        case POST_REVIEWS_SUCCESS:
+            return {
+                // reviewsCount: action.payload.reviewsCount,
+                // resPerPage: action.payload.resPerPage,
+                // filteredAllReviewsCount:
+                //     action.payload.filteredReviewsCount,
+                reviews: action.payload.reviews,
+            };
+        case POST_REVIEWS_FAIL:
+            return {
+                error: action.payload,
+            };
+        case CLEAR_ERRORS:
+            return {
+                ...state,
+                error: null,
+            };
+        default:
+            return state;
+    }
+};
+
+/**
+ * It returns a new state object with the properties of the old state object and the new properties of
+ * the action object
+ * @param state - This is the initial state of the reducer.
+ * @param {any} action - any
+ * @returns The state is being returned.
+ */
 export const allReviewsReducer = (
-    state = { bookings: [] },
+    state = { reviews: [] },
     action: any
 ) => {
     switch (action.type) {

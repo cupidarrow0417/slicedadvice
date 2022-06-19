@@ -40,17 +40,16 @@ const createReview = catchAsyncErrors(
     }
 );
 
-//Get single expertisePost => GET /api/expertisePosts/:id
+//Get single expertisePost => GET /api/expertisePosts/:id/reviews
 const getSinglePostReviews = catchAsyncErrors(
     async (
         req: NextApiRequest,
         res: NextApiResponse,
         next: (arg0: ErrorHandler) => any
     ) => {
-        const expertisePost = await ExpertisePost.findById(req.query.id);
-        const reviews = expertisePost.reviews;
+        const reviews = await Review.find({expertisePostID: req.query.id})
 
-        if (!expertisePost) {
+        if (!reviews) {
             return next(new ErrorHandler("Room not found with this ID", 404));
         }
 

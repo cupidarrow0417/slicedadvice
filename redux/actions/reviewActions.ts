@@ -64,7 +64,6 @@ export const getPostReviews =
         const { data } = await axios.get(
             `${origin}/api/expertisePosts/${id}/reviews`
         );
-
         dispatch({
             type: POST_REVIEWS_SUCCESS,
             payload: data.reviews,
