@@ -101,7 +101,7 @@ const ExpertisePostDetails = () => {
                 <h1 className="text-2xl font-semibold">
                     {expertisePost["title"]}
                 </h1>
-                <RatingsWidget expertisePost={expertisePost} />
+                <RatingsWidget reviewsTotal={reviewsTotal} reviewsAverage = {reviewsAverage} />
 
                 <div className="flex flex-col lg:flex-row justify-start lg:justify-around items-start w-full gap-7 lg:-mt-2">
                     <div className="expertisePostDetailImageWrapper w-4/5 max-w-lg self-center">

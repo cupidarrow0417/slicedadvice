@@ -1,16 +1,16 @@
 
 
-const RatingsWidget = ({ expertisePost }: any) => {
+const RatingsWidget = ({ reviewsTotal, reviewsAverage }: any,) => {
   return (
     <div className="flex justify-center items-center gap-1">
         <div className="flex mt-[2px]">
             {[0, 1, 2, 3, 4].map((rating) => (
-                expertisePost?.ratings > rating 
+                reviewsAverage > rating 
                 ? <RatingStar key={rating} fill={true}/>
                 : <RatingStar key={rating} fill={false}/>
             ))}
         </div>
-        <span id="no_of_reviews">({expertisePost.numOfReviews} Reviews)</span>
+        <span id="no_of_reviews">({reviewsTotal} Reviews)</span>
     </div>
   )
 }
