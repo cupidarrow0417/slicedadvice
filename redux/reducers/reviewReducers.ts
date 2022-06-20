@@ -70,7 +70,7 @@ export const createReviewReducer = (state = {}, action: any) => {
                 // resPerPage: action.payload.resPerPage,
                 // filteredAllReviewsCount:
                 //     action.payload.filteredReviewsCount,
-                reviews: action.payload.reviews,
+                reviews: action.payload,
             };
         case POST_REVIEWS_FAIL:
             return {
