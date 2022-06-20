@@ -15,8 +15,13 @@ import { useRouter } from "next/router";
 const ExpertisePostDetails = () => {
     const dispatch = useAppDispatch();
     const { query: queryParams } = useRouter();
-    const { expertisePost, error } = useAppSelector(
+
+    const { expertisePost, error: expertisePostError } = useAppSelector(
         (state) => state.expertisePostDetails
+    );
+    
+    const { reviews, error: reviewsError } = useAppSelector(
+        (state) => state.postReviews
     );
     
     // Check if user is logged in and is the owner of this post.
@@ -45,6 +50,24 @@ const ExpertisePostDetails = () => {
         }
     };
 
+
+    const reviewsTotal = reviews.length;
+    const reviewsAverage = (function() {
+        var average: number = 0;
+        for (var i = 0; i < (reviews).length; i++) { 
+            average += reviews[i].rating;
+        }
+        return average /= reviews.length;
+    }());
+    const reviewsCount = [
+            { rating: 5, count: reviews.filter((x: any) => x.rating==5).length },
+            { rating: 4, count: reviews.filter((x: any) => x.rating==4).length },
+            { rating: 3, count: reviews.filter((x: any) => x.rating==3).length },
+            { rating: 2, count: reviews.filter((x: any) => x.rating==2).length },
+            { rating: 1, count: reviews.filter((x: any) => x.rating==1).length },
+        ];
+
+
     // Used for the Breadcrumbs component
     const pages = [
         {
@@ -55,11 +78,19 @@ const ExpertisePostDetails = () => {
     ];
 
     useEffect(() => {
-        if (error) {
-            toast.error(error);
+        if (expertisePost) {
+            toast.error(expertisePost);
             dispatch(clearErrors());
         }
-    }, [error]);
+    }, [expertisePost]);
+
+    useEffect(() => {
+        if (reviewsError) {
+            toast.error(reviewsError);
+            dispatch(clearErrors());
+        }
+    }, [reviewsError]);
+
     return (
         <div className="">
             <Head>
@@ -70,7 +101,7 @@ const ExpertisePostDetails = () => {
                 <h1 className="text-2xl font-semibold">
                     {expertisePost["title"]}
                 </h1>
-                <RatingsWidget expertisePost={expertisePost} />
+                <RatingsWidget reviewsTotal={reviewsTotal} reviewsAverage = {reviewsAverage} />
 
                 <div className="flex flex-col lg:flex-row justify-start lg:justify-around items-start w-full gap-7 lg:-mt-2">
                     <div className="expertisePostDetailImageWrapper w-4/5 max-w-lg self-center">
@@ -155,7 +186,7 @@ const ExpertisePostDetails = () => {
                                     <StarIcon
                                         key={rating}
                                         className={classNames(
-                                            reviews.average > rating
+                                            reviewsAverage > rating
                                                 ? "text-yellow-400"
                                                 : "text-gray-300",
                                             "flex-shrink-0 h-5 w-5"
@@ -165,11 +196,11 @@ const ExpertisePostDetails = () => {
                                 ))}
                             </div>
                             <p className="sr-only">
-                                {reviews.average} out of 5 stars
+                                {reviewsAverage} out of 5 stars
                             </p>
                         </div>
                         <p className="ml-2 text-sm text-gray-900">
-                            Based on {reviews.totalCount} reviews
+                            Based on {reviewsTotal} reviews
                         </p>
                     </div>
 
@@ -177,7 +208,7 @@ const ExpertisePostDetails = () => {
                         <h3 className="sr-only">Review data</h3>
 
                         <dl className="space-y-3">
-                            {reviews.counts.map((count) => (
+                            {reviewsCount.map((count) => (
                                 <div
                                     key={count.rating}
                                     className="flex items-center text-sm"
@@ -210,7 +241,7 @@ const ExpertisePostDetails = () => {
                                                     <div
                                                         className="absolute inset-y-0 bg-yellow-400 border border-yellow-400 rounded-full"
                                                         style={{
-                                                            width: `calc(${count.count} / ${reviews.totalCount} * 100%)`,
+                                                            width: `calc(${count.count} / ${reviewsTotal} * 100%)`,
                                                         }}
                                                     />
                                                 ) : null}
@@ -218,10 +249,7 @@ const ExpertisePostDetails = () => {
                                         </div>
                                     </dt>
                                     <dd className="ml-3 w-10 text-right tabular-nums text-sm text-gray-900">
-                                        {Math.round(
-                                            (count.count / reviews.totalCount) *
-                                                100
-                                        )}
+                                        {Math.round(count.count / reviewsTotal * 100)}
                                         %
                                     </dd>
                                 </div>
@@ -252,17 +280,17 @@ const ExpertisePostDetails = () => {
 
                     <div className="flow-root">
                         <div className="-my-12 divide-y divide-gray-200">
-                            {reviews.featured.map((review) => (
-                                <div key={review.id} className="py-12">
+                            {reviews.map((review: any) => (
+                                <div key={review._id} className="py-12">
                                     <div className="flex items-center">
                                         <img
-                                            src={review.avatarSrc}
-                                            alt={`${review.author}.`}
+                                            src={review.user.avatar.url}
+                                            alt={`${review.user}.`}
                                             className="h-12 w-12 rounded-full"
                                         />
                                         <div className="ml-4">
                                             <h4 className="text-sm font-bold text-gray-900">
-                                                {review.author}
+                                                {review.user.name}
                                             </h4>
                                             <div className="mt-1 flex items-center">
                                                 {[0, 1, 2, 3, 4].map(
@@ -311,50 +339,5 @@ const ExpertisePostDetails = () => {
 function classNames(...classes: any[]) {
     return classes.filter(Boolean).join(" ");
 }
-
-const reviews = {
-    average: 4,
-    totalCount: 1624,
-    counts: [
-        { rating: 5, count: 1019 },
-        { rating: 4, count: 162 },
-        { rating: 3, count: 97 },
-        { rating: 2, count: 199 },
-        { rating: 1, count: 147 },
-    ],
-    featured: [
-        {
-            id: 1,
-            rating: 5,
-            content: `
-        <p>This is the bag of my dreams. I took it on my last vacation and was able to fit an absurd amount of snacks for the many long and hungry flights.</p>
-      `,
-            author: "Emily Selman",
-            avatarSrc:
-                "https://images.unsplash.com/photo-1502685104226-ee32379fefbe?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=256&h=256&q=80",
-        },
-        {
-            id: 2,
-            rating: 4,
-            content: `
-        <p>This is the bag of my dreams. I took it on my last vacation and was able to fit an absurd amount of snacks for the many long and hungry flights.</p>
-      `,
-            author: "Emily Selman",
-            avatarSrc:
-                "https://images.unsplash.com/photo-1502685104226-ee32379fefbe?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=256&h=256&q=80",
-        },
-        {
-            id: 3,
-            rating: 5,
-            content: `
-        <p>This is the bag of my dreams. I took it on my last vacation and was able to fit an absurd amount of snacks for the many long and hungry flights.</p>
-      `,
-            author: "Emily Selman",
-            avatarSrc:
-                "https://images.unsplash.com/photo-1502685104226-ee32379fefbe?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=256&h=256&q=80",
-        },
-        // More reviews...
-    ],
-};
 
 export default ExpertisePostDetails;

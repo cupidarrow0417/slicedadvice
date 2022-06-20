@@ -21,6 +21,11 @@ import {
     createBookingReducer,
     allBookingsReducer,
 } from "./bookingReducers"
+import {
+    createReviewReducer,
+    getPostReviewsReducer,
+    allReviewsReducer,
+} from "./reviewReducers"
 
 /* Creating a new reducer that combines all of the individual reducers into one. */
 const reducer = combineReducers({
@@ -47,6 +52,11 @@ const reducer = combineReducers({
     cacheBookingData: cacheBookingDataReducer,
     createBooking: createBookingReducer,
     allBookings: allBookingsReducer,
+
+    // Review global state
+    createReview: createReviewReducer,
+    postReviews: getPostReviewsReducer,
+    allReviews: allReviewsReducer
 });
 
 export default reducer;
