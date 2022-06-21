@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import moment from "moment";
 import Link from "next/link";
+import Router from "next/router";
 {
     /* Example booking as of June 16, 2022 {
       singleTextResponse: [Object],
@@ -71,7 +72,7 @@ const PreviewSingleTextResponseBooking = ({ booking }: any) => {
                         type="button"
                         className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-brand-primary-light hover:bg-brand-primary-light/90"
                         // disabled={}
-                        // onClick={() => }
+                        onClick={() => Router.push(`/dashboard/expert/bookings?booking=${booking._id}`, undefined, { shallow: true })}
                     >
                         Open
                     </button>
