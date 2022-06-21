@@ -5,6 +5,7 @@ import { getBookings } from "../../../../redux/actions/bookingActions";
 import { loadUser } from "../../../../redux/actions/userActions";
 import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
 import DashboardHeader from "../../DashboardHeader";
+import DetailsSingleTextResponseBooking from "./bookingTypes/singleTextResponse/DetailsSingleTextResponseBooking";
 import PreviewSingleTextResponseBooking from "./bookingTypes/singleTextResponse/PreviewSingleTextResponseBooking";
 
 const BookingsExpertDashboard = () => {
@@ -50,9 +51,9 @@ const BookingsExpertDashboard = () => {
                             </>
                         ))}
                 </div>
-                <div className="hidden md:flex h-full w-3/5 p-2">
+                <div className="hidden md:flex h-full w-3/5 p-8 overflow-auto">
                     <div className="w-full h-full">
-
+                            <DetailsSingleTextResponseBooking booking={allBookings[1]}/>
                     </div>
                 </div>
             </div>

@@ -29,25 +29,31 @@ const PreviewSingleTextResponseBooking = ({ booking }: any) => {
 
     let parsedDate: any = moment(booking.createdAt).format("MMM Do, YYYY");
     return (
-        <div className="flex flex-col justify-between gap-4 border-y md:border rounded-lg w-full h-fit p-6 shadow-sm bg-white">
+        <div className="flex flex-col justify-between gap-3 border-y md:border rounded-lg w-full h-fit p-5 shadow-sm bg-white">
             <div className="flex justify-between items-center">
+                <div className="text-brand-primary-light">From: {booking.customer.name}</div>
+                
                 {/* Booking Type and date */}
-                <p className="text-lg font-bold text-brand-primary-light">{booking.bookingType}</p>
+                {/* <p className="text-lg font-bold text-brand-primary-light">
+                    Type: {booking.bookingType}
+                </p> */}
                 <p className="text-xs opacity-50">{parsedDate}</p>
             </div>
             <div className="">
                 {/* Customer name and submission */}
-                From: {booking.customer.name}
+                {/* From: {booking.customer.name} */}
                 <div className="p-2 w-full rounded-md border border-black/10 ">
                     {booking.singleTextResponse.customerSubmission.slice(0, 75)}
-                    {booking.singleTextResponse.customerSubmission.length > 75 &&
-                            "..."}
+                    {booking.singleTextResponse.customerSubmission.length >
+                        75 && "..."}
                 </div>
             </div>
             <div className="flex justify-between items-center gap-2">
                 {/* Expertise Post and Action Buttons */}
-                <div className="flex gap-1">
-                <Link
+                <p className="text-sm opacity-50">
+                    {booking.bookingType} Booking
+                </p>
+                {/* <Link
                     href={`/expertisePost/${booking.expertisePost._id}`}
                     passHref={true}
                 >
@@ -59,23 +65,24 @@ const PreviewSingleTextResponseBooking = ({ booking }: any) => {
                         {booking.expertisePost["title"].length > slicePoint &&
                             "..."}
                     </a>
-                </Link>
+                </Link> */}
+                <div className="flex gap-1">
                     <button
                         type="button"
                         className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-brand-primary-light hover:bg-brand-primary-light/90"
                         // disabled={}
                         // onClick={() => }
                     >
-                        Accept
+                        Open
                     </button>
-                    <button
+                    {/* <button
                         type="button"
                         className="inline-flex items-center px-4 py-2 border border-black/10 text-sm font-medium rounded-md text-black bg-white hover:opacity-70"
                         // disabled={}
                         // onClick={() => }
                     >
                         Reject
-                    </button>
+                    </button> */}
                 </div>
             </div>
         </div>
