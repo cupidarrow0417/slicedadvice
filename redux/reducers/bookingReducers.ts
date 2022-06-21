@@ -8,6 +8,9 @@ import {
     CREATE_BOOKING_FAIL,
     ALL_BOOKINGS_SUCCESS,
     ALL_BOOKINGS_FAIL,
+    UPDATE_BOOKING_REQUEST,
+    UPDATE_BOOKING_SUCCESS,
+    UPDATE_BOOKING_FAIL,
     CLEAR_ERRORS,
 } from "../constants/bookingConstants";
 
@@ -121,21 +124,59 @@ export const createBookingReducer = (state = {}, action: any) => {
  * @param {any} action - any
  * @returns The state is being returned.
  */
-export const allBookingsReducer = (
-    state = { bookings: [] },
-    action: any
-) => {
+export const allBookingsReducer = (state = {}, action: any) => {
     switch (action.type) {
         case ALL_BOOKINGS_SUCCESS:
             return {
                 allBookingsCount: action.payload.bookingsCount,
                 resPerPage: action.payload.resPerPage,
-                filteredAllBookingsCount:
-                    action.payload.filteredBookingsCount,
+                filteredAllBookingsCount: action.payload.filteredBookingsCount,
                 allBookings: action.payload.bookings,
             };
         case ALL_BOOKINGS_FAIL:
             return {
+                error: action.payload,
+            };
+        case CLEAR_ERRORS:
+            return {
+                ...state,
+                error: null,
+            };
+        default:
+            return state;
+    }
+};
+
+/**
+ * It returns an object with a loading property set to true if the action type is
+ * UPDATE_BOOKING_REQUEST, an object with a loading property set to false, a success property set to
+ * true, and a booking property set to the payload if the action type is UPDATE_BOOKING_SUCCESS, and an
+ * object with a loading property set to false, a success property set to false, and an error property
+ * set to the payload if the action type is UPDATE_BOOKING_FAIL
+ * @param state - This is the initial state of the reducer.
+ * @param {any} action - any - This is the action that is dispatched from the component.
+ * @returns The reducer is returning an object with the following properties:
+ * loading: boolean
+ * success: boolean
+ * booking: object
+ * error: string
+ */
+export const updateBookingReducer = (state = {}, action: any) => {
+    switch (action.type) {
+        case UPDATE_BOOKING_REQUEST:
+            return {
+                loading: true,
+            };
+        case UPDATE_BOOKING_SUCCESS:
+            return {
+                loading: false,
+                success: true,
+                booking: action.payload,
+            };
+        case UPDATE_BOOKING_FAIL:
+            return {
+                loading: false,
+                success: false,
                 error: action.payload,
             };
         case CLEAR_ERRORS:

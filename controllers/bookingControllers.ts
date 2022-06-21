@@ -21,8 +21,14 @@ const createStripePaymentIntent = catchAsyncErrors(
         next: (arg0: ErrorHandler) => any
     ) => {
         // Most of these will be placed into the metadata
-        const { price, bookingType, expertisePostId, expertId, customerId, status } =
-            req.body;
+        const {
+            price,
+            bookingType,
+            expertisePostId,
+            expertId,
+            customerId,
+            status,
+        } = req.body;
 
         // Set your secret key. Remember to switch to your live secret key in production.
         // See your keys here: https://dashboard.stripe.com/apikeys
@@ -128,4 +134,45 @@ const allBookings = catchAsyncErrors(
     }
 );
 
-export { createStripePaymentIntent, createBooking, allBookings };
+//Update a booking => PUT /api/bookings/[id]
+const updateBooking = catchAsyncErrors(
+    async (req: any, res: NextApiResponse, next: any) => {
+        const {
+            bookingType,
+            expertisePost,
+            expert,
+            customer,
+            status,
+            singleTextResponse,
+            stripePaymentIntentId,
+            _id,
+        } = req.body;
+        
+
+
+        const booking = await Booking.findByIdAndUpdate(
+            _id,
+            {
+                bookingType,
+                expert,
+                customer,
+                expertisePost,
+                status,
+                singleTextResponse,
+                stripePaymentIntentId,
+            },
+            { new: true }
+        );
+
+        if (!booking) {
+            return next(new ErrorHandler("Booking could not be updated", 400));
+        }
+
+        res.status(200).json({
+            success: true,
+            booking,
+        });
+    }
+);
+
+export { createStripePaymentIntent, createBooking, allBookings, updateBooking };

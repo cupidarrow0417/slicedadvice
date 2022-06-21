@@ -48,12 +48,10 @@ const bookingSchema = new mongoose.Schema<BookingInterface>({
     status: {
         type: String,
         required: [true, "Please enter a status."],
-        default: "Pending Acceptance",
+        default: "Not Completed",
         enum: {
             values: [
-                "Pending Acceptance",
-                "Accepted, Not Completed",
-                "Rejected",
+                "Not Completed",
                 "Completed",
             ],
             message: "Please select a valid status for this booking.",
@@ -80,10 +78,10 @@ const bookingSchema = new mongoose.Schema<BookingInterface>({
         },
         expertResponse: {
             type: String,
-            maxLength: [
-                1000,
-                "The expert's response to this single text response booking cannot be more than 1000 characters",
-            ],
+            // maxLength: [
+            //     1000,
+            //     "The expert's response to this single text response booking cannot be more than 1000 characters",
+            // ],
         }
     },
     createdAt: {

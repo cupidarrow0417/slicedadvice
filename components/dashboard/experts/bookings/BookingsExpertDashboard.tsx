@@ -43,17 +43,17 @@ const BookingsExpertDashboard = () => {
                         allBookings !== undefined &&
                         allBookings.length > 0 &&
                         allBookings.map((booking: any) => (
-                            <>
-                                <PreviewSingleTextResponseBooking
-                                    key={booking._id}
-                                    booking={booking}
-                                />
-                            </>
+                            <PreviewSingleTextResponseBooking
+                                key={booking._id}
+                                booking={booking}
+                            />
                         ))}
                 </div>
-                <div className="hidden md:flex h-full w-3/5 p-8 overflow-auto">
+                <div className="hidden md:flex h-full w-3/5 p-2 overflow-auto">
                     <div className="w-full h-full">
-                            <DetailsSingleTextResponseBooking booking={allBookings[1]}/>
+                        <DetailsSingleTextResponseBooking
+                            booking={allBookings[1]}
+                        />
                     </div>
                 </div>
             </div>

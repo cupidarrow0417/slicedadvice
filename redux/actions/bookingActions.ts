@@ -11,6 +11,9 @@ import {
     CREATE_BOOKING_FAIL,
     ALL_BOOKINGS_SUCCESS,
     ALL_BOOKINGS_FAIL,
+    UPDATE_BOOKING_REQUEST,
+    UPDATE_BOOKING_SUCCESS,
+    UPDATE_BOOKING_FAIL,
 } from "../constants/bookingConstants";
 
 interface CacheBookingDataInterface {
@@ -32,6 +35,10 @@ interface SubmittedBookingDataInterface {
     customerId: String;
     status: String;
     customerSubmission: String;
+    singleTextResponse: {
+        customerSubmission: String | null;
+        expertResponse: String | null;
+    };
     stripePaymentIntentId: String;
 }
 
@@ -124,7 +131,13 @@ export const createBooking =
  * @param {Number} [currentPage=1] - Number = 1
  */
 export const getBookings =
-    (req: any = null, currentPage: Number = 1, title?: String, customer?: String, expert?: String) =>
+    (
+        req: any = null,
+        currentPage: Number = 1,
+        title?: String,
+        customer?: String,
+        expert?: String
+    ) =>
     async (dispatch: any) => {
         try {
             const { origin } = absoluteUrl(req);
@@ -136,7 +149,7 @@ export const getBookings =
             // NOTE: having the config for axios is important.
             // https://stackoverflow.com/a/69058105/16435056
             // Requests originating from getServerSideProps, when passed
-            // into Axios, will be STRIPPED of the cookie headers. 
+            // into Axios, will be STRIPPED of the cookie headers.
             // Without cookie headers, authentication using getSession is impossible.
             const { data } = await axios.get(link, {
                 withCredentials: true,
@@ -154,6 +167,43 @@ export const getBookings =
             // Basic general query of expertise posts.
             dispatch({
                 type: ALL_BOOKINGS_FAIL,
+                payload: error.response.data.message,
+            });
+        }
+    };
+
+/**
+ * It takes a bookingId and bookingData as arguments, and dispatches an action to update the booking
+ * with the given bookingId with the given bookingData
+ * @param {String} bookingId - The id of the booking to be updated.
+ * @param {any} bookingData - This is the data that we want to update.
+ */
+export const updateBooking =
+    (bookingId: String, bookingData: any) =>
+    async (dispatch: any) => {
+        try {
+            dispatch({
+                type: UPDATE_BOOKING_REQUEST,
+            });
+            const config = {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            };
+
+            const { data } = await axios.put(
+                `/api/bookings/${bookingId}`,
+                bookingData,
+                config
+            );
+
+            dispatch({
+                type: UPDATE_BOOKING_SUCCESS,
+                payload: data,
+            });
+        } catch (error: any) {
+            dispatch({
+                type: UPDATE_BOOKING_FAIL,
                 payload: error.response.data.message,
             });
         }

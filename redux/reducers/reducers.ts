@@ -20,6 +20,7 @@ import {
     cacheBookingDataReducer,
     createBookingReducer,
     allBookingsReducer,
+    updateBookingReducer,
 } from "./bookingReducers"
 import {
     createReviewReducer,
@@ -52,6 +53,7 @@ const reducer = combineReducers({
     cacheBookingData: cacheBookingDataReducer,
     createBooking: createBookingReducer,
     allBookings: allBookingsReducer,
+    updateBooking: updateBookingReducer,
 
     // Review global state
     createReview: createReviewReducer,
