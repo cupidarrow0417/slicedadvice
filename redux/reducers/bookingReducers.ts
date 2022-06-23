@@ -14,6 +14,42 @@ import {
     CLEAR_ERRORS,
 } from "../constants/bookingConstants";
 
+
+// MAIN BOOKING REDUCER HERE. HOLDS WHATEVER BOOKINGS WE RETRIEVED FROM THE SERVER, IN THE GLOBAL STATE,
+// AND CHANGES WHENEVER WE MAKE CRUD CHANGES TO THE BOOKINGS.
+/**
+ * 
+ * @param state - This is the initial state of the reducer.
+ * @param {any} action - any
+ * @returns The state is being returned.
+ */
+ export const allBookingsReducer = (state = {}, action: any) => {
+    switch (action.type) {
+        case ALL_BOOKINGS_SUCCESS:
+            return {
+                allBookingsCount: action.payload.bookingsCount,
+                resPerPage: action.payload.resPerPage,
+                filteredAllBookingsCount: action.payload.filteredBookingsCount,
+                allBookings: action.payload.bookings,
+            };
+        case ALL_BOOKINGS_FAIL:
+            return {
+                error: action.payload,
+            };
+        case CLEAR_ERRORS:
+            return {
+                ...state,
+                error: null,
+            };
+        default:
+            return state;
+    }
+};
+
+
+// ALL MONITORING AND MISC. REDUCERS BELOW. ONLY FOR MONITORING PROGRESS OF API CALLS, STORING
+// RANDOM RELATED DATA, etc.
+
 /**
  * It returns an object with a loading property set to true if the action type is
  * CREATE_STRIPE_PAYMENT_INTENT_REQUEST, an object with a loading property set to false and a success
@@ -105,36 +141,6 @@ export const createBookingReducer = (state = {}, action: any) => {
             return {
                 loading: false,
                 success: false,
-                error: action.payload,
-            };
-        case CLEAR_ERRORS:
-            return {
-                ...state,
-                error: null,
-            };
-        default:
-            return state;
-    }
-};
-
-/**
- * It returns a new state object with the properties of the old state object and the new properties of
- * the action object
- * @param state - This is the initial state of the reducer.
- * @param {any} action - any
- * @returns The state is being returned.
- */
-export const allBookingsReducer = (state = {}, action: any) => {
-    switch (action.type) {
-        case ALL_BOOKINGS_SUCCESS:
-            return {
-                allBookingsCount: action.payload.bookingsCount,
-                resPerPage: action.payload.resPerPage,
-                filteredAllBookingsCount: action.payload.filteredBookingsCount,
-                allBookings: action.payload.bookings,
-            };
-        case ALL_BOOKINGS_FAIL:
-            return {
                 error: action.payload,
             };
         case CLEAR_ERRORS:

@@ -39,7 +39,7 @@ const BookingsExpertDashboard = () => {
     // represents the id of the booking. The default booking (only for desktop,
     // since on mobile the detail view is initially hidden) is the first booking returned.
     const [currentBookingSelected, setCurrentBookingSelected] = useState(
-        allBookings[0]
+        localAllBookings ? localAllBookings[0] : null
     );
 
     /* This is a local state that is used to control the popup modal on mobile. If the 
@@ -52,22 +52,29 @@ const BookingsExpertDashboard = () => {
     useEffect(() => {
         if (window.innerWidth >= 768) {
             setModalOpen(false);
+        } else {
+            setModalOpen(true);
         }
     }, [window.innerWidth]);
 
+
     // As said before, this useEffect watches for the updatedBooking global state and
-    // updates the localAllBookings state with this new single updatedBooking, so that 
+    // updates the localAllBookings state with this new single updatedBooking, so that
     // the entire dashboard stays in sync with new data even with no full page refreshes.
     useEffect(() => {
         if (updatedBooking) {
+            console.log('updatedBooking', updatedBooking);
             let newAllBookings = allBookings.map((booking: any) => {
                 if (booking._id === updatedBooking._id) {
-                    return updatedBooking
+                    console.log("Found match!")
+                    return updatedBooking;
                 } else {
-                    return booking
+                    return booking;
                 }
             });
+            console.log("newAllBookings", newAllBookings)
             setLocalAllBookings(newAllBookings);
+            console.log("localAllBookings", localAllBookings);
         }
     }, [updatedBooking]);
 
@@ -134,28 +141,33 @@ const BookingsExpertDashboard = () => {
                         ))}
                 </div>
                 {/* Desktop view of the booking details.  */}
-                <div className="hidden md:flex h-full w-3/5 p-2 overflow-auto">
-                    <div className="hidden md:flex w-full h-full">
-                        <DetailsSingleTextResponseBooking
-                            key={currentBookingSelected._id}
-                            booking={currentBookingSelected}
-                        />
+                {currentBookingSelected && window.innerWidth >= 768 && (
+                    <div className="hidden md:flex h-full w-3/5 p-2 overflow-auto">
+                        <div className="hidden md:flex w-full h-full">
+                            <DetailsSingleTextResponseBooking
+                                key={currentBookingSelected._id}
+                                booking={currentBookingSelected}
+                            />
+                        </div>
                     </div>
-                </div>
+                )}
+
                 {/* Mobile Modal containing booking details. */}
-                <div className="block md:hidden">
-                    <Modal
-                        openLocalState={modalOpen}
-                        buttonText="Open"
-                        closeButtonText="Return to Dashboard"
-                        key={currentBookingSelected._id}
-                    >
-                        <DetailsSingleTextResponseBooking
+                {window.innerWidth < 768 && (
+                    <div className="block md:hidden">
+                        <Modal
+                            openLocalState={modalOpen}
+                            buttonText="Open"
+                            closeButtonText="Return to Dashboard"
                             key={currentBookingSelected._id}
-                            booking={currentBookingSelected}
-                        />
-                    </Modal>
-                </div>
+                        >
+                            <DetailsSingleTextResponseBooking
+                                key={currentBookingSelected._id}
+                                booking={currentBookingSelected}
+                            />
+                        </Modal>
+                    </div>
+                )}
             </div>
         </>
     );
