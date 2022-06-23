@@ -11,7 +11,6 @@ const ExpertisePostCard = ({ expertisePost }: expertisePostCardInterface) => {
     let numSpacesInTitle: Number = expertisePost["title"].slice(0, 35).split(" ").length - 1;
     let slicePoint: Number = numSpacesInTitle > 3 ? 40 : 30;
 
-    console.log("expertisePost", expertisePost.title);
     return (
         <>
             <Link href={`/expertisePost/${expertisePost._id}`}>

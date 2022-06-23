@@ -35,10 +35,10 @@ interface SubmittedBookingDataInterface {
     customerId: String;
     status: String;
     customerSubmission: String;
-    singleTextResponse: {
-        customerSubmission: String | null;
-        expertResponse: String | null;
-    };
+    singleTextResponse?: {
+        customerSubmission: String;
+        expertResponse: String;
+    }
     stripePaymentIntentId: String;
 }
 
@@ -132,7 +132,7 @@ export const createBooking =
  */
 export const getBookings =
     (
-        req: any = null,
+        req: any,
         currentPage: Number = 1,
         title?: String,
         customer?: String,
@@ -158,13 +158,11 @@ export const getBookings =
                 },
             });
 
-            // Basic general query of bookings
             dispatch({
                 type: ALL_BOOKINGS_SUCCESS,
                 payload: data,
             });
         } catch (error: any) {
-            // Basic general query of expertise posts.
             dispatch({
                 type: ALL_BOOKINGS_FAIL,
                 payload: error.response.data.message,

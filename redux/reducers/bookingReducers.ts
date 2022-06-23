@@ -171,7 +171,7 @@ export const updateBookingReducer = (state = {}, action: any) => {
             return {
                 loading: false,
                 success: true,
-                booking: action.payload,
+                booking: action.payload.booking,
             };
         case UPDATE_BOOKING_FAIL:
             return {

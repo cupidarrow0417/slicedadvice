@@ -3,15 +3,24 @@ import moment from "moment";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { updateBooking } from "../../../../../../redux/actions/bookingActions";
+import {
+    clearErrors,
+    getBookings,
+    updateBooking,
+} from "../../../../../../redux/actions/bookingActions";
 import { useAppDispatch, useAppSelector } from "../../../../../../redux/hooks";
 import Badge from "../../../../../Badge";
 import ButtonLoader from "../../../../../layout/ButtonLoader";
 
 const DetailsSingleTextResponseBooking = ({ booking }: any) => {
+    console.log("booking", booking);
     const dispatch = useAppDispatch();
     // Holds text that user types in
     const [textResponse, setTextResponse] = useState("");
+
+    // Saves current booking for this detail component.
+    // Updated whenever this specific booking is updated
+    // (e.g. when an expert sends a response).
     const [localBookingState, setLocalBookingState] = useState(booking);
 
     const {
@@ -23,8 +32,34 @@ const DetailsSingleTextResponseBooking = ({ booking }: any) => {
         return state.updateBooking;
     });
 
+    const [sentToastAlready, setSentToastAlready] = useState(
+        updatedBooking && updatedBooking._id === booking._id ? true : false
+    );
+
     // Handle the send response button click, updating the booking's
     // expert response and status to "Completed"
+    useEffect(() => {
+        // only update this specific components state
+        // if it's booking was updated.
+        if (
+            updatedBooking !== null &&
+            updatedBooking !== undefined &&
+            updatedBooking._id === booking._id
+        ) {
+            if (!sentToastAlready) {
+                toast.success("Booking completed successfully!");
+            }
+            setSentToastAlready(true);
+            setLocalBookingState(updatedBooking);
+        }
+        if (error) {
+            toast.error(error);
+            dispatch(clearErrors());
+        }
+    }, [success, error, updatedBooking]);
+
+    // Handle the send response button click, updating the booking
+    // if the current booking's status is "Not Completed"
     const handleSendResponseClick = () => {
         if (localBookingState.status !== "Completed") {
             dispatch(
@@ -41,18 +76,8 @@ const DetailsSingleTextResponseBooking = ({ booking }: any) => {
         }
     };
 
-    useEffect(() => {
-        if (updatedBooking && success) {
-            toast.success(`Booking completed successfully!`);
-            setLocalBookingState(updatedBooking.booking);
-            console.log("Updated booking: ", updatedBooking.booking);
-        }
-        if (error) {
-            toast.error("Error completing booking");
-        }
-    }, [success, error, updatedBooking]);
     return (
-        <div className="flex flex-col gap-4 p-6 py-8 bg-white shadow-lg rounded-lg w-full h-fit border border-black/10">
+        <div className="flex flex-col gap-4 p-6 py-8 bg-white shadow-lg rounded-lg w-full max-w-xl h-fit border border-black/10">
             <div className="flex justify-between items-start gap-4">
                 <div className="flex items-center justify-center">
                     {/* <div className="flex items-center w-14 h-14 rounded-full bg-black/10">
@@ -99,7 +124,6 @@ const DetailsSingleTextResponseBooking = ({ booking }: any) => {
                 </div>
             </div>
             <div className="flex flex-col gap-2">
-                {/* <h1 className="text-md">From: {booking.customer.name}</h1> */}
                 {localBookingState?.status === "Not Completed" && (
                     <div className="w-full h-28 border border-black/10 p-2 rounded-lg">
                         <textarea
@@ -128,7 +152,7 @@ const DetailsSingleTextResponseBooking = ({ booking }: any) => {
                             textResponse.length < 30
                             ? "opacity-40"
                             : "opacity-100",
-                        `rounded-xl bg-black text-white p-3 font-semibold text-md md:text-lg`
+                        `flex justify-center items-center rounded-xl bg-brand-primary-light hover:bg-brand-primary-light/80 text-white p-3 font-semibold text-md md:text-lg`
                     )}
                     onClick={handleSendResponseClick}
                     disabled={
@@ -142,9 +166,9 @@ const DetailsSingleTextResponseBooking = ({ booking }: any) => {
                     {loading ? (
                         <ButtonLoader />
                     ) : localBookingState?.status === "Completed" ? (
-                        "Booking completed"
+                        "Booking Completed"
                     ) : textResponse.length < 30 ? (
-                        "Type a response first!"
+                        "Type a Response First!"
                     ) : (
                         "Send Response"
                     )}

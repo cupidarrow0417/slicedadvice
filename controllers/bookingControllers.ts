@@ -118,7 +118,6 @@ const allBookings = catchAsyncErrors(
             .filter();
 
         let bookings = await apiFeatures.query;
-        console.log("bookings", bookings);
         let filteredBookingsCount = bookings.length;
 
         apiFeatures.pagination(resPerPage);

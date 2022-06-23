@@ -90,7 +90,7 @@ export default function Footer() {
                             />
                         </a>
                         <p className="text-gray-500 text-base">
-                            Making it easy to seek and give paid expert advice.
+                            Slicing and serving the world's most important, inaccessible knowledge to everyone.
                         </p>
                         <div className="flex space-x-6">
                             {/* {navigation.social.map((item) => (
