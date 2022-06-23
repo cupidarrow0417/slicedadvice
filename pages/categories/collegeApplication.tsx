@@ -1,7 +1,7 @@
 import { GetServerSideProps } from "next";
 import CollegeApplication from "../../components/categories/CollegeApplication";
 import Layout from "../../components/layout/Layout";
-import { getExpertisePosts } from "../../redux/actions/expertisePostActions";
+import { getExpertisePosts } from "../../redux/actionCreators/expertisePostActions";
 import { wrapper } from "../../redux/store";
 
 export default function CollegeApplicationPage() {

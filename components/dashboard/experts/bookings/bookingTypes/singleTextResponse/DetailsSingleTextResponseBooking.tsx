@@ -4,64 +4,29 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import {
-    clearErrors,
+    clearBookingsErrors,
+    clearBookingsSuccess,
     getBookings,
     updateBooking,
-} from "../../../../../../redux/actions/bookingActions";
+} from "../../../../../../redux/actionCreators/bookingActionCreators";
 import { useAppDispatch, useAppSelector } from "../../../../../../redux/hooks";
 import Badge from "../../../../../Badge";
 import ButtonLoader from "../../../../../layout/ButtonLoader";
 
 const DetailsSingleTextResponseBooking = ({ booking }: any) => {
-    console.log("booking", booking);
     const dispatch = useAppDispatch();
-    // Holds text that user types in
-    const [textResponse, setTextResponse] = useState("");
 
-    // Saves current booking for this detail component.
-    // Updated whenever this specific booking is updated
-    // (e.g. when an expert sends a response).
-    const [localBookingState, setLocalBookingState] = useState(booking);
-
-    const {
-        booking: updatedBooking,
-        success,
-        loading,
-        error,
-    } = useAppSelector((state) => {
-        return state.updateBooking;
-    });
-
-    const [sentToastAlready, setSentToastAlready] = useState(
-        updatedBooking && updatedBooking._id === booking._id ? true : false
+    const { metadata: bookingsMetadata, bookings } = useAppSelector(
+        (state) => state.bookings
     );
 
-    // Handle the send response button click, updating the booking's
-    // expert response and status to "Completed"
-    useEffect(() => {
-        // only update this specific components state
-        // if it's booking was updated.
-        if (
-            updatedBooking !== null &&
-            updatedBooking !== undefined &&
-            updatedBooking._id === booking._id
-        ) {
-            if (!sentToastAlready) {
-                toast.success("Booking completed successfully!");
-            }
-            setSentToastAlready(true);
-            setLocalBookingState(updatedBooking);
-        }
-        if (error) {
-            toast.error(error);
-            dispatch(clearErrors());
-        }
-    }, [success, error, updatedBooking]);
+    // Holds text that user types in
+    const [textResponse, setTextResponse] = useState("");
 
     // Handle the send response button click, updating the booking
     // if the current booking's status is "Not Completed"
     const handleSendResponseClick = () => {
-        if (localBookingState.status !== "Completed") {
+        if (booking.status !== "Completed") {
             dispatch(
                 updateBooking(booking._id, {
                     ...booking,
@@ -76,6 +41,19 @@ const DetailsSingleTextResponseBooking = ({ booking }: any) => {
         }
     };
 
+    /* Checking if there is an error or success message in the bookingsMetadata object. If there is, it
+    will display a toast message. */
+    useEffect(() => {
+        if (bookingsMetadata.error) {
+            toast.error(bookingsMetadata.error);
+            dispatch(clearBookingsErrors());
+        }
+
+        if (bookingsMetadata.success) {
+            toast.success("Responded to booking successfully!");
+            dispatch(clearBookingsSuccess());
+        }
+    }, [bookingsMetadata]);
     return (
         <div className="flex flex-col gap-4 p-6 py-8 bg-white shadow-lg rounded-lg w-full max-w-xl h-fit border border-black/10">
             <div className="flex justify-between items-start gap-4">
@@ -84,47 +62,42 @@ const DetailsSingleTextResponseBooking = ({ booking }: any) => {
                         <PencilAltIcon className="w-3/5 m-auto" />
                     </div> */}
                     <h1 className="text-2xl font-bold tracking-tight text-brand-primary-light">
-                        {localBookingState?.bookingType} Booking
+                        {booking?.bookingType} Booking
                     </h1>
                 </div>
                 <div className="flex flex-col justify-center items-center gap-2 ">
-                    {localBookingState.status === "Not Completed" && (
-                        <Badge color="red" text={localBookingState.status} />
+                    {booking?.status === "Not Completed" && (
+                        <Badge color="red" text={booking?.status} />
                     )}
-                    {localBookingState.status === "Completed" && (
-                        <Badge color="green" text={localBookingState.status} />
+                    {booking?.status === "Completed" && (
+                        <Badge color="green" text={booking?.status} />
                     )}
                     <p className="text-xs opacity-50 whitespace-nowrap">
-                        {moment(localBookingState.createdAt).format(
-                            "MMM Do, YYYY"
-                        )}
+                        {moment(booking?.createdAt).format("MMM Do, YYYY")}
                     </p>
                 </div>
             </div>
             <div className="flex flex-col gap-2">
                 <div className="flex justify-between items-center gap-4">
-                    <h1 className="text-md">
-                        From: {localBookingState?.customer?.name}
-                    </h1>
+                    <h1 className="text-md">From: {booking?.customer?.name}</h1>
                     <Link
-                        href={`/expertisePost/${localBookingState?.expertisePost?._id}`}
+                        href={`/expertisePost/${booking?.expertisePost?._id}`}
                         passHref={true}
                     >
                         <a
                             target="_blank"
                             className="text-xs max-w-[10rem] sm:max-w-[13rem] opacity-60 hover:opacity-100 overflow-scroll whitespace-nowrap"
                         >
-                            Expertise Post:{" "}
-                            {localBookingState?.expertisePost?.title}
+                            Expertise Post: {booking?.expertisePost?.title}
                         </a>
                     </Link>
                 </div>
                 <div className="w-full h-72 min-h-[18rem] border border-black/10 font-light leading-relaxed p-4 rounded-lg">
-                    {localBookingState?.singleTextResponse?.customerSubmission}
+                    {booking?.singleTextResponse?.customerSubmission}
                 </div>
             </div>
             <div className="flex flex-col gap-2">
-                {localBookingState?.status === "Not Completed" && (
+                {booking?.status === "Not Completed" && (
                     <div className="w-full h-28 border border-black/10 p-2 rounded-lg">
                         <textarea
                             id="textareaInput"
@@ -138,8 +111,8 @@ const DetailsSingleTextResponseBooking = ({ booking }: any) => {
                             }
                             value={textResponse}
                             disabled={
-                                loading ||
-                                localBookingState?.status === "Completed"
+                                bookingsMetadata.loading ||
+                                booking?.status === "Completed"
                             }
                             onChange={(e) => setTextResponse(e.target.value)}
                         />
@@ -147,8 +120,8 @@ const DetailsSingleTextResponseBooking = ({ booking }: any) => {
                 )}
                 <button
                     className={classNames(
-                        localBookingState?.status === "Completed" ||
-                            loading ||
+                        booking?.status === "Completed" ||
+                            bookingsMetadata.loading ||
                             textResponse.length < 30
                             ? "opacity-40"
                             : "opacity-100",
@@ -156,16 +129,16 @@ const DetailsSingleTextResponseBooking = ({ booking }: any) => {
                     )}
                     onClick={handleSendResponseClick}
                     disabled={
-                        loading ||
+                        bookingsMetadata.loading ||
                         textResponse.length < 30 ||
-                        localBookingState?.status === "Completed"
+                        booking?.status === "Completed"
                             ? true
                             : false
                     }
                 >
-                    {loading ? (
+                    {bookingsMetadata.loading ? (
                         <ButtonLoader />
-                    ) : localBookingState?.status === "Completed" ? (
+                    ) : booking?.status === "Completed" ? (
                         "Booking Completed"
                     ) : textResponse.length < 30 ? (
                         "Type a Response First!"

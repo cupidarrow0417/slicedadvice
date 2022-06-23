@@ -2,7 +2,7 @@ import { GetServerSideProps } from "next";
 import { getSession } from "next-auth/react";
 import ExpertDashboard from "../../../components/dashboard/experts/ExpertDashboard";
 import Layout from "../../../components/layout/Layout";
-import { getBookings } from "../../../redux/actions/bookingActions";
+import { getBookings } from "../../../redux/actionCreators/bookingActionCreators";
 import { wrapper } from "../../../redux/store";
 const ExpertDashboardHomePage = () => {
     return (

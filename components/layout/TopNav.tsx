@@ -14,7 +14,7 @@ import { ChevronDownIcon } from "@heroicons/react/solid";
 import logoTransparent from "../../public/images/SlicedAdviceLogoTransparent.svg";
 import Link from "next/link";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { loadUser } from "../../redux/actions/userActions";
+import { loadUser } from "../../redux/actionCreators/userActions";
 import { signOut } from "next-auth/react";
 import Flyout from "../Flyout";
 import { toast } from "react-toastify";
@@ -90,7 +90,9 @@ export default function TopNav() {
 
     useEffect(() => {
         if (error) {
-            toast.error(error);
+            // Don't think we actually wanna throw an error
+            // anytime the user isn't logged in haha.
+            // toast.error(error);
         }
         // if (user) {
         //     console.log("User is: ", user)

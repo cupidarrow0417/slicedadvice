@@ -1,7 +1,7 @@
 import { GetServerSideProps } from "next";
 import PersonalDevelopment from "../../components/categories/PersonalDevelopment";
 import Layout from "../../components/layout/Layout";
-import { getExpertisePosts } from "../../redux/actions/expertisePostActions";
+import { getExpertisePosts } from "../../redux/actionCreators/expertisePostActions";
 import { wrapper } from "../../redux/store";
 
 export default function PersonalDevelopmentPage() {

@@ -7,7 +7,7 @@ import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {
     updateUserProfile,
     clearErrors,
-} from "../../redux/actions/userActions";
+} from "../../redux/actionCreators/userActions";
 import { UPDATE_USER_PROFILE_RESET } from "../../redux/constants/userConstants";
 
 import {

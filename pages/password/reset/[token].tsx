@@ -1,6 +1,6 @@
 import { GetServerSideProps } from 'next'
 
-import { resetPassword } from '../../../redux/actions/userActions'
+import { resetPassword } from '../../../redux/actionCreators/userActions'
 import { wrapper } from '../../../redux/store'
 
 import Layout from '../../../components/layout/Layout'

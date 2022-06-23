@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { cacheBookingData, clearErrors, createBooking } from "../../../redux/actions/bookingActions";
+import { cacheBookingData, clearBookingsErrors, createBooking } from "../../../redux/actionCreators/bookingActionCreators";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import Loader from "../../layout/Loader";
 
@@ -19,10 +19,8 @@ const PaymentComplete = () => {
         queryParams.payment_intent_client_secret!.toString();
     const { bookingData } = useAppSelector((state) => state.cacheBookingData);
     const {
-        bookingId,
-        success: createBookingSuccess,
-        error: createBookingError,
-    } = useAppSelector((state) => state.createBooking);
+        error: errorCreateBooking,
+    } = useAppSelector((state) => state.bookings);
 
     useEffect(() => {
         if (!stripe) {
@@ -88,18 +86,15 @@ const PaymentComplete = () => {
     }, [bookingData, paymentIntentId]);
 
     // Developer tool: To listen to createBooking process
-    // Also reiterates to the user that a booking model was 
-    // created.
+    // Actually, don't think the user would get here if there
+    // was a Stripe issue, so the booking wouldn't have gotten here.
+    // But, just in case.
     useEffect(() => {
-        if (createBookingError) {
-            toast.error(createBookingError)
-            dispatch(clearErrors);
+        if (errorCreateBooking) {
+            toast.error(errorCreateBooking)
+            dispatch(clearBookingsErrors);
         } 
-        if (createBookingSuccess && bookingId) {
-            // toast.success(`Successfully created a booking! The ID is ${bookingId}`)
-            toast.success("Successfully created a booking for advice!")
-        }
-    }, [bookingId, createBookingSuccess, createBookingError]);
+    }, [errorCreateBooking]);
     return (
         <main className="relative lg:min-h-full">
             <div className="h-80 overflow-hidden lg:absolute lg:w-1/2 lg:h-full lg:pr-4 xl:pr-12">

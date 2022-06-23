@@ -6,7 +6,7 @@ import { PencilAltIcon } from "@heroicons/react/outline";
 import Link from "next/link";
 import PageHeader from "../../PageHeader";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
-import { cacheBookingData, createStripePaymentIntent } from "../../../redux/actions/bookingActions";
+import { cacheBookingData, createStripePaymentIntent, clearStripePaymentIntentErrors } from "../../../redux/actionCreators/bookingActionCreators";
 import { toast } from "react-toastify";
 import Loader from "../../layout/Loader";
 import CheckoutForm from "./CheckoutForm";
@@ -85,7 +85,7 @@ const BookSingleTextResponse = () => {
                 expertisePostId: expertisePost?._id,
                 expertId: expertisePost?.user?._id,
                 customerId: user?._id,
-                status: "Pending Acceptance",
+                status: "Not Completed",
                 customerSubmission: finalTextSubmission,
                 bookingCreated: false
             };
@@ -108,12 +108,13 @@ const BookSingleTextResponse = () => {
     useEffect(() => {
         if (createStripePaymentIntentError) {
             toast.error(createStripePaymentIntentError);
+            dispatch(clearStripePaymentIntentErrors());
         }
 
         // if (createStripePaymentIntentSuccess) {
         //     toast.success("Successfully created a payment intent!")
         // }
-    }, createStripePaymentIntentError);
+    }, [createStripePaymentIntentError]);
 
     // Check if user is logged in and is the owner of this post.
     // They shouldn't be able to Send a Submission if so, of course.
