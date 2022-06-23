@@ -13,6 +13,31 @@ import { BookingAPIFeatures } from "../utils/apiFeatures";
 //     customerSubmission: String
 // }
 
+//Get all bookings => GET /api/bookings
+const getBookings = catchAsyncErrors(
+    async (req: NextApiRequest, res: NextApiResponse, next: any) => {
+        const resPerPage = 20;
+        const bookingsCount = await Booking.countDocuments();
+        //search with optional queries, handled via .search() and .filter() method.
+        const apiFeatures = new BookingAPIFeatures(Booking.find(), req.query)
+            .search()
+            .filter();
+
+        let bookings = await apiFeatures.query;
+        let filteredBookingsCount = bookings.length;
+
+        apiFeatures.pagination(resPerPage);
+        bookings = await apiFeatures.query.clone();
+
+        res.status(200).json({
+            bookingsCount,
+            resPerPage,
+            filteredBookingsCount,
+            bookings,
+        });
+    }
+);
+
 //Create new Stripe Payment Intent => POST /api/stripe/paymentIntent
 const createStripePaymentIntent = catchAsyncErrors(
     async (
@@ -67,6 +92,43 @@ const createStripePaymentIntent = catchAsyncErrors(
     }
 );
 
+
+//Update a booking => PUT /api/bookings/[id]
+const updateBooking = catchAsyncErrors(
+    async (req: any, res: NextApiResponse, next: any) => {
+        const {
+            bookingType,
+            expertisePost,
+            expert,
+            customer,
+            status,
+            singleTextResponse,
+            stripePaymentIntentId,
+            _id,
+        } = req.body;
+
+        const booking = await Booking.findByIdAndUpdate(
+            _id,
+            {
+                bookingType,
+                expert,
+                customer,
+                expertisePost,
+                status,
+                singleTextResponse,
+                stripePaymentIntentId,
+            },
+            { new: true }
+        );
+
+        if (!booking) {
+            return next(new ErrorHandler("Booking could not be updated", 400));
+        }
+
+        res.status(200).json({ booking });
+    }
+);
+
 //Create new Booking  => POST /api/bookings
 const createBooking = catchAsyncErrors(
     async (
@@ -101,77 +163,9 @@ const createBooking = catchAsyncErrors(
         }
 
         res.status(200).json({
-            success: true,
             bookingId: booking._id,
         });
     }
 );
 
-//Get all bookings => GET /api/bookings
-const allBookings = catchAsyncErrors(
-    async (req: NextApiRequest, res: NextApiResponse, next: any) => {
-        const resPerPage = 20;
-        const bookingsCount = await Booking.countDocuments();
-        //search with optional queries, handled via .search() and .filter() method.
-        const apiFeatures = new BookingAPIFeatures(Booking.find(), req.query)
-            .search()
-            .filter();
-
-        let bookings = await apiFeatures.query;
-        let filteredBookingsCount = bookings.length;
-
-        apiFeatures.pagination(resPerPage);
-        bookings = await apiFeatures.query.clone();
-
-        res.status(200).json({
-            success: true,
-            bookingsCount,
-            resPerPage,
-            filteredBookingsCount,
-            bookings,
-        });
-    }
-);
-
-//Update a booking => PUT /api/bookings/[id]
-const updateBooking = catchAsyncErrors(
-    async (req: any, res: NextApiResponse, next: any) => {
-        const {
-            bookingType,
-            expertisePost,
-            expert,
-            customer,
-            status,
-            singleTextResponse,
-            stripePaymentIntentId,
-            _id,
-        } = req.body;
-        
-
-
-        const booking = await Booking.findByIdAndUpdate(
-            _id,
-            {
-                bookingType,
-                expert,
-                customer,
-                expertisePost,
-                status,
-                singleTextResponse,
-                stripePaymentIntentId,
-            },
-            { new: true }
-        );
-
-        if (!booking) {
-            return next(new ErrorHandler("Booking could not be updated", 400));
-        }
-
-        res.status(200).json({
-            success: true,
-            booking,
-        });
-    }
-);
-
-export { createStripePaymentIntent, createBooking, allBookings, updateBooking };
+export { createStripePaymentIntent, createBooking, getBookings, updateBooking };

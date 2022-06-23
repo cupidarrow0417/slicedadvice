@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import {
     checkStripeAccountField,
     getStripeSetupPayoutsLink,
-} from "../../../redux/actions/userActions";
+} from "../../../redux/actionCreators/userActions";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import Loader from "../../layout/Loader";
 

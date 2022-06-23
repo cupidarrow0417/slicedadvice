@@ -2,8 +2,6 @@ import React, { useEffect } from "react";
 import moment from "moment";
 import Link from "next/link";
 import Router from "next/router";
-import Modal from "../../../../../Modal";
-import DetailsSingleTextResponseBooking from "./DetailsSingleTextResponseBooking";
 {
     /* Example booking as of June 16, 2022 {
       singleTextResponse: [Object],

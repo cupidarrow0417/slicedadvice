@@ -3,7 +3,7 @@ import { useAppSelector, useAppDispatch } from "../../redux/hooks";
 import Head from "next/head";
 import { toast } from "react-toastify";
 import { StarIcon } from "@heroicons/react/solid";
-import { clearErrors } from "../../redux/actions/expertisePostActions";
+import { clearErrors } from "../../redux/actionCreators/expertisePostActions";
 
 import Breadcrumbs from "../Breadcrumbs";
 import Image from "next/image";
@@ -74,13 +74,6 @@ const ExpertisePostDetails = () => {
             current: false,
         },
     ];
-
-    useEffect(() => {
-        if (expertisePost) {
-            toast.error(expertisePost);
-            dispatch(clearErrors());
-        }
-    }, [expertisePost]);
 
     useEffect(() => {
         if (reviewsError) {

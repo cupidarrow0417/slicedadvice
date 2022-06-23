@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 import ButtonLoader from "../layout/ButtonLoader";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { resetPassword, clearErrors } from "../../redux/actions/userActions";
+import { resetPassword, clearErrors } from "../../redux/actionCreators/userActions";
 
 const ResetPassword = () => {
     const [password, setPassword] = useState("");

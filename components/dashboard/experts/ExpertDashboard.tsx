@@ -22,7 +22,7 @@ import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import {
     checkStripeAccountField,
     loadUser,
-} from "../../../redux/actions/userActions";
+} from "../../../redux/actionCreators/userActions";
 import YourPostsExpertDashboard from "./posts/PostsExpertDashboard";
 import Router from "next/router";
 

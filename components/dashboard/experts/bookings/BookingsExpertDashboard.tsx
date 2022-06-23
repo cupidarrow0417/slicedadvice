@@ -2,7 +2,7 @@ import { ChevronDownIcon } from "@heroicons/react/solid";
 import Router, { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
-import { clearErrors } from "../../../../redux/actions/reviewActions";
+import { clearErrors } from "../../../../redux/actionCreators/reviewActions";
 import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
 import Modal from "../../../Modal";
 import DashboardHeader from "../../DashboardHeader";
@@ -12,34 +12,17 @@ import PreviewSingleTextResponseBooking from "./bookingTypes/singleTextResponse/
 const BookingsExpertDashboard = () => {
     const dispatch = useAppDispatch();
     const {
-        allBookingsCount,
-        filteredAllBookingsCount,
-        allBookings,
-        error: allBookingsError,
-    } = useAppSelector((state) => state.allBookings);
+        bookings,
+        metadata: bookingsMetadata,
+    } = useAppSelector((state) => state.bookings);
     const { query: queryParams } = useRouter();
-
-    // Important to observe this global state change of updatedBooking
-    // to update the local state localAllBookings. If we don't, then
-    // the BookingsExpertDashboard won't ever know that a booking has been
-    // updated, and thus will load stale data into the child components.
-    const {
-        booking: updatedBooking,
-        success: updateBookingSuccess,
-        loading: updateBookingLoading,
-        error: updateBookingError,
-    } = useAppSelector((state) => {
-        return state.updateBooking;
-    });
-
-    const [localAllBookings, setLocalAllBookings] = useState(allBookings);
 
     // Local state to handle which booking is currently selected. Note:
     // this is determined by the "booking" query param in the url, which
     // represents the id of the booking. The default booking (only for desktop,
     // since on mobile the detail view is initially hidden) is the first booking returned.
     const [currentBookingSelected, setCurrentBookingSelected] = useState(
-        localAllBookings ? localAllBookings[0] : null
+        bookings ? bookings[0] : null
     );
 
     /* This is a local state that is used to control the popup modal on mobile. If the 
@@ -49,6 +32,8 @@ const BookingsExpertDashboard = () => {
     const [modalOpen, setModalOpen] = useState(
         window.innerWidth < 768 && queryParams.booking ? true : false
     );
+
+
     useEffect(() => {
         if (window.innerWidth >= 768) {
             setModalOpen(false);
@@ -57,32 +42,11 @@ const BookingsExpertDashboard = () => {
         }
     }, [window.innerWidth]);
 
-
-    // As said before, this useEffect watches for the updatedBooking global state and
-    // updates the localAllBookings state with this new single updatedBooking, so that
-    // the entire dashboard stays in sync with new data even with no full page refreshes.
-    useEffect(() => {
-        if (updatedBooking) {
-            console.log('updatedBooking', updatedBooking);
-            let newAllBookings = allBookings.map((booking: any) => {
-                if (booking._id === updatedBooking._id) {
-                    console.log("Found match!")
-                    return updatedBooking;
-                } else {
-                    return booking;
-                }
-            });
-            console.log("newAllBookings", newAllBookings)
-            setLocalAllBookings(newAllBookings);
-            console.log("localAllBookings", localAllBookings);
-        }
-    }, [updatedBooking]);
-
     /* Main useEffect for BookingsExpertDashboard that sets local state the moment
         allBookings is retrieved from the global state.*/
     useEffect(() => {
-        if (allBookingsError) {
-            toast.error(allBookingsError);
+        if (bookingsMetadata.error) {
+            toast.error(bookingsMetadata.error);
             dispatch(clearErrors());
         }
 
@@ -91,9 +55,9 @@ const BookingsExpertDashboard = () => {
         // On mobile and desktop, currentBookingSelected is ALWAYS set to be the one
         // in the url. So, that means we can easily control which booking is focused from
         // anywhere in the component tree, by doing a shallow routed Router.push(). Woohoo!
-        if (allBookings) {
+        if (bookings) {
             if (queryParams.booking) {
-                const booking = allBookings.find(
+                const booking = bookings.find(
                     (booking: any) => booking._id === queryParams.booking
                 );
                 if (booking) {
@@ -116,7 +80,7 @@ const BookingsExpertDashboard = () => {
             //     allBookings
             // );
         }
-    }, [allBookingsError, allBookings, queryParams.booking]);
+    }, [bookingsMetadata.error, bookings, queryParams.booking]);
 
     return (
         <>
@@ -130,10 +94,10 @@ const BookingsExpertDashboard = () => {
             <div className="flex w-full h-[calc(100%-4.5rem)]">
                 {/* Preview always visible on all screen sizes  */}
                 <div className="flex flex-col gap-2 overflow-auto h-full w-full md:w-2/5 p-2 px-0 md:p-2 md:border-r border-black/10">
-                    {localAllBookings !== null &&
-                        localAllBookings !== undefined &&
-                        localAllBookings.length > 0 &&
-                        localAllBookings.map((booking: any) => (
+                    {bookings !== null &&
+                        bookings !== undefined &&
+                        bookings.length > 0 &&
+                        bookings.map((booking: any) => (
                             <PreviewSingleTextResponseBooking
                                 key={booking._id}
                                 booking={booking}
