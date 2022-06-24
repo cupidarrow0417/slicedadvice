@@ -7,8 +7,7 @@ import { wrapper } from "../../redux/store";
 export default function CareerGrowthPage() {
     return (
         <Layout
-            title="Browse our categories for advice ranging from career growth
-    to personal development | SlicedAdvice"
+            title="Boost your trajectory with expertise from accomplished professionals | SlicedAdvice"
         >
             <CareerGrowth />
         </Layout>

@@ -4,6 +4,7 @@ import ExpertDashboard from "../../../components/dashboard/experts/ExpertDashboa
 import Layout from "../../../components/layout/Layout";
 import { getBookings } from "../../../redux/actions/bookingActions";
 import { wrapper } from "../../../redux/store";
+import checkStripeField from "../../../utils/checkStripeField";
 const ExpertDashboardBookingsPage = () => {
     return (
         <Layout title="Bookings | Expert Dashboard | SlicedAdvice">
@@ -14,7 +15,7 @@ const ExpertDashboardBookingsPage = () => {
 
 export const getServerSideProps: GetServerSideProps =
     wrapper.getServerSideProps((store) => async ({ req }) => {
-        const session = await getSession({ req });
+        const session: any = await getSession({ req });
 
         if (!session) {
             return {
@@ -24,8 +25,20 @@ export const getServerSideProps: GetServerSideProps =
                 },
             };
         }
+
+        const isOnboarded = await checkStripeField(session.user.email, "charges_enabled", undefined)
+
+        if (!isOnboarded) {
+            return {
+                redirect: {
+                    destination: `/dashboard/expert/home`,
+                    permanent: false,
+                },
+            };
+        }
+        
         try {
-            await store.dispatch(getBookings(req));
+            await store.dispatch(getBookings(req, 1, undefined, undefined, session.user._id));
             return { props: { session } };
         } catch (e) {
             return { props: { session } };

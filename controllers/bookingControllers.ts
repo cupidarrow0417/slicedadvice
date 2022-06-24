@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse, NextApiHandler } from "next";
 import ErrorHandler from "../utils/errorhandler";
 import catchAsyncErrors from "../middlewares/catchAsyncErrors";
 import Booking from "../models/booking";
-import APIFeatures from "../utils/apiFeatures";
+import { BookingAPIFeatures } from "../utils/apiFeatures";
 
 // interface OrderDataInterface {
 //     price: number;
@@ -21,7 +21,7 @@ const createStripePaymentIntent = catchAsyncErrors(
         next: (arg0: ErrorHandler) => any
     ) => {
         // Most of these will be placed into the metadata
-        const { price, bookingType, expertisePostId, customerId, status } =
+        const { price, bookingType, expertisePostId, expertId, customerId, status } =
             req.body;
 
         // Set your secret key. Remember to switch to your live secret key in production.
@@ -40,11 +40,12 @@ const createStripePaymentIntent = catchAsyncErrors(
             metadata: {
                 bookingType: bookingType,
                 expertisePostId: expertisePostId,
+                expertId: expertId,
                 customerId: customerId,
                 status: status,
                 // 'customerSubmission': customerSubmission,
             },
-            description: `Booking from customer with id ${customerId} of type ${bookingType} for ${price} dollars.`,
+            description: `Booking from customer with id ${customerId} of type ${bookingType} to expert with id ${expertId} for ${price} dollars.`,
         });
 
         if (!paymentIntent) {
@@ -70,6 +71,7 @@ const createBooking = catchAsyncErrors(
         const {
             bookingType,
             expertisePostId,
+            expertId,
             customerId,
             status,
             customerSubmission,
@@ -78,6 +80,7 @@ const createBooking = catchAsyncErrors(
 
         const booking = await Booking.create({
             bookingType,
+            expert: expertId,
             customer: customerId,
             expertisePost: expertisePostId,
             status,
@@ -103,10 +106,13 @@ const allBookings = catchAsyncErrors(
     async (req: NextApiRequest, res: NextApiResponse, next: any) => {
         const resPerPage = 20;
         const bookingsCount = await Booking.countDocuments();
-        //search with optional queries, handled via .search() method.
-        const apiFeatures = new APIFeatures(Booking.find(), req.query)
+        //search with optional queries, handled via .search() and .filter() method.
+        const apiFeatures = new BookingAPIFeatures(Booking.find(), req.query)
+            .search()
+            .filter();
 
         let bookings = await apiFeatures.query;
+        console.log("bookings", bookings);
         let filteredBookingsCount = bookings.length;
 
         apiFeatures.pagination(resPerPage);
