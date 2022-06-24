@@ -1,6 +1,6 @@
 import { GetServerSideProps } from "next";
 
-import { getExpertisePostDetails } from "../../../../redux/actions/expertisePostActions";
+import { getExpertisePostDetails } from "../../../../redux/actionCreators/expertisePostActions";
 import { wrapper } from "../../../../redux/store";
 
 import Layout from "../../../../components/layout/Layout";

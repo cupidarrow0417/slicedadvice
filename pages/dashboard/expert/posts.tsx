@@ -2,7 +2,7 @@ import { GetServerSideProps } from "next";
 import { getSession } from "next-auth/react";
 import ExpertDashboard from "../../../components/dashboard/experts/ExpertDashboard";
 import Layout from "../../../components/layout/Layout";
-import { getExpertisePosts } from "../../../redux/actions/expertisePostActions";
+import { getExpertisePosts } from "../../../redux/actionCreators/expertisePostActions";
 import { wrapper } from "../../../redux/store";
 import checkStripeField from "../../../utils/checkStripeField";
 const ExpertDashboardPostsPage = () => {

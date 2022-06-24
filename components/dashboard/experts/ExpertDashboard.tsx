@@ -15,15 +15,15 @@ import {
     SelectorIcon,
 } from "@heroicons/react/solid";
 import DashboardSidebar from "../DashboardSidebar";
-import HomeExpertDashboard from "./HomeExpertDashboard";
-import BookingsExpertDashboard from "./BookingsExpertDashboard";
-import PaymentsExpertDashboard from "./PaymentsExpertDashboard";
+import HomeExpertDashboard from "./home/HomeExpertDashboard";
+import BookingsExpertDashboard from "./bookings/BookingsExpertDashboard";
+import PaymentsExpertDashboard from "./payments/PaymentsExpertDashboard";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import {
     checkStripeAccountField,
     loadUser,
-} from "../../../redux/actions/userActions";
-import YourPostsExpertDashboard from "./PostsExpertDashboard";
+} from "../../../redux/actionCreators/userActions";
+import YourPostsExpertDashboard from "./posts/PostsExpertDashboard";
 import Router from "next/router";
 
 const navigation = [
@@ -97,7 +97,7 @@ export default function ExpertDashboard({
         <>
             <div className="h-screen flex rounded-xl shadow-md">
                 {/* Static sidebar for desktop */}
-                <div className="hidden lg:flex lg:flex-col lg:w-64 lg:border-r-0 lg:border-black/10 lg:border-[1px] lg:pt-5 lg:pb-4 lg:bg-white rounded-tl-xl rounded-bl-xl">
+                <div className="hidden lg:flex lg:flex-col lg:w-56 lg:border-r-0 lg:border-black/10 lg:border-[1px] lg:pt-5 lg:pb-4 lg:bg-white rounded-tl-xl rounded-bl-xl">
                     <div className="flex items-center flex-shrink-0 px-6"></div>
                     <DashboardSidebar
                         navigation={navigation}
@@ -106,7 +106,7 @@ export default function ExpertDashboard({
                 </div>
                 {/* Main column */}
                 <div className="flex flex-col w-full">
-                    <main className="flex-1 border-[1px] rounded-xl lg:rounded-r-xl lg:rounded-l-none">
+                    <main className="flex-1 relative border-[1px] rounded-xl lg:rounded-r-xl lg:rounded-l-none overflow-hidden">
                         {currentPage === "Home" && <HomeExpertDashboard />}
                         {currentPage === "Posts" && chargesEnabled && (
                             <YourPostsExpertDashboard />

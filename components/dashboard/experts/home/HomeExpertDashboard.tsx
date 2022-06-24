@@ -1,12 +1,12 @@
 import { ChevronDownIcon } from "@heroicons/react/solid";
 import { CashIcon } from "@heroicons/react/outline";
 import React from "react";
-import { useAppSelector } from "../../../redux/hooks";
-import ButtonLoader from "../../layout/ButtonLoader";
-import SetupPayoutsAlert from "./SetupPayoutsAlert";
-import Loader from "../../layout/Loader";
+import { useAppSelector } from "../../../../redux/hooks";
+import ButtonLoader from "../../../layout/ButtonLoader";
+import SetupPayoutsAlert from "../SetupPayoutsAlert";
+import Loader from "../../../layout/Loader";
 import { useRouter } from "next/router";
-import DashboardHeader from "../DashboardHeader";
+import DashboardHeader from "../../DashboardHeader";
 
 const HomeExpertDashboard = () => {
     const router = useRouter();

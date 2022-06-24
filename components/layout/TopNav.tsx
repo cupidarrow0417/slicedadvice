@@ -8,24 +8,50 @@ import {
     GlobeIcon,
     ViewGridIcon,
     TemplateIcon,
+    LibraryIcon,
 } from "@heroicons/react/outline";
 import { SearchIcon } from "@heroicons/react/solid";
 import { ChevronDownIcon } from "@heroicons/react/solid";
 import logoTransparent from "../../public/images/SlicedAdviceLogoTransparent.svg";
 import Link from "next/link";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { loadUser } from "../../redux/actions/userActions";
+import { loadUser } from "../../redux/actionCreators/userActions";
 import { signOut } from "next-auth/react";
 import Flyout from "../Flyout";
 import { toast } from "react-toastify";
 
 const navigation = [
-    { name: "Explore", href: "/", icon: <GlobeIcon className="text-brand-primary-light"/>, flyout: false },
+    {
+        name: "Product",
+        href: "",
+        icon: <GlobeIcon className="text-brand-primary-light" />,
+        flyout: true,
+        children: [
+            {
+                name: "Introduction",
+                href: "/introduction",
+                description:
+                    "New to SlicedAdvice? Take a look at our introduction page to get started.",
+            },
+            {
+                name: "For Experts",
+                href: "/experts",
+                description:
+                    "Learn why SlicedAdvice is the most convenient, frictionless way to monetize your expertise.",
+            },
+            {
+                name: "For Advice Seekers",
+                href: "/adviceSeekers",
+                description:
+                    "Welcome to the most affordable place to get personalized expert advice. Get started in seconds.",
+            },
+        ],
+    },
     {
         name: "Categories",
         href: "/categories",
         flyout: true,
-        icon: <ViewGridIcon className="text-brand-primary-light"/>,
+        icon: <ViewGridIcon className="text-brand-primary-light" />,
         children: [
             {
                 name: "Career Growth",
@@ -52,7 +78,7 @@ const navigation = [
         name: "Dashboard",
         href: "#",
         flyout: true,
-        icon: <TemplateIcon className="text-brand-primary-light"/>,
+        icon: <TemplateIcon className="text-brand-primary-light" />,
         children: [
             {
                 name: "For Experts",
@@ -64,6 +90,25 @@ const navigation = [
                 name: "For Advice Seekers",
                 href: "#",
                 description: "Review and manage your bookings for expertise.",
+            },
+        ],
+    },
+    {
+        name: "More",
+        href: "#",
+        flyout: true,
+        icon: <LibraryIcon className="text-brand-primary-light" />,
+        children: [
+            {
+                name: "Meet the Team",
+                href: "/team",
+                description:
+                    "We're on a mission to slice and serve the world’s most important, inaccessible knowledge to everyone.",
+            },
+            {
+                name: "Support",
+                href: "/support",
+                description: "Get support from our team. We're here to help at anytime.",
             },
         ],
     },
@@ -90,7 +135,9 @@ export default function TopNav() {
 
     useEffect(() => {
         if (error) {
-            toast.error(error);
+            // Don't think we actually wanna throw an error
+            // anytime the user isn't logged in haha.
+            // toast.error(error);
         }
         // if (user) {
         //     console.log("User is: ", user)
@@ -138,7 +185,7 @@ export default function TopNav() {
                                     </Link>
                                 </div>
                                 <div className="hidden sm:block sm:ml-6">
-                                    <div className="flex space-x-4">
+                                    <div className="flex">
                                         {navigation.map((item, index) =>
                                             item.flyout ? (
                                                 <Flyout

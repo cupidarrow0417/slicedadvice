@@ -1,13 +1,13 @@
 import { ChevronDownIcon } from "@heroicons/react/solid";
 import React from "react";
-import DashboardHeader from "../DashboardHeader";
+import DashboardHeader from "../../DashboardHeader";
 
-const PostsExpertDashboard = () => {
+const PaymentsExpertDashboard = () => {
     return (
         <>
             {/* Page title & actions */}
             <div className="bg-white px-4 py-4 flex items-center justify-between sm:px-6 rounded-t-xl lg:rounded-tl-none lg:px-8 border-b-[1px] border-black/10">
-            <DashboardHeader dashboardType="Expert" dashboardPage="Posts" />
+            <DashboardHeader dashboardType="Expert" dashboardPage="Payments" />
                 <div className="">
                     {/* <button
             type="button"
@@ -27,4 +27,4 @@ const PostsExpertDashboard = () => {
     );
 };
 
-export default PostsExpertDashboard;
+export default PaymentsExpertDashboard;

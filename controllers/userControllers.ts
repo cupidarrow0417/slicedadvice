@@ -3,7 +3,6 @@ let cloudinary = require("cloudinary").v2;
 import User from "../models/user";
 import ErrorHandler from "../utils/errorhandler";
 import catchAsyncErrors from "../middlewares/catchAsyncErrors";
-import APIFeatures from "../utils/apiFeatures";
 import absoluteUrl from "next-absolute-url";
 import sendEmail from "../utils/sendEmail";
 import crypto from "crypto";

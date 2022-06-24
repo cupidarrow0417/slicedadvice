@@ -4,7 +4,7 @@ import Router, { useRouter } from "next/router";
 
 import ButtonLoader from "../layout/ButtonLoader";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { registerUser, clearErrors } from "../../redux/actions/userActions";
+import { registerUser, clearErrors } from "../../redux/actionCreators/userActions";
 import Link from "next/link";
 import { getSession } from "next-auth/react";
 

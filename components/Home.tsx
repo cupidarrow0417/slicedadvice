@@ -5,7 +5,7 @@ import undrawHeroImage from "../public/images/undrawHeroImage.svg";
 import { useAppSelector, useAppDispatch } from "../redux/hooks";
 import { toast } from "react-toastify";
 
-import { clearErrors } from "../redux/actions/expertisePostActions";
+import { clearErrors } from "../redux/actionCreators/expertisePostActions";
 import Image from "next/image";
 import Link from "next/link";
 import Shelf from "./Shelf";
