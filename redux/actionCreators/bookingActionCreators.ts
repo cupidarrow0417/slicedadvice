@@ -19,7 +19,7 @@ import {
 } from "../constants/bookingConstants";
 
 interface CacheBookingDataInterface {
-    price: number;
+    total: number;
     pricePerSubmission: number;
     serviceFee: number;
     bookingType: String;
@@ -29,6 +29,9 @@ interface CacheBookingDataInterface {
     status: String;
     customerSubmission: String;
     bookingCreated: boolean;
+
+    // stripe
+    expertStripeId: String;
 }
 
 interface SubmittedBookingDataInterface {
@@ -42,6 +45,7 @@ interface SubmittedBookingDataInterface {
         expertResponse: String;
     };
     stripePaymentIntentId: String;
+    expertStripeId: String;
 }
 
 /**
@@ -94,10 +98,19 @@ export const getBookings =
  * It takes in a bookingId and bookingData, and then dispatches an action to update the booking with
  * the given bookingId with the given bookingData
  * @param {String} bookingId - The id of the booking to be updated.
+ * @param {String} chargePaymentIntent - Boolean representing whether or not to charge the payment intent
+ *                                       for this booking. Defaults to false. Should only be true if this
+ *                                      booking action creator is being called right when an expert fulfills
+ *                                     a booking.
  * @param {any} bookingData - This is the data that we want to update.
  */
 export const updateBooking =
-    (bookingId: String, bookingData: any) => async (dispatch: any) => {
+    (
+        bookingId: String,
+        chargePaymentIntent: boolean = false,
+        bookingData: any
+    ) =>
+    async (dispatch: any) => {
         try {
             dispatch({
                 type: UPDATE_BOOKING_REQUEST,
@@ -108,9 +121,14 @@ export const updateBooking =
                 },
             };
 
+            let finalData = {
+                ...bookingData,
+                chargePaymentIntent
+            }
+
             const { data } = await axios.put(
                 `/api/bookings/${bookingId}`,
-                bookingData,
+                finalData,
                 config
             );
 
@@ -198,12 +216,11 @@ export const createStripePaymentIntent =
 /**
  * This function is used to clear the errors from the state
  */
- export const clearStripePaymentIntentErrors = () => async (dispatch: any) => {
+export const clearStripePaymentIntentErrors = () => async (dispatch: any) => {
     dispatch({
         type: CLEAR_STRIPE_PAYMENT_INTENT_ERRORS,
     });
 };
-
 
 /**
  * It takes a bookingData object as an argument, and returns a function that takes a dispatch function
@@ -218,7 +235,6 @@ export const cacheBookingData =
             payload: bookingData,
         });
     };
-
 
 export const clearBookingsSuccess = () => async (dispatch: any) => {
     dispatch({

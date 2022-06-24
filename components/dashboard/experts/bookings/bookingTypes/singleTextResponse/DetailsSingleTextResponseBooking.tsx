@@ -24,11 +24,13 @@ const DetailsSingleTextResponseBooking = ({ booking }: any) => {
     const [textResponse, setTextResponse] = useState("");
 
     // Handle the send response button click, updating the booking
-    // if the current booking's status is "Not Completed"
+    // if the current booking's status is "Not Completed",
+    // also charging the Stripe payment intent (denoted by inputting 
+    // true as the second argument to updateBooking)
     const handleSendResponseClick = () => {
         if (booking.status !== "Completed") {
             dispatch(
-                updateBooking(booking._id, {
+                updateBooking(booking._id, true, {
                     ...booking,
                     singleTextResponse: {
                         customerSubmission:

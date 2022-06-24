@@ -78,8 +78,8 @@ const BookSingleTextResponse = () => {
             // with this order data and the successful payment 
             // intent (only if the bookingCreated boolean is false)
             const bookingData = {
-                price: total,
-                pricePerSubmission: pricePerSubmission,
+                total,
+                pricePerSubmission,
                 serviceFee: serviceFee,
                 bookingType: "Single Text Response",
                 expertisePostId: expertisePost?._id,
@@ -87,7 +87,11 @@ const BookSingleTextResponse = () => {
                 customerId: user?._id,
                 status: "Not Completed",
                 customerSubmission: finalTextSubmission,
-                bookingCreated: false
+                bookingCreated: false,
+
+                // USED IN STRIPE PAYMENT INTENT TO PAYOUT
+                // TO EXPERT ONCE THEY FULFILL THE BOOKING
+                expertStripeId: expertisePost?.user?.stripeId,
             };
             dispatch(cacheBookingData(bookingData));
             dispatch(createStripePaymentIntent(bookingData));

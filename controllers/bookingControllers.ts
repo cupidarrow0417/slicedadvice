@@ -47,27 +47,43 @@ const createStripePaymentIntent = catchAsyncErrors(
     ) => {
         // Most of these will be placed into the metadata
         const {
-            price,
+            total,
+            serviceFee,
             bookingType,
             expertisePostId,
             expertId,
             customerId,
             status,
+
+            // stripe
+            expertStripeId,
         } = req.body;
 
         // Set your secret key. Remember to switch to your live secret key in production.
         // See your keys here: https://dashboard.stripe.com/apikeys
         const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
+        const totalInCents = Math.round(total.toFixed(2) * 100);
+        const serviceFeeInCents = Math.round(serviceFee.toFixed(2) * 100);
+
+        // Only take a marketplace fee from the pricePerSubmission, not from the total.
+        // The total that we, SlicedAdvice, will get, is the marketplaceFee plus to
+        // service fee from the customer.
+        const marketplaceFee = (totalInCents - serviceFeeInCents) * 0.2;
+
         // Create a PaymentIntent with the order amount and currency
         // NOTE: "amount" is in CENTS, NOT dollars.
         const paymentIntent = await stripe.paymentIntents.create({
-            amount: Math.round(price.toFixed(2) * 100),
+            amount: totalInCents,
             currency: "usd",
             automatic_payment_methods: {
                 enabled: true,
             },
             capture_method: "manual",
+            application_fee_amount: marketplaceFee + serviceFeeInCents,
+            transfer_data: {
+                destination: expertStripeId,
+            },
             metadata: {
                 bookingType: bookingType,
                 expertisePostId: expertisePostId,
@@ -76,7 +92,7 @@ const createStripePaymentIntent = catchAsyncErrors(
                 status: status,
                 // 'customerSubmission': customerSubmission,
             },
-            description: `Booking from customer with id ${customerId} of type ${bookingType} to expert with id ${expertId} for ${price} dollars.`,
+            description: `Booking from customer with id ${customerId} of type ${bookingType} to expert with id ${expertId} for ${total} dollars.`,
         });
 
         if (!paymentIntent) {
@@ -92,11 +108,11 @@ const createStripePaymentIntent = catchAsyncErrors(
     }
 );
 
-
 //Update a booking => PUT /api/bookings/[id]
 const updateBooking = catchAsyncErrors(
     async (req: any, res: NextApiResponse, next: any) => {
         const {
+            // Booking data
             bookingType,
             expertisePost,
             expert,
@@ -105,7 +121,30 @@ const updateBooking = catchAsyncErrors(
             singleTextResponse,
             stripePaymentIntentId,
             _id,
+
+            // boolean denoting whether to charge the Stripe payment intent,
+            // since "updating the booking" possibly means the expert just responded,
+            // and thus should be paid!
+            chargePaymentIntent,
         } = req.body;
+
+        // Get Stripe Payment Intent from the stripePaymentIntentId and capture
+        // the payment if chargePaymentIntent is true. Return an error and don't
+        // continue to update the booking, if this fails.
+        if (chargePaymentIntent) {
+            const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+            const paymentIntent = await stripe.paymentIntents.capture(
+                stripePaymentIntentId
+            );
+            if (!paymentIntent) {
+                return next(
+                    new ErrorHandler(
+                        "Payment Intent not captured successfully",
+                        400
+                    )
+                );
+            }
+        }
 
         const booking = await Booking.findByIdAndUpdate(
             _id,
