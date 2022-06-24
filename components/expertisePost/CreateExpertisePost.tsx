@@ -5,7 +5,7 @@ import { ChevronRightIcon, HomeIcon, StarIcon } from "@heroicons/react/solid";
 import {
     clearErrors,
     createExpertisePost,
-} from "../../redux/actions/expertisePostActions";
+} from "../../redux/actionCreators/expertisePostActions";
 
 import Image from "next/image";
 import RatingsWidget from "../RatingsWidget";

@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { toast } from "react-toastify";
-import { clearErrors } from "../../redux/actions/expertisePostActions";
+import { clearErrors } from "../../redux/actionCreators/expertisePostActions";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import ExpertisePostCard from "../expertisePost/ExpertisePostCard";
 import PageHeader from "../PageHeader";
@@ -25,11 +25,11 @@ const PersonalDevelopment = () => {
     }, [personalDevelopmentError]);
 
     return (
-        <div className="max-w-7xl mx-auto  flex flex-col gap-6">
+        <div className="max-w-7xl mx-auto flex flex-col gap-6">
             <PageHeader
                 pageName="Personal Development"
-                heroPhrase="Cultivate the life you want to live with knowledgable experts."
-                supportingText="testText"
+                heroPhrase="Cultivate your ideal life with personal development experts."
+                supportingText="Ranging from mindfulness advice to confidence tips"
             />
 
             <VerticalCardArray title="Personal Development" link="/categories/personalDevelopment">

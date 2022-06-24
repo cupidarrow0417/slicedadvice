@@ -2,25 +2,24 @@ import { SVGProps } from "react";
 import Image from "next/image";
 
 import SlicedAdviceLogoBlack from "../../public/images/SlicedAdviceLogoBlack.svg";
+import Link from "next/link";
 const navigation = {
-    categories: [
-        { name: "Career Growth", href: "#" },
-        { name: "College Application", href: "#" },
-        { name: "Personal Development", href: "#" },
-        { name: "Other", href: "#" },
-    ],
     product: [
-        { name: "How it works", href: "#" },
-        { name: "For Experts", href: "#" },
-        { name: "FAQ", href: "#" },
+        { name: "Introduction", href: "/introduction" },
+        { name: "For Experts", href: "/experts" },
+        { name: "For Advice Seekers", href: "/adviceSeekers" },
     ],
-    company: [
-        { name: "About", href: "#" },
-        { name: "Blog", href: "#" },
-        { name: "Support", href: "#" },
-        // { name: 'Jobs', href: '#' },
-        // { name: 'Press', href: '#' },
-        // { name: 'Partners', href: '#' },
+    categories: [
+        { name: "Career Growth", href: "/categories/careerGrowth" },
+        { name: "College Application", href: "/categories/collegeApplication" },
+        {
+            name: "Personal Development",
+            href: "/categories/personalDevelopment",
+        },
+    ],
+    more: [
+        { name: "Meet the Team", href: "/team" },
+        { name: "Support", href: "/support" },
     ],
     legal: [
         { name: "Terms", href: "#" },
@@ -90,7 +89,8 @@ export default function Footer() {
                             />
                         </a>
                         <p className="text-gray-500 text-base">
-                            Making it easy to seek and give paid expert advice.
+                            Slicing and serving the world's most important,
+                            inaccessible knowledge to everyone.
                         </p>
                         <div className="flex space-x-6">
                             {/* {navigation.social.map((item) => (
@@ -105,34 +105,32 @@ export default function Footer() {
                         <div className="md:grid md:grid-cols-2 md:gap-8">
                             <div>
                                 <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">
-                                    Categories
+                                    Product
                                 </h3>
                                 <ul role="list" className="mt-4 space-y-4">
-                                    {navigation.categories.map((item) => (
+                                    {navigation.product.map((item) => (
                                         <li key={item.name}>
-                                            <a
-                                                href={item.href}
-                                                className="text-base text-gray-500 hover:text-gray-900"
-                                            >
-                                                {item.name}
-                                            </a>
+                                            <Link href={item.href}>
+                                                <a className="text-base text-gray-500 hover:text-gray-900">
+                                                    {item.name}
+                                                </a>
+                                            </Link>
                                         </li>
                                     ))}
                                 </ul>
                             </div>
                             <div className="mt-12 md:mt-0">
                                 <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">
-                                    Product
+                                    Categories
                                 </h3>
                                 <ul role="list" className="mt-4 space-y-4">
-                                    {navigation.product.map((item) => (
+                                    {navigation.categories.map((item) => (
                                         <li key={item.name}>
-                                            <a
-                                                href={item.href}
-                                                className="text-base text-gray-500 hover:text-gray-900"
-                                            >
-                                                {item.name}
-                                            </a>
+                                            <Link href={item.href}>
+                                                <a className="text-base text-gray-500 hover:text-gray-900">
+                                                    {item.name}
+                                                </a>
+                                            </Link>
                                         </li>
                                     ))}
                                 </ul>
@@ -141,17 +139,16 @@ export default function Footer() {
                         <div className="md:grid md:grid-cols-2 md:gap-8">
                             <div>
                                 <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">
-                                    Company
+                                    More
                                 </h3>
                                 <ul role="list" className="mt-4 space-y-4">
-                                    {navigation.company.map((item) => (
+                                    {navigation.more.map((item) => (
                                         <li key={item.name}>
-                                            <a
-                                                href={item.href}
-                                                className="text-base text-gray-500 hover:text-gray-900"
-                                            >
-                                                {item.name}
-                                            </a>
+                                            <Link href={item.href}>
+                                                <a className="text-base text-gray-500 hover:text-gray-900">
+                                                    {item.name}
+                                                </a>
+                                            </Link>
                                         </li>
                                     ))}
                                 </ul>
@@ -163,12 +160,11 @@ export default function Footer() {
                                 <ul role="list" className="mt-4 space-y-4">
                                     {navigation.legal.map((item) => (
                                         <li key={item.name}>
-                                            <a
-                                                href={item.href}
-                                                className="text-base text-gray-500 hover:text-gray-900"
-                                            >
-                                                {item.name}
-                                            </a>
+                                            <Link href={item.href}>
+                                                <a className="text-base text-gray-500 hover:text-gray-900">
+                                                    {item.name}
+                                                </a>
+                                            </Link>
                                         </li>
                                     ))}
                                 </ul>

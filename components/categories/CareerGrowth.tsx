@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { toast } from "react-toastify";
-import { clearErrors } from "../../redux/actions/expertisePostActions";
+import { clearErrors } from "../../redux/actionCreators/expertisePostActions";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import ExpertisePostCard from "../expertisePost/ExpertisePostCard";
 import PageHeader from "../PageHeader";
@@ -10,7 +10,8 @@ const CareerGrowth = () => {
     const dispatch = useAppDispatch();
 
     // Get the Career Growth category from the Redux store.
-    const { careerGrowthExpertisePosts, error: careerGrowthError } = useAppSelector((state) => state.allCareerGrowthExpertisePosts);
+    const { careerGrowthExpertisePosts, error: careerGrowthError } =
+        useAppSelector((state) => state.allCareerGrowthExpertisePosts);
 
     useEffect(() => {
         if (careerGrowthError) {
@@ -21,14 +22,17 @@ const CareerGrowth = () => {
     }, [careerGrowthError]);
 
     return (
-        <div className="max-w-7xl mx-auto  flex flex-col gap-6">
+        <div className="max-w-7xl mx-auto flex flex-col gap-6">
             <PageHeader
                 pageName="Career Growth"
                 heroPhrase="Boost your trajectory with expertise from accomplished professionals."
-                supportingText="testText"
+                supportingText="Ranging from insider industry knowledge to startup advice"
             />
 
-            <VerticalCardArray title="Career Growth" link="/categories/careerGrowth">
+            <VerticalCardArray
+                title="Career Growth"
+                link="/categories/careerGrowth"
+            >
                 {careerGrowthExpertisePosts &&
                     careerGrowthExpertisePosts.map((expertisePost: any) => (
                         <ExpertisePostCard

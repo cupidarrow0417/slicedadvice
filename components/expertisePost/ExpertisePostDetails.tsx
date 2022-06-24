@@ -3,7 +3,7 @@ import { useAppSelector, useAppDispatch } from "../../redux/hooks";
 import Head from "next/head";
 import { toast } from "react-toastify";
 import { StarIcon } from "@heroicons/react/solid";
-import { clearErrors } from "../../redux/actions/expertisePostActions";
+import { clearErrors } from "../../redux/actionCreators/expertisePostActions";
 
 import Breadcrumbs from "../Breadcrumbs";
 import Image from "next/image";
@@ -19,11 +19,11 @@ const ExpertisePostDetails = () => {
     const { expertisePost, error: expertisePostError } = useAppSelector(
         (state) => state.expertisePostDetails
     );
-    
+
     const { reviews, error: reviewsError } = useAppSelector(
         (state) => state.postReviews
     );
-    
+
     // Check if user is logged in and is the owner of this post.
     // They shouldn't be able to Send a Submission if so, of course.
     const { user, loading } = useAppSelector((state) => {
@@ -50,23 +50,21 @@ const ExpertisePostDetails = () => {
         }
     };
 
-
     const reviewsTotal = reviews.length;
-    const reviewsAverage = (function() {
+    const reviewsAverage = (function () {
         var average: number = 0;
-        for (var i = 0; i < (reviews).length; i++) { 
+        for (var i = 0; i < reviews.length; i++) {
             average += reviews[i].rating;
         }
-        return average /= reviews.length;
-    }());
+        return (average /= reviews.length);
+    })();
     const reviewsCount = [
-            { rating: 5, count: reviews.filter((x: any) => x.rating==5).length },
-            { rating: 4, count: reviews.filter((x: any) => x.rating==4).length },
-            { rating: 3, count: reviews.filter((x: any) => x.rating==3).length },
-            { rating: 2, count: reviews.filter((x: any) => x.rating==2).length },
-            { rating: 1, count: reviews.filter((x: any) => x.rating==1).length },
-        ];
-
+        { rating: 5, count: reviews.filter((x: any) => x.rating == 5).length },
+        { rating: 4, count: reviews.filter((x: any) => x.rating == 4).length },
+        { rating: 3, count: reviews.filter((x: any) => x.rating == 3).length },
+        { rating: 2, count: reviews.filter((x: any) => x.rating == 2).length },
+        { rating: 1, count: reviews.filter((x: any) => x.rating == 1).length },
+    ];
 
     // Used for the Breadcrumbs component
     const pages = [
@@ -76,13 +74,6 @@ const ExpertisePostDetails = () => {
             current: false,
         },
     ];
-
-    useEffect(() => {
-        if (expertisePost) {
-            toast.error(expertisePost);
-            dispatch(clearErrors());
-        }
-    }, [expertisePost]);
 
     useEffect(() => {
         if (reviewsError) {
@@ -101,7 +92,10 @@ const ExpertisePostDetails = () => {
                 <h1 className="text-2xl font-semibold">
                     {expertisePost["title"]}
                 </h1>
-                <RatingsWidget reviewsTotal={reviewsTotal} reviewsAverage = {reviewsAverage} />
+                <RatingsWidget
+                    reviewsTotal={reviewsTotal}
+                    reviewsAverage={reviewsAverage}
+                />
 
                 <div className="flex flex-col lg:flex-row justify-start lg:justify-around items-start w-full gap-7 lg:-mt-2">
                     <div className="expertisePostDetailImageWrapper w-4/5 max-w-lg self-center">
@@ -160,7 +154,9 @@ const ExpertisePostDetails = () => {
                                 ) : userIsOwner ? (
                                     ""
                                 ) : (
-                                    <Link href={`/expertisePost/book/singleTextResponse/${queryParams?.id}`}>
+                                    <Link
+                                        href={`/expertisePost/book/singleTextResponse/${queryParams?.id}`}
+                                    >
                                         <a className="bg-brand-primary-light rounded-lg text-white w-full py-3 text-lg flex justify-center items-center">
                                             Send Submission
                                         </a>
@@ -178,7 +174,6 @@ const ExpertisePostDetails = () => {
                     <h2 className="text-2xl font-extrabold tracking-tight text-gray-900">
                         Customer Reviews
                     </h2>
-
                     <div className="mt-3 flex items-center">
                         <div>
                             <div className="flex items-center">
@@ -203,7 +198,6 @@ const ExpertisePostDetails = () => {
                             Based on {reviewsTotal} reviews
                         </p>
                     </div>
-
                     <div className="mt-6">
                         <h3 className="sr-only">Review data</h3>
 
@@ -249,30 +243,38 @@ const ExpertisePostDetails = () => {
                                         </div>
                                     </dt>
                                     <dd className="ml-3 w-10 text-right tabular-nums text-sm text-gray-900">
-                                        {Math.round(count.count / reviewsTotal * 100)}
+                                        {count.count === 0
+                                            ? 0
+                                            : Math.round(
+                                                  (count.count / reviewsTotal) *
+                                                      100
+                                              )}
                                         %
                                     </dd>
                                 </div>
                             ))}
                         </dl>
                     </div>
+                    {!userIsOwner ? (
+                        <div className="mt-10">
+                            <h3 className="text-lg font-medium text-gray-900">
+                                Share your thoughts
+                            </h3>
+                            <p className="mt-1 text-sm text-gray-600">
+                                If you’ve been helped by this expert, share your
+                                thoughts with other customers
+                            </p>
 
-                    <div className="mt-10">
-                        <h3 className="text-lg font-medium text-gray-900">
-                            Share your thoughts
-                        </h3>
-                        <p className="mt-1 text-sm text-gray-600">
-                            If you’ve been helped by this expert, share your
-                            thoughts with other customers
-                        </p>
-
-                        <a
-                            href="#"
-                            className="mt-6 inline-flex w-full bg-white border border-gray-300 rounded-md py-2 px-8 items-center justify-center text-sm font-medium text-gray-900 hover:bg-gray-50 sm:w-auto lg:w-full"
-                        >
-                            Write a review
-                        </a>
-                    </div>
+                            <a
+                                href="#"
+                                className="mt-6 inline-flex w-full bg-white border border-gray-300 rounded-md py-2 px-8 items-center justify-center text-sm font-medium text-gray-900 hover:bg-gray-50 sm:w-auto lg:w-full"
+                            >
+                                Write a review
+                            </a>
+                        </div>
+                    ) : (
+                        <div></div>
+                    )}
                 </div>
 
                 <div className="mt-16 lg:mt-0 lg:col-start-6 lg:col-span-7">

@@ -37,7 +37,7 @@ const FormSelectMenu = React.forwardRef(
             options,
             required,
         }: FormSelectMenuInterface,
-        ref: any
+        ref: React.Ref<HTMLInputElement>
     ) => {
         const [selected, setSelected] = useState(options[0]);
 

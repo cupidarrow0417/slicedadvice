@@ -1,14 +1,13 @@
 import { GetServerSideProps } from "next";
 import CareerGrowth from "../../components/categories/CareerGrowth";
 import Layout from "../../components/layout/Layout";
-import { getExpertisePosts } from "../../redux/actions/expertisePostActions";
+import { getExpertisePosts } from "../../redux/actionCreators/expertisePostActions";
 import { wrapper } from "../../redux/store";
 
 export default function CareerGrowthPage() {
     return (
         <Layout
-            title="Browse our categories for advice ranging from career growth
-    to personal development | SlicedAdvice"
+            title="Boost your trajectory with expertise from accomplished professionals | SlicedAdvice"
         >
             <CareerGrowth />
         </Layout>
