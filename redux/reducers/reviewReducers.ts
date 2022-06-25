@@ -2,120 +2,101 @@ import {
     CREATE_REVIEW_REQUEST,
     CREATE_REVIEW_SUCCESS,
     CREATE_REVIEW_FAIL,
-    POST_REVIEWS_SUCCESS,
-    POST_REVIEWS_FAIL,
-    ALL_REVIEWS_SUCCESS,
-    ALL_REVIEWS_FAIL,
-    CLEAR_ERRORS
+    GET_REVIEWS_SUCCESS,
+    GET_REVIEWS_FAIL,
+    CLEAR_REVIEW_SUCCESS_MESSAGE,
+    CLEAR_REVIEW_ERRORS,
 } from "../constants/reviewConstants";
 
-/**
- * It returns an object with a loading property set to true if the action type is
- * CREATE_BOOKING_REQUEST, an object with a loading property set to false, a success property set to
- * true, and a bookingId property set to the bookingId in the payload if the action type is
- * CREATE_BOOKING_SUCCESS, and an object with a loading property set to false, a success property set
- * to false, and an error property set to the error in the payload if the action type is
- * CREATE_BOOKING_FAIL
- * @param state - This is the initial state of the reducer.
- * @param {any} action - any - This is the action that is dispatched from the component.
- * @returns The reducer is returning an object with the following properties:
- * loading: boolean
- * success: boolean
- * bookingId: string
- * error: string
- */
-export const createReviewReducer = (state = {}, action: any) => {
+let initialState = {
+    reviews: [],
+    metadata: {
+        loading: false,
+        successMessage: null,
+        error: null,
+        // reviewsCount: 0,
+        // resPerPage: 0,
+        // filteredReviewCount: 0,
+    },
+    cache: {},
+}
+
+export const reviewReducer = (state = initialState, action: any) => {
     switch (action.type) {
+        case GET_REVIEWS_SUCCESS:
+            return {
+                ...state,
+                reviews: action.payload,
+                metadata: {
+                    ...state.metadata,
+                    loading: false,
+                    error: null,
+                    // reviewsCount: action.payload.reviewsCount,
+                    // resPerPage: action.payload.resPerPage,
+                    // filteredReviewCount: action.payload.filteredReviewCount,
+                },
+            };
+        case GET_REVIEWS_FAIL:
+        return {
+            ...state,
+            reviews: [],
+            metadata: {
+                ...state.metadata,
+                loading: false,
+                error: action.payload,
+            },
+        };
+
         case CREATE_REVIEW_REQUEST:
             return {
-                loading: true,
+                ...state,
+                metadata: {
+                    ...state.metadata,
+                    loading: true,
+                    error: null,
+                },
             };
         case CREATE_REVIEW_SUCCESS:
             return {
-                loading: false,
-                success: true,
-                reviewId: action.payload.reviewId,
+                ...state,
+                reviews: [...state.reviews, action.payload.review],
+                metadata: {
+                    ...state.metadata,
+                    loading: false,
+                    successMessage: "Review created successfully",
+                    error: null,
+                    // reviewsCount: state.metadata.reviewsCount + 1
+                },
             };
         case CREATE_REVIEW_FAIL:
             return {
-                loading: false,
-                success: false,
-                error: action.payload,
-            };
-        case CLEAR_ERRORS:
-            return {
                 ...state,
-                error: null,
+                metadata: {
+                    ...state.metadata,
+                    loading: false,
+                    successMessage: null,
+                    error: action.payload,
+                },
             };
-        default:
-            return state;
-    }
-};
 
-/**
- * It returns a new state object with the properties of the old state object and the new properties of
- * the action object
- * @param state - This is the initial state of the reducer.
- * @param {any} action - any
- * @returns The state is being returned.
- */
- export const getPostReviewsReducer = (
-    state = { reviews: [] },
-    action: any
-) => {
-    switch (action.type) {
-        case POST_REVIEWS_SUCCESS:
-            return {
-                // reviewsCount: action.payload.reviewsCount,
-                // resPerPage: action.payload.resPerPage,
-                // filteredAllReviewsCount:
-                //     action.payload.filteredReviewsCount,
-                reviews: action.payload,
-            };
-        case POST_REVIEWS_FAIL:
-            return {
-                error: action.payload,
-            };
-        case CLEAR_ERRORS:
+        // TYPE: CLEAR BOOKINGS SUCCESS
+        case CLEAR_REVIEW_SUCCESS_MESSAGE:
             return {
                 ...state,
-                error: null,
+                metadata: {
+                    ...state.metadata,
+                    success: null,
+                },
+            };
+        // TYPE: CLEAR BOOKINGS ERRORS
+        case CLEAR_REVIEW_ERRORS:
+            return {
+                ...state,
+                metadata: {
+                    error: null,
+                },
             };
         default:
             return state;
     }
-};
-
-/**
- * It returns a new state object with the properties of the old state object and the new properties of
- * the action object
- * @param state - This is the initial state of the reducer.
- * @param {any} action - any
- * @returns The state is being returned.
- */
-export const allReviewsReducer = (
-    state = { reviews: [] },
-    action: any
-) => {
-    switch (action.type) {
-        case ALL_REVIEWS_SUCCESS:
-            return {
-                allReviewsCount: action.payload.reviewsCount,
-                resPerPage: action.payload.resPerPage,
-                filteredAllReviewsCount:
-                    action.payload.filteredReviewsCount,
-                allReviews: action.payload.reviews,
-            };
-        case ALL_REVIEWS_FAIL:
-            return {
-                error: action.payload,
-            };
-        case CLEAR_ERRORS:
-            return {
-                ...state,
-                error: null,
-            };
-        default:
-            return state;
-    }
-};
+}

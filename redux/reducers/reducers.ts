@@ -21,9 +21,7 @@ import {
     bookingsReducer,
 } from "./bookingReducers"
 import {
-    createReviewReducer,
-    getPostReviewsReducer,
-    allReviewsReducer,
+    reviewReducer
 } from "./reviewReducers"
 
 /* Creating a new reducer that combines all of the individual reducers into one. */
@@ -52,9 +50,7 @@ const reducer = combineReducers({
     bookings: bookingsReducer,
 
     // Review global state
-    createReview: createReviewReducer,
-    postReviews: getPostReviewsReducer,
-    allReviews: allReviewsReducer
+    reviews: reviewReducer,
 });
 
 export default reducer;
