@@ -5,9 +5,9 @@ import { toast } from "react-toastify";
 import { StarIcon } from "@heroicons/react/solid";
 import { clearErrors } from "../../redux/actionCreators/expertisePostActions";
 
-import Breadcrumbs from "../Breadcrumbs";
+import Breadcrumbs from "../atoms/Breadcrumbs";
 import Image from "next/image";
-import RatingsWidget from "../RatingsWidget";
+import RatingsWidget from "../atoms/RatingsWidget";
 import Loader from "../layout/Loader";
 import Link from "next/link";
 import { useRouter } from "next/router";

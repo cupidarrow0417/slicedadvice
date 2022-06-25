@@ -10,7 +10,7 @@ import {
     updateBooking,
 } from "../../../../../../redux/actionCreators/bookingActionCreators";
 import { useAppDispatch, useAppSelector } from "../../../../../../redux/hooks";
-import Badge from "../../../../../Badge";
+import Badge from "../../../../../atoms/Badge";
 import ButtonLoader from "../../../../../layout/ButtonLoader";
 
 const DetailsSingleTextResponseBooking = ({ booking }: any) => {

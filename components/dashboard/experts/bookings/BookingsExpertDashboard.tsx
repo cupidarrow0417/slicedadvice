@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { clearErrors } from "../../../../redux/actionCreators/reviewActions";
 import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
-import Modal from "../../../Modal";
+import Modal from "../../../atoms/Modal";
 import DashboardHeader from "../../DashboardHeader";
 import DetailsSingleTextResponseBooking from "./bookingTypes/singleTextResponse/DetailsSingleTextResponseBooking";
 import PreviewSingleTextResponseBooking from "./bookingTypes/singleTextResponse/PreviewSingleTextResponseBooking";

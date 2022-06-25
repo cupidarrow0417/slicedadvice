@@ -2,7 +2,7 @@ import { ChevronDownIcon } from "@heroicons/react/solid";
 import React, { useEffect } from "react";
 import dbConnect from "../../config/dbConnect";
 import { useAppSelector } from "../../redux/hooks";
-import Dropdown from "../Dropdown";
+import Dropdown from "../atoms/Dropdown";
 
 interface DashboardHeaderProps {
     dashboardType: string;

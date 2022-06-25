@@ -3,8 +3,8 @@ import { toast } from "react-toastify";
 import { clearErrors } from "../../redux/actionCreators/expertisePostActions";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import ExpertisePostCard from "../expertisePost/ExpertisePostCard";
-import PageHeader from "../PageHeader";
-import VerticalCardArray from "../VerticalCardArray";
+import PageHeader from "../atoms/PageHeader";
+import VerticalCardArray from "../atoms/MultiShelf";
 
 const CareerGrowth = () => {
     const dispatch = useAppDispatch();

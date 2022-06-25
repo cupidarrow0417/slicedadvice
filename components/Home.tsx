@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 import { clearErrors } from "../redux/actionCreators/expertisePostActions";
 import Image from "next/image";
 import Link from "next/link";
-import Shelf from "./Shelf";
+import Shelf from "./atoms/SingleShelf";
 
 const Home = () => {
     const dispatch = useAppDispatch();

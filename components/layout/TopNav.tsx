@@ -17,7 +17,7 @@ import Link from "next/link";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { loadUser } from "../../redux/actionCreators/userActions";
 import { signOut } from "next-auth/react";
-import Flyout from "../Flyout";
+import Flyout from "../atoms/Flyout";
 import { toast } from "react-toastify";
 
 const navigation = [
@@ -27,12 +27,6 @@ const navigation = [
         icon: <GlobeIcon className="text-brand-primary-light" />,
         flyout: true,
         children: [
-            {
-                name: "Introduction",
-                href: "/introduction",
-                description:
-                    "New to SlicedAdvice? Take a look at our introduction page to get started.",
-            },
             {
                 name: "For Experts",
                 href: "/experts",
@@ -146,7 +140,7 @@ export default function TopNav() {
     return (
         <Disclosure
             as="nav"
-            className="bg-brand-bg-light shadow-md sticky top-0 z-10"
+            className="bg-brand-bg-light border-b border-black/10 sticky top-0 z-10"
         >
             {({ open }) => (
                 <>

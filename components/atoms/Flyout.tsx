@@ -37,7 +37,7 @@ export default function Flyout({
             {({ open }) => (
                 <>
                     <Popover.Button
-                        className="flex hover:bg-brand-primary-light hover:text-white px-3 py-2 rounded-md text-sm font-medium cursor-default"
+                        className="flex text-black hover:bg-brand-primary-light hover:text-white px-3 py-2 rounded-md text-sm font-medium cursor-default"
                         onClick={() => router.push("/categories")}
                         onMouseEnter={() => setIsShowing(true)}
                         onMouseLeave={() => setIsShowing(false)}

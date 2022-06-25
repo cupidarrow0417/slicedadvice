@@ -4,7 +4,7 @@ import { Elements } from "@stripe/react-stripe-js";
 import Router, { useRouter } from "next/router";
 import { PencilAltIcon } from "@heroicons/react/outline";
 import Link from "next/link";
-import PageHeader from "../../PageHeader";
+import PageHeader from "../../atoms/PageHeader";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { cacheBookingData, createStripePaymentIntent, clearStripePaymentIntentErrors } from "../../../redux/actionCreators/bookingActionCreators";
 import { toast } from "react-toastify";

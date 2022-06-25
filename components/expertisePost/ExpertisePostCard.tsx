@@ -8,13 +8,14 @@ interface expertisePostCardInterface {
 const ExpertisePostCard = ({ expertisePost }: expertisePostCardInterface) => {
     //These calculations allow us to slice the title at the right place so that 
     //the title is always only two lines. Still a work in progress.
-    let numSpacesInTitle: Number = expertisePost["title"].slice(0, 35).split(" ").length - 1;
-    let slicePoint: Number = numSpacesInTitle > 3 ? 40 : 30;
+    // Updated as of June 23, 2022
+    let numSpacesInTitle: Number = expertisePost["title"].slice(0, 90).split(" ").length - 1;
+    let slicePoint: Number = numSpacesInTitle > 5 ? 90 : 70;
 
     return (
         <>
             <Link href={`/expertisePost/${expertisePost._id}`}>
-                <div className="flex flex-col max-w-[18rem] min-w-[18rem] h-96 p-3 border-[1px] border-black/10 rounded-2xl bg-brand-bg-light shadow-sm cursor-pointer hover:-mt-[2px] transition-all snap-start">
+                <div className="flex flex-col max-w-[18rem] min-w-[18rem] h-96 rounded-2xl bg-brand-bg-light cursor-pointer hover:-mt-[2px] transition-all snap-start">
                     <div className="expertisePostCardImageWrapper">
                         <a>
                             <Image
@@ -22,25 +23,26 @@ const ExpertisePostCard = ({ expertisePost }: expertisePostCardInterface) => {
                                 layout="responsive"
                                 width={1}
                                 height={1}
+                                className="rounded-md"
                                 alt={expertisePost["title"]}
                             />
                         </a>
                     </div>
-                    <div className="flex flex-col w-8/9 mx-4 my-3">
+                    <div className="flex flex-col justify-start items-between my-3 gap-2">
                         <a>
-                            <h1 className="text-xl font-medium hover:text-brand-primary transition-all">
+                            <h1 className="text-md font-semibold text-black/80 hover:text-brand-primary transition-all">
                                 {expertisePost["title"].slice(0, slicePoint)}
                                 {expertisePost["title"].length > slicePoint && "..."}
                             </h1>
                         </a>
-                        <div className="flex justify-between">
-                            <p className="text-black/50">
+                        <div className="flex justify-between text-black/50 text-sm font-light">
+                            <p className="">
                                 <span className="text-black">
                                     ${expertisePost["pricePerSubmission"]}
                                 </span>{" "}
                                 / submission
                             </p>
-                            <p className="text-black/50">
+                            <p className="">
                                 Ratings: {expertisePost["ratings"]}
                             </p>
                         </div>
