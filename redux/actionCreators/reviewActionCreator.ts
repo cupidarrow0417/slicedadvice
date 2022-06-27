@@ -9,13 +9,14 @@ import {
     CLEAR_REVIEW_SUCCESS_MESSAGE,
     CLEAR_REVIEW_ERRORS,
 } from "../constants/reviewConstants";
+import mongoose from "mongoose";
+
 
 interface SubmittedReviewDataInterface {
-    rating: Number;
-    description: String;
+    rating: number;
+    content: string;
     expertisePostId: String;
-    userId: String;
-    status: String;
+    user: String;
 }
 
 
@@ -33,7 +34,7 @@ export const createReview =
             };
 
             const { data } = await axios.post(
-                `/api/reviews`,
+                `${origin}/api/expertisePosts/${reviewData.expertisePostId}/reviews`,
                 reviewData, 
                 config
             );

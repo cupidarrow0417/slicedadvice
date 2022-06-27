@@ -2,7 +2,7 @@ import { ChevronDownIcon } from "@heroicons/react/solid";
 import Router, { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
-import { clearErrors } from "../../../../redux/actionCreators/reviewActions";
+import { clearErrors } from "../../../../redux/actionCreators/reviewActionCreator";
 import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
 import Modal from "../../../Modal";
 import DashboardHeader from "../../DashboardHeader";

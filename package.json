@@ -9,8 +9,12 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/react": "^11.9.3",
+    "@emotion/styled": "^11.9.3",
     "@headlessui/react": "^1.6.5",
     "@heroicons/react": "^1.0.6",
+    "@mui/icons-material": "^5.8.4",
+    "@mui/material": "^5.8.5",
     "@redux-devtools/extension": "^3.2.2",
     "@stripe/react-stripe-js": "^1.7.2",
     "@stripe/stripe-js": "^1.27.0",
@@ -24,7 +28,7 @@
     "mongoose-autopopulate": "^0.16.1",
     "next": "12.1.0",
     "next-absolute-url": "^1.2.2",
-    "next-auth": "^4.3.1",
+    "next-auth": "^4.6.1",
     "next-connect": "^0.12.2",
     "next-redux-wrapper": "^7.0.5",
     "nodemailer": "^6.7.3",

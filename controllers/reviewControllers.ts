@@ -13,19 +13,16 @@ const createReview = catchAsyncErrors(
     ) => {
         const {
             rating,
-            description,
+            content,
+            user,
             expertisePostId,
-            userId,
-            status,
-
         } = req.body;
 
         const review = await Review.create({
             rating: rating,
-            description: description,
-            user: userId,
-            expertisePost: expertisePostId,
-            status,
+            content: content,
+            user: user,
+            expertisePostId: expertisePostId,
         });
 
         if (!review) {

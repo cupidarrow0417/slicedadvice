@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAppSelector, useAppDispatch } from "../../redux/hooks";
 import Head from "next/head";
 import { toast } from "react-toastify";
@@ -11,6 +11,7 @@ import RatingsWidget from "../RatingsWidget";
 import Loader from "../layout/Loader";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import CreateReviewWidget from "../CreateReviewWidget";
 
 const ExpertisePostDetails = () => {
     const dispatch = useAppDispatch();
@@ -20,8 +21,8 @@ const ExpertisePostDetails = () => {
         (state) => state.expertisePostDetails
     );
 
-    const { reviews, error: reviewsError } = useAppSelector(
-        (state) => state.postReviews
+    const { reviews, metadata: reviewsMetadata } = useAppSelector(
+        (state) => state.reviews
     );
 
     // Check if user is logged in and is the owner of this post.
@@ -75,12 +76,14 @@ const ExpertisePostDetails = () => {
         },
     ];
 
+    const [isVisible, setIsVisible] = useState(false);
+
     useEffect(() => {
-        if (reviewsError) {
-            toast.error(reviewsError);
+        if (reviewsMetadata.error) {
+            toast.error(reviewsMetadata.error);
             dispatch(clearErrors());
         }
-    }, [reviewsError]);
+    }, [reviewsMetadata.error]);
 
     return (
         <div className="">
@@ -264,14 +267,22 @@ const ExpertisePostDetails = () => {
                                 If you’ve been helped by this expert, share your
                                 thoughts with other customers
                             </p>
-
+                            {!isVisible ? (
                             <a
-                                href="#"
                                 className="mt-6 inline-flex w-full bg-white border border-gray-300 rounded-md py-2 px-8 items-center justify-center text-sm font-medium text-gray-900 hover:bg-gray-50 sm:w-auto lg:w-full"
+                                onClick={() => setIsVisible(true)}
                             >
                                 Write a review
                             </a>
-                        </div>
+                            ) : (
+                            <div className="mt-10">
+                                <CreateReviewWidget
+                                    user={user}
+                                    expertisePostId={expertisePost?._id}
+                                />
+                            </div>
+                            )}
+                        </div>                            
                     ) : (
                         <div></div>
                     )}

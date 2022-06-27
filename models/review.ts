@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 interface ReviewInterface {
     rating: Number; // Stars 1-5
     content: string;
-    expertisePost: mongoose.Schema.Types.ObjectId; // more specificity?
+    expertisePostId: mongoose.Schema.Types.ObjectId; // more specificity?
     user: mongoose.Schema.Types.ObjectId;
     createdAt: Date;
 }
@@ -24,7 +24,7 @@ const reviewSchema = new mongoose.Schema<ReviewInterface>({
             "Reviews cannot exceed 1000 characters.",
         ],
     },
-    expertisePost: {
+    expertisePostId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Expertise Post",
         required: true,
