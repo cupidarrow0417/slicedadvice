@@ -31,7 +31,7 @@ const createReview = catchAsyncErrors(
 
         res.status(200).json({
             success: true,
-            reviewId: review._id,
+            review: review,
         });
     }
 );

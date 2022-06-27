@@ -52,7 +52,7 @@ const ExpertisePostDetails = () => {
     };
 
     const reviewsTotal = reviews.length;
-    const reviewsAverage = (function () {
+    const reviewsAverage = (() => {
         var average: number = 0;
         for (var i = 0; i < reviews.length; i++) {
             average += reviews[i].rating;
