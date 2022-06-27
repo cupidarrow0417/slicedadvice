@@ -15,7 +15,6 @@ const CreateReviewWidget = ({ user, expertisePostId }: any,) => {
   const dispatch = useAppDispatch();
 
   const createReviewHandler = (e: any) => {
-
     e.preventDefault()
     
     setLoading(true);
@@ -54,7 +53,7 @@ const CreateReviewWidget = ({ user, expertisePostId }: any,) => {
                     </div>
                 </div>
 
-                <form onSubmit={createReviewHandler} action="#">
+                <form onSubmit={(e:any) => createReviewHandler(e)}>
                   <div className="mt-4 space-y-6 text-base italic text-gray-600">
                     <label htmlFor="review" className="sr-only">
                       Add your review

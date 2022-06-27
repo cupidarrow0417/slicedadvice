@@ -43,9 +43,8 @@ const getSinglePostReviews = catchAsyncErrors(
         res: NextApiResponse,
         next: (arg0: ErrorHandler) => any
     ) => {
-        const reviews = await Review.find({expertisePost: req.query.id})
+        const reviews = await Review.find({expertisePostId: req.query.id})
 
-        console.log("reviews", reviews)
         if (!reviews) {
             return next(new ErrorHandler("Room not found with this ID", 404));
         }
