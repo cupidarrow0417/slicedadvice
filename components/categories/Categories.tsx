@@ -4,7 +4,9 @@ import { clearErrors } from "../../redux/actionCreators/expertisePostActions";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import ExpertisePostCard from "../expertisePost/ExpertisePostCard";
 import PageHeader from "../atoms/PageHeader";
-import Shelf from "../atoms/SingleShelf";
+import SingleShelf from "../atoms/SingleShelf";
+import { ArrowDownIcon } from "@heroicons/react/outline";
+import UniversalFadeAnimation from "../atoms/UniversalFadeAnimation";
 
 const Categories = () => {
     const dispatch = useAppDispatch();
@@ -38,43 +40,65 @@ const Categories = () => {
 
     return (
         <div className="max-w-7xl mx-auto  flex flex-col gap-6">
-            <PageHeader
-                pageName="All Categories"
-                heroPhrase="Life changing advice, by-the-slice."
-                supportingText="Ranging from career growth to personal development"
-            />
+            <UniversalFadeAnimation>
+                <PageHeader
+                    heroPhrase="Advice that makes a difference."
+                    supportingText="Browse our categories ranging from career growth to personal development"
+                >
+                    <button
+                        onClick={() =>
+                            document
+                                .getElementById("scrollHere")
+                                ?.scrollIntoView({ behavior: "smooth" })
+                        }
+                        className="rounded-full bg-brand-primary-light hover:bg-brand-primary-light/90 text-white animate-bounce"
+                    >
+                        <ArrowDownIcon className="w-10 h-10 m-2" />
+                    </button>
+                </PageHeader>
 
-            <Shelf title="Career Growth" link="/categories/careerGrowth">
-                {careerGrowthExpertisePosts &&
-                    careerGrowthExpertisePosts.map((expertisePost: any) => (
-                        <ExpertisePostCard
-                            key={expertisePost._id}
-                            expertisePost={expertisePost}
-                        />
-                    ))}
-            </Shelf>
-            <Shelf title="College Application" link="/categories/collegeApplication">
-                {collegeApplicationExpertisePosts &&
-                    collegeApplicationExpertisePosts.map(
-                        (expertisePost: any) => (
-                            <ExpertisePostCard
-                                 key={expertisePost._id}
-                                expertisePost={expertisePost}
-                            />
-                        )
-                    )}
-            </Shelf>
-            <Shelf title="Personal Development" link="/categories/personalDevelopment">
-                {personalDevelopmentExpertisePosts &&
-                    personalDevelopmentExpertisePosts.map(
-                        (expertisePost: any) => (
+                <div id="scrollHere"></div>
+                <SingleShelf
+                    title="Career Growth"
+                    link="/categories/careerGrowth"
+                >
+                    {careerGrowthExpertisePosts &&
+                        careerGrowthExpertisePosts.map((expertisePost: any) => (
                             <ExpertisePostCard
                                 key={expertisePost._id}
                                 expertisePost={expertisePost}
                             />
-                        )
-                    )}
-            </Shelf>
+                        ))}
+                </SingleShelf>
+                <SingleShelf
+                    title="College Application"
+                    link="/categories/collegeApplication"
+                >
+                    {collegeApplicationExpertisePosts &&
+                        collegeApplicationExpertisePosts.map(
+                            (expertisePost: any) => (
+                                <ExpertisePostCard
+                                    key={expertisePost._id}
+                                    expertisePost={expertisePost}
+                                />
+                            )
+                        )}
+                </SingleShelf>
+                <SingleShelf
+                    title="Personal Development"
+                    link="/categories/personalDevelopment"
+                >
+                    {personalDevelopmentExpertisePosts &&
+                        personalDevelopmentExpertisePosts.map(
+                            (expertisePost: any) => (
+                                <ExpertisePostCard
+                                    key={expertisePost._id}
+                                    expertisePost={expertisePost}
+                                />
+                            )
+                        )}
+                </SingleShelf>
+            </UniversalFadeAnimation>
         </div>
     );
 };

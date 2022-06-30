@@ -25,6 +25,7 @@ import {
 } from "../../../redux/actionCreators/userActions";
 import YourPostsExpertDashboard from "./posts/PostsExpertDashboard";
 import Router from "next/router";
+import UniversalFadeAnimation from "../../atoms/UniversalFadeAnimation";
 
 const navigation = [
     {
@@ -95,31 +96,33 @@ export default function ExpertDashboard({
 
     return (
         <>
-            <div className="h-screen flex rounded-xl shadow-md">
-                {/* Static sidebar for desktop */}
-                <div className="hidden lg:flex lg:flex-col lg:w-56 lg:border-r-0 lg:border-black/10 lg:border-[1px] lg:pt-5 lg:pb-4 lg:bg-white rounded-tl-xl rounded-bl-xl">
-                    <div className="flex items-center flex-shrink-0 px-6"></div>
-                    <DashboardSidebar
-                        navigation={navigation}
-                        chargesEnabled={chargesEnabled}
-                    />
+            <UniversalFadeAnimation>
+                <div className="h-screen flex rounded-xl shadow-md">
+                    {/* Static sidebar for desktop */}
+                    <div className="hidden lg:flex lg:flex-col lg:w-56 lg:border-r-0 lg:border-black/10 lg:border-[1px] lg:pt-5 lg:pb-4 lg:bg-white rounded-tl-xl rounded-bl-xl">
+                        <div className="flex items-center flex-shrink-0 px-6"></div>
+                        <DashboardSidebar
+                            navigation={navigation}
+                            chargesEnabled={chargesEnabled}
+                        />
+                    </div>
+                    {/* Main column */}
+                    <div className="flex flex-col w-full">
+                        <main className="flex-1 relative border-[1px] rounded-xl lg:rounded-r-xl lg:rounded-l-none overflow-hidden">
+                            {currentPage === "Home" && <HomeExpertDashboard />}
+                            {currentPage === "Posts" && chargesEnabled && (
+                                <YourPostsExpertDashboard />
+                            )}
+                            {currentPage === "Bookings" && chargesEnabled && (
+                                <BookingsExpertDashboard />
+                            )}
+                            {currentPage === "Payments" && (
+                                <PaymentsExpertDashboard />
+                            )}
+                        </main>
+                    </div>
                 </div>
-                {/* Main column */}
-                <div className="flex flex-col w-full">
-                    <main className="flex-1 relative border-[1px] rounded-xl lg:rounded-r-xl lg:rounded-l-none overflow-hidden">
-                        {currentPage === "Home" && <HomeExpertDashboard />}
-                        {currentPage === "Posts" && chargesEnabled && (
-                            <YourPostsExpertDashboard />
-                        )}
-                        {currentPage === "Bookings" && chargesEnabled && (
-                            <BookingsExpertDashboard />
-                        )}
-                        {currentPage === "Payments" && (
-                            <PaymentsExpertDashboard />
-                        )}
-                    </main>
-                </div>
-            </div>
+            </UniversalFadeAnimation>
         </>
     );
 }

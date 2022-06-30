@@ -57,7 +57,7 @@ const DetailsSingleTextResponseBooking = ({ booking }: any) => {
         }
     }, [bookingsMetadata]);
     return (
-        <div className="flex flex-col gap-4 p-6 py-8 bg-white shadow-lg rounded-lg w-full max-w-xl h-fit border border-black/10">
+        <div className="mx-auto flex flex-col gap-4 p-6 py-8 bg-white shadow-lg rounded-lg w-full max-w-xl h-fit border border-black/10">
             <div className="flex justify-between items-start gap-4">
                 <div className="flex items-center justify-center">
                     {/* <div className="flex items-center w-14 h-14 rounded-full bg-black/10">

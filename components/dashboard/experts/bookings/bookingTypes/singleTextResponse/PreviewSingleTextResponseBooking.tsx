@@ -24,7 +24,7 @@ const PreviewSingleTextResponseBooking = ({ booking }: any) => {
     let parsedDate: any = moment(booking.createdAt).format("MMM Do, YYYY");
 
     return (
-        <div className="flex flex-col justify-between gap-3 border-y md:border rounded-lg w-full h-fit p-5 shadow-sm bg-white">
+        <div className="flex flex-col justify-between gap-3 w-full h-fit p-5 bg-white border-b">
             <div className="flex justify-between items-center">
                 {/* Customer and date */}
                 <div className="text-brand-primary-light">

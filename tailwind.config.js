@@ -1,3 +1,5 @@
+const defaultTheme = require('tailwindcss/defaultTheme')
+
 module.exports = {
   content: [
     "./pages/**/*.{js,ts,jsx,tsx}",
@@ -11,6 +13,9 @@ module.exports = {
         'brand-bg-dark': '#E3CCCC',
         'brand-primary': '#D72323',
         'brand-primary-light': '#E24B4B',
+      },
+      fontFamily: {
+        sans: ['Inter var', ...defaultTheme.fontFamily.sans],
       },
     },
   },

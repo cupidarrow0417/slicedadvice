@@ -84,7 +84,7 @@ const BookingsExpertDashboard = () => {
 
     return (
         <>
-            <div className="bg-white w-full h-[4.5rem] px-4 py-4 flex items-center justify-between sm:px-6 rounded-t-xl lg:rounded-tl-none lg:px-8 border-b-[1px] border-black/10">
+            <div className="bg-white w-full h-[4.5rem] px-4 pt-6 pb-4 flex items-center justify-between sm:px-6 rounded-t-xl lg:rounded-tl-none lg:px-8 border-black/10">
                 <DashboardHeader
                     dashboardType="Expert"
                     dashboardPage="Bookings"
@@ -93,7 +93,7 @@ const BookingsExpertDashboard = () => {
             {/* Main content */}
             <div className="flex w-full h-[calc(100%-4.5rem)]">
                 {/* Preview always visible on all screen sizes  */}
-                <div className="flex flex-col gap-2 overflow-auto h-full w-full md:w-2/5 p-2 px-0 md:p-2 md:border-r border-black/10">
+                <div className="flex flex-col gap-2 overflow-auto h-full w-full md:w-2/5 p-2 px-0 md:p-2">
                     {bookings !== null &&
                         bookings !== undefined &&
                         bookings.length > 0 &&
