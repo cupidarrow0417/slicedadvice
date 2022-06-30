@@ -98,13 +98,14 @@ const ExpertisePostDetails = () => {
                 />
 
                 <div className="flex flex-col lg:flex-row justify-start lg:justify-around items-start w-full gap-7 lg:-mt-2">
-                    <div className="expertisePostDetailImageWrapper w-4/5 max-w-lg self-center">
+                    <div className="expertisePostDetailImageWrapper w-full max-w-lg self-center">
                         {expertisePost["images"][0] && (
                             <Image
                                 src={expertisePost["images"][0]["url"]}
                                 layout="responsive"
                                 width={1.5}
                                 height={1}
+                                className="object-cover"
                                 alt="Picture for expertise posting"
                             />
                         )}

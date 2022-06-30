@@ -55,7 +55,7 @@ export default function Home() {
         <div className="bg-white">
             <UniversalFadeAnimation>
                 <PageHeader
-                    heroPhrase={"Life changing advice, by-the-slice."}
+                    heroPhrase={"Life changing advice, by the slice."}
                     supportingText={
                         "Join our marketplace of bite-sized advice, one that's affordable for advice seekers and convenient for busy experts."
                     }
@@ -168,7 +168,7 @@ export default function Home() {
                                 <div className="p-6 flex items-end sm:absolute sm:inset-0">
                                     <div>
                                         <h3 className="font-semibold text-white">
-                                            <Link href="/categories/collegeApplication">
+                                            <Link href="/categories/personalDevelopment">
                                                 <a>
                                                     <span className="absolute inset-0" />
                                                     Personal Development
