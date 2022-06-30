@@ -1,26 +1,59 @@
 import { ChevronDownIcon } from "@heroicons/react/solid";
-import React from "react";
+import React, { useState } from "react";
+import { useAppSelector } from "../../../../redux/hooks";
 import DashboardHeader from "../../DashboardHeader";
+import axios from "axios";
+import ButtonLoader from "../../../layout/ButtonLoader";
+import Loader from "../../../layout/Loader";
+import { CashIcon } from "@heroicons/react/outline";
 
+// No need to check Stripe status, since they'll never even get here unless they're good to go!
+// It's coded into the Expert Dashboard, and also the getServerSideProps.
 const PaymentsExpertDashboard = () => {
+    const [loadingStripeLoginLink, setLoadingStripeLoginLink] = useState(false);
+
+    // On Click, Make a POST request with axios to the /api/stripe/expertLoginLink endpoint, which will return a link to the Stripe dashboard.
+    // Then, redirect the user to that link.
+    const handleContinueToStripeClick = async () => {
+        setLoadingStripeLoginLink(true);
+        const { data } = await axios.post("/api/stripe/expertLoginLink");
+        setLoadingStripeLoginLink(false);
+        window.location.href = data.loginLink.url;
+    };
     return (
         <>
             {/* Page title & actions */}
-            <div className="bg-white px-4 py-4 flex items-center justify-between sm:px-6 rounded-t-xl lg:rounded-tl-none lg:px-8 border-b-[1px] border-black/10">
-            <DashboardHeader dashboardType="Expert" dashboardPage="Payments" />
-                <div className="">
-                    {/* <button
-            type="button"
-            className="order-1 ml-3 inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 sm:order-0 sm:ml-0"
-        >
-            Share
-        </button> */}
+            <section className="bg-white px-4 py-4 flex items-center justify-between sm:px-6 rounded-t-xl lg:rounded-tl-none lg:px-8 border-b-[1px] border-black/10">
+                <DashboardHeader
+                    dashboardType="Expert"
+                    dashboardPage="Payments"
+                />
+            </section>
+            {/* Page content */}
+            <div className="flex justify-center items-center rounded-xlbg-white w-full p-9">
+                <div className="flex flex-col gap-5 justify-center items-center max-w-md">
+                    <CashIcon className=" w-16 h-16 text-brand-primary-light" />
+                    <h1 className="text-3xl text-center -mt-4">
+                        Continue to Stripe to manage your payments
+                    </h1>
+                    <p className="text-sm opacity-60 text-center ">
+                        SlicedAdvice partners with Stripe to transfer earnings
+                        to your bank account.
+                    </p>
                     <button
-                        type="button"
-                        className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-brand-primary-light hover:bg-brand-primary-light/90"
+                        onClick={handleContinueToStripeClick}
+                        className="bg-brand-primary-light rounded-lg text-white w-full py-3 text-lg flex justify-center items-center"
+                        disabled={loadingStripeLoginLink}
                     >
-                        New Post
+                        {loadingStripeLoginLink ? (
+                            <ButtonLoader />
+                        ) : (
+                            "Continue to Stripe"
+                        )}
                     </button>
+                    <p className="text-xs opacity-60 text-center ">
+                        You'll be redirected to Stripe to manage your payments.
+                    </p>
                 </div>
             </div>
         </>
