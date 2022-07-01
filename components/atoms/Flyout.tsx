@@ -36,9 +36,9 @@ export default function Flyout({
         <Popover className="relative">
             {({ open }) => (
                 <>
-                    <Popover.Button
+                    <div
                         className="flex text-black hover:bg-brand-primary-light hover:text-white px-3 py-2 rounded-md text-sm font-medium cursor-default"
-                        onClick={() => router.push("/categories")}
+                        onClick={() => router.push(href)}
                         onMouseEnter={() => setIsShowing(true)}
                         onMouseLeave={() => setIsShowing(false)}
                     >
@@ -47,7 +47,7 @@ export default function Flyout({
                             className="ml-2 mt-[1px] h-5 w-5 group-hover:text-white"
                             aria-hidden="true"
                         />
-                    </Popover.Button>
+                    </div>
                     <Transition
                         as={Fragment}
                         enter="transition ease-out duration-200"

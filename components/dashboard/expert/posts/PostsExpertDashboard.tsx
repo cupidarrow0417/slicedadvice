@@ -21,7 +21,7 @@ const PostsExpertDashboard = () => {
     return (
         <>
             {/* Page title & actions */}
-            <div className="bg-white px-4 pt-6 pb-4 flex items-center justify-between sm:px-6 rounded-t-xl lg:rounded-tl-none lg:px-8 border-black/10">
+            <div className="bg-white px-4 pt-6 pb-4 flex items-center justify-between sm:px-6 rounded-t-xl lg:rounded-tl-none border-b-[1px] lg:px-8 border-black/10">
                 <DashboardHeader dashboardType="Expert" dashboardPage="Posts" />
                 <div className="">
                     {/* <button

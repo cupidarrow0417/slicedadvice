@@ -1,15 +1,15 @@
 import { GetServerSideProps } from "next";
 import { getSession } from "next-auth/react";
 import Dashboard from "../../../components/dashboard/Dashboard";
-import HomeExpertDashboard from "../../../components/dashboard/expert/home/HomeExpertDashboard";
+import HomeAdviceSeekerDashboard from "../../../components/dashboard/adviceSeeker/home/HomeAdviceSeekerDashboard";
 import Layout from "../../../components/layout/Layout";
 import { getBookings } from "../../../redux/actionCreators/bookingActionCreators";
 import { wrapper } from "../../../redux/store";
-const ExpertDashboardHomePage = () => {
+const AdviceSeekerDashboardHomePage = () => {
     return (
-        <Layout title="Home | Expert Dashboard | SlicedAdvice">
-            <Dashboard dashboardType="Expert">
-                <HomeExpertDashboard />
+        <Layout title="Home | Advice Seeker Dashboard | SlicedAdvice">
+            <Dashboard dashboardType="Advice Seeker">
+                <HomeAdviceSeekerDashboard />
             </Dashboard>
         </Layout>
     );
@@ -40,7 +40,7 @@ export const getServerSideProps: GetServerSideProps =
         if (!session) {
             return {
                 redirect: {
-                    destination: `/login?returnUrl=/dashboard/expert/home&returnContext=expert%20dashboard%20home%20page`,
+                    destination: `/login?returnUrl=/dashboard/adviceSeeker/home&returnContext=advice%20seeker%20dashboard%20home%20page`,
                     permanent: false,
                 },
             };
@@ -52,4 +52,4 @@ export const getServerSideProps: GetServerSideProps =
             return { props: { session } };
         }
     });
-export default ExpertDashboardHomePage;
+export default AdviceSeekerDashboardHomePage;

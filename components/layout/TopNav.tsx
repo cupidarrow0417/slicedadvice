@@ -99,7 +99,7 @@ const navigation = {
                 },
                 {
                     name: "For Advice Seekers",
-                    href: "#",
+                    href: "/dashboard/adviceSeeker/home",
                     description:
                         "Review and manage your bookings for expertise.",
                 },

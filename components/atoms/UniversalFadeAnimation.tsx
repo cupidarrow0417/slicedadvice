@@ -1,10 +1,10 @@
 import React from "react";
-import { Reveal } from "react-awesome-reveal";
+import { Fade, Reveal } from "react-awesome-reveal";
 import { keyframes } from "@emotion/react";
 
 const customAnimation = keyframes`
   from {
-    opacity: 0;
+    opacity: 0.4;
     transform: translate3d(0, 75px, 0);
   }
   to {
@@ -22,11 +22,25 @@ const customAnimation = keyframes`
 // wrap the important divs in the UniversalFadeAnimation.
 // Thanks React-Awesome-Reveal!
 
-// Later, we will add more nuanced animations using this library to orchestrate a beautiful
-// succession of animations. But for now, this works just fine :)
-export default function UniversalFadeAnimation({ children }: any) {
-    return (
-        <Reveal cascade damping={0} keyframes={customAnimation} triggerOnce={true} duration={700}>
+// CURRENT OPTIONS: 
+//  - Don't define animationType = defaults to Reveal with custom fade up animation.
+//  - Define animationType = "appear" to use a less jarring animation that just slowly appears.
+export default function UniversalFadeAnimation({
+    children,
+    animationType = "fadeUp",
+}: any) {
+    return animationType === "appear" ? (
+        <Fade cascade damping={0} triggerOnce={true} duration={400}>
+            {children}
+        </Fade>
+    ) : (
+        <Reveal
+            cascade
+            damping={0}
+            keyframes={customAnimation}
+            triggerOnce={true}
+            duration={700}
+        >
             {children}
         </Reveal>
     );

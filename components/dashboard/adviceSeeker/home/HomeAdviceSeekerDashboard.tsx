@@ -3,22 +3,15 @@ import { CashIcon } from "@heroicons/react/outline";
 import React from "react";
 import { useAppSelector } from "../../../../redux/hooks";
 import ButtonLoader from "../../../layout/ButtonLoader";
-import SetupPayoutsAlert from "../SetupPayoutsAlert";
 import Loader from "../../../layout/Loader";
 import { useRouter } from "next/router";
 import DashboardHeader from "../../DashboardHeader";
 
-const HomeExpertDashboard = () => {
+const HomeAdviceSeekerDashboard = () => {
     const router = useRouter();
     const { user, loading: authLoading } = useAppSelector(
         (state) => state.auth
     );
-    const {
-        accountField: chargesEnabled,
-        loading: checkStripeAccountFieldLoading,
-    } = useAppSelector((state) => {
-        return state.checkStripeAccountField;
-    });
 
     return (authLoading) ? (
         <div className="flex flex-col">
@@ -27,36 +20,26 @@ const HomeExpertDashboard = () => {
             </div>
         </div>
     ) : (
-        <div className="flex flex-col">
+        <div className="flex flex-col gap-4">
             {/* Page title & actions */}
-            <div className="bg-white px-4 pt-6 pb-4 flex items-center justify-between sm:px-6 rounded-t-xl lg:rounded-tl-none lg:px-8 border-black/10">
-                <DashboardHeader dashboardType="Expert" dashboardPage="Home" />
+            <div className="bg-white pt-6 pb-4 flex items-center justify-between rounded-t-xl lg:rounded-tl-none border-black/10 border-b-[1px]">
+                <DashboardHeader dashboardType="Advice Seeker" dashboardPage="Home" />
                 <div className="">
-                    {!chargesEnabled ? (
-                        ""
-                    ) : (
-                        <button
+                        {/* <button
                             type="button"
                             className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-brand-primary-light hover:bg-brand-primary-light/90"
                             disabled={authLoading ? true : false}
-                            onClick={() => router.push('/expertisePost/create')}
+                            // onClick={() => router.push('/expertisePost/create')}
                         >
-                            {authLoading ? <ButtonLoader /> : "New Post"}
-                        </button>
-                    )}
+                            {authLoading ? <ButtonLoader /> : ""}
+                        </button> */}
                 </div>
             </div>
             <div className="flex items-center justify-center sm:p-4 border-black/10">
-                {!chargesEnabled ? (
-                    <SetupPayoutsAlert />
-                ) : (
-                    <div className="flex justify-center items-center rounded-xl border-y-[1px] sm:border-x-[1px] border-black/10 bg-white w-full p-9">
-                        <h1>{`Charges have been enabled! Woohoo! Click the "New Post" button to create your first expertise posting. `}</h1>
-                    </div>
-                )}
+                Welcome to the home page of the advice seeker dashboard!
             </div>
         </div>
     );
 };
 
-export default HomeExpertDashboard;
+export default HomeAdviceSeekerDashboard;

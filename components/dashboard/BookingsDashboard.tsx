@@ -2,14 +2,14 @@ import { ChevronDownIcon } from "@heroicons/react/solid";
 import Router, { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
-import { clearErrors } from "../../../../redux/actionCreators/reviewActions";
-import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
-import Modal from "../../../atoms/Modal";
-import DashboardHeader from "../../DashboardHeader";
-import DetailsSingleTextResponseBooking from "./bookingTypes/singleTextResponse/DetailsSingleTextResponseBooking";
-import PreviewSingleTextResponseBooking from "./bookingTypes/singleTextResponse/PreviewSingleTextResponseBooking";
+import { clearBookingsErrors } from "../../redux/actionCreators/bookingActionCreators";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import Modal from "../atoms/Modal";
+import DashboardHeader from "./DashboardHeader";
+import DetailsSingleTextResponseBooking from "./DetailsSingleTextResponseBooking";
+import PreviewSingleTextResponseBooking from "./PreviewSingleTextResponseBooking";
 
-const BookingsExpertDashboard = () => {
+const BookingsDashboard = ({dashboardType}: {dashboardType: "Advice Seeker" | "Expert"}) => {
     const dispatch = useAppDispatch();
     const {
         bookings,
@@ -47,7 +47,7 @@ const BookingsExpertDashboard = () => {
     useEffect(() => {
         if (bookingsMetadata.error) {
             toast.error(bookingsMetadata.error);
-            dispatch(clearErrors());
+            dispatch(clearBookingsErrors());
         }
 
         // If bookings are loaded, and if a booking id already exists, set the
@@ -84,16 +84,16 @@ const BookingsExpertDashboard = () => {
 
     return (
         <>
-            <div className="bg-white w-full h-[4.5rem] px-4 pt-6 pb-4 flex items-center justify-between sm:px-6 rounded-t-xl lg:rounded-tl-none lg:px-8 border-black/10">
+            <div className="bg-white w-full h-[4.5rem] pt-6 pb-4 flex items-center justify-between rounded-t-xl border-b-[1px] lg:rounded-tl-none border-black/10">
                 <DashboardHeader
-                    dashboardType="Expert"
+                    dashboardType={dashboardType}
                     dashboardPage="Bookings"
                 />
             </div>
             {/* Main content */}
             <div className="flex w-full h-[calc(100%-4.5rem)]">
                 {/* Preview always visible on all screen sizes  */}
-                <div className="flex flex-col gap-2 overflow-auto h-full w-full md:w-2/5 p-2 px-0 md:p-2">
+                <div className="flex flex-col gap-2 overflow-auto h-full w-full md:w-2/5">
                     {bookings !== null &&
                         bookings !== undefined &&
                         bookings.length > 0 &&
@@ -101,16 +101,18 @@ const BookingsExpertDashboard = () => {
                             <PreviewSingleTextResponseBooking
                                 key={booking._id}
                                 booking={booking}
+                                dashboardType={dashboardType}
                             />
                         ))}
                 </div>
                 {/* Desktop view of the booking details.  */}
                 {currentBookingSelected && window.innerWidth >= 768 && (
                     <div className="hidden md:flex h-full w-3/5 p-2 overflow-auto">
-                        <div className="hidden md:flex w-full h-full">
+                        <div className="hidden md:flex w-full h-full my-2">
                             <DetailsSingleTextResponseBooking
                                 key={currentBookingSelected._id}
                                 booking={currentBookingSelected}
+                                dashboardType={dashboardType}
                             />
                         </div>
                     </div>
@@ -121,13 +123,14 @@ const BookingsExpertDashboard = () => {
                     <div className="block md:hidden">
                         <Modal
                             openLocalState={modalOpen}
-                            buttonText="Open"
                             closeButtonText="Return to Dashboard"
                             key={currentBookingSelected._id}
+                            dashboardType={dashboardType}
                         >
                             <DetailsSingleTextResponseBooking
                                 key={currentBookingSelected._id}
                                 booking={currentBookingSelected}
+                                dashboardType={dashboardType}
                             />
                         </Modal>
                     </div>
@@ -137,4 +140,4 @@ const BookingsExpertDashboard = () => {
     );
 };
 
-export default BookingsExpertDashboard;
+export default BookingsDashboard;

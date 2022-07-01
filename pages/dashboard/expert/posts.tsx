@@ -1,6 +1,7 @@
 import { GetServerSideProps } from "next";
 import { getSession } from "next-auth/react";
-import ExpertDashboard from "../../../components/dashboard/experts/ExpertDashboard";
+import Dashboard from "../../../components/dashboard/Dashboard";
+import PostsExpertDashboard from "../../../components/dashboard/expert/posts/PostsExpertDashboard";
 import Layout from "../../../components/layout/Layout";
 import { getExpertisePosts } from "../../../redux/actionCreators/expertisePostActions";
 import { wrapper } from "../../../redux/store";
@@ -8,7 +9,9 @@ import checkStripeField from "../../../utils/checkStripeField";
 const ExpertDashboardPostsPage = () => {
     return (
         <Layout title="Posts | Expert Dashboard | SlicedAdvice">
-            <ExpertDashboard currentPage="Posts" />
+            <Dashboard dashboardType="Expert">
+                <PostsExpertDashboard />
+            </Dashboard>
         </Layout>
     );
 };

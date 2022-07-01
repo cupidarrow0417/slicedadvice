@@ -1,14 +1,14 @@
 import { GetServerSideProps } from "next";
 import { getSession } from "next-auth/react";
+import PaymentsAdviceSeekerDashboard from "../../../components/dashboard/adviceSeeker/payments/PaymentsAdviceSeekerDashboard";
 import Dashboard from "../../../components/dashboard/Dashboard";
-import PaymentsExpertDashboard from "../../../components/dashboard/expert/payments/PaymentsExpertDashboard";
 import Layout from "../../../components/layout/Layout";
 import { wrapper } from "../../../redux/store";
-const ExpertDashboardPaymentsPage = () => {
+const AdviceSeekerDashboardPaymentsPage = () => {
     return (
-        <Layout title="Payments | Expert Dashboard | SlicedAdvice">
-            <Dashboard dashboardType="Expert">
-                <PaymentsExpertDashboard />
+        <Layout title="Payments | Advice Seeker Dashboard | SlicedAdvice">
+            <Dashboard dashboardType="Advice Seeker">
+                <PaymentsAdviceSeekerDashboard />
             </Dashboard>
         </Layout>
     );
@@ -21,17 +21,16 @@ export const getServerSideProps: GetServerSideProps =
         if (!session) {
             return {
                 redirect: {
-                    destination: `/login?returnUrl=/dashboard/expert/payments&returnContext=expert%20dashboard%20payments%20page`,
+                    destination: `/login?returnUrl=/dashboard/adviceSeeker/payments&returnContext=advice%20seeker%20dashboard%20payments%20page`,
                     permanent: false,
                 },
             };
         }
         try {
-            // await store.dispatch(getExpertisePosts(req));
             return { props: { session } };
         } catch (e) {
             return { props: { session } };
         }
     });
 
-export default ExpertDashboardPaymentsPage;
+export default AdviceSeekerDashboardPaymentsPage;

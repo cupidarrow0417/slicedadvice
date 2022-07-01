@@ -2,6 +2,12 @@ import React, { useEffect } from "react";
 import moment from "moment";
 import Link from "next/link";
 import Router from "next/router";
+
+interface PreviewSingleTextResponseBookingInterface {
+    booking: any;
+    dashboardType: "Advice Seeker" | "Expert";
+}
+
 {
     /* Example booking as of June 16, 2022 {
       singleTextResponse: [Object],
@@ -18,17 +24,28 @@ import Router from "next/router";
 
 // The PreviewSingleTextResponseBooking is a reusable component that shows a
 // preview of a booking. It is compact and displays
-// a few key details about the booking.
-const PreviewSingleTextResponseBooking = ({ booking }: any) => {
+// a few key details about the booking. It is flexible to both the advice seeker's
+// dashboard as well as the expert dashboard.
+const PreviewSingleTextResponseBooking = ({
+    booking,
+    dashboardType,
+}: PreviewSingleTextResponseBookingInterface) => {
     /* Parsing the date into a more readable format. */
     let parsedDate: any = moment(booking.createdAt).format("MMM Do, YYYY");
 
+    let buttonLink: string =
+        dashboardType === "Advice Seeker"
+            ? `/dashboard/adviceSeeker/bookings?booking=${booking._id}`
+            : `/dashboard/expert/bookings?booking=${booking._id}`;
     return (
-        <div className="flex flex-col justify-between gap-3 w-full h-fit p-5 bg-white border-b">
+        <div className="flex flex-col justify-between gap-3 w-full h-fit py-5 bg-white border-b">
             <div className="flex justify-between items-center">
                 {/* Customer and date */}
                 <div className="text-brand-primary-light">
-                    From: {booking.customer.name}
+                    {/* Display different text depending on dashboard type  */}
+                    {dashboardType === "Expert"
+                        ? `From: ${booking.customer.name}`
+                        : `Booking for ${booking.expertisePost.user.name}`}
                 </div>
                 <p className="text-xs opacity-50">{parsedDate}</p>
             </div>
@@ -57,7 +74,7 @@ const PreviewSingleTextResponseBooking = ({ booking }: any) => {
                         // disabled={}
                         onClick={() =>
                             Router.push(
-                                `/dashboard/expert/bookings?booking=${booking._id}`,
+                                buttonLink,
                                 undefined,
                                 { shallow: true }
                             )
