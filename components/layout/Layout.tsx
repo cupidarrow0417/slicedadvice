@@ -5,11 +5,12 @@ import 'react-toastify/dist/ReactToastify.css'
 
 import TopNav from '../layout/TopNav'
 import Footer from "./Footer"
+import OldTopNav from "./OldTopNav"
 
 
 const Layout = ({children, title = 'SlicedAdvice - Marketplace for Bite-Sized Expert Advice'}: any) => {
   return (
-    <div className="bg-brand-bg-light-offset">
+    <div className="bg-brand-bg-light px-2 sm:px-6 md:px-8 md:py-4 lg:px-10 overflow-visible">
         <Head>
             <title>{title}</title>
             <meta charSet="utf-8" />
@@ -17,7 +18,7 @@ const Layout = ({children, title = 'SlicedAdvice - Marketplace for Bite-Sized Ex
         </Head>
 
         <TopNav />
-        <div className="max-w-7xl mx-auto p-4 sm:px-6 lg:px-8 bg-brand-bg-light-offset">
+        <div className="mx-auto bg-brand-bg-light mt-4 mb-8">
           {children}
         </div>
         <Footer />

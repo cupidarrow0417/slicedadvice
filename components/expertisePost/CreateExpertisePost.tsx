@@ -8,8 +8,8 @@ import {
 } from "../../redux/actionCreators/expertisePostActions";
 
 import Image from "next/image";
-import RatingsWidget from "../RatingsWidget";
-import FormSelectMenu from "../FormSelectMenu";
+import RatingsWidget from "../atoms/RatingsWidget";
+import FormSelectMenu from "../atoms/FormSelectMenu";
 import Router from "next/router";
 import ButtonLoader from "../layout/ButtonLoader";
 

@@ -108,7 +108,7 @@ const SetupPayoutsAlert = () => {
     return (authLoading || checkStripeAccountFieldLoading) ? (
         <Loader />
     ) : (
-        <div className="flex justify-center items-center rounded-xl border-y-[1px] sm:border-x-[1px] border-black/10 bg-white w-full p-9">
+        <div className="flex justify-center items-center rounded-xl bg-white w-full p-9">
             <div className="flex flex-col gap-5 justify-center items-center max-w-md">
                 <CashIcon className=" w-16 h-16 text-brand-primary-light" />
                 <h1 className="text-3xl text-center -mt-4">

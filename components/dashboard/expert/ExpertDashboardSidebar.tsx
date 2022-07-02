@@ -1,3 +1,4 @@
+import { CashIcon, HomeIcon, InboxInIcon, ViewListIcon } from "@heroicons/react/outline";
 import Link from "next/link";
 import React, { SVGProps } from "react";
 
@@ -8,22 +9,42 @@ interface NavigationInterface {
     current: boolean;
 }
 
-interface DashboardSidebarInterface {
-    navigation: NavigationInterface[];
-    chargesEnabled: boolean;
-}
-
 function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(" ");
 }
 
-// The DashboardSidebar is a reusable component that represents a sidebar
-// that exists on a dashboard. This is first used on both the expert and
-// advice seeker dashboard.
-const DashboardSidebar = ({
-    navigation,
+const navigation = [
+    {
+        name: "Home",
+        href: "/dashboard/expert/home",
+        icon: HomeIcon,
+        current: false,
+    },
+    {
+        name: "Posts",
+        href: "/dashboard/expert/posts",
+        icon: ViewListIcon,
+        current: false,
+    },
+    {
+        name: "Bookings",
+        href: "/dashboard/expert/bookings",
+        icon: InboxInIcon,
+        current: false,
+    },
+    {
+        name: "Payments",
+        href: "/dashboard/expert/payments",
+        icon: CashIcon,
+        current: false,
+    },
+];
+
+// The ExpertDashboardSidebar is a reusable component that sits inside a sidebar
+// that exists on an expert dashboard.
+const ExpertDashboardSidebar = ({
     chargesEnabled,
-}: DashboardSidebarInterface) => {
+}: {chargesEnabled: boolean}) => {
     return (
         <>
             {/* Sidebar component, swap this element with another sidebar if you like */}
@@ -94,4 +115,4 @@ const DashboardSidebar = ({
     );
 };
 
-export default DashboardSidebar;
+export default ExpertDashboardSidebar;

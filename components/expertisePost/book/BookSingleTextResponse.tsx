@@ -4,12 +4,17 @@ import { Elements } from "@stripe/react-stripe-js";
 import Router, { useRouter } from "next/router";
 import { PencilAltIcon } from "@heroicons/react/outline";
 import Link from "next/link";
-import PageHeader from "../../PageHeader";
+import PageHeader from "../../atoms/PageHeader";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
-import { cacheBookingData, createStripePaymentIntent, clearStripePaymentIntentErrors } from "../../../redux/actionCreators/bookingActionCreators";
+import {
+    cacheBookingData,
+    createStripePaymentIntent,
+    clearStripePaymentIntentErrors,
+} from "../../../redux/actionCreators/bookingActionCreators";
 import { toast } from "react-toastify";
 import Loader from "../../layout/Loader";
 import CheckoutForm from "./CheckoutForm";
+import OldPageHeader from "../../atoms/OldPageHeader";
 
 // REINSTANTIATE STRIPE ELEMENTS PROVIDER, as for payment intent, we require
 // an options that contains the paymentIntentClientSecret for the current
@@ -44,10 +49,9 @@ const BookSingleTextResponse = () => {
         error: createStripePaymentIntentError,
     } = useAppSelector((state) => state.createStripePaymentIntent);
 
-    const {
-        bookingData: cachedBookingData
-    } = useAppSelector((state) => state.cacheBookingData);
-
+    const { bookingData: cachedBookingData } = useAppSelector(
+        (state) => state.cacheBookingData
+    );
 
     // Calculate prices
     const pricePerSubmission: number = expertisePost?.pricePerSubmission;
@@ -66,16 +70,25 @@ const BookSingleTextResponse = () => {
     };
 
     useEffect(() => {
+        if (userClickedContinue === true) {
+            let paymentSectionElement =
+                document.getElementById("paymentSection");
+            console.log("paymentSectionElement.scrollTop", paymentSectionElement?.scrollTop);
+            paymentSectionElement?.scrollIntoView({ behavior: "smooth" });
+        }
+    }, [userClickedContinue]);
+
+    useEffect(() => {
         if (userClickedContinue && user && expertisePost) {
             // Create PaymentIntent as soon as the user clicks the
             // continue button.
 
             // This data will be passed into the global state
             // as well as the Stripe Payment intent metadata
-            // for book keeping. Mainly though, we need it in the global 
-            // state because once the user is redirected to the 
+            // for book keeping. Mainly though, we need it in the global
+            // state because once the user is redirected to the
             // success page, we need to create a booking associated
-            // with this order data and the successful payment 
+            // with this order data and the successful payment
             // intent (only if the bookingCreated boolean is false)
             const bookingData = {
                 total,
@@ -128,7 +141,7 @@ const BookSingleTextResponse = () => {
 
     return (
         <div className="flex flex-col items-center gap-4">
-            <PageHeader
+            <OldPageHeader
                 pageName="Book a Single Text Response"
                 heroPhrase="For those bite-sized, important questions."
                 supportingText="Simply write your text submission then enter payment."
@@ -140,7 +153,7 @@ const BookSingleTextResponse = () => {
                     <div
                         className={classNames(
                             userClickedContinue ? "opacity-30" : "opacity-100",
-                            "flex flex-col p-8 gap-6 bg-white w-full sm:w-[32rem] h-[32rem] border border-black rounded-xl"
+                            "flex flex-col p-8 gap-6 bg-white w-full sm:w-[32rem] h-[32rem] shadow border border-black/10 rounded-xl"
                         )}
                     >
                         {/* Header for Text Input */}
@@ -190,21 +203,21 @@ const BookSingleTextResponse = () => {
                             >
                                 {textSubmission.length < 20
                                     ? "Type a question first!"
-                                    : "Continue to Payment"}
+                                    : "Continue"}
                             </button>
                         </Link>
                     </div>
                     {userClickedContinue ? (
-                        <div className="transition-all">
+                        <div id="paymentSection" className="transition-all">
                             <div className="flex flex-col ">
-                                <p className="text-xs font-light">
+                                <p className="text-xs font-light px-4 m-auto">
                                     {" "}
                                     Want to edit your response? Simply copy it,
                                     reload the page, and paste it back in.
                                 </p>
                             </div>
 
-                            <div className="flex flex-col items-center p-8 mt-4 gap-6 bg-white w-full sm:w-[32rem] h-fit border border-black rounded-xl">
+                            <div className="flex flex-col items-center p-8 mt-4 gap-6 bg-white w-full sm:w-[32rem] h-fit border border-black/10 shadow rounded-xl">
                                 <img
                                     className=" h-16 w-16 rounded-full"
                                     src={expertisePost.user.avatar.url}

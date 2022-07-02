@@ -3,8 +3,10 @@ import { toast } from "react-toastify";
 import { clearErrors } from "../../redux/actionCreators/expertisePostActions";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import ExpertisePostCard from "../expertisePost/ExpertisePostCard";
-import PageHeader from "../PageHeader";
-import VerticalCardArray from "../VerticalCardArray";
+import PageHeader from "../atoms/PageHeader";
+import VerticalCardArray from "../atoms/MultiShelf";
+import { ArrowDownIcon } from "@heroicons/react/outline";
+import UniversalFadeAnimation from "../atoms/UniversalFadeAnimation";
 
 const CollegeApplication = () => {
     const dispatch = useAppDispatch();
@@ -24,21 +26,39 @@ const CollegeApplication = () => {
 
     return (
         <div className="max-w-7xl mx-auto flex flex-col gap-6">
-            <PageHeader
-                pageName="College Application"
-                heroPhrase="Get guidance on your application from experienced applicants."
-                supportingText="Ranging from tailored essay advice to interview preparation tips"
-            />
+            <UniversalFadeAnimation>
+                <PageHeader
+                    heroPhrase="Learn from experienced applicants."
+                    supportingText="Browse advice from experienced applicants ranging from tailored essay advice to interview preparation tips"
+                >
+                    <button
+                        onClick={() =>
+                            document
+                                .getElementById("scrollHere")
+                                ?.scrollIntoView({ behavior: "smooth" })
+                        }
+                        className="rounded-full bg-brand-primary-light hover:bg-brand-primary-light/90 text-white animate-bounce"
+                    >
+                        <ArrowDownIcon className="w-10 h-10 m-2" />
+                    </button>
+                </PageHeader>
 
-            <VerticalCardArray title="College Application" link="/categories/collegeApplication">
-                {collegeApplicationExpertisePosts &&
-                    collegeApplicationExpertisePosts.map((expertisePost: any) => (
-                        <ExpertisePostCard
-                            key={expertisePost._id}
-                            expertisePost={expertisePost}
-                        />
-                    ))}
-            </VerticalCardArray>
+                <div id="scrollHere"></div>
+                <VerticalCardArray
+                    title="College Application"
+                    link="/categories/collegeApplication"
+                >
+                    {collegeApplicationExpertisePosts &&
+                        collegeApplicationExpertisePosts.map(
+                            (expertisePost: any) => (
+                                <ExpertisePostCard
+                                    key={expertisePost._id}
+                                    expertisePost={expertisePost}
+                                />
+                            )
+                        )}
+                </VerticalCardArray>
+            </UniversalFadeAnimation>
         </div>
     );
 };

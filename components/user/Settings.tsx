@@ -17,6 +17,7 @@ import {
     UserGroupIcon,
     ViewGridAddIcon,
 } from "@heroicons/react/outline";
+import UniversalFadeAnimation from "../atoms/UniversalFadeAnimation";
 
 const navigation = [
     { name: "Account", href: "#", icon: UserCircleIcon, current: true },
@@ -115,131 +116,132 @@ export default function Settings() {
     };
 
     return (
-        <div className="lg:grid lg:grid-cols-12 lg:gap-x-5">
-            <aside className="py-6 px-2 sm:px-6 lg:py-0 lg:px-0 lg:col-span-3">
-                <nav className="space-y-1">
-                    {navigation.map((item) => (
-                        <a
-                            key={item.name}
-                            href={item.href}
-                            className={classNames(
-                                item.current
-                                    ? "text-brand-primary-light bg-white"
-                                    : "text-gray-900 hover:text-gray-900 hover:bg-white",
-                                "group rounded-md px-3 py-2 flex items-center text-sm font-medium"
-                            )}
-                            aria-current={item.current ? "page" : undefined}
-                        >
-                            <item.icon
+        <UniversalFadeAnimation>
+            <div className="lg:grid lg:grid-cols-12 lg:gap-x-5">
+                <aside className="py-6 px-2 sm:px-6 lg:py-0 lg:px-0 lg:col-span-3">
+                    <nav className="space-y-1">
+                        {navigation.map((item) => (
+                            <a
+                                key={item.name}
+                                href={item.href}
                                 className={classNames(
                                     item.current
-                                        ? "text-brand-primary-light group-hover:text-brand-primary-light"
-                                        : "text-gray-400 group-hover:text-gray-500",
-                                    "flex-shrink-0 -ml-1 mr-3 h-6 w-6"
+                                        ? "text-brand-primary-light bg-white"
+                                        : "text-gray-900 hover:text-gray-900 hover:bg-white",
+                                    "group rounded-md px-3 py-2 flex items-center text-sm font-medium"
                                 )}
-                                aria-hidden="true"
-                            />
-                            <span className="truncate">{item.name}</span>
-                        </a>
-                    ))}
-                </nav>
-            </aside>
+                                aria-current={item.current ? "page" : undefined}
+                            >
+                                <item.icon
+                                    className={classNames(
+                                        item.current
+                                            ? "text-brand-primary-light group-hover:text-brand-primary-light"
+                                            : "text-gray-400 group-hover:text-gray-500",
+                                        "flex-shrink-0 -ml-1 mr-3 h-6 w-6"
+                                    )}
+                                    aria-hidden="true"
+                                />
+                                <span className="truncate">{item.name}</span>
+                            </a>
+                        ))}
+                    </nav>
+                </aside>
 
-            <div className="space-y-6 sm:px-6 lg:px-0 lg:col-span-9">
-                <form action="#" method="PUT" onSubmit={submitHandler}>
-                    <div className="shadow sm:rounded-md sm:overflow-hidden">
-                        <div className="bg-white py-6 px-4 space-y-6 sm:p-6">
-                            <div>
-                                <h3 className="text-lg leading-6 font-medium text-gray-900">
-                                    Profile
-                                </h3>
-                                <p className="mt-1 text-sm text-gray-500">
-                                    Only your username and avatar are publically
-                                    visible to other users.
-                                </p>
-                            </div>
+                <div className="space-y-6 sm:px-6 lg:px-0 lg:col-span-9">
+                    <form action="#" method="PUT" onSubmit={submitHandler}>
+                        <div className="shadow sm:rounded-md sm:overflow-hidden">
+                            <div className="bg-white py-6 px-4 space-y-6 sm:p-6">
+                                <div>
+                                    <h3 className="text-lg leading-6 font-medium text-gray-900">
+                                        Profile
+                                    </h3>
+                                    <p className="mt-1 text-sm text-gray-500">
+                                        Only your username and avatar are
+                                        publically visible to other users.
+                                    </p>
+                                </div>
 
-                            <div className="grid grid-cols-3 gap-6">
-                                <div className="col-span-3 sm:col-span-2">
-                                    <label
-                                        htmlFor="username"
-                                        className="block text-sm font-medium text-gray-700"
-                                    >
-                                        Username
-                                    </label>
-                                    <div className="mt-1 rounded-md shadow-sm flex">
-                                        {/* <span className="bg-gray-50 border border-r-0 border-gray-300 rounded-l-md px-3 inline-flex items-center text-gray-500 sm:text-sm">
+                                <div className="grid grid-cols-3 gap-6">
+                                    <div className="col-span-3 sm:col-span-2">
+                                        <label
+                                            htmlFor="username"
+                                            className="block text-sm font-medium text-gray-700"
+                                        >
+                                            Username
+                                        </label>
+                                        <div className="mt-1 rounded-md shadow-sm flex">
+                                            {/* <span className="bg-gray-50 border border-r-0 border-gray-300 rounded-l-md px-3 inline-flex items-center text-gray-500 sm:text-sm">
                                             workcation.com/
                                         </span> */}
-                                        <input
-                                            type="text"
-                                            name="name"
-                                            id="name"
-                                            value={user.name}
-                                            autoComplete="name"
-                                            onChange={onChange}
-                                            className="focus:ring-brand-primary-light focus:border-brand-primary-light flex-grow block w-full min-w-0 rounded-md sm:text-sm border-gray-300"
-                                        />
+                                            <input
+                                                type="text"
+                                                name="name"
+                                                id="name"
+                                                value={user.name}
+                                                autoComplete="name"
+                                                onChange={onChange}
+                                                className="focus:ring-brand-primary-light focus:border-brand-primary-light flex-grow block w-full min-w-0 rounded-md sm:text-sm border-gray-300"
+                                            />
+                                        </div>
                                     </div>
-                                </div>
-                                <div className="col-span-3 sm:col-span-2">
-                                    <label
-                                        htmlFor="email"
-                                        className="block text-sm font-medium text-gray-700"
-                                    >
-                                        Email
-                                    </label>
-                                    <div className="mt-1 rounded-md shadow-sm flex">
-                                        <input
-                                            type="text"
-                                            name="email"
-                                            id="email"
-                                            value={user.email}
-                                            autoComplete="email"
-                                            onChange={onChange}
-                                            className="focus:ring-brand-primary-light focus:border-brand-primary-light flex-grow block w-full min-w-0 rounded-md sm:text-sm border-gray-300"
-                                        />
+                                    <div className="col-span-3 sm:col-span-2">
+                                        <label
+                                            htmlFor="email"
+                                            className="block text-sm font-medium text-gray-700"
+                                        >
+                                            Email
+                                        </label>
+                                        <div className="mt-1 rounded-md shadow-sm flex">
+                                            <input
+                                                type="text"
+                                                name="email"
+                                                id="email"
+                                                value={user.email}
+                                                autoComplete="email"
+                                                onChange={onChange}
+                                                className="focus:ring-brand-primary-light focus:border-brand-primary-light flex-grow block w-full min-w-0 rounded-md sm:text-sm border-gray-300"
+                                            />
+                                        </div>
                                     </div>
-                                </div>
-                                <div className="col-span-3 sm:col-span-2">
-                                    <label
-                                        htmlFor="password"
-                                        className="block text-sm font-medium text-gray-700"
-                                    >
-                                        New Password
-                                    </label>
-                                    <div className="mt-1">
-                                        <input
-                                            id="password"
-                                            name="password"
-                                            type="password"
-                                            autoComplete="current-password"
-                                            className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-brand-primary-light focus:border-brand-primary-light sm:text-sm"
-                                            // value={password}
-                                            onChange={onChange}
-                                        />
+                                    <div className="col-span-3 sm:col-span-2">
+                                        <label
+                                            htmlFor="password"
+                                            className="block text-sm font-medium text-gray-700"
+                                        >
+                                            New Password
+                                        </label>
+                                        <div className="mt-1">
+                                            <input
+                                                id="password"
+                                                name="password"
+                                                type="password"
+                                                autoComplete="current-password"
+                                                className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-brand-primary-light focus:border-brand-primary-light sm:text-sm"
+                                                // value={password}
+                                                onChange={onChange}
+                                            />
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div className="col-span-3 sm:col-span-2">
-                                    <label
-                                        htmlFor="password"
-                                        className="block text-sm font-medium text-gray-700"
-                                    >
-                                        Confirm New Password
-                                    </label>
-                                    <div className="mt-1">
-                                        <input
-                                            id="confirm-password"
-                                            name="confirm-password"
-                                            type="password"
-                                            className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-brand-primary-light focus:border-brand-primary-light sm:text-sm"
-                                            onChange={onChange}
-                                        />
+                                    <div className="col-span-3 sm:col-span-2">
+                                        <label
+                                            htmlFor="password"
+                                            className="block text-sm font-medium text-gray-700"
+                                        >
+                                            Confirm New Password
+                                        </label>
+                                        <div className="mt-1">
+                                            <input
+                                                id="confirm-password"
+                                                name="confirm-password"
+                                                type="password"
+                                                className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-brand-primary-light focus:border-brand-primary-light sm:text-sm"
+                                                onChange={onChange}
+                                            />
+                                        </div>
                                     </div>
-                                </div>
 
-                                {/* <div className="col-span-3">
+                                    {/* <div className="col-span-3">
                                     <label
                                         htmlFor="about"
                                         className="block text-sm font-medium text-gray-700"
@@ -262,28 +264,28 @@ export default function Settings() {
                                     </p>
                                 </div> */}
 
-                                <div className="col-span-3">
-                                    <label className="block text-sm font-medium text-gray-700">
-                                        Avatar
-                                    </label>
-                                    <div className="flex justify-start gap-3 items-center mt-1">
-                                        <img
-                                            className="inline-block h-14 w-14 rounded-full"
-                                            src={avatarPreview}
-                                            alt=""
-                                        />
-                                        <input
-                                            className="appearance-none block  px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-brand-primary-light/70 focus:border-brand-primary-light/70 sm:text-sm"
-                                            type="file"
-                                            id="formFile"
-                                            name="avatar"
-                                            accept="images/*"
-                                            onChange={onChange}
-                                        />
+                                    <div className="col-span-3">
+                                        <label className="block text-sm font-medium text-gray-700">
+                                            Avatar
+                                        </label>
+                                        <div className="flex justify-start gap-3 items-center mt-1">
+                                            <img
+                                                className="inline-block h-14 w-14 rounded-full"
+                                                src={avatarPreview}
+                                                alt=""
+                                            />
+                                            <input
+                                                className="appearance-none block  px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-brand-primary-light/70 focus:border-brand-primary-light/70 sm:text-sm"
+                                                type="file"
+                                                id="formFile"
+                                                name="avatar"
+                                                accept="images/*"
+                                                onChange={onChange}
+                                            />
+                                        </div>
                                     </div>
-                                </div>
 
-                                {/* <div className="col-span-3">
+                                    {/* <div className="col-span-3">
                                     <label className="block text-sm font-medium text-gray-700">
                                         Cover photo
                                     </label>
@@ -326,20 +328,20 @@ export default function Settings() {
                                         </div>
                                     </div>
                                 </div> */}
+                                </div>
+                            </div>
+                            <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
+                                <button
+                                    type="submit"
+                                    disabled={userLoading ? true : false}
+                                    className="bg-brand-primary-light border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-brand-primary-light/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-primary-light"
+                                >
+                                    {userLoading ? <ButtonLoader /> : "Save"}
+                                </button>
                             </div>
                         </div>
-                        <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
-                            <button
-                                type="submit"
-                                disabled={userLoading ? true : false}
-                                className="bg-brand-primary-light border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-brand-primary-light/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-primary-light"
-                            >
-                                {userLoading ? <ButtonLoader /> : "Save"}
-                            </button>
-                        </div>
-                    </div>
-                </form>
-                {/* <form action="#" method="POST">
+                    </form>
+                    {/* <form action="#" method="POST">
                     <div className="shadow sm:rounded-md sm:overflow-hidden">
                         <div className="bg-white py-6 px-4 space-y-6 sm:p-6">
                             <div>
@@ -500,8 +502,9 @@ export default function Settings() {
                         </div>
                     </div>
                 </form> */}
+                </div>
             </div>
-        </div>
+        </UniversalFadeAnimation>
     );
 }
 
