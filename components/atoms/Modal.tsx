@@ -4,28 +4,31 @@ import { Dialog, Transition } from "@headlessui/react";
 import { CheckIcon, XIcon } from "@heroicons/react/outline";
 import Router from "next/router";
 
-// Currently, the modal is a semi-reusable component that
-// represents a popup modal that covers the screen.
-// I say semi-reusable because a lot of it is built specifically
-// for the dashboard and the local state of the dashboard.
-// Will think about whether it is flexible for other situations soon.
-// Regardless, to open the modal, simply change the state of the open
-// local state, which currently is only possible by changing the
-// prop openLocalState from the parent container that this component
-// is housed in. To close it, click the first or last button in this
-// component (built into every modal), or click outside of the modal div.
+// The modal is a reusable component that
+// represents a popup modal that covers the screen.=
+// Follow these steps to use it properly:
+// 1) Wrap the modal around whatever content you want to display when
+//  the modal opens.
+// 2) Define a button outside of the modal that when clicked, 
+//    sets the openLocalState prop to true. This will trigger the modal to open.
+//    Inside the modal, there are close buttons that when clicked,
+//    set the openLocalState prop to false. This will trigger the modal to close.
+// 3) Optional: Define the dashboardType prop to be "Advice Seeker" or "Expert",
+//    so that the modal on close will shallow push the proper route back to the user,
+//    (simply because the booking expert dashboard maintains state via the url)
 export default function Modal({
     children,
     openLocalState,
-    buttonText,
     closeButtonText,
+    dashboardType,
 }: {
     children: any;
     openLocalState: boolean;
-    buttonText: string;
     closeButtonText: string;
+    dashboardType: "Advice Seeker" | "Expert" | undefined;
 }) {
     const [open, setOpen] = useState(false);
+
     // Literally just to allow the transition to play
     // properly when the prop.openLocalState changes.
     // We totally could just put openLocalState in the initial
@@ -41,7 +44,16 @@ export default function Modal({
 
     const handleClose = () => {
         setOpen(false);
-        Router.push("/dashboard/expert/bookings", undefined, {shallow: true});
+
+        // Quick fix to allow use in bookings dashboard. 
+        // But if you don't define dashboardType, you can use the modal for 
+        // anything you want to have popped out and focused. Just make sure
+        // to follow my directions above.
+        if (dashboardType === "Advice Seeker") {
+            Router.push("/dashboard/adviceSeeker/bookings", undefined, {shallow: true});
+        } else if (dashboardType === "Expert") {
+            Router.push("/dashboard/expert/bookings", undefined, {shallow: true});
+        }
     }
     return (
         <>

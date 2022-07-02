@@ -5,12 +5,11 @@ import Dashboard from "../../../components/dashboard/Dashboard";
 import Layout from "../../../components/layout/Layout";
 import { getBookings } from "../../../redux/actionCreators/bookingActionCreators";
 import { wrapper } from "../../../redux/store";
-import checkStripeField from "../../../utils/checkStripeField";
-const ExpertDashboardBookingsPage = () => {
+const AdviceSeekerDashboardBookingsPage = () => {
     return (
-        <Layout title="Bookings | Expert Dashboard | SlicedAdvice">
-            <Dashboard dashboardType="Expert">
-                <BookingsDashboard dashboardType = "Expert"/>
+        <Layout title="Bookings | Advice Seeker Dashboard | SlicedAdvice">
+            <Dashboard dashboardType="Advice Seeker">
+                <BookingsDashboard dashboardType="Advice Seeker"/>
             </Dashboard>
         </Layout>
     );
@@ -23,29 +22,18 @@ export const getServerSideProps: GetServerSideProps =
         if (!session) {
             return {
                 redirect: {
-                    destination: `/login?returnUrl=/dashboard/expert/bookings&returnContext=expert%20dashboard%20bookings%20page`,
-                    permanent: false,
-                },
-            };
-        }
-
-        const isOnboarded = await checkStripeField(session.user.email, "charges_enabled", undefined)
-
-        if (!isOnboarded) {
-            return {
-                redirect: {
-                    destination: `/dashboard/expert/home`,
+                    destination: `/login?returnUrl=/dashboard/adviceSeeker/bookings&returnContext=advice%20seeker%20dashboard%20bookings%20page`,
                     permanent: false,
                 },
             };
         }
         
         try {
-            await store.dispatch(getBookings(req, 1, undefined, undefined, session.user._id));
+            await store.dispatch(getBookings(req, 1, undefined, session.user._id, undefined));
             return { props: { session } };
         } catch (e) {
             return { props: { session } };
         }
     });
 
-export default ExpertDashboardBookingsPage;
+export default AdviceSeekerDashboardBookingsPage;

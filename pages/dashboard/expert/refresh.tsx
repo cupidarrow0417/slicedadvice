@@ -1,7 +1,6 @@
 import { GetServerSideProps } from "next";
 import { getSession } from "next-auth/react";
-import ExpertDashboard from "../../../components/dashboard/experts/ExpertDashboard";
-import RefreshStripeMessage from "../../../components/dashboard/experts/RefreshStripeMessage";
+import RefreshStripeMessage from "../../../components/dashboard/expert/RefreshStripeMessage";
 import Layout from "../../../components/layout/Layout";
 const StripeConnectOnboardingRefreshPage = () => {
     return (

@@ -11,12 +11,12 @@ class MyDocument extends Document {
         return (
             <Html>
                 <Head>
+                    <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
                 </Head>
                 <body>
                     <Main />
                     <NextScript />
                     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossOrigin="anonymous"></script>
-
                 </body>
             </Html>
         )

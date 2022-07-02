@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ElementType } from "react";
-import ExpertisePostCard from "./expertisePost/ExpertisePostCard";
+import ExpertisePostCard from "../expertisePost/ExpertisePostCard";
 
 interface VerticalCardArrayPropsInterface {
     children: any;
@@ -16,12 +16,12 @@ interface VerticalCardArrayPropsInterface {
 const VerticalCardArray = ({ children, title, link }: VerticalCardArrayPropsInterface) => {
     return (
         <div className="flex flex-col gap-6">
-            <div className="flex justify-between items-center">
+            <div className="flex justify-between items-center px-4">
                 <Link href={link}>
-                <h1 className="text-4xl cursor-pointer">{title}</h1>
+                <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight cursor-pointer">{title}</h1>
                 </Link>
             </div>
-            <div className="flex flex-row flex-wrap gap-5 pb-4 pt-[2px]">
+            <div className="flex flex-row flex-wrap justify-center gap-10 pb-8 pt-[2px]">
                 {children}
             </div>
         </div>

@@ -5,7 +5,6 @@ import SlicedAdviceLogoBlack from "../../public/images/SlicedAdviceLogoBlack.svg
 import Link from "next/link";
 const navigation = {
     product: [
-        { name: "Introduction", href: "/introduction" },
         { name: "For Experts", href: "/experts" },
         { name: "For Advice Seekers", href: "/adviceSeekers" },
     ],
@@ -73,11 +72,11 @@ const navigation = {
 
 export default function Footer() {
     return (
-        <footer className="bg-white shadow" aria-labelledby="footer-heading">
+        <footer className="bg-white border-t border-black/10" aria-labelledby="footer-heading">
             <h2 id="footer-heading" className="sr-only">
                 Footer
             </h2>
-            <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8">
+            <div className="mx-auto py-10 max-w-7xl px-2">
                 <div className="xl:grid xl:grid-cols-3 xl:gap-8">
                     <div className="space-y-2 border-gray-800 xl:col-span-1">
                         <a href="/">

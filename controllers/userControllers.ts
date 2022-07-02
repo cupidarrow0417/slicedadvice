@@ -302,6 +302,50 @@ const checkStripeAccountField = catchAsyncErrors(
     }
 );
 
+// Create Stripe Connect Login Link => POST /api/stripe/expertLoginLink
+const createStripeConnectLoginLink = catchAsyncErrors(
+    async (req: any, res: NextApiResponse, next: any) => {
+        // Retrieve user via request (placed there during
+        // the isAuthenticatedUser middleware), to retrieve
+        // their Stripe account id.
+        const user = await User.findOne({
+            email: req.user.email,
+            name: req.user.name,
+        });
+
+        console.log("user", user);
+        // Set your secret key. Remember to switch to your live secret key in production.
+        // See your keys here: https://dashboard.stripe.com/apikeys
+        const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+
+        const account = await stripe.accounts.retrieve(user.stripeId);
+        if (!account) {
+            return next(
+                new ErrorHandler(
+                    `An error occurred when retrieving the Stripe account to create a Stripe Connect Login Link.`,
+                    400
+                )
+            );
+        }
+
+        // Create the login link 
+        const loginLink = await stripe.accounts.createLoginLink(user.stripeId);
+        if (!loginLink) {
+            return next(
+                new ErrorHandler(
+                    `An error occurred when creating the Stripe Connect Login Link.`,
+                    400
+                )
+            );
+        }
+
+        res.status(200).json({
+            loginLink,
+        });
+    }
+);
+
+
 export {
     registerUser,
     currentUserProfile,
@@ -310,4 +354,5 @@ export {
     resetPassword,
     getStripeSetupPayoutsLink,
     checkStripeAccountField,
+    createStripeConnectLoginLink,
 };
