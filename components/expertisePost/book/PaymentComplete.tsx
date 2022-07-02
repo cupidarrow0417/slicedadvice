@@ -53,17 +53,7 @@ const PaymentComplete = () => {
             // This means that a booking will be created only once
             // from this cacheBookingData.
             const updatedBookingData = {
-                // This stuff stays the same
-                price: bookingData.price,
-                pricePerSubmission: bookingData.pricePerSubmission,
-                serviceFee: bookingData.serviceFee,
-                bookingType: bookingData.bookingType,
-                expertisePostId: bookingData.expertisePostId,
-                expertId: bookingData.expertId,
-                customerId: bookingData.customerId,
-                status: bookingData.status,
-                customerSubmission: bookingData.customerSubmission,
-
+                ...bookingData,
                 // Important part.
                 bookingCreated: true,
             }
@@ -80,6 +70,7 @@ const PaymentComplete = () => {
                 status: bookingData.status,
                 customerSubmission: bookingData.customerSubmission,
                 stripePaymentIntentId: paymentIntentId,
+                expertStripeId: bookingData.expertisePost?.user?.stripeId,
             };
             dispatch(createBooking(finalBookingData));
         }
@@ -119,7 +110,7 @@ const PaymentComplete = () => {
                             put on your card. Your expert will be help you
                             within 7 days, or you'll never be charged. To manage
                             bookings, view responses, and more, check the{" "}
-                            <Link href="/dashboard/adviceSeekers/home">
+                            <Link href="/dashboard/adviceSeeker/home">
                                 <a className="text-brand-primary-light">
                                     dashboard for advice seekers.
                                 </a>

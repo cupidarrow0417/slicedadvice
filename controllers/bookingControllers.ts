@@ -2,7 +2,9 @@ import type { NextApiRequest, NextApiResponse, NextApiHandler } from "next";
 import ErrorHandler from "../utils/errorhandler";
 import catchAsyncErrors from "../middlewares/catchAsyncErrors";
 import Booking from "../models/booking";
+import User from "../models/user";
 import { BookingAPIFeatures } from "../utils/apiFeatures";
+import sendEmail from "../utils/sendEmail";
 
 // interface OrderDataInterface {
 //     price: number;
@@ -144,6 +146,21 @@ const updateBooking = catchAsyncErrors(
                     )
                 );
             }
+
+            let customerEmailSubject = `SlicedAdvice: ${expert.name} has completed your booking!`;
+            let customerEmailMessage = `Hi there, ${customer.name}, \n\n
+            ${expert.name} has completed your booking! \n\n
+            You can view the details of your booking here: \n
+            https://slicedadvice.com/dashboard/adviceSeeker/bookings?booking=${_id} \n\n
+            Make sure to leave a review on the expertise post, and feel free to contact us if you have any questions. \n\n
+            Thanks for using SlicedAdvice! \n\n
+            SlicedAdvice Team`;
+
+            await sendEmail({
+                email: customer.email,
+                subject: customerEmailSubject,
+                message: customerEmailMessage,
+            });
         }
 
         const booking = await Booking.findByIdAndUpdate(
@@ -200,6 +217,27 @@ const createBooking = catchAsyncErrors(
         if (!booking) {
             return next(new ErrorHandler("Booking could not be created", 400));
         }
+
+        let expertEmailSubject = `SlicedAdvice: ${booking.customer.name} has booked you for advice!`;
+        let expertEmailMessage = `Hi there, ${
+            booking.expertisePost.user.name
+        }, \n\n
+        ${
+            booking.customer.name
+        } has booked you for a ${booking.bookingType.toLowerCase()}! \n\n
+        You can respond to the booking here: \n
+        https://slicedadvice.com/dashboard/expert/bookings?booking=${
+            booking._id
+        } \n\n
+        Make sure to leave a review on the expertise post, and feel free to contact us if you have any questions. \n\n
+        Thanks for using SlicedAdvice! \n\n
+        SlicedAdvice Team`;
+
+        await sendEmail({
+            email: booking.expertisePost.user.email,
+            subject: expertEmailSubject,
+            message: expertEmailMessage,
+        });
 
         res.status(200).json({
             bookingId: booking._id,
