@@ -25,13 +25,13 @@ import {
  * @param {string} [category] - string = '' - this is the optional category filter.
  */
 export const getExpertisePosts =
-    (req: any = null, currentPage: Number = 1, category: string = "") =>
+    (req: any = null, currentPage: Number = 1, category: string = "", expertId: string = "") =>
     async (dispatch: any) => {
         try {
             const { origin } = absoluteUrl(req);
             let link = `${origin}/api/expertisePosts?page=${currentPage}`;
             if (category) link = link.concat(`&category=${category}`);
-
+            if (expertId) link = link.concat(`&expertId=${expertId}`);
             const { data } = await axios.get(link);
 
             // Save the retrieved data to different global states based on category

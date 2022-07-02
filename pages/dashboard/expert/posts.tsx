@@ -40,7 +40,7 @@ export const getServerSideProps: GetServerSideProps =
             };
         }
         try {
-            await store.dispatch(getExpertisePosts(req));
+            await store.dispatch(getExpertisePosts(req, undefined, undefined, session.user._id));
             return { props: { session } };
         } catch (e) {
             return { props: { session } };
