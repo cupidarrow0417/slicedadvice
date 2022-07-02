@@ -3,7 +3,7 @@ import dbConnect from '../../../config/dbConnect';
 import onError from '../../../middlewares/errors'
 import { isAuthenticatedUser } from '../../../middlewares/auth';
 import { getSinglePostReviews } from '../../../controllers/reviewControllers';
-import { createReview } from '../../../redux/actionCreators/reviewActions';
+import { createReview } from '../../../redux/actionCreators/reviewActionCreator';
 const handler = nc({ onError });
 
 dbConnect();

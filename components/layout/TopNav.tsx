@@ -11,6 +11,8 @@ import {
     ShoppingBagIcon,
 } from "@heroicons/react/solid";
 import { signOut } from "next-auth/react";
+import { toast } from "react-toastify";
+import SearchBar from "../SearchBar";
 import Link from "next/link";
 import React, { Fragment, useEffect, useState } from "react";
 import { loadUser } from "../../redux/actionCreators/userActions";

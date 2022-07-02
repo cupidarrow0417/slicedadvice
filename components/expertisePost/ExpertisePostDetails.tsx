@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAppSelector, useAppDispatch } from "../../redux/hooks";
 import Head from "next/head";
 import { toast } from "react-toastify";
@@ -11,6 +11,7 @@ import RatingsWidget from "../atoms/RatingsWidget";
 import Loader from "../layout/Loader";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import CreateReviewWidget from "../CreateReviewWidget";
 import UniversalFadeAnimation from "../atoms/UniversalFadeAnimation";
 
 const ExpertisePostDetails = () => {
@@ -21,8 +22,8 @@ const ExpertisePostDetails = () => {
         (state) => state.expertisePostDetails
     );
 
-    const { reviews, error: reviewsError } = useAppSelector(
-        (state) => state.postReviews
+    const { reviews, metadata: reviewsMetadata } = useAppSelector(
+        (state) => state.reviews
     );
 
     // Check if user is logged in and is the owner of this post.
@@ -52,7 +53,7 @@ const ExpertisePostDetails = () => {
     };
 
     const reviewsTotal = reviews.length;
-    const reviewsAverage = (function () {
+    const reviewsAverage = (() => {
         var average: number = 0;
         for (var i = 0; i < reviews.length; i++) {
             average += reviews[i].rating;
@@ -76,12 +77,14 @@ const ExpertisePostDetails = () => {
         },
     ];
 
+    const [isVisible, setIsVisible] = useState(false);
+
     useEffect(() => {
-        if (reviewsError) {
-            toast.error(reviewsError);
+        if (reviewsMetadata.error) {
+            toast.error(reviewsMetadata.error);
             dispatch(clearErrors());
         }
-    }, [reviewsError]);
+    }, [reviewsMetadata.error]);
 
     return (
         <div className="">

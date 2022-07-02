@@ -13,19 +13,16 @@ const createReview = catchAsyncErrors(
     ) => {
         const {
             rating,
-            description,
+            content,
+            user,
             expertisePostId,
-            userId,
-            status,
-
         } = req.body;
 
         const review = await Review.create({
             rating: rating,
-            description: description,
-            user: userId,
-            expertisePost: expertisePostId,
-            status,
+            content: content,
+            user: user,
+            expertisePostId: expertisePostId,
         });
 
         if (!review) {
@@ -34,7 +31,7 @@ const createReview = catchAsyncErrors(
 
         res.status(200).json({
             success: true,
-            reviewId: review._id,
+            review: review,
         });
     }
 );
@@ -46,9 +43,8 @@ const getSinglePostReviews = catchAsyncErrors(
         res: NextApiResponse,
         next: (arg0: ErrorHandler) => any
     ) => {
-        const reviews = await Review.find({expertisePost: req.query.id})
+        const reviews = await Review.find({expertisePostId: req.query.id})
 
-        console.log("reviews", reviews)
         if (!reviews) {
             return next(new ErrorHandler("Room not found with this ID", 404));
         }

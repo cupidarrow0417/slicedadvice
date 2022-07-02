@@ -1,17 +1,12 @@
 import nc from 'next-connect'
 import dbConnect from '../../../../config/dbConnect';
 import onError from '../../../../middlewares/errors'
-import { isAuthenticatedUser } from '../../../../middlewares/auth';
-import { createReview } from '../../../../controllers/reviewControllers';
-import { getSinglePostReviews } from '../../../../controllers/reviewControllers'
-
+import { searchExpertisePosts } from '../../../../controllers/searchControllers';
 const handler = nc({ onError });
 
 dbConnect();
 
-handler.get(getSinglePostReviews);
-handler.use(isAuthenticatedUser).post(createReview);
-
+handler.get(searchExpertisePosts);
 
 export const config = {
     api: {
