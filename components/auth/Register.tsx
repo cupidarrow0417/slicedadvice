@@ -25,8 +25,8 @@ const Register = () => {
     }
 
     const { name, email, password } = user;
-
-    const [avatar, setAvatar] = useState("");
+    
+    const [avatar, setAvatar] = useState("/images/default_avatar.jpeg");
     const [avatarPreview, setAvatarPreview] = useState(
         "/images/default_avatar.jpeg"
     );

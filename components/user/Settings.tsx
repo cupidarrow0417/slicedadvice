@@ -20,9 +20,9 @@ import {
 import UniversalFadeAnimation from "../atoms/UniversalFadeAnimation";
 
 const navigation = [
-    { name: "Account", href: "#", icon: UserCircleIcon, current: true },
+    { name: "Profile", href: "#", icon: UserCircleIcon, current: true },
     // { name: "Password", href: "#", icon: KeyIcon, current: false },
-    { name: "Billing", href: "#", icon: CreditCardIcon, current: false },
+    // { name: "Billing", href: "#", icon: CreditCardIcon, current: false },
     // { name: "Team", href: "#", icon: UserGroupIcon, current: false },
     // { name: "Integrations", href: "#", icon: ViewGridAddIcon, current: false },
 ];

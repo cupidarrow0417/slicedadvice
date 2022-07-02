@@ -40,12 +40,12 @@ const formSelectMenuOptions = [
             "Advice that enhances people's inner strength, capabilities, and quality of life.",
         current: false,
     },
-    {
-        title: "Other",
-        description:
-            "Be a trendsetter! This category contains advice not currently focused on by SlicedAdvice at this time.",
-        current: false,
-    },
+    // {
+    //     title: "Other",
+    //     description:
+    //         "Be a trendsetter! This category contains advice not currently focused on by SlicedAdvice at this time.",
+    //     current: false,
+    // },
 ];
 
 const CreateExpertisePost = () => {
@@ -284,6 +284,7 @@ const CreateExpertisePost = () => {
                                     layout="responsive"
                                     width={1.5}
                                     height={1}
+                                    className="object-cover"
                                     alt="Picture for expertise posting"
                                 />
                             )}

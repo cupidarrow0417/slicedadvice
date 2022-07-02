@@ -17,11 +17,26 @@ cloudinary.config({
 //Register user => /api/auth/register
 const registerUser = catchAsyncErrors(
     async (req: NextApiRequest, res: NextApiResponse) => {
-        const result = await cloudinary.uploader.upload(req.body.avatar, {
-            folder: "slicedadvice/avatars",
-            width: "150",
-            crop: "scale",
-        });
+        // Boolean to check if user inputted profile pic.
+        let userInputtedImage =
+            req.body.avatar !== "/images/default_avatar.jpeg";
+
+        let result;
+
+        // If user inputted profile pic, upload it to cloudinary.
+        // Else, just use the default avatar, stored in the files.
+        if (userInputtedImage) {
+            result = await cloudinary.uploader.upload(req.body.avatar, {
+                folder: "slicedadvice/avatars",
+                width: "150",
+                crop: "scale",
+            });
+        } else {
+            result = {
+                secure_url: "/images/default_avatar.jpeg",
+                public_id: "slicedadvice/avatars/default_avatar",
+            };
+        }
 
         const { name, email, password } = req.body;
 
@@ -74,8 +89,11 @@ const updateUserProfile = catchAsyncErrors(
             }
             if (req.body.avatar !== "") {
                 const image_id = user.avatar.public_id;
-                //Delete user's previous avatar
-                await cloudinary.uploader.destroy(image_id);
+
+                if (image_id !== "slicedadvice/avatars/default_avatar") {
+                    //Delete user's previous avatar if they don't have the default currently.
+                    await cloudinary.uploader.destroy(image_id);
+                }
 
                 //Upload user's new avatar
                 const result = await cloudinary.uploader.upload(
@@ -328,7 +346,7 @@ const createStripeConnectLoginLink = catchAsyncErrors(
             );
         }
 
-        // Create the login link 
+        // Create the login link
         const loginLink = await stripe.accounts.createLoginLink(user.stripeId);
         if (!loginLink) {
             return next(
@@ -344,7 +362,6 @@ const createStripeConnectLoginLink = catchAsyncErrors(
         });
     }
 );
-
 
 export {
     registerUser,
