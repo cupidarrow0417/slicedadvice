@@ -366,26 +366,7 @@ const TopNav = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="z-0 hidden lg:block lg:w-60">
-                        <label htmlFor="search" className="sr-only">
-                            Search
-                        </label>
-                        <div className="relative">
-                            <div className="pointer-events-none absolute inset-y-0 left-0 pl-3 flex items-center">
-                                <SearchIcon
-                                    className="h-5 w-5 text-gray-400"
-                                    aria-hidden="true"
-                                />
-                            </div>
-                            <input
-                                id="search"
-                                name="search"
-                                className="block w-full bg-white border border-gray-300 rounded-md py-2 pl-10 pr-3 text-sm placeholder-gray-500 focus:outline-none focus:text-gray-900 focus:placeholder-gray-400 focus:ring-1 focus:ring-brand-primary focus:border-brand-primary sm:text-sm"
-                                placeholder="Search for advice..."
-                                type="search"
-                            />
-                        </div>
-                    </div>
+                    <SearchBar/>
                     {!user ? (
                         <Link href="/login">
                             <a className="text-gray-800 hover:bg-brand-primary-light hover:text-white sm:ml-2 px-3 py-2 rounded-md text-sm font-medium">

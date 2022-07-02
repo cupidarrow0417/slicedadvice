@@ -180,7 +180,7 @@ const ExpertisePostDetails = () => {
                 </div>
 
                 {/* Review Section */}
-                <div className="max-w-2xl mx-auto py-8 px-4 sm:py-8 sm:px-6 lg:max-w-7xl lg:py-12 lg:px-8 lg:grid lg:grid-cols-12 lg:gap-x-8">
+                <div className="max-w-2xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:py-32 lg:px-8 lg:grid lg:grid-cols-12 lg:gap-x-8">
                     <div className="lg:col-span-4">
                         <h2 className="text-2xl font-extrabold tracking-tight text-gray-900">
                             Customer Reviews
@@ -257,10 +257,9 @@ const ExpertisePostDetails = () => {
                                             {count.count === 0
                                                 ? 0
                                                 : Math.round(
-                                                      (count.count /
-                                                          reviewsTotal) *
-                                                          100
-                                                  )}
+                                                    (count.count / reviewsTotal) *
+                                                        100
+                                                )}
                                             %
                                         </dd>
                                     </div>
@@ -273,17 +272,25 @@ const ExpertisePostDetails = () => {
                                     Share your thoughts
                                 </h3>
                                 <p className="mt-1 text-sm text-gray-600">
-                                    If you’ve been helped by this expert, share
-                                    your thoughts with other customers
+                                    If you’ve been helped by this expert, share your
+                                    thoughts with other customers
                                 </p>
-
+                                {!isVisible ? (
                                 <a
-                                    href="#"
                                     className="mt-6 inline-flex w-full bg-white border border-gray-300 rounded-md py-2 px-8 items-center justify-center text-sm font-medium text-gray-900 hover:bg-gray-50 sm:w-auto lg:w-full"
+                                    onClick={() => setIsVisible(true)}
                                 >
                                     Write a review
                                 </a>
-                            </div>
+                                ) : (
+                                <div className="mt-10">
+                                    <CreateReviewWidget
+                                        user={user}
+                                        expertisePostId={expertisePost?._id}
+                                    />
+                                </div>
+                                )}
+                            </div>                            
                         ) : (
                             <div></div>
                         )}
