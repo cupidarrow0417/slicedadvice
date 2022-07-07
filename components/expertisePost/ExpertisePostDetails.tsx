@@ -43,7 +43,7 @@ const ExpertisePostDetails = () => {
     }, [dispatch, user, session]);
 
     let userIsOwner: boolean = false;
-    if (session.user._id === expertisePost?.user?._id) {
+    if (session?.user._id === expertisePost?.user?._id) {
         userIsOwner = true;
     }
 
