@@ -7,6 +7,7 @@ import {
 import UniversalFadeAnimation from "../atoms/UniversalFadeAnimation";
 import ExpertDashboardSidebar from "./expert/ExpertDashboardSidebar";
 import AdviceSeekerDashboardSidebar from "./adviceSeeker/AdviceSeekerDashboardSidebar";
+import { useSession } from "next-auth/react";
 
 
 interface DashboardInterface {
@@ -15,6 +16,8 @@ interface DashboardInterface {
 }
 
 export default function Dashboard({ children, dashboardType }: DashboardInterface) {
+    // Get Session via useSession hook
+    const { data: session }: any = useSession();
     const dispatch = useAppDispatch();
 
     const { user, loading: authLoading } = useAppSelector((state) => {
@@ -28,7 +31,7 @@ export default function Dashboard({ children, dashboardType }: DashboardInterfac
     useEffect(() => {
         // Check if the user has charges enabled on their Stripe
         // Connect account
-        if (user) {
+        if (session) {
             if (dashboardType === "Expert" && user?.stripeId) {
                 const field: any = {
                     field: "charges_enabled",

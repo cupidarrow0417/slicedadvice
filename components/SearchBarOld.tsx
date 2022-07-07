@@ -4,7 +4,7 @@ import axios from "axios";
 import absoluteUrl from "next-absolute-url";
 import { Combobox, Popover } from "@headlessui/react";
 import { Transition } from '@headlessui/react'
-import Flyout from "./Flyout";
+import Flyout from "./atoms/Flyout";
 import { ChevronDownIcon } from '@heroicons/react/solid'
 import { Fragment } from 'react'
 

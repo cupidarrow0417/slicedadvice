@@ -1,10 +1,12 @@
 import { CashIcon } from "@heroicons/react/outline";
+import { useSession } from "next-auth/react";
 import Router from "next/router";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
 import {
     checkStripeAccountField,
     getStripeSetupPayoutsLink,
+    loadUser,
 } from "../../../redux/actionCreators/userActions";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import ButtonLoader from "../../layout/ButtonLoader";
@@ -42,22 +44,11 @@ const SetupPayoutsAlert = () => {
         return state.stripeSetupPayoutsLink;
     });
 
-    // // Initial useEffect that checks for stripe id and dispatches
-    // // redux action to check whether charges are enabled. Important
-    // // for this component, as we want to display different messages
-    // // based on those Stripe account fields.
-    // useEffect(() => {
-    //     // Check if the user has charges enabled on their Stripe
-    //     // Connect account
-    //     if (user) {
-    //         if (user?.stripeId) {
-    //             const field: any = {
-    //                 field: "charges_enabled",
-    //             };
-    //             dispatch(checkStripeAccountField(field));
-    //         }
-    //     }
-    // }, [user]);
+    useEffect(() => {
+        if (!user) {
+            dispatch(loadUser());
+        }
+    }, [dispatch, user]);
 
     // Use effect that checks status of the charges_enabled field, called above.
     // End goal is to figure out whether charges are enabled. The chargesEnabled

@@ -10,12 +10,11 @@ import {
     SearchIcon,
     ShoppingBagIcon,
 } from "@heroicons/react/solid";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { toast } from "react-toastify";
 import SearchBar from "../SearchBar";
 import Link from "next/link";
 import React, { Fragment, useEffect, useState } from "react";
-import { loadUser } from "../../redux/actionCreators/userActions";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import logoTransparent from "../../public/images/SlicedAdviceLogoTransparent.svg";
 import Flyout from "../atoms/Flyout";
@@ -130,16 +129,18 @@ const navigation = {
     ],
 };
 const TopNav = () => {
+    // Get Session via useSession hook
+    const { data: session }: any = useSession();
     const [open, setOpen] = useState(false);
     const dispatch = useAppDispatch();
 
     const { user, loading, error } = useAppSelector((state) => state.auth);
 
-    useEffect(() => {
-        if (!user) {
-            dispatch(loadUser());
-        }
-    }, [dispatch, user]);
+    // useEffect(() => {
+    //     if (!user) {
+    //         dispatch(loadUser());
+    //     }
+    // }, [dispatch, user]);
 
     const logoutHandler = () => {
         signOut();
@@ -154,7 +155,7 @@ const TopNav = () => {
         // if (user) {
         //     console.log("User is: ", user)
         // }
-    }, [error, user]);
+    }, [error]);
     return (
         <div>
             {/* Mobile menu */}
@@ -288,7 +289,7 @@ const TopNav = () => {
                                         </>
                                     ))}
                                 </div>
-                                {!user && (
+                                {!session && (
                                     <div className="border-gray-200 px-4 space-y-6">
                                         <div className="flow-root">
                                             <Link href="/login">
@@ -367,7 +368,7 @@ const TopNav = () => {
                         </div>
                     </div>
                     <SearchBar/>
-                    {!user ? (
+                    {!session ? (
                         <Link href="/login">
                             <a className="text-gray-800 hover:bg-brand-primary-light hover:text-white sm:ml-2 px-3 py-2 rounded-md text-sm font-medium">
                                 Login
@@ -392,8 +393,8 @@ const TopNav = () => {
                                         </span>
                                         <img
                                             className="h-8 w-8 rounded-full"
-                                            src={user.avatar.url}
-                                            alt={`User Profile Pic for ${user.name}`}
+                                            src={session.user.image}
+                                            alt={`User Profile Pic for ${session.user.name}`}
                                         />
                                     </Menu.Button>
                                 </div>

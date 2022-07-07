@@ -13,8 +13,12 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import CreateReviewWidget from "../CreateReviewWidget";
 import UniversalFadeAnimation from "../atoms/UniversalFadeAnimation";
+import { useSession } from "next-auth/react";
+import { loadUser } from "../../redux/actionCreators/userActions";
 
 const ExpertisePostDetails = () => {
+    // Get Session via useSession hook
+    const { data: session }: any = useSession();
     const dispatch = useAppDispatch();
     const { query: queryParams } = useRouter();
 
@@ -32,8 +36,14 @@ const ExpertisePostDetails = () => {
         return state.auth;
     });
 
+    useEffect(() => {
+        if (session && !user) {
+            dispatch(loadUser());
+        }
+    }, [dispatch, user, session]);
+
     let userIsOwner: boolean = false;
-    if (user?._id === expertisePost?.user?._id) {
+    if (session.user._id === expertisePost?.user?._id) {
         userIsOwner = true;
     }
 
@@ -257,9 +267,10 @@ const ExpertisePostDetails = () => {
                                             {count.count === 0
                                                 ? 0
                                                 : Math.round(
-                                                    (count.count / reviewsTotal) *
-                                                        100
-                                                )}
+                                                      (count.count /
+                                                          reviewsTotal) *
+                                                          100
+                                                  )}
                                             %
                                         </dd>
                                     </div>
@@ -272,25 +283,25 @@ const ExpertisePostDetails = () => {
                                     Share your thoughts
                                 </h3>
                                 <p className="mt-1 text-sm text-gray-600">
-                                    If you’ve been helped by this expert, share your
-                                    thoughts with other customers
+                                    If you’ve been helped by this expert, share
+                                    your thoughts with other customers
                                 </p>
                                 {!isVisible ? (
-                                <a
-                                    className="mt-6 inline-flex w-full bg-white border border-gray-300 rounded-md py-2 px-8 items-center justify-center text-sm font-medium text-gray-900 hover:bg-gray-50 sm:w-auto lg:w-full"
-                                    onClick={() => setIsVisible(true)}
-                                >
-                                    Write a review
-                                </a>
+                                    <a
+                                        className="mt-6 inline-flex w-full bg-white border border-gray-300 rounded-md py-2 px-8 items-center justify-center text-sm font-medium text-gray-900 hover:bg-gray-50 sm:w-auto lg:w-full"
+                                        onClick={() => setIsVisible(true)}
+                                    >
+                                        Write a review
+                                    </a>
                                 ) : (
-                                <div className="mt-10">
-                                    <CreateReviewWidget
-                                        user={user}
-                                        expertisePostId={expertisePost?._id}
-                                    />
-                                </div>
+                                    <div className="mt-10">
+                                        <CreateReviewWidget
+                                            user={user}
+                                            expertisePostId={expertisePost?._id}
+                                        />
+                                    </div>
                                 )}
-                            </div>                            
+                            </div>
                         ) : (
                             <div></div>
                         )}

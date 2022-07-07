@@ -1,15 +1,27 @@
 import NextAuth, { User } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import GoogleProvider from "next-auth/providers/google";
 
 import UserModel from "../../../models/user";
 import dbConnect from "../../../config/dbConnect";
 import { JWT } from "next-auth/jwt";
 
 export default NextAuth({
+    pages: {
+        // signIn: '/login',
+        // signOut: '/auth/signout',
+        // error: '/auth/error', // Error code passed in query string as ?error=
+        // verifyRequest: '/auth/verify-request', // (used for check email message)
+        // newUser: '/auth/new-user' // New users will be directed here on first sign in (leave the property out if not of interest)
+      },
     session: {
         strategy: "jwt",
     },
     providers: [
+        GoogleProvider({
+            clientId: process.env.GOOGLE_CLIENT_ID!,
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+        }),
         CredentialsProvider({
             // The name to display on the sign in form (e.g. "Sign in with...")
             name: "Credentials",
@@ -62,27 +74,45 @@ export default NextAuth({
             const isAllowedToSignIn = true;
             console.log("user", user);
             if (isAllowedToSignIn) {
-              return true
+                return true;
             } else {
-              // Return false to display a default error message
-              return false
-              // Or you can return a URL to redirect to:
-              // return '/unauthorized'
+                // Return false to display a default error message
+                return false;
+                // Or you can return a URL to redirect to:
+                // return '/unauthorized'
             }
-          },
+        },
+
+        // So this is an interesting piece of code. Essentially what this is doing is
+        // after the user logs in, it takes the email of the user (from the token) and
+        // finds that user in the database, and then adds specific things we want to 
+        // to token. (For example, the database id of the user). 
+        // This is useful because in the session function, we can then add stuff to the 
+        // session itself (via the token). This session is easily available anywhere, anytime in 
+        // our app! Really useful to get the currently logged in user's info anytime.
         async jwt({ token, account }) {
-            // Persist the OAuth access_token to the token right after signin
             if (token.email) {
                 const user = await UserModel.findOne({ email: token.email });
+                // console.log("user in jwt", user);
                 if (user) {
                     token._id = user._id;
-                }
+                    token.image = user.avatar.url;
+                } 
             }
             return token;
         },
-        async session({ session, token, user }: { session: any; token: JWT; user: User }) {
+        async session({
+            session,
+            token,
+            user,
+        }: {
+            session: any;
+            token: any;
+            user: User;
+        }) {
             // Send properties to the client, like an access_token from a provider.
             session.user._id = token._id;
+            session.user.image = token.image;
             return session;
         },
     },

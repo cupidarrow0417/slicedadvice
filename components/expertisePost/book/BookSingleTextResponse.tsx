@@ -15,6 +15,7 @@ import { toast } from "react-toastify";
 import Loader from "../../layout/Loader";
 import CheckoutForm from "./CheckoutForm";
 import OldPageHeader from "../../atoms/OldPageHeader";
+import { useSession } from "next-auth/react";
 
 // REINSTANTIATE STRIPE ELEMENTS PROVIDER, as for payment intent, we require
 // an options that contains the paymentIntentClientSecret for the current
@@ -27,6 +28,8 @@ const stripePromise = loadStripe(
 );
 
 const BookSingleTextResponse = () => {
+    // Get Session via useSession hook
+    const { data: session }: any = useSession();
     const dispatch = useAppDispatch();
     const { query: queryParams } = useRouter();
     // Holds text that user types in
@@ -38,9 +41,6 @@ const BookSingleTextResponse = () => {
     const { expertisePost, error } = useAppSelector(
         (state) => state.expertisePostDetails
     );
-    const { user, loading: authLoading } = useAppSelector((state) => {
-        return state.auth;
-    });
 
     const {
         clientSecret,
@@ -79,7 +79,7 @@ const BookSingleTextResponse = () => {
     }, [userClickedContinue]);
 
     useEffect(() => {
-        if (userClickedContinue && user && expertisePost) {
+        if (userClickedContinue && session && expertisePost) {
             // Create PaymentIntent as soon as the user clicks the
             // continue button.
 
@@ -97,7 +97,7 @@ const BookSingleTextResponse = () => {
                 bookingType: "Single Text Response",
                 expertisePostId: expertisePost?._id,
                 expertId: expertisePost?.user?._id,
-                customerId: user?._id,
+                customerId: session?.user?._id,
                 status: "Not Completed",
                 customerSubmission: finalTextSubmission,
                 bookingCreated: false,
@@ -109,7 +109,7 @@ const BookSingleTextResponse = () => {
             dispatch(cacheBookingData(bookingData));
             dispatch(createStripePaymentIntent(bookingData));
         }
-    }, [userClickedContinue, user, expertisePost]);
+    }, [userClickedContinue, session, expertisePost]);
 
     const appearance = {
         theme: "stripe",
@@ -135,7 +135,7 @@ const BookSingleTextResponse = () => {
 
     // Check if user is logged in and is the owner of this post.
     // They shouldn't be able to Send a Submission if so, of course.
-    if (user?._id === expertisePost?.user?._id) {
+    if (session?.user?._id === expertisePost?.user?._id) {
         Router.push("/");
     }
 
@@ -146,7 +146,7 @@ const BookSingleTextResponse = () => {
                 heroPhrase="For those bite-sized, important questions."
                 supportingText="Simply write your text submission then enter payment."
             />
-            {authLoading ? (
+            {!session ? (
                 <Loader />
             ) : (
                 <>

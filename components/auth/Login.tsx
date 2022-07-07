@@ -6,8 +6,8 @@ import { toast } from "react-toastify";
 import ButtonLoader from "../layout/ButtonLoader";
 import Router, { useRouter } from "next/router";
 import { useAppSelector } from "../../redux/hooks";
-
-
+import GoogleLogo from "../../public/images/googleLogo.png";
+import Image from "next/image";
 const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -29,21 +29,27 @@ const Login = () => {
         }
     }, [message]);
 
-    const submitHandler = async (e: any) => {
-        e.preventDefault();
-
+    const submitHandler = async (providerId: "credentials" | "google") => {
         setLoading(true);
 
-        //await the signIn
-        const result: any = await signIn("credentials", {
-            redirect: false,
-            email,
-            password,
-        });
+        let result: any;
+        if (providerId === "credentials") {
+            //await the Credentials (email + password) signIn
+            result = await signIn("credentials", {
+                redirect: false,
+                email,
+                password,
+            });
+        } else if (providerId === "google") {
+            //await the Google signIn
+            result = await signIn("google", {
+                redirect: false,
+            });
+        }
 
         setLoading(false);
 
-        if (result.error) {
+        if (result && result.error) {
             toast.error(result.error);
         } else if (queryParams.returnUrl) {
             //else, successful login! Redirect to either the
@@ -58,7 +64,7 @@ const Login = () => {
         <div className="flex flex-col justify-center">
             <div className="sm:mx-auto sm:w-full sm:max-w-md">
                 <p className="mt-2 text-center text-sm text-gray-600">
-                    {queryParams.returnContext 
+                    {queryParams.returnContext
                         ? `To continue to the ${queryParams.returnContext.toString()},`
                         : ""}
                 </p>
@@ -77,12 +83,7 @@ const Login = () => {
 
             <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
                 <div className="bg-white py-8 px-4 border border-black/10 shadow sm:rounded-lg sm:px-10">
-                    <form
-                        className="space-y-6"
-                        onSubmit={submitHandler}
-                        action="#"
-                        method="POST"
-                    >
+                    <form className="space-y-6" action="#" method="POST">
                         <div>
                             <label
                                 htmlFor="email"
@@ -154,7 +155,7 @@ const Login = () => {
 
                         <div>
                             <button
-                                type="submit"
+                                onClick={() => submitHandler("credentials")}
                                 className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-brand-primary-light hover:bg-brand-primary-light/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-primary-light/70"
                                 disabled={loading ? true : false}
                             >
@@ -175,10 +176,35 @@ const Login = () => {
                             </div>
                         </div>
 
-                        <div className="mt-6 grid grid-cols-3 gap-3">
-                            <div>
-                                <a
-                                    href="#"
+                        <div className="mt-6 flex justify-center items-center">
+                            <button
+                                onClick={() => submitHandler("google")}
+                                key={"Google"}
+                                className="flex justify-center items-center gap-4 bg-white rounded-md p-3 border border-gray-300 hover:opacity-80"
+                            >
+                                <Image
+                                    src={GoogleLogo}
+                                    width={20}
+                                    height={20}
+                                />
+                                <h1 className="text-sm font-semibold text-gray-600">
+                                    Sign in with Google
+                                </h1>
+                            </button>
+
+                            {/* <button className="flex justify-center items-center gap-4 bg-white rounded-md p-3 border border-gray-300 hover:opacity-80">
+                                <Image
+                                    src={GoogleLogo}
+                                    width={20}
+                                    height={20}
+                                />
+                                <h1 className="text-sm font-semibold text-gray-600">
+                                    Sign in with Google
+                                </h1>
+                            </button> */}
+                            {/* <div>
+                                <button
+
                                     className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
                                 >
                                     <span className="sr-only">
@@ -239,7 +265,7 @@ const Login = () => {
                                         />
                                     </svg>
                                 </a>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                 </div>

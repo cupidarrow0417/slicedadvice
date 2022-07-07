@@ -6,14 +6,13 @@ import ButtonLoader from "../../../layout/ButtonLoader";
 import Loader from "../../../layout/Loader";
 import { useRouter } from "next/router";
 import DashboardHeader from "../../DashboardHeader";
+import { useSession } from "next-auth/react";
 
 const HomeAdviceSeekerDashboard = () => {
-    const router = useRouter();
-    const { user, loading: authLoading } = useAppSelector(
-        (state) => state.auth
-    );
+    // Get Session via useSession hook
+    const { data: session }: any = useSession();
 
-    return (authLoading) ? (
+    return (!session) ? (
         <div className="flex flex-col">
             <div className="bg-white px-4 py-4 flex items-center justify-between sm:px-6 rounded-t-xl lg:rounded-tl-none lg:px-8 border-b-[1px] border-black/10">
                 <Loader />

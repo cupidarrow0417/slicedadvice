@@ -4,18 +4,26 @@ import Router, { useRouter } from "next/router";
 
 import ButtonLoader from "../layout/ButtonLoader";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { registerUser, clearErrors } from "../../redux/actionCreators/userActions";
+import {
+    registerUser,
+    clearErrors,
+} from "../../redux/actionCreators/userActions";
 import Link from "next/link";
-import { getSession } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
+import GoogleLogo from "../../public/images/googleLogo.png";
+import Image from "next/image";
 
 const Register = () => {
     const dispatch = useAppDispatch();
+    // Get Session via useSession hook
+    const { data: session }: any = useSession();
     const { query: queryParams } = useRouter();
     const [user, setUser] = useState({
         name: "",
         email: "",
         password: "",
     });
+    const [googleLoading, setGoogleLoading] = useState(false);
 
     // Build the login url with the optional redirect params,
     // to handle redirects if the user clicks login.
@@ -25,7 +33,7 @@ const Register = () => {
     }
 
     const { name, email, password } = user;
-    
+
     const [avatar, setAvatar] = useState("/images/default_avatar.jpeg");
     const [avatarPreview, setAvatarPreview] = useState(
         "/images/default_avatar.jpeg"
@@ -37,7 +45,7 @@ const Register = () => {
     });
 
     useEffect(() => {
-        if (success) {
+        if (success && session) {
             Router.push(loginUrl);
         }
 
@@ -50,7 +58,7 @@ const Register = () => {
                 dispatch(clearErrors);
             }
         }
-    }, [dispatch, success, error]);
+    }, [dispatch, success, error, session]);
 
     const submitHandler = (e: any) => {
         e.preventDefault();
@@ -66,6 +74,29 @@ const Register = () => {
             dispatch(registerUser(userData));
         } else {
             toast.error("Please try confirming the password again.");
+        }
+    };
+
+    // If the user clicks the Google button,
+    // do the same signin process as Login page!
+    // We will handle if the user hasn't created an account yet
+    // with whatever email they enter.
+    const handleGoogleSignIn = async () => {
+        setGoogleLoading(true);
+        //await the Google signIn
+        let result = await signIn("google", {
+            redirect: false,
+        });
+        setGoogleLoading(false);
+        if (result && result.error) {
+            toast.error(result.error);
+        } else if (queryParams.returnUrl) {
+            //else, successful login! Redirect to either the
+            //homepage or the returnUrl (the url from which the user
+            //was sent to the sign in page from)
+            Router.push(loginUrl);
+        } else {
+            Router.push("/login");
         }
     };
 
@@ -119,8 +150,26 @@ const Register = () => {
                             </div>
                         </div>
 
-                        <div className="mt-6 grid grid-cols-3 gap-3">
-                            <div>
+                        <div className="mt-6 flex justify-center items-center">
+                            <button
+                                onClick={() => handleGoogleSignIn()}
+                                className="flex justify-center items-center gap-4 bg-white rounded-md p-3 border border-gray-300 hover:opacity-80"
+                                disabled={googleLoading}
+                            >
+                                <Image
+                                    src={GoogleLogo}
+                                    width={20}
+                                    height={20}
+                                />
+                                <h1 className="text-sm font-semibold text-gray-600">
+                                    {googleLoading ? (
+                                        <ButtonLoader />
+                                    ) : (
+                                        "Sign in with Google"
+                                    )}
+                                </h1>
+                            </button>
+                            {/* <div>
                                 <a
                                     href="#"
                                     className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
@@ -183,7 +232,7 @@ const Register = () => {
                                         />
                                     </svg>
                                 </a>
-                            </div>
+                            </div> */}
                         </div>
                         <div className="relative my-6">
                             <div className="absolute inset-0 flex items-center">
