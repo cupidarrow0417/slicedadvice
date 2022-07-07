@@ -43,11 +43,12 @@ export default function Search() {
     <Combobox as="div" value={""} onChange={() => setSearchResults}>
       <div className="relative mt-1">
         <Combobox.Input
-          className="z-0 hidden sm:text-sm md:block sm:w-28 md:w-32 lg:w-80 rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 shadow-sm focus:border-brand-primary focus:outline-none focus:ring-1 focus:ring-brand-primary"
+          className="z-0 hidden sm:text-sm md:block sm:w-28 md:w-32 lg:w-80 rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 shadow-sm focus:border-brand-primary focus:outline-none focus:ring-1 focus:ring-brand-primary mr-10"
           onChange={(event) => search(event.target.value)}
           displayValue={(post:any) => post?.title}
+          placeholder="Search for advice..."
         />
-        <Combobox.Button className="absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none">
+        <Combobox.Button className="absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none mr-10">
             <SearchIcon
                         className="h-5 w-5 text-gray-400"
                         aria-hidden="true"
