@@ -88,16 +88,16 @@ const Register = () => {
             redirect: false,
         });
         setGoogleLoading(false);
-        if (result && result.error) {
-            toast.error(result.error);
-        } else if (queryParams.returnUrl) {
-            //else, successful login! Redirect to either the
-            //homepage or the returnUrl (the url from which the user
-            //was sent to the sign in page from)
-            Router.push(loginUrl);
-        } else {
-            Router.push("/login");
-        }
+        // if (result && result.error) {
+        //     toast.error(result.error);
+        // } else if (queryParams.returnUrl) {
+        //     //else, successful login! Redirect to either the
+        //     //homepage or the returnUrl (the url from which the user
+        //     //was sent to the sign in page from)
+        //     Router.push(loginUrl);
+        // } else {
+        //     Router.push("/login");
+        // }
     };
 
     const onChange = (e: any) => {

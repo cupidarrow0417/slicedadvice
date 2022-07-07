@@ -95,6 +95,7 @@ export default NextAuth({
                 const user = await UserModel.findOne({ email: token.email });
                 // console.log("user in jwt", user);
                 if (user) {
+                    token.name = user.name;
                     token._id = user._id;
                     token.image = user.avatar.url;
                 } 
@@ -111,6 +112,7 @@ export default NextAuth({
             user: User;
         }) {
             // Send properties to the client, like an access_token from a provider.
+            session.user.name = token.name;
             session.user._id = token._id;
             session.user.image = token.image;
             return session;
