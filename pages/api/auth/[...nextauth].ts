@@ -5,6 +5,7 @@ import GoogleProvider from "next-auth/providers/google";
 import UserModel from "../../../models/user";
 import dbConnect from "../../../config/dbConnect";
 import { JWT } from "next-auth/jwt";
+import bcrypt from "bcryptjs";
 
 export default NextAuth({
     pages: {
@@ -98,7 +99,40 @@ export default NextAuth({
                     token.name = user.name;
                     token._id = user._id;
                     token.image = user.avatar.url;
-                } 
+                } else {
+                    // GOOGLE SIGN IN FOR NEW EMAIL. 
+                    // Create the user in the database 
+                    // and attach the same info to the token.
+                    
+                    // Set the name to be the email. They can change
+                    // it later. Ofc, we'll have to check just in case 
+                    // a user (troll) already used that name.
+                    const checkDuplicateUser = await UserModel.findOne({ name: token.email });
+                    
+                    // If no duplicate, this new user's name will be their email. If there's a dup,
+                    // just append the current date. Should be unique.
+                    const newUserName = !checkDuplicateUser ? token.email : `${token.email}_${Date.now()}`;
+
+                    // Hash the email. Gonna set this to be their password, just in case something crazy 
+                    // happens. Never know when it could be useful.
+                    const hashedEmail = await bcrypt.hash(token.email, 10);
+                    const newUser = new UserModel({
+                        name: newUserName,
+                        email: token.email,
+                        avatar: {
+                            url: token.picture,
+                            public_id: token.picture,
+                        },
+                        password: hashedEmail,
+                        role: "googleUser",
+                    });
+                    newUser.save();
+                    // Finally, set token just as if they had just
+                    // logged in normally.
+                    token.name = newUser.name;
+                    token._id = newUser._id;
+                    token.image = newUser.avatar.url;
+                }
             }
             return token;
         },

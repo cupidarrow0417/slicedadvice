@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {
     updateUserProfile,
     clearErrors,
+    loadUser,
 } from "../../redux/actionCreators/userActions";
 import { UPDATE_USER_PROFILE_RESET } from "../../redux/constants/userConstants";
 
@@ -18,6 +19,8 @@ import {
     ViewGridAddIcon,
 } from "@heroicons/react/outline";
 import UniversalFadeAnimation from "../atoms/UniversalFadeAnimation";
+import axios from "axios";
+import Loader from "../layout/Loader";
 
 const navigation = [
     { name: "Profile", href: "#", icon: UserCircleIcon, current: true },
@@ -30,6 +33,8 @@ const navigation = [
 export default function Settings() {
     const dispatch = useAppDispatch();
 
+    // All local state
+    const [userInteracted, setUserInteracted] = useState(false);
     const [user, setUser] = useState({
         name: "",
         email: "",
@@ -40,8 +45,10 @@ export default function Settings() {
     const [avatarPreview, setAvatarPreview] = useState(
         "/images/default_avatar.jpeg"
     );
+    const [changedAvatar, setChangedAvatar] = useState(false);
     const [confirmPassword, setConfirmPassword] = useState("");
 
+    // Reach into global state
     const { user: authUser, loading: authLoading } = useAppSelector((state) => {
         return state.auth;
     });
@@ -52,19 +59,31 @@ export default function Settings() {
         loading: userLoading,
     } = useAppSelector((state) => state.user);
 
+    // Load full user immediately.
     useEffect(() => {
+        if (!authUser) {
+            dispatch(loadUser());
+        }
+    }, [dispatch, authUser]);
+
+    useEffect(() => {
+        // After updating, set frontend user state to match new
+        // backend user state
         if (userAfterUpdating) {
             setUser({
                 name: userAfterUpdating.name,
                 email: userAfterUpdating.email,
-                password: userAfterUpdating.password,
+                password: "",
             });
+            setConfirmPassword("");
             setAvatarPreview(userAfterUpdating.avatar.url);
         } else if (authUser) {
+            // Initial Setting of user state so frontend
+            // can load stuff.
             setUser({
                 name: authUser.name,
                 email: authUser.email,
-                password: authUser.password,
+                password: "",
             });
             setAvatarPreview(authUser.avatar.url);
         }
@@ -80,25 +99,49 @@ export default function Settings() {
         }
     }, [dispatch, isUpdated, error, authUser, userAfterUpdating]);
 
-    const submitHandler = (e: any) => {
+    const submitHandler = async (e: any) => {
         e.preventDefault();
+        // Firstly, check if the newly inputted username doesn't have a duplicate
+        // in the database by doing GET request to /api/auth/duplicate
+        // If it does, show error message.
+        // If it doesn't, continue.
+        const { data } = await axios.get(`/api/auth/duplicate?name=${name}`);
+        if (data.duplicateName) {
+            toast.error("Username is already taken. Try another!");
+            return;
+        }
 
-        if (password === confirmPassword) {
-            const userData = {
-                name,
-                email,
-                password,
-                avatar,
-            };
-
-            dispatch(updateUserProfile(userData));
+        // Case where user does anything with change password fields
+        if (password || confirmPassword) {
+            if (password !== confirmPassword) {
+                toast.error("Passwords do not match!");
+                return;
+            }
+            if (password.length < 6) {
+                toast.error("Password must be at least 6 characters!");
+                return;
+            }
+            // Else, all good to go. Update user
+            dispatch(updateUserProfile({ name, email: "", password, avatar }));
         } else {
-            toast.error("Passwords do not match. Please try again.");
+            // Case where user doesn't try to change password (aka password and
+            // confirmPassword are empty strings)
+            // All good to go. Update user. Don't even input password. Update
+            // avatar if changedAvatar === true. Else, send empty string.
+            dispatch(
+                updateUserProfile({
+                    name,
+                    email: "",
+                    avatar: changedAvatar ? avatar : "",
+                })
+            );
         }
     };
 
     const onChange = (e: any) => {
+        setUserInteracted(true);
         if (e.target.name === "avatar") {
+            setChangedAvatar(true);
             const reader: any = new FileReader();
 
             reader.onload = () => {
@@ -184,7 +227,7 @@ export default function Settings() {
                                             />
                                         </div>
                                     </div>
-                                    <div className="col-span-3 sm:col-span-2">
+                                    {/* <div className="col-span-3 sm:col-span-2">
                                         <label
                                             htmlFor="email"
                                             className="block text-sm font-medium text-gray-700"
@@ -202,44 +245,67 @@ export default function Settings() {
                                                 className="focus:ring-brand-primary-light focus:border-brand-primary-light flex-grow block w-full min-w-0 rounded-md sm:text-sm border-gray-300"
                                             />
                                         </div>
-                                    </div>
-                                    <div className="col-span-3 sm:col-span-2">
-                                        <label
-                                            htmlFor="password"
-                                            className="block text-sm font-medium text-gray-700"
-                                        >
-                                            New Password
-                                        </label>
-                                        <div className="mt-1">
-                                            <input
-                                                id="password"
-                                                name="password"
-                                                type="password"
-                                                autoComplete="current-password"
-                                                className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-brand-primary-light focus:border-brand-primary-light sm:text-sm"
-                                                // value={password}
-                                                onChange={onChange}
-                                            />
-                                        </div>
-                                    </div>
+                                    </div> */}
 
-                                    <div className="col-span-3 sm:col-span-2">
-                                        <label
-                                            htmlFor="password"
-                                            className="block text-sm font-medium text-gray-700"
-                                        >
-                                            Confirm New Password
-                                        </label>
-                                        <div className="mt-1">
-                                            <input
-                                                id="confirm-password"
-                                                name="confirm-password"
-                                                type="password"
-                                                className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-brand-primary-light focus:border-brand-primary-light sm:text-sm"
-                                                onChange={onChange}
-                                            />
+                                    {/* Google user's shouldn't be able to change their
+                                    password! */}
+                                    {authLoading ? (
+                                        <Loader />
+                                    ) : authUser?.role !== "googleUser" ? (
+                                        <>
+                                            <div className="col-span-3 sm:col-span-2">
+                                                <label
+                                                    htmlFor="password"
+                                                    className="block text-sm font-medium text-gray-700"
+                                                >
+                                                    New Password
+                                                </label>
+                                                <div className="mt-1">
+                                                    <input
+                                                        id="password"
+                                                        name="password"
+                                                        type="password"
+                                                        autoComplete="current-password"
+                                                        className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-brand-primary-light focus:border-brand-primary-light sm:text-sm"
+                                                        // value={password}
+                                                        onChange={onChange}
+                                                    />
+                                                </div>
+                                            </div>
+
+                                            <div className="col-span-3 sm:col-span-2">
+                                                <label
+                                                    htmlFor="password"
+                                                    className="block text-sm font-medium text-gray-700"
+                                                >
+                                                    Confirm New Password
+                                                </label>
+                                                <div className="mt-1">
+                                                    <input
+                                                        id="confirm-password"
+                                                        name="confirm-password"
+                                                        type="password"
+                                                        className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-brand-primary-light focus:border-brand-primary-light sm:text-sm"
+                                                        onChange={onChange}
+                                                    />
+                                                </div>
+                                            </div>
+                                        </>
+                                    ) : (
+                                        <div className="col-span-3 sm:col-span-2">
+                                            <p className="block text-sm font-medium text-gray-700">
+                                                Change Google Password
+                                            </p>
+
+                                            <a
+                                                href="https://support.google.com/accounts/answer/41078?hl=en&co=GENIE.Platform%3DDesktop"
+                                                target="_blank"
+                                                className="w-fit mt-1 flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-black hover:bg-black/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-primary-light/70"
+                                            >
+                                                Click here
+                                            </a>
                                         </div>
-                                    </div>
+                                    )}
 
                                     {/* <div className="col-span-3">
                                     <label
@@ -333,7 +399,11 @@ export default function Settings() {
                             <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
                                 <button
                                     type="submit"
-                                    disabled={userLoading ? true : false}
+                                    disabled={
+                                        !userInteracted || userLoading
+                                            ? true
+                                            : false
+                                    }
                                     className="bg-brand-primary-light border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-brand-primary-light/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-primary-light"
                                 >
                                     {userLoading ? <ButtonLoader /> : "Save"}

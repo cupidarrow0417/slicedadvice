@@ -41,9 +41,14 @@ const Login = () => {
                 password,
             });
         } else if (providerId === "google") {
+            let callbackUrl = "/";
+            if (queryParams.returnUrl) {
+                callbackUrl = queryParams.returnUrl.toString();
+            }
             //await the Google signIn
             result = await signIn("google", {
                 redirect: false,
+                callbackUrl: callbackUrl,
             });
         }
 

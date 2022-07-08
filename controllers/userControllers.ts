@@ -82,7 +82,13 @@ const updateUserProfile = catchAsyncErrors(
 
         if (user) {
             user.name = req.body.name;
-            user.email = req.body.email;
+
+            // As of July 7th, this code should never run.
+            // Email updating is not allowed, until we code in 
+            // email verification here as well.
+            if (req.body.email !== "") {
+                user.email = req.body.email;
+            }
 
             if (req.body.password) {
                 user.password = req.body.password;
@@ -206,6 +212,32 @@ const resetPassword = catchAsyncErrors(
         });
     }
 );
+
+// Check for duplicate user's based on name and email => GET /api/auth/duplicate
+const checkDuplicateUser = catchAsyncErrors(
+    async (req: any, res: NextApiResponse) => {
+        let user1, user2;
+        const { name, email } = req.query;
+        if (name) {
+            user1 = await User.findOne({ name: name });
+        }
+        if (email) {
+            user2 = await User.findOne({ email: email });
+        }
+        if (user1 || user2) {
+            res.status(200).json({
+                duplicateName: user1 ? true : false,
+                duplicateEmail: user2 ? true : false,
+            });
+        } else {
+            res.status(200).json({
+                duplicateName: false,
+                duplicateEmail: false,
+            });
+        }
+    }
+);
+
 
 // Get Stripe Setup Payouts Link => POST /api/stripe/payouts/link
 const getStripeSetupPayoutsLink = catchAsyncErrors(
@@ -369,6 +401,7 @@ export {
     updateUserProfile,
     forgotPassword,
     resetPassword,
+    checkDuplicateUser,
     getStripeSetupPayoutsLink,
     checkStripeAccountField,
     createStripeConnectLoginLink,
