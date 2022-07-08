@@ -77,6 +77,7 @@ export default function Example() {
               <SearchIcon
                           className="h-5 w-5 text-gray-400"
                           aria-hidden="true"
+                          onClick={() => openModal()}
                       />
           </Combobox.Button>
         </div>
@@ -93,11 +94,11 @@ export default function Example() {
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <div className="fixed inset-0 bg-black bg-opacity-25" />
+            <div className="fixed inset-0 sm:bg-black sm:bg-opacity-25 bg-white " />
           </Transition.Child>
 
           <div className="fixed inset-0 overflow-y-auto">
-            <div className="flex min-h-full items-start justify-end py-[27px] pr-[139px] text-center">
+            <div className="flex min-h-full items-start sm:justify-end sm:py-[27px] sm:pr-[139px] text-center">
               <Transition.Child
                 as={Fragment}
                 enter="ease-out duration-300"
@@ -112,7 +113,7 @@ export default function Example() {
                   <div className="relative mt-1">
                     <Combobox.Input
                       id="real"
-                      className="z-0 hidden sm:text-sm md:block sm:w-28 md:w-32 lg:w-80 rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 shadow-sm focus:border-brand-primary focus:outline-none focus:ring-1 focus:ring-brand-primary"
+                      className="z-0 w-screen ml-2 mt-1 sm:ml-0 sm:mt-0 sm:text-sm md:block sm:w-28 md:w-32 lg:w-80 rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 shadow-sm focus:border-brand-primary focus:outline-none focus:ring-1 focus:ring-brand-primary"
                       onChange={(event) => search(event.target.value)}
                       onFocus={(e:any) => {
                         search("advice")
@@ -130,8 +131,8 @@ export default function Example() {
 
                     {searchResults.length > 0 && (
                       <Fragment>
-                        <Combobox.Options className="flex flex-col absolute z-10 mt-1 max-h-160 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                          <Combobox.Label className="font-bold text-lg my-2 ml-3 self-start">
+                        <Combobox.Options className="flex flex-col absolute z-10 mt-1 sm:max-h-160 w-full overflow-auto rounded-md bg-white py-1 text-base sm:shadow-lg sm:ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                          <Combobox.Label className="font-bold text-lg my-2 ml-3 pr-40 self-start border-b-2">
                             Expertise Posts
                           </Combobox.Label>
                           {searchResults.map((result: any) => (
@@ -152,7 +153,7 @@ export default function Example() {
                                   >
                                       <div className="flex items-center">
                                           <img src={result.images[0].url} alt="" className="h-10 w-10 flex-shrink-0 rounded-full" />
-                                          <div className="flex flex-col overflow-hidden">
+                                          <div className="flex flex-col items-start overflow-hidden">
                                               <span className={classNames('ml-3 truncate', selected ? 'font-bold' : "font-semibold")}>{result.title}</span>
                                               <p className={classNames("mt-1 text-sm ml-3 truncate", active ? "text-white" : "text-gray-500")}>{result.description}</p>
                                           </div>
@@ -173,7 +174,7 @@ export default function Example() {
                               )}
                             </Combobox.Option>
                           ))}
-                          <Combobox.Label className="font-bold text-lg my-2 ml-3 self-start">
+                          <Combobox.Label className="font-bold text-lg my-2 ml-3 pr-52 self-start border-b-2">
                             Categories
                           </Combobox.Label>
                           {categories.map((category: any) => (
