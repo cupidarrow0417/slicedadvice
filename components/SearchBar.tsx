@@ -3,6 +3,7 @@ import { CheckIcon, SearchIcon, SelectorIcon } from '@heroicons/react/solid'
 import { Combobox, Dialog, Transition } from '@headlessui/react'
 import SearchBar from './SearchBar';
 import axios from "axios";
+import Link from 'next/link';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ')
@@ -148,17 +149,19 @@ export default function Example() {
                             >
                               {({ active, selected }) => (
                                 <>
-                                <a
-                                  href={window.location.origin + "/expertisePost/" + result._id}
-                                  >
-                                      <div className="flex items-center">
-                                          <img src={result.images[0].url} alt="" className="h-10 w-10 flex-shrink-0 rounded-full" />
-                                          <div className="flex flex-col items-start overflow-hidden">
-                                              <span className={classNames('ml-3 truncate', selected ? 'font-bold' : "font-semibold")}>{result.title}</span>
-                                              <p className={classNames("mt-1 text-sm ml-3 truncate", active ? "text-white" : "text-gray-500")}>{result.description}</p>
-                                          </div>
-                                      </div>
-                                  </a>
+                                  <Link
+                                    href={window.location.origin + "/expertisePost/" + result._id}
+                                    >
+                                      <a>
+                                        <div className="flex items-center">
+                                            <img src={result.images[0].url} alt="" className="h-10 w-10 flex-shrink-0 rounded-full" />
+                                            <div className="flex flex-col items-start overflow-hidden">
+                                                <span className={classNames('ml-3 truncate', selected ? 'font-bold' : "font-semibold")}>{result.title}</span>
+                                                <p className={classNames("mt-1 text-sm ml-3 truncate", active ? "text-white" : "text-gray-500")}>{result.description}</p>
+                                            </div>
+                                        </div>
+                                      </a>
+                                  </Link>
 
                                   {selected && (
                                     <span
@@ -190,16 +193,18 @@ export default function Example() {
                             >
                               {({ active, selected }) => (
                                 <>
-                                <a
-                                  href={window.location.origin + "/categories"+ category.href}
-                                  >
-                                      <div className="flex items-center">
-                                          {/* <img src={category.images[0].url} alt="" className="h-10 w-10 flex-shrink-0 rounded-full" /> */}
-                                          <div className="flex flex-col overflow-hidden">
-                                              <span className={classNames('ml-3 truncate', selected ? 'font-bold' : "font-semibold")}>{category.name}</span>
+                                  <Link 
+                                   href={window.location.origin + "/categories"+ category.href}
+                                   >
+                                    <a>
+                                          <div className="flex items-center">
+                                              {/* <img src={category.images[0].url} alt="" className="h-10 w-10 flex-shrink-0 rounded-full" /> */}
+                                              <div className="flex flex-col overflow-hidden">
+                                                  <span className={classNames('ml-3 truncate', selected ? 'font-bold' : "font-semibold")}>{category.name}</span>
+                                              </div>
                                           </div>
-                                      </div>
-                                  </a>
+                                    </a>
+                                  </Link>
 
                                   {selected && (
                                     <span
