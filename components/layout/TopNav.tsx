@@ -394,7 +394,6 @@ const TopNav = () => {
                                         <img
                                             className="h-8 w-8 rounded-full"
                                             src={session.user.image}
-                                            alt={`User Profile Pic for ${session.user.name}`}
                                         />
                                     </Menu.Button>
                                 </div>
