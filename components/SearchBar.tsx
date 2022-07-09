@@ -28,14 +28,12 @@ export default function Search() {
                 `${origin}/api/search/${searchQuery}`
             );
             setSearchResults(data)
-            console.log(searchResults)
         } catch (err) {
         }
     }
 
     function search(target: any){
         setSearchQuery(target);
-        // console.log(searchQuery)
         getResults();
     }
 

@@ -229,7 +229,7 @@ const createBooking = catchAsyncErrors(
         https://slicedadvice.com/dashboard/expert/bookings?booking=${
             booking._id
         } \n\n
-        Make sure to leave a review on the expertise post, and feel free to contact us if you have any questions. \n\n
+        As a reminder, the window to respond is 7 days. Feel free to contact us if you have any questions. \n\n
         Thanks for using SlicedAdvice! \n\n
         SlicedAdvice Team`;
 

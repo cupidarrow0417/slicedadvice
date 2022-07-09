@@ -13,7 +13,6 @@ const isStripeOnboardedUser = catchAsyncErrors(
         if (isOnboarded) {
             next();
         } else {
-            console.log("User not onboarded with Stripe!")
             return next(new ErrorHandler('Onboard with Stripe first to access this resource!', 401))
         }
     }

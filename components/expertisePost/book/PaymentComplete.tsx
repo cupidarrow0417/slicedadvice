@@ -38,7 +38,6 @@ const PaymentComplete = () => {
                 // a summary to the customer. Also just an extra way for a developer to know
                 // that the cached booking data matches the actual payment intent. Technically
                 // not neccessary.
-                console.log("PAYMENT INTENT", paymentIntent);
                 setTotalCents(paymentIntent?.amount!);
                 setPaymentIntentId(paymentIntent?.id || "");
                 setLoading(false);

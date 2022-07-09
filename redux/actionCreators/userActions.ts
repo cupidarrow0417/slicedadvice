@@ -24,31 +24,33 @@ import {
     CLEAR_ERRORS,
 } from "../constants/userConstants";
 
-export const registerUser = (userData: any) => async (dispatch: any) => {
-    try {
-        dispatch({ type: REGISTER_USER_REQUEST });
+// Register the user by credentials (email and password)
+// export const registerUser = (userData: any) => async (dispatch: any) => {
+//     try {
+//         dispatch({ type: REGISTER_USER_REQUEST });
 
-        const config = {
-            headers: {
-                "Content-Type": "application/json",
-            },
-        };
-        const { data } = await axios.post(
-            `/api/auth/register`,
-            userData,
-            config
-        );
+//         const config = {
+//             headers: {
+//                 "Content-Type": "application/json",
+//             },
+//         };
+//         const { data } = await axios.post(
+//             `/api/auth/register`,
+//             userData,
+//             config
+//         );
 
-        dispatch({
-            type: REGISTER_USER_SUCCESS,
-        });
-    } catch (error: any) {
-        dispatch({
-            type: REGISTER_USER_FAIL,
-            payload: error.response.data.message,
-        });
-    }
-};
+//         dispatch({
+//             type: REGISTER_USER_SUCCESS,
+//             payload: data,
+//         });
+//     } catch (error: any) {
+//         dispatch({
+//             type: REGISTER_USER_FAIL,
+//             payload: error.response.data.message,
+//         });
+//     }
+// };
 
 //Load user
 export const loadUser = () => async (dispatch: any) => {

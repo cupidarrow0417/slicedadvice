@@ -58,6 +58,18 @@ export default NextAuth({
                     throw new Error("Invalid Email or Password");
                 }
 
+                if (user.role !== "user") {
+                    if (user.role === "googleUser") {
+                        throw new Error("Please sign in with Google.");
+                    } else {
+                        throw new Error("Please sign in via provider (Google, Apple, etc)");
+                    }
+                }
+
+                if (user.verifiedEmail === false) {
+                    throw new Error("Please verify your email. Check your email for a verification link.");
+                }
+
                 //Check if password is correct
                 const isPasswordMatched = await user.comparePassword(password);
 
@@ -94,7 +106,6 @@ export default NextAuth({
         async jwt({ token, account }) {
             if (token.email) {
                 const user = await UserModel.findOne({ email: token.email });
-                // console.log("user in jwt", user);
                 if (user) {
                     token.name = user.name;
                     token._id = user._id;
@@ -125,6 +136,9 @@ export default NextAuth({
                         },
                         password: hashedEmail,
                         role: "googleUser",
+                        // Google users are always verified, as that is handled
+                        // in Google itself.
+                        verifiedEmail: true,
                     });
                     newUser.save();
                     // Finally, set token just as if they had just

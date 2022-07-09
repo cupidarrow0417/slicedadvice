@@ -6,7 +6,6 @@ const searchExpertisePosts = catchAsyncErrors(
     async (req: NextApiRequest, res: NextApiResponse) => {
     try {
         const searchQuery = req.query.search;
-        console.log(searchQuery)
 
         const agg = [
         {

@@ -157,7 +157,6 @@ export const createBooking =
                 },
             };
 
-            console.log("bookingData", bookingData);
             const { data } = await axios.post(
                 `/api/bookings`,
                 bookingData,

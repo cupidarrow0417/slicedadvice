@@ -73,7 +73,6 @@ const BookSingleTextResponse = () => {
         if (userClickedContinue === true) {
             let paymentSectionElement =
                 document.getElementById("paymentSection");
-            console.log("paymentSectionElement.scrollTop", paymentSectionElement?.scrollTop);
             paymentSectionElement?.scrollIntoView({ behavior: "smooth" });
         }
     }, [userClickedContinue]);
