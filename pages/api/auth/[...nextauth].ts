@@ -85,7 +85,6 @@ export default NextAuth({
     callbacks: {
         async signIn({ user, account, profile, email, credentials }) {
             const isAllowedToSignIn = true;
-            console.log("user", user);
             if (isAllowedToSignIn) {
                 return true;
             } else {

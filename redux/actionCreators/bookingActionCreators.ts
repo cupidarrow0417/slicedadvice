@@ -4,6 +4,10 @@ import {
     CREATE_STRIPE_PAYMENT_INTENT_REQUEST,
     CREATE_STRIPE_PAYMENT_INTENT_SUCCESS,
     CREATE_STRIPE_PAYMENT_INTENT_FAIL,
+    CLEAR_STRIPE_PAYMENT_INTENT_ERRORS,
+    UPDATE_STRIPE_PAYMENT_INTENT_REQUEST,
+    UPDATE_STRIPE_PAYMENT_INTENT_SUCCESS,
+    UPDATE_STRIPE_PAYMENT_INTENT_FAIL,
     CLEAR_BOOKINGS_SUCCESS,
     CLEAR_BOOKINGS_ERRORS,
     CACHE_BOOKING_DATA,
@@ -15,7 +19,6 @@ import {
     UPDATE_BOOKING_REQUEST,
     UPDATE_BOOKING_SUCCESS,
     UPDATE_BOOKING_FAIL,
-    CLEAR_STRIPE_PAYMENT_INTENT_ERRORS,
 } from "../constants/bookingConstants";
 
 interface CacheBookingDataInterface {
@@ -123,8 +126,8 @@ export const updateBooking =
 
             let finalData = {
                 ...bookingData,
-                chargePaymentIntent
-            }
+                chargePaymentIntent,
+            };
 
             const { data } = await axios.put(
                 `/api/bookings/${bookingId}`,
@@ -199,7 +202,6 @@ export const createStripePaymentIntent =
                 bookingData,
                 config
             );
-
             dispatch({
                 type: CREATE_STRIPE_PAYMENT_INTENT_SUCCESS,
                 payload: data,
@@ -207,6 +209,47 @@ export const createStripePaymentIntent =
         } catch (error: any) {
             dispatch({
                 type: CREATE_STRIPE_PAYMENT_INTENT_FAIL,
+                payload: error.response.data.message,
+            });
+        }
+    };
+
+/**
+ * Updates a stripe payment intent, used on the checkout page for a booking.
+ * It sends a POST request to the server to update a Stripe PaymentIntent, and then dispatches a
+ * success or fail action depending on the response
+ * @param {CacheBookingDataInterface} bookingData - CacheBookingDataInterface
+ */
+export const updateStripePaymentIntent =
+    (
+        bookingData: CacheBookingDataInterface,
+        stripePaymentIntentId: string
+    ) =>
+    async (dispatch: any) => {
+        try {
+            dispatch({
+                type: UPDATE_STRIPE_PAYMENT_INTENT_REQUEST,
+            });
+
+            const config = {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            };
+
+            const { data } = await axios.patch(
+                `/api/stripe/paymentIntent/`,
+                { bookingData, stripePaymentIntentId },
+                config
+            );
+
+            dispatch({
+                type: UPDATE_STRIPE_PAYMENT_INTENT_SUCCESS,
+                payload: data,
+            });
+        } catch (error: any) {
+            dispatch({
+                type: UPDATE_STRIPE_PAYMENT_INTENT_FAIL,
                 payload: error.response.data.message,
             });
         }

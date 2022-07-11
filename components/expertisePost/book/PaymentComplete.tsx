@@ -71,6 +71,7 @@ const PaymentComplete = () => {
                 stripePaymentIntentId: paymentIntentId,
                 expertStripeId: bookingData.expertisePost?.user?.stripeId,
             };
+            dispatch({ type: 'CLEAR_STRIPE_PAYMENT_INTENT' });
             dispatch(createBooking(finalBookingData));
         }
     }, [bookingData, paymentIntentId]);

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, Fragment } from "react";
 import { loadStripe } from "@stripe/stripe-js";
-import { Elements } from "@stripe/react-stripe-js";
+import { Elements, useStripe } from "@stripe/react-stripe-js";
 import Router, { useRouter } from "next/router";
 import { PencilAltIcon } from "@heroicons/react/outline";
 import Link from "next/link";
@@ -10,6 +10,7 @@ import {
     cacheBookingData,
     createStripePaymentIntent,
     clearStripePaymentIntentErrors,
+    updateStripePaymentIntent,
 } from "../../../redux/actionCreators/bookingActionCreators";
 import { toast } from "react-toastify";
 import Loader from "../../layout/Loader";
@@ -28,6 +29,7 @@ const stripePromise = loadStripe(
 );
 
 const BookSingleTextResponse = () => {
+    const stripe = useStripe();
     // Get Session via useSession hook
     const { data: session }: any = useSession();
     const dispatch = useAppDispatch();
@@ -38,17 +40,16 @@ const BookSingleTextResponse = () => {
     // payment.
     const [finalTextSubmission, setFinalTextSubmission] = useState("");
     const [userClickedContinue, setUserClickedContinue] = useState(false);
+
     const { expertisePost, error } = useAppSelector(
         (state) => state.expertisePostDetails
     );
 
     const {
-        clientSecret,
-        loading: createStripePaymentIntentLoading,
-        success: createStripePaymentIntentSuccess,
-        error: createStripePaymentIntentError,
-    } = useAppSelector((state) => state.createStripePaymentIntent);
-
+        stripePaymentIntentClientSecret,
+        loading,
+        error: stripePaymentIntentError,
+    } = useAppSelector((state) => state.stripePaymentIntent);
     const { bookingData: cachedBookingData } = useAppSelector(
         (state) => state.cacheBookingData
     );
@@ -65,8 +66,10 @@ const BookSingleTextResponse = () => {
     // and clicks continue.
     const handleContinueClick = (e: any) => {
         e.preventDefault();
-        setUserClickedContinue(true);
-        setFinalTextSubmission(textSubmission);
+        if (!stripePaymentIntentError) {
+            setUserClickedContinue(true);
+            setFinalTextSubmission(textSubmission);
+        }
     };
 
     useEffect(() => {
@@ -106,15 +109,64 @@ const BookSingleTextResponse = () => {
                 expertStripeId: expertisePost?.user?.stripeId,
             };
             dispatch(cacheBookingData(bookingData));
+
+            // (LEAVING THIS HERE UNTIL STRIPE ISSUE IS FIXED. 
+            // Check if a Stripe Payment Intent Client Secret
+            // already exists in the global state.
+            // If it does, check if the payment intent is still referring to the same
+            // expertise post (check transfer_data.destination). 
+            // If it is, update it with the latest data by
+            // retrieving the payment intent via the client secret,
+            // and calling the updateStripePaymentIntent action creator
+            // with the updated booking data and the id of the payment intent
+            // if (stripePaymentIntentClientSecret && stripe) {
+            //     stripe
+            //         .retrievePaymentIntent(stripePaymentIntentClientSecret)
+            //         .then(function (result) {
+            //             // Handle result.error or result.paymentIntent
+            //             if (result.error) {
+            //                 // If error, prevent user from continuing
+            //                 setUserClickedContinue(false);
+            //                 toast.error(result.error.message);
+            //                 return;
+            //             } else if (result.paymentIntent) {
+            //                 // If the payment intent is still referring to the same
+            //                 // expertise post, update it with the latest data. 
+            //                 // Else, just create a new payment intent.
+            //                 console.log("result.paymentIntentt: ", result.paymentIntent);
+            //                 // if (
+            //                 //     result.paymentIntent.transfer_data.destination ===
+            //                 //     expertisePost?.user?.stripeId
+            //                 // ) {
+            //                 //     dispatch(
+            //                 //         updateStripePaymentIntent(
+            //                 //             bookingData,
+            //                 //             result.paymentIntent.id
+            //                 //         )
+            //                 //     );
+            //                 // }
+            //             }
+            //         }
+            //         ).catch((err) => {
+            //             console.log(err);
+            //         }
+            //         );
+            // } else {
+            //     // If no Stripe Payment Intent Client Secret exists in the global state,
+            //     // create a new payment intent.
+            //     dispatch(createStripePaymentIntent(bookingData));
+            // }
             dispatch(createStripePaymentIntent(bookingData));
         }
     }, [userClickedContinue, session, expertisePost]);
 
+
     const appearance = {
         theme: "stripe",
     };
+
     const options: any = {
-        clientSecret,
+        clientSecret: stripePaymentIntentClientSecret,
         appearance,
         loader: "always",
     };
@@ -122,15 +174,11 @@ const BookSingleTextResponse = () => {
     // Display errors if they appear during creation of
     // Stripe Payment intent
     useEffect(() => {
-        if (createStripePaymentIntentError) {
-            toast.error(createStripePaymentIntentError);
+        if (stripePaymentIntentError) {
+            toast.error(stripePaymentIntentError);
             dispatch(clearStripePaymentIntentErrors());
         }
-
-        // if (createStripePaymentIntentSuccess) {
-        //     toast.success("Successfully created a payment intent!")
-        // }
-    }, [createStripePaymentIntentError]);
+    }, [stripePaymentIntentClientSecret, stripePaymentIntentError]);
 
     // Check if user is logged in and is the owner of this post.
     // They shouldn't be able to Send a Submission if so, of course.
@@ -263,12 +311,12 @@ const BookSingleTextResponse = () => {
                                 <div className="w-full h-[1px] bg-black/10"></div>
 
                                 {/* Stripe Payment Element */}
-                                {createStripePaymentIntentLoading ? (
+                                {loading ? (
                                     <Loader />
                                 ) : (
-                                    clientSecret && (
+                                    stripePaymentIntentClientSecret && (
                                         // REINSTANTIATE STRIPE ELEMENTS PROVIDER, as for payment intent, we require
-                                        // an options that contains the paymentIntentClientSecret for the current
+                                        // an options that contains the stripePaymentIntentClientSecret for the current
                                         // payment intent.
                                         <Elements
                                             options={options}

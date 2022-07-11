@@ -65,7 +65,7 @@ export default function Home() {
                             Browse Advice
                         </a>
                     </Link>
-                    <Link href="/dashboard/expert/home">
+                    <Link href="/experts">
                         <a className="w-fit inline-block text-center bg-black border border-transparent rounded-md py-3 px-8 font-medium text-white hover:bg-black/80">
                             Give Advice
                         </a>
@@ -351,7 +351,7 @@ export default function Home() {
                                             Join us as an expert.
                                         </h2>
                                         <div className="mt-6 text-base">
-                                            <Link href="/experts/create">
+                                            <Link href="/experts">
                                                 <a className="font-semibold text-white">
                                                     Learn more
                                                     <span aria-hidden="true">
