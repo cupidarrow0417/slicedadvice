@@ -2,6 +2,10 @@ import {
     CREATE_STRIPE_PAYMENT_INTENT_REQUEST,
     CREATE_STRIPE_PAYMENT_INTENT_SUCCESS,
     CREATE_STRIPE_PAYMENT_INTENT_FAIL,
+    UPDATE_STRIPE_PAYMENT_INTENT_REQUEST,
+    UPDATE_STRIPE_PAYMENT_INTENT_SUCCESS,
+    UPDATE_STRIPE_PAYMENT_INTENT_FAIL,
+    CLEAR_STRIPE_PAYMENT_INTENT,
     CLEAR_STRIPE_PAYMENT_INTENT_ERRORS,
     CACHE_BOOKING_DATA,
     CREATE_BOOKING_REQUEST,
@@ -53,8 +57,7 @@ export const bookingsReducer = (state = initialState, action: any) => {
                     error: null,
                     bookingsCount: action.payload.bookingsCount,
                     resPerPage: action.payload.resPerPage,
-                    filteredBookingsCount:
-                        action.payload.filteredBookingsCount,
+                    filteredBookingsCount: action.payload.filteredBookingsCount,
                 },
             };
         case GET_BOOKINGS_FAIL:
@@ -82,8 +85,8 @@ export const bookingsReducer = (state = initialState, action: any) => {
             return {
                 ...state,
                 bookings: state.bookings.map((booking: any) =>
-                    booking._id === action.payload.booking._id        
-                        ? { ...booking, ...action.payload.booking } 
+                    booking._id === action.payload.booking._id
+                        ? { ...booking, ...action.payload.booking }
                         : booking
                 ),
                 metadata: {
@@ -131,7 +134,7 @@ export const bookingsReducer = (state = initialState, action: any) => {
                     error: action.payload,
                 },
             };
-        
+
         // TYPE: CLEAR BOOKINGS SUCCESS
         case CLEAR_BOOKINGS_SUCCESS:
             return {
@@ -157,37 +160,57 @@ export const bookingsReducer = (state = initialState, action: any) => {
 // ALL MONITORING AND MISC. REDUCERS BELOW. ONLY FOR MONITORING PROGRESS OF API CALLS, STORING
 // RANDOM RELATED DATA, etc.
 
-/**
- * It returns an object with a loading property set to true if the action type is
- * CREATE_STRIPE_PAYMENT_INTENT_REQUEST, an object with a loading property set to false and a success
- * property set to true if the action type is CREATE_STRIPE_PAYMENT_INTENT_SUCCESS, and an object with
- * a loading property set to false and an error property set to the error message if the action type
- * is CREATE_STRIPE_PAYMENT_INTENT_FAIL
- * @param state - The current state of the reducer.
- * @param {any} action - any
- * @returns - The state is being returned with the loading, success, clientSecret, and error
- * properties.
- *     - The loading property is set to true when the CREATE_STRIPE_PAYMENT_INTENT_REQUEST action is
- * dispatched.
- *     - The success property is set to true when the CREATE_STRIPE_PAYMENT_INTENT_REQUEST
- */
-export const createStripePaymentIntentReducer = (state = {}, action: any) => {
+
+export const stripePaymentIntentReducer = (
+    state = {
+        loading: false,
+        stripePaymentIntentClientSecret: null,
+        error: null,
+    },
+    action: any
+) => {
     switch (action.type) {
         case CREATE_STRIPE_PAYMENT_INTENT_REQUEST:
             return {
+                ...state,
                 loading: true,
             };
         case CREATE_STRIPE_PAYMENT_INTENT_SUCCESS:
             return {
+                ...state,
                 loading: false,
-                success: true,
-                clientSecret: action.payload.clientSecret,
+                stripePaymentIntentClientSecret: action.payload.clientSecret,
+                error: null,
             };
         case CREATE_STRIPE_PAYMENT_INTENT_FAIL:
             return {
+                ...state,
                 loading: false,
-                success: false,
                 error: action.payload,
+            };
+        case UPDATE_STRIPE_PAYMENT_INTENT_REQUEST:
+            return {
+                ...state,
+                loading: true,
+            };
+        case UPDATE_STRIPE_PAYMENT_INTENT_SUCCESS:
+            return {
+                ...state,
+                stripePaymentIntentClientSecret: action.payload.clientSecret,
+                loading: false,
+                error: null,
+            };
+        case UPDATE_STRIPE_PAYMENT_INTENT_FAIL:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload,
+            };
+        case CLEAR_STRIPE_PAYMENT_INTENT:
+            return {
+                ...state,
+                stripePaymentIntentClientSecret: null,
+                error: null,
             };
         case CLEAR_STRIPE_PAYMENT_INTENT_ERRORS:
             return {
@@ -216,4 +239,3 @@ export const cacheBookingDataReducer = (state = {}, action: any) => {
             return state;
     }
 };
-

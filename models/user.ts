@@ -11,6 +11,9 @@ interface UserInterface {
     avatar: Object;
     role: String;
     createdAt: Date;
+    verifiedEmail: Boolean;
+    emailVerificationCode: String;
+    emailVerificationExpire: Date;
     resetPasswordToken: String;
     resetPasswordExpire: Date;
 }
@@ -54,6 +57,14 @@ const userSchema = new mongoose.Schema<UserInterface>({
     },
     resetPasswordToken: String,
     resetPasswordExpire: Date,
+    // For google users, this is
+    // always true.
+    verifiedEmail: {
+        type: Boolean,
+        default: false,
+    },
+    emailVerificationCode: String,
+    emailVerificationExpire: Date,
 });
 
 //Encrypt password before saving user
@@ -88,6 +99,19 @@ userSchema.methods.getResetPasswordToken = function () {
     this.resetPasswordExpire = Date.now() + 30 * 60 * 1000;
 
     return resetToken;
+};
+
+//Generate email verification 6 digit token
+//Note: remember these types of functions can NOT be arrow functions
+//or else 'this' will be undefined
+userSchema.methods.getEmailVerificationCode = function () {
+    //Generate 6 digit email verification code from 100000 to 999999
+    const emailVerificationCode = Math.floor(Math.random() * 89999 + 100000);
+
+    this.emailVerificationCode = emailVerificationCode.toString();
+    this.emailVerificationExpire = Date.now() + 30 * 60 * 1000;
+
+    return emailVerificationCode;
 };
 
 export default mongoose.models["User"] ||

@@ -4,21 +4,21 @@ import {
     useStripe,
     useElements,
 } from "@stripe/react-stripe-js";
-import { useAppSelector } from "../../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { toast } from "react-toastify";
 import ButtonLoader from "../../layout/ButtonLoader";
 
 export default function CheckoutForm() {
     const stripe = useStripe();
     const elements = useElements();
+    const dispatch = useAppDispatch();
     const [isLoading, setIsLoading] = useState(false);
 
     const {
-        clientSecret,
-        loading: createStripePaymentIntentLoading,
-        success: createStripePaymentIntentSuccess,
-        error: createStripePaymentIntentError,
-    } = useAppSelector((state) => state.createStripePaymentIntent);
+        stripePaymentIntentClientSecret,
+        loading,
+        error: stripePaymentIntentError,
+    } = useAppSelector((state) => state.stripePaymentIntent);
 
     
     useEffect(() => {
@@ -26,11 +26,11 @@ export default function CheckoutForm() {
             return;
         }
 
-        if (!clientSecret) {
+        if (!stripePaymentIntentClientSecret) {
             return;
         }
 
-        stripe.retrievePaymentIntent(clientSecret).then(({ paymentIntent }) => {
+        stripe.retrievePaymentIntent(stripePaymentIntentClientSecret).then(({ paymentIntent }) => {
             switch (paymentIntent?.status) {
                 // Inspect the PaymentIntent `status` to indicate the status of the payment
                 // to your customer.
@@ -55,7 +55,7 @@ export default function CheckoutForm() {
                     break;
             }
         });
-    }, [stripe, clientSecret]);
+    }, [stripe, stripePaymentIntentClientSecret]);
 
     const handleSubmit = async (e: any) => {
         e.preventDefault();
@@ -67,8 +67,6 @@ export default function CheckoutForm() {
         }
 
         setIsLoading(true);
-        
-
         
         const { error } = await stripe.confirmPayment({
             elements,

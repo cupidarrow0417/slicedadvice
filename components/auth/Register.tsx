@@ -4,10 +4,18 @@ import Router, { useRouter } from "next/router";
 
 import ButtonLoader from "../layout/ButtonLoader";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { registerUser, clearErrors } from "../../redux/actionCreators/userActions";
 import Link from "next/link";
-import { getSession } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
+import GoogleLogo from "../../public/images/googleLogo.png";
+import Image from "next/image";
+import axios from "axios";
+import UniversalFadeAnimation from "../atoms/UniversalFadeAnimation";
 
+// With Register, we are handling the two Sign Up options:
+// Credentials, and Google Sign In. Google Sign in is extremely simple.
+// It just works. But with credentials, the moment we create the user
+// successfully we send them straight to the email verification page
+// to verify their email. That's the only way they can log in successfully.
 const Register = () => {
     const dispatch = useAppDispatch();
     const { query: queryParams } = useRouter();
@@ -16,45 +24,37 @@ const Register = () => {
         email: "",
         password: "",
     });
+    const [loading, setLoading] = useState(false);
+    const [googleLoading, setGoogleLoading] = useState(false);
 
-    // Build the login url with the optional redirect params,
-    // to handle redirects if the user clicks login.
+    // Build the email verification url with the optional redirect params,
+    // to handle redirects after signup.
+    let emailVerificationUrl: string = "/emailVerification";
+    // Build login url. Literally just for that singular button
+    // that redirects to the login page.
     let loginUrl: string = "/login";
     if (queryParams.returnUrl && queryParams.returnContext) {
-        loginUrl += `?returnUrl=${queryParams.returnUrl.toString()}&returnContext=${queryParams.returnContext.toString()}`;
+        // Querys exist, append ? to the url.
+        emailVerificationUrl += "?";
+        loginUrl += "?";
+        // Make sure to add the "&" at the end of each addition to the query string.
+        emailVerificationUrl += `returnUrl=${queryParams.returnUrl.toString()}&returnContext=${queryParams.returnContext.toString()}&`;
+        loginUrl += `returnUrl=${queryParams.returnUrl.toString()}&returnContext=${queryParams.returnContext.toString()}&`;
     }
 
     const { name, email, password } = user;
-    
+
     const [avatar, setAvatar] = useState("/images/default_avatar.jpeg");
     const [avatarPreview, setAvatarPreview] = useState(
         "/images/default_avatar.jpeg"
     );
     const [confirmPassword, setConfirmPassword] = useState("");
 
-    const { success, error, loading } = useAppSelector((state) => {
-        return state.auth;
-    });
-
-    useEffect(() => {
-        if (success) {
-            Router.push(loginUrl);
-        }
-
-        if (error) {
-            //toast all errors except for the navbar checking for a user.
-            //that sends an error technically, but we don't care about it
-            //in the context of this registration page.
-            if (error !== "Login first to access this resource!") {
-                toast.error(error);
-                dispatch(clearErrors);
-            }
-        }
-    }, [dispatch, success, error]);
-
-    const submitHandler = (e: any) => {
+    // If the user submits by credentials,
+    // register them.
+    const submitCredentialsHandler = async (e: any) => {
         e.preventDefault();
-
+        setLoading(true);
         if (password === confirmPassword) {
             const userData = {
                 name,
@@ -63,12 +63,90 @@ const Register = () => {
                 avatar,
             };
 
-            dispatch(registerUser(userData));
+            try {
+                const { data } = await axios.get(
+                    `/api/auth/duplicate?email=${email}&name=${name}`
+                );
+                if (data.duplicateName) {
+                    toast.error("Name is already taken.");
+                    setLoading(false);
+                    return;
+                }
+                if (data.duplicateEmail) {
+                    toast.error(
+                        "Email is already taken. Contact support if you need further assistance."
+                    );
+                    setLoading(false);
+                    return;
+                }
+            } catch (error: any) {
+                toast.error(error.response.data.message);
+                setLoading(false);
+                return;
+            }
+
+            try {
+                const config = {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                };
+                const { data } = await axios.post(
+                    `/api/auth/register`,
+                    userData,
+                    config
+                );
+
+                if (data.user) {
+                    let newlyRegisteredUser = data.user;
+
+                    // Finally, attach the user email to the emailVerificationUrl
+                    // to autofill the email field on the email verification page.
+                    // Just for good UX!
+
+                    // Append ? to url if it doesn't exist yet
+                    if (!emailVerificationUrl.includes("?")) {
+                        emailVerificationUrl += "?";
+                    }
+
+                    emailVerificationUrl += `email=${newlyRegisteredUser.email}&`;
+                    Router.push(emailVerificationUrl);
+                }
+            } catch (err: any) {
+                toast.error(err.response.data.message);
+            }
         } else {
             toast.error("Please try confirming the password again.");
         }
+        setLoading(false);
     };
 
+    // If the user clicks the Google button,
+    // do the same signin process as Login page!
+    // We will handle if the user hasn't created an account yet
+    // with whatever email they enter.
+    const handleGoogleSignIn = async () => {
+        setGoogleLoading(true);
+        //await the Google signIn
+        let result = await signIn("google", {
+            redirect: false,
+        });
+        setGoogleLoading(false);
+        // if (result && result.error) {
+        //     toast.error(result.error);
+        // } else if (queryParams.returnUrl) {
+        //     //else, successful login! Redirect to either the
+        //     //homepage or the returnUrl (the url from which the user
+        //     //was sent to the sign in page from)
+        //     Router.push(loginUrl);
+        // } else {
+        //     Router.push("/login");
+        // }
+    };
+
+    // LEFT OFF TESTING EMAIL VERIFICATION. TRY IT AGAIN, TO MAKE SURE.
+    // THEN PUSH CHANGES, AND MOVE ONTO FIXING THIS BUG WITH THE USER SETTINGS PAGE.
+    // CURRENTLY, USERS CAN"T SIMPLY MAKE A NEW PASSWORD UNLESS THEY ALSO CHANGE THEIR USERNAME.
     const onChange = (e: any) => {
         if (e.target.name === "avatar") {
             const reader: any = new FileReader();
@@ -88,39 +166,58 @@ const Register = () => {
     };
 
     return (
-        <div className="flex flex-col justify-center">
-            <div className="sm:mx-auto sm:w-full sm:max-w-md">
-                <p className="mt-2 text-center text-sm text-gray-600">
-                    {queryParams.returnContext
-                        ? `To continue to the ${queryParams.returnContext.toString()},`
-                        : ""}
-                </p>
-                <h2 className="mt-1 text-center text-3xl font-extrabold text-gray-900">
-                    Create a new account
-                </h2>
-                <p className="mt-2 text-center text-sm text-gray-600">
-                    Or{" "}
-                    <Link href={loginUrl}>
-                        <a className="font-medium text-brand-primary-light hover:text-brand-primary-light/70">
-                            login to an existing one
-                        </a>
-                    </Link>
-                </p>
-            </div>
+        <UniversalFadeAnimation animationType="appear">
+            <div className="flex flex-col justify-center">
+                <div className="sm:mx-auto sm:w-full sm:max-w-md">
+                    <p className="mt-2 text-center text-sm text-gray-600">
+                        {queryParams.returnContext
+                            ? `To continue to the ${queryParams.returnContext.toString()},`
+                            : ""}
+                    </p>
+                    <h2 className="mt-1 text-center text-3xl font-extrabold text-gray-900">
+                        Create a new account
+                    </h2>
+                    <p className="mt-2 text-center text-sm text-gray-600">
+                        Or{" "}
+                        <Link href={loginUrl}>
+                            <a className="font-medium text-brand-primary-light hover:text-brand-primary-light/70">
+                                login to an existing one
+                            </a>
+                        </Link>
+                    </p>
+                </div>
 
-            <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-                <div className="bg-white py-8 px-4 border border-black/10 shadow sm:rounded-lg sm:px-10">
-                    <div>
-                        <div className="relative">
-                            <div className="relative flex justify-center text-sm">
-                                <span className="px-2 bg-white text-gray-500">
-                                    Register with
-                                </span>
+                <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+                    <div className="bg-white py-8 px-4 border border-black/10 shadow sm:rounded-lg sm:px-10">
+                        <div>
+                            <div className="relative">
+                                <div className="relative flex justify-center text-sm">
+                                    <span className="px-2 bg-white text-gray-500">
+                                        Register with
+                                    </span>
+                                </div>
                             </div>
-                        </div>
 
-                        <div className="mt-6 grid grid-cols-3 gap-3">
-                            <div>
+                            <div className="mt-6 flex justify-center items-center">
+                                <button
+                                    onClick={() => handleGoogleSignIn()}
+                                    className="flex justify-center items-center gap-4 bg-white rounded-md p-3 border border-gray-300 hover:opacity-80"
+                                    disabled={googleLoading}
+                                >
+                                    <Image
+                                        src={GoogleLogo}
+                                        width={20}
+                                        height={20}
+                                    />
+                                    <h1 className="text-sm font-semibold text-gray-600">
+                                        {googleLoading ? (
+                                            <ButtonLoader />
+                                        ) : (
+                                            "Sign in with Google"
+                                        )}
+                                    </h1>
+                                </button>
+                                {/* <div>
                                 <a
                                     href="#"
                                     className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
@@ -183,151 +280,151 @@ const Register = () => {
                                         />
                                     </svg>
                                 </a>
+                            </div> */}
+                            </div>
+                            <div className="relative my-6">
+                                <div className="absolute inset-0 flex items-center">
+                                    <div className="w-full border-t border-gray-300" />
+                                </div>
+                                <div className="relative flex justify-center text-sm">
+                                    <span className="px-2 bg-white text-gray-500">
+                                        or by credentials
+                                    </span>
+                                </div>
                             </div>
                         </div>
-                        <div className="relative my-6">
-                            <div className="absolute inset-0 flex items-center">
-                                <div className="w-full border-t border-gray-300" />
-                            </div>
-                            <div className="relative flex justify-center text-sm">
-                                <span className="px-2 bg-white text-gray-500">
-                                    or by credentials
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    <form
-                        className="space-y-6"
-                        onSubmit={submitHandler}
-                        action="#"
-                        method="POST"
-                    >
-                        <div>
-                            <label
-                                htmlFor="email"
-                                className="block text-sm font-medium text-gray-700"
-                            >
-                                Email address
-                            </label>
-                            <div className="mt-1">
-                                <input
-                                    id="email"
-                                    name="email"
-                                    type="email"
-                                    autoComplete="email"
-                                    required
-                                    className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-brand-primary-light/70 focus:border-brand-primary-light/70 sm:text-sm"
-                                    value={email}
-                                    onChange={onChange}
-                                />
-                            </div>
-                        </div>
-                        <div>
-                            <label
-                                htmlFor="name"
-                                className="block text-sm font-medium text-gray-700"
-                            >
-                                Username
-                            </label>
-                            <div className="mt-1">
-                                <input
-                                    id="name"
-                                    name="name"
-                                    type="name"
-                                    required
-                                    className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-brand-primary-light/70 focus:border-brand-primary-light/70 sm:text-sm"
-                                    value={name}
-                                    onChange={onChange}
-                                />
-                            </div>
-                        </div>
-                        <div>
-                            <div className="flex justify-between">
+                        <form
+                            className="space-y-6"
+                            onSubmit={submitCredentialsHandler}
+                            action="#"
+                            method="POST"
+                        >
+                            <div>
                                 <label
-                                    htmlFor="password"
+                                    htmlFor="email"
                                     className="block text-sm font-medium text-gray-700"
                                 >
-                                    Password
+                                    Email address
                                 </label>
-                                <span
-                                    className="text-sm text-gray-500"
-                                    id="email-optional"
-                                >
-                                    6+ Characters
-                                </span>
-                            </div>
-                            <div className="mt-1">
-                                <input
-                                    id="password"
-                                    name="password"
-                                    type="password"
-                                    autoComplete="current-password"
-                                    required
-                                    className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-brand-primary-light/70 focus:border-brand-primary-light/70 sm:text-sm"
-                                    value={password}
-                                    onChange={onChange}
-                                />
-                            </div>
-                        </div>
-                        <div>
-                            <div className="flex justify-between">
-                                <label
-                                    htmlFor="password"
-                                    className="block text-sm font-medium text-gray-700"
-                                >
-                                    Confirm Password
-                                </label>
-                            </div>
-                            <div className="mt-1">
-                                <input
-                                    id="confirm-password"
-                                    name="confirm-password"
-                                    type="password"
-                                    required
-                                    className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-brand-primary-light/70 focus:border-brand-primary-light/70 sm:text-sm"
-                                    onChange={onChange}
-                                />
-                            </div>
-                        </div>
-                        <div>
-                            <div className="flex justify-between">
-                                <label
-                                    htmlFor="profile-picture"
-                                    className="block text-sm font-medium text-gray-700"
-                                >
-                                    Profile Picture
-                                </label>
-                                <span
-                                    className="text-sm text-gray-500"
-                                    id="profile-picture-optional"
-                                >
-                                    Optional
-                                </span>
-                            </div>
-                            <div className="flex justify-start gap-5 items-center mt-1">
-                                <img
-                                    className="inline-block h-14 w-14 rounded-full"
-                                    src={avatarPreview}
-                                    alt=""
-                                />
-                                <div className="flex justify-center">
+                                <div className="mt-1">
                                     <input
-                                        className="appearance-none block px-3 w-full py-2 mt-4 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-brand-primary-light focus:border-brand-primary-light sm:text-sm
+                                        id="email"
+                                        name="email"
+                                        type="email"
+                                        autoComplete="email"
+                                        required
+                                        className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-brand-primary-light/70 focus:border-brand-primary-light/70 sm:text-sm"
+                                        value={email}
+                                        onChange={onChange}
+                                    />
+                                </div>
+                            </div>
+                            <div>
+                                <label
+                                    htmlFor="name"
+                                    className="block text-sm font-medium text-gray-700"
+                                >
+                                    Username
+                                </label>
+                                <div className="mt-1">
+                                    <input
+                                        id="name"
+                                        name="name"
+                                        type="name"
+                                        required
+                                        className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-brand-primary-light/70 focus:border-brand-primary-light/70 sm:text-sm"
+                                        value={name}
+                                        onChange={onChange}
+                                    />
+                                </div>
+                            </div>
+                            <div>
+                                <div className="flex justify-between">
+                                    <label
+                                        htmlFor="password"
+                                        className="block text-sm font-medium text-gray-700"
+                                    >
+                                        Password
+                                    </label>
+                                    <span
+                                        className="text-sm text-gray-500"
+                                        id="email-optional"
+                                    >
+                                        6+ Characters
+                                    </span>
+                                </div>
+                                <div className="mt-1">
+                                    <input
+                                        id="password"
+                                        name="password"
+                                        type="password"
+                                        autoComplete="current-password"
+                                        required
+                                        className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-brand-primary-light/70 focus:border-brand-primary-light/70 sm:text-sm"
+                                        value={password}
+                                        onChange={onChange}
+                                    />
+                                </div>
+                            </div>
+                            <div>
+                                <div className="flex justify-between">
+                                    <label
+                                        htmlFor="password"
+                                        className="block text-sm font-medium text-gray-700"
+                                    >
+                                        Confirm Password
+                                    </label>
+                                </div>
+                                <div className="mt-1">
+                                    <input
+                                        id="confirm-password"
+                                        name="confirm-password"
+                                        type="password"
+                                        required
+                                        className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-brand-primary-light/70 focus:border-brand-primary-light/70 sm:text-sm"
+                                        onChange={onChange}
+                                    />
+                                </div>
+                            </div>
+                            <div>
+                                <div className="flex justify-between">
+                                    <label
+                                        htmlFor="profile-picture"
+                                        className="block text-sm font-medium text-gray-700"
+                                    >
+                                        Profile Picture
+                                    </label>
+                                    <span
+                                        className="text-sm text-gray-500"
+                                        id="profile-picture-optional"
+                                    >
+                                        Optional
+                                    </span>
+                                </div>
+                                <div className="flex justify-start gap-5 items-center mt-1">
+                                    <img
+                                        className="inline-block h-14 w-14 rounded-full"
+                                        src={avatarPreview}
+                                        alt=""
+                                    />
+                                    <div className="flex justify-center">
+                                        <input
+                                            className="appearance-none block px-3 w-full py-2 mt-4 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-brand-primary-light focus:border-brand-primary-light sm:text-sm
                                         file:mr-4 file:py-2 file:px-4
                                         file:rounded-full file:border-0
                                         file:text-sm file:font-semibold
                                         file:bg-brand-primary-light/5 file:text-brand-primary-light
                                         hover:file:bg-brand-primary-light/10"
-                                        type="file"
-                                        id="formFile"
-                                        name="avatar"
-                                        onChange={onChange}
-                                        accept="images/*"
-                                    />
+                                            type="file"
+                                            id="formFile"
+                                            name="avatar"
+                                            onChange={onChange}
+                                            accept="images/*"
+                                        />
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        {/* <div>
+                            {/* <div>
                             <label
                                 htmlFor="password"
                                 className="block text-sm font-medium text-gray-700"
@@ -347,37 +444,43 @@ const Register = () => {
                                 />
                             </div>
                         </div> */}
-                        <div className="flex items-center justify-between">
-                            <div className="flex items-center">
-                                <input
-                                    id="mailing-list"
-                                    name="mailing-list"
-                                    type="checkbox"
-                                    className="h-4 w-4 text-brand-primary-light focus:ring-brand-primary-light/70 border-gray-300 rounded"
-                                />
-                                <label
-                                    htmlFor="mailing-list"
-                                    className="ml-2 block text-sm text-gray-900"
-                                >
-                                    I'd love useful advice, coupons, and updates
-                                    sent occassionally to my email.
-                                </label>
+                            <div className="flex items-center justify-between">
+                                <div className="flex items-center">
+                                    <input
+                                        id="mailing-list"
+                                        name="mailing-list"
+                                        type="checkbox"
+                                        className="h-4 w-4 text-brand-primary-light focus:ring-brand-primary-light/70 border-gray-300 rounded"
+                                    />
+                                    <label
+                                        htmlFor="mailing-list"
+                                        className="ml-2 block text-sm text-gray-900"
+                                    >
+                                        I'd love useful advice, coupons, and
+                                        updates sent occassionally to my email.
+                                    </label>
+                                </div>
                             </div>
-                        </div>
 
-                        <div>
-                            <button
-                                type="submit"
-                                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-brand-primary-light hover:bg-brand-primary-light/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-primary-light/70"
-                                disabled={loading ? true : false}
-                            >
-                                {loading ? <ButtonLoader /> : "Register"}
-                            </button>
-                        </div>
-                    </form>
+                            <div>
+                                <button
+                                    type="submit"
+                                    className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-brand-primary-light hover:bg-brand-primary-light/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-primary-light/70"
+                                    disabled={loading ? true : false}
+                                >
+                                    {loading ? <ButtonLoader /> : "Register"}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    <Link href="/emailVerification">
+                        <a className="ml-2 mt-4 block text-xs text-gray-500">
+                            Looking for the email verification page? Click here.
+                        </a>
+                    </Link>
                 </div>
             </div>
-        </div>
+        </UniversalFadeAnimation>
     );
 };
 

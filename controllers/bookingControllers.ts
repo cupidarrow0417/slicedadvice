@@ -18,10 +18,13 @@ import sendEmail from "../utils/sendEmail";
 //Get all bookings => GET /api/bookings
 const getBookings = catchAsyncErrors(
     async (req: NextApiRequest, res: NextApiResponse, next: any) => {
-        const resPerPage = 20;
+        const resPerPage = 1000;
         const bookingsCount = await Booking.countDocuments();
         //search with optional queries, handled via .search() and .filter() method.
-        const apiFeatures = new BookingAPIFeatures(Booking.find(), req.query)
+        const apiFeatures = new BookingAPIFeatures(
+            Booking.find().sort({ createdAt: -1 }),
+            req.query
+        )
             .search()
             .filter();
 
@@ -65,13 +68,8 @@ const createStripePaymentIntent = catchAsyncErrors(
         // See your keys here: https://dashboard.stripe.com/apikeys
         const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
-        const totalInCents = Math.round(total.toFixed(2) * 100);
-        const serviceFeeInCents = Math.round(serviceFee.toFixed(2) * 100);
-
-        // Only take a marketplace fee from the pricePerSubmission, not from the total.
-        // The total that we, SlicedAdvice, will get, is the marketplaceFee plus to
-        // service fee from the customer.
-        const marketplaceFee = (totalInCents - serviceFeeInCents) * 0.2;
+        const { totalInCents, serviceFeeInCents, marketplaceFee } =
+            calculateBookingPriceDetails(total, serviceFee);
 
         // Create a PaymentIntent with the order amount and currency
         // NOTE: "amount" is in CENTS, NOT dollars.
@@ -104,7 +102,77 @@ const createStripePaymentIntent = catchAsyncErrors(
         }
 
         res.status(200).json({
-            success: true,
+            clientSecret: paymentIntent.client_secret,
+        });
+    }
+);
+
+//Update Stripe Payment Intent => PATCH /api/stripe/paymentIntent
+const updateStripePaymentIntent = catchAsyncErrors(
+    async (
+        req: NextApiRequest,
+        res: NextApiResponse,
+        next: (arg0: ErrorHandler) => any
+    ) => {
+        // Most of these will be placed into the metadata
+        const {
+            total,
+            serviceFee,
+            bookingType,
+            expertisePostId,
+            expertId,
+            customerId,
+            status,
+
+            // stripe
+            expertStripeId,
+        } = req.body.bookingData;
+
+        // Used to find the actual id for Payment Intent.
+        const stripePaymentIntentId = req.body.stripePaymentIntentId;
+
+        // Set your secret key. Remember to switch to your live secret key in production.
+        // See your keys here: https://dashboard.stripe.com/apikeys
+        const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+
+        const { totalInCents, serviceFeeInCents, marketplaceFee } =
+            calculateBookingPriceDetails(total, serviceFee);
+
+        // Create a PaymentIntent with the order amount and currency
+        // NOTE: "amount" is in CENTS, NOT dollars.
+        const paymentIntent = await stripe.paymentIntents.update(
+            // Update this payment id
+            stripePaymentIntentId,
+            // Things we want to update
+            {
+                amount: totalInCents,
+                currency: "usd",
+                capture_method: "manual",
+                application_fee_amount: marketplaceFee + serviceFeeInCents,
+                // STRIPE DOES NOT ALLOW UPDATING TRANSFER DATA, WHICH IS WHY IN THE FRONTEND OF BOOKSINGLEEXPERTISEPOST,
+                // WE CHECK IF THE CACHED PAYMENT INTENT HAS THE SAME TRANSFER DATA AS THE CURRENT BOOKING.
+                // transfer_data: {
+                //     destination: expertStripeId,
+                // },
+                metadata: {
+                    bookingType: bookingType,
+                    expertisePostId: expertisePostId,
+                    expertId: expertId,
+                    customerId: customerId,
+                    status: status,
+                    // 'customerSubmission': customerSubmission,
+                },
+                description: `Booking from customer with id ${customerId} of type ${bookingType} to expert with id ${expertId} for ${total} dollars.`,
+            }
+        );
+
+        if (!paymentIntent) {
+            return next(
+                new ErrorHandler("Payment Intent not updated successfully", 400)
+            );
+        }
+
+        res.status(200).json({
             clientSecret: paymentIntent.client_secret,
         });
     }
@@ -229,7 +297,7 @@ const createBooking = catchAsyncErrors(
         https://slicedadvice.com/dashboard/expert/bookings?booking=${
             booking._id
         } \n\n
-        Make sure to leave a review on the expertise post, and feel free to contact us if you have any questions. \n\n
+        As a reminder, the window to respond is 7 days. Feel free to contact us if you have any questions. \n\n
         Thanks for using SlicedAdvice! \n\n
         SlicedAdvice Team`;
 
@@ -245,4 +313,39 @@ const createBooking = catchAsyncErrors(
     }
 );
 
-export { createStripePaymentIntent, createBooking, getBookings, updateBooking };
+// HELPER FUNCTIONS
+
+/**
+ * "Calculate the total, service fee, and marketplace fee for a booking."
+ *
+ * The function takes two arguments, `total` and `serviceFee`, and returns an object with three
+ * properties: `totalInCents`, `serviceFeeInCents`, and `marketplaceFee`
+ * @param total - The total price of the booking.
+ * @param serviceFee - The fee that the customer pays to SlicedAdvice.
+ * @returns An object with three properties: totalInCents, serviceFeeInCents, and marketplaceFee.
+ */
+const calculateBookingPriceDetails = (
+    total: { toFixed: (arg0: number) => number },
+    serviceFee: { toFixed: (arg0: number) => number }
+) => {
+    const totalInCents = Math.round(total.toFixed(2) * 100);
+    const serviceFeeInCents = Math.round(serviceFee.toFixed(2) * 100);
+
+    // Only take a marketplace fee from the pricePerSubmission, not from the total.
+    // The total that we, SlicedAdvice, will get, is the marketplaceFee plus to
+    // service fee from the customer.
+    const marketplaceFee = (totalInCents - serviceFeeInCents) * 0.2;
+    return {
+        totalInCents,
+        serviceFeeInCents,
+        marketplaceFee,
+    };
+};
+
+export {
+    createStripePaymentIntent,
+    updateStripePaymentIntent,
+    createBooking,
+    getBookings,
+    updateBooking,
+};

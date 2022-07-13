@@ -16,7 +16,7 @@ import {
     checkStripeAccountFieldReducer,
 } from "./userReducers";
 import {
-    createStripePaymentIntentReducer,
+    stripePaymentIntentReducer,
     cacheBookingDataReducer,
     bookingsReducer,
 } from "./bookingReducers"
@@ -45,7 +45,7 @@ const reducer = combineReducers({
     checkStripeAccountField: checkStripeAccountFieldReducer,
 
     // Booking global state
-    createStripePaymentIntent: createStripePaymentIntentReducer,
+    stripePaymentIntent: stripePaymentIntentReducer,
     cacheBookingData: cacheBookingDataReducer,
     bookings: bookingsReducer,
 

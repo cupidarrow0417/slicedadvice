@@ -1,13 +1,13 @@
 import nc from 'next-connect'
-import dbConnect from '../../../config/dbConnect';
-import { registerUserByCredentials } from '../../../controllers/userControllers'
-import onError from '../../../middlewares/errors'
+import dbConnect from '../../../../config/dbConnect';
+import { checkEmailVerificationCode } from '../../../../controllers/userControllers'
+import onError from '../../../../middlewares/errors'
 
 const handler = nc({ onError });
 
 dbConnect();
 
-handler.post(registerUserByCredentials)
+handler.post(checkEmailVerificationCode)
 
 export const config = {
     api: {

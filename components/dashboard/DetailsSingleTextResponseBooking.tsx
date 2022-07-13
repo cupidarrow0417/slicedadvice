@@ -144,29 +144,29 @@ const DetailsSingleTextResponseBooking = ({
                 and the status of the booking.*/}
             {dashboardType === "Expert" && (
                 <div className="flex flex-col gap-2">
-                    {booking?.status === "Not Completed" && (
-                        <div className="w-full h-28 border border-black/10 p-2 rounded-lg">
-                            <textarea
-                                id="textareaInput"
-                                name="textareaInput"
-                                autoComplete="none"
-                                required
-                                // maxLength={maxDescriptionLength}
-                                className="block px-3 py-2 h-full w-full rounded-md placeholder-gray-400 resize-none focus:ring-0 border-transparent focus:border-transparent sm:text-md"
-                                placeholder={
-                                    "Hey! I'm happy to help. My best advice would be..."
-                                }
-                                value={textResponse}
-                                disabled={
-                                    bookingsMetadata.loading ||
-                                    booking?.status === "Completed"
-                                }
-                                onChange={(e) =>
-                                    setTextResponse(e.target.value)
-                                }
-                            />
-                        </div>
-                    )}
+                    <div className="w-full h-28 border border-black/10 p-2 rounded-lg">
+                        <textarea
+                            id="textareaInput"
+                            name="textareaInput"
+                            autoComplete="none"
+                            required
+                            // maxLength={maxDescriptionLength}
+                            className="block px-3 py-2 h-full w-full rounded-md placeholder-gray-400 resize-none focus:ring-0 border-transparent focus:border-transparent sm:text-md"
+                            placeholder={
+                                "Hey! I'm happy to help. My best advice would be..."
+                            }
+                            value={
+                                booking?.status === "Completed"
+                                    ? booking.singleTextResponse.expertResponse
+                                    : textResponse
+                            }
+                            disabled={
+                                bookingsMetadata.loading ||
+                                booking?.status === "Completed"
+                            }
+                            onChange={(e) => setTextResponse(e.target.value)}
+                        />
+                    </div>
                     <button
                         className={classNames(
                             booking?.status === "Completed" ||

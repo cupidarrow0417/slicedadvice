@@ -14,8 +14,8 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_SECRET_KEY,
 });
 
-//Register user => /api/auth/register
-const registerUser = catchAsyncErrors(
+//Register user by credentials=> /api/auth/register
+const registerUserByCredentials = catchAsyncErrors(
     async (req: NextApiRequest, res: NextApiResponse) => {
         // Boolean to check if user inputted profile pic.
         let userInputtedImage =
@@ -49,10 +49,8 @@ const registerUser = catchAsyncErrors(
                 url: result.secure_url,
             },
         });
-
         res.status(200).json({
-            success: true,
-            message: "Account registered successfully",
+            user,
         });
     }
 );
@@ -82,7 +80,13 @@ const updateUserProfile = catchAsyncErrors(
 
         if (user) {
             user.name = req.body.name;
-            user.email = req.body.email;
+
+            // As of July 7th, this code should never run.
+            // Email updating is not allowed, until we code in
+            // email verification here as well.
+            if (req.body.email !== "") {
+                user.email = req.body.email;
+            }
 
             if (req.body.password) {
                 user.password = req.body.password;
@@ -129,6 +133,24 @@ const forgotPassword = catchAsyncErrors(
             return next(
                 new ErrorHandler("User not found with this email", 404)
             );
+        }
+
+        if (user.role !== "user") {
+            if (user.role === "googleUser") {
+                return next(
+                    new ErrorHandler(
+                        "Account is registered with Google. Handle passwords via Google!",
+                        400
+                    )
+                );
+            } else {
+                return next(
+                    new ErrorHandler(
+                        "Account registered via a provider (Google, Apple, etc). Handle passwords via the provider!",
+                        400
+                    )
+                );
+            }
         }
 
         //Get reset token
@@ -204,6 +226,137 @@ const resetPassword = catchAsyncErrors(
             success: true,
             message: "Password updated successfully",
         });
+    }
+);
+
+//Verify Email (Step 1) Send email verification code => POST /api/auth/email/sendVerification
+const sendEmailVerification = catchAsyncErrors(
+    async (req: any, res: NextApiResponse, next: any) => {
+        const user = await User.findOne({ email: req.body.email });
+
+        if (!user) {
+            return next(
+                new ErrorHandler("Cannot find user with that email!", 404)
+            );
+        }
+
+        if (user.role !== "user") {
+            if (user.role === "googleUser") {
+                return next(
+                    new ErrorHandler(
+                        "Account is registered with Google. No need to verify the email!",
+                        400
+                    )
+                );
+            } else {
+                return next(
+                    new ErrorHandler(
+                        "Account registered via a provider (Google, Apple, etc). No need to verify the email!",
+                        400
+                    )
+                );
+            }
+        }
+
+
+        if (user.verifiedEmail) {
+            return next(
+                new ErrorHandler("User's email is already verified!", 400)
+            );
+        }
+
+        // If the user has an old verification code, delete it
+        if (user.emailVerificationCode) {
+            user.emailVerificationCode = undefined;
+            user.emailVerificationExpire = undefined;
+            await user.save({ validateBeforeSave: false });
+        }
+
+        const emailVerificationCode = user.getEmailVerificationCode();
+
+        await user.save({ validateBeforeSave: false });
+
+        const message = `Hey there! Welcome to SlicedAdvice! We're so happy you're here. 
+            Here is your email verification code: ${emailVerificationCode} \n\n
+            You can get to the verification page by going to the link below: \n\n
+            ${absoluteUrl(req)}/emailVerification?email=${user.email} \n\n
+            If you did not request this email, then please ignore it. Have a great day!`;
+
+        try {
+            await sendEmail({
+                email: user.email,
+                subject: `SlicedAdvice: ${emailVerificationCode} is your email verification code`,
+                message,
+            });
+            res.status(200).json({
+                success: true,
+            });
+        } catch (error: any) {
+            user.emailVerificationCode = undefined;
+            user.emailVerificationExpired = undefined;
+            await user.save({ validateBeforeSave: false });
+
+            return next(new ErrorHandler(error.message, 500));
+        }
+    }
+);
+
+// Verify Email (Step 2) Check user's entered verification code. => POST /api/auth/email/checkVerification
+const checkEmailVerificationCode = catchAsyncErrors(
+    async (req: any, res: NextApiResponse, next: any) => {
+        const user = await User.findOne({
+            email: req.body.email,
+            emailVerificationCode: req.body.code,
+            emailVerificationExpire: { $gt: Date.now() },
+        });
+
+        if (!user) {
+            return next(
+                new ErrorHandler(
+                    "This email verification code is invalid or has expired.",
+                    400
+                )
+            );
+        }
+
+        // Else, user is verified.
+
+        user.verifiedEmail = true;
+
+        //Change reset fields to undefined after successful password change
+        user.emailVerificationCode = undefined;
+        user.emailVerificationExpire = undefined;
+
+        await user.save();
+        res.status(200).json({
+            success: true,
+            user,
+        });
+    }
+);
+
+// Check for duplicate user's based on name and email => GET /api/auth/duplicate
+const checkDuplicateUser = catchAsyncErrors(
+    async (req: any, res: NextApiResponse) => {
+        let user1, user2;
+        const { name, email } = req.query;
+        if (name) {
+            user1 = await User.findOne({ name: name });
+        }
+        if (email) {
+            user2 = await User.findOne({ email: email });
+        }
+        if (user1 || user2) {
+            res.status(200).json({
+                duplicateName: user1 ? true : false,
+                duplicateEmail: user2 ? true : false,
+            });
+        } else {
+            res.status(200).json({
+                duplicateName: false,
+                duplicateEmail: false,
+            });
+        }
     }
 );
 
@@ -330,8 +483,7 @@ const createStripeConnectLoginLink = catchAsyncErrors(
             email: req.user.email,
             name: req.user.name,
         });
-
-        console.log("user", user);
+        
         // Set your secret key. Remember to switch to your live secret key in production.
         // See your keys here: https://dashboard.stripe.com/apikeys
         const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
@@ -364,12 +516,15 @@ const createStripeConnectLoginLink = catchAsyncErrors(
 );
 
 export {
-    registerUser,
+    registerUserByCredentials,
     currentUserProfile,
     updateUserProfile,
     forgotPassword,
     resetPassword,
+    checkDuplicateUser,
     getStripeSetupPayoutsLink,
+    sendEmailVerification,
+    checkEmailVerificationCode,
     checkStripeAccountField,
     createStripeConnectLoginLink,
 };

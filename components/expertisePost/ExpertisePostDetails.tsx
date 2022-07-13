@@ -13,8 +13,12 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import CreateReviewWidget from "../CreateReviewWidget";
 import UniversalFadeAnimation from "../atoms/UniversalFadeAnimation";
+import { useSession } from "next-auth/react";
+import { loadUser } from "../../redux/actionCreators/userActions";
 
 const ExpertisePostDetails = () => {
+    // Get Session via useSession hook
+    const { data: session }: any = useSession();
     const dispatch = useAppDispatch();
     const { query: queryParams } = useRouter();
 
@@ -32,8 +36,14 @@ const ExpertisePostDetails = () => {
         return state.auth;
     });
 
+    useEffect(() => {
+        if (session && !user) {
+            dispatch(loadUser());
+        }
+    }, [dispatch, user, session]);
+
     let userIsOwner: boolean = false;
-    if (user?._id === expertisePost?.user?._id) {
+    if (session?.user._id === expertisePost?.user?._id) {
         userIsOwner = true;
     }
 
@@ -95,7 +105,7 @@ const ExpertisePostDetails = () => {
                 <div className="flex flex-col items-start gap-5 px-4 py-4 max-w-2xl lg:max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <Breadcrumbs pages={pages} />
                     <h1 className="text-2xl font-semibold">
-                        {expertisePost["title"]}
+                        {expertisePost?.title}
                     </h1>
                     <RatingsWidget
                         reviewsTotal={reviewsTotal}
@@ -104,9 +114,9 @@ const ExpertisePostDetails = () => {
 
                     <div className="flex flex-col lg:flex-row justify-start lg:justify-around items-start w-full gap-7 lg:-mt-2">
                         <div className="expertisePostDetailImageWrapper w-full max-w-lg self-center">
-                            {expertisePost["images"][0] && (
+                            {expertisePost?.images[0] && (
                                 <Image
-                                    src={expertisePost["images"][0]["url"]}
+                                    src={expertisePost?.images[0].url}
                                     layout="responsive"
                                     width={1.5}
                                     height={1}
@@ -118,7 +128,7 @@ const ExpertisePostDetails = () => {
                         <div className="flex flex-col gap-5 self-start w-full h-full md:max-w-2xl mx-auto">
                             <h1 className="text-xl font-medium">Description</h1>
                             <p className="font-light opacity-60 -mt-2">
-                                {expertisePost["description"]}
+                                {expertisePost?.description}
                             </p>
                             {/* Line Break */}
                             <div className="w-full m-auto h-[1px] bg-black/10"></div>
@@ -129,7 +139,7 @@ const ExpertisePostDetails = () => {
                                         Bite-sized submissions might include:
                                     </p>
                                     <ul className="list-disc">
-                                        {expertisePost["submissionTypes"].map(
+                                        {expertisePost?.submissionTypes?.map(
                                             (type: string, index: number) => (
                                                 <li
                                                     className="text-xl font-semibold"
@@ -145,12 +155,7 @@ const ExpertisePostDetails = () => {
                                     {/* Pricing Statement Header Grouping */}
                                     <div className="flex items-center gap-1">
                                         <h1 className="text-2xl font-semibold self-start ">
-                                            $
-                                            {
-                                                expertisePost[
-                                                    "pricePerSubmission"
-                                                ]
-                                            }{" "}
+                                            ${expertisePost?.pricePerSubmission}{" "}
                                         </h1>
                                         <span className="text-md mt-[2px] font-light opacity-60">
                                             / submission
@@ -257,9 +262,10 @@ const ExpertisePostDetails = () => {
                                             {count.count === 0
                                                 ? 0
                                                 : Math.round(
-                                                    (count.count / reviewsTotal) *
-                                                        100
-                                                )}
+                                                      (count.count /
+                                                          reviewsTotal) *
+                                                          100
+                                                  )}
                                             %
                                         </dd>
                                     </div>
@@ -272,25 +278,25 @@ const ExpertisePostDetails = () => {
                                     Share your thoughts
                                 </h3>
                                 <p className="mt-1 text-sm text-gray-600">
-                                    If you’ve been helped by this expert, share your
-                                    thoughts with other customers
+                                    If you’ve been helped by this expert, share
+                                    your thoughts with other customers
                                 </p>
                                 {!isVisible ? (
-                                <a
-                                    className="mt-6 inline-flex w-full bg-white border border-gray-300 rounded-md py-2 px-8 items-center justify-center text-sm font-medium text-gray-900 hover:bg-gray-50 sm:w-auto lg:w-full"
-                                    onClick={() => setIsVisible(true)}
-                                >
-                                    Write a review
-                                </a>
+                                    <a
+                                        className="mt-6 inline-flex w-full bg-white border border-gray-300 rounded-md py-2 px-8 items-center justify-center text-sm font-medium text-gray-900 hover:bg-gray-50 sm:w-auto lg:w-full"
+                                        onClick={() => setIsVisible(true)}
+                                    >
+                                        Write a review
+                                    </a>
                                 ) : (
-                                <div className="mt-10">
-                                    <CreateReviewWidget
-                                        user={user}
-                                        expertisePostId={expertisePost?._id}
-                                    />
-                                </div>
+                                    <div className="mt-10">
+                                        <CreateReviewWidget
+                                            user={user}
+                                            expertisePostId={expertisePost?._id}
+                                        />
+                                    </div>
                                 )}
-                            </div>                            
+                            </div>
                         ) : (
                             <div></div>
                         )}
@@ -301,7 +307,7 @@ const ExpertisePostDetails = () => {
 
                         <div className="flow-root">
                             <div className="-my-12 divide-y divide-gray-200">
-                                {reviews.map((review: any) => (
+                                {reviews?.map((review: any) => (
                                     <div key={review._id} className="py-12">
                                         <div className="flex items-center">
                                             <img
