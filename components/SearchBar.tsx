@@ -66,15 +66,15 @@ export default function Example() {
   return (
     <Fragment>
       <Combobox as="div" value={""} onChange={() => setSearchResults}>
-        <div className="relative mt-1">
+        <div className="relative mt-1 mr-3">
           <Combobox.Input
-            className="z-0 hidden sm:text-sm lg:block sm:w-28 lg:w-80 rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 shadow-sm focus:border-brand-primary focus:outline-none focus:ring-1 focus:ring-brand-primary mr-10"
+            className="z-0 hidden lg:text-sm lg:block lg:w-full lg:max-w-80 rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 shadow-sm focus:border-brand-primary focus:outline-none focus:ring-1 focus:ring-brand-primary mr-20"
             onChange={(event) => search(event.target.value)}
             onClick={() => openModal()}
             onFocus={(e:any) => e.target.blur()}
             placeholder="Search for advice..."
           />
-          <Combobox.Button className="absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none mr-10">
+          <Combobox.Button className="absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none">
               <SearchIcon
                           className="h-6 w-6 lg:h-5 lg:w-5 text-gray-400"
                           aria-hidden="true"
