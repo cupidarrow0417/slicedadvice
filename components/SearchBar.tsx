@@ -68,7 +68,7 @@ export default function Example() {
       <Combobox as="div" value={""} onChange={() => setSearchResults}>
         <div className="relative mt-1">
           <Combobox.Input
-            className="z-0 hidden sm:text-sm md:block sm:w-28 md:w-32 lg:w-80 rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 shadow-sm focus:border-brand-primary focus:outline-none focus:ring-1 focus:ring-brand-primary mr-10"
+            className="z-0 hidden sm:text-sm lg:block sm:w-28 lg:w-80 rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 shadow-sm focus:border-brand-primary focus:outline-none focus:ring-1 focus:ring-brand-primary mr-10"
             onChange={(event) => search(event.target.value)}
             onClick={() => openModal()}
             onFocus={(e:any) => e.target.blur()}
@@ -76,7 +76,7 @@ export default function Example() {
           />
           <Combobox.Button className="absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none mr-10">
               <SearchIcon
-                          className="h-5 w-5 text-gray-400"
+                          className="h-6 w-6 lg:h-5 lg:w-5 text-gray-400"
                           aria-hidden="true"
                           onClick={() => openModal()}
                       />
@@ -95,11 +95,11 @@ export default function Example() {
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <div className="fixed inset-0 sm:bg-black sm:bg-opacity-25 bg-white " />
+            <div className="fixed inset-0 lg:bg-black lg:bg-opacity-25 bg-white " />
           </Transition.Child>
 
           <div className="fixed inset-0 overflow-y-auto">
-            <div className="flex min-h-full items-start sm:justify-end sm:py-[27px] sm:pr-[139px] text-center">
+            <div className="flex min-h-full items-start lg:justify-end lg:py-[27px] lg:pr-[139px] text-center">
               <Transition.Child
                 as={Fragment}
                 enter="ease-out duration-300"
@@ -114,7 +114,7 @@ export default function Example() {
                   <div className="relative mt-1">
                     <Combobox.Input
                       id="real"
-                      className="z-0 w-screen ml-2 mt-1 sm:ml-0 sm:mt-0 sm:text-sm md:block sm:w-28 md:w-32 lg:w-80 rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 shadow-sm focus:border-brand-primary focus:outline-none focus:ring-1 focus:ring-brand-primary"
+                      className="z-0 w-screen ml-2 mt-1 lg:ml-0 lg:mt-0 lg:text-sm lg:block lg:w-80 rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 shadow-sm focus:border-brand-primary focus:outline-none focus:ring-1 focus:ring-brand-primary"
                       onChange={(event) => search(event.target.value)}
                       onFocus={(e:any) => {
                         search("advice")
@@ -132,7 +132,7 @@ export default function Example() {
 
                     {searchResults.length > 0 && (
                       <Fragment>
-                        <Combobox.Options className="flex flex-col absolute z-10 mt-1 sm:max-h-160 w-full overflow-auto rounded-md bg-white py-1 text-base sm:shadow-lg sm:ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                        <Combobox.Options className="flex flex-col absolute z-10 mt-1 lg:max-h-160 w-full overflow-auto rounded-md bg-white py-1 text-base lg:shadow-lg lg:ring-1 ring-black ring-opacity-5 focus:outline-none lg:text-sm">
                           <Combobox.Label className="font-bold text-lg my-2 ml-3 pr-40 self-start border-b-2">
                             Expertise Posts
                           </Combobox.Label>
@@ -142,7 +142,7 @@ export default function Example() {
                               value={result.title}
                               className={({ active }) =>
                                 classNames(
-                                  'relative cursor-default select-none py-2 pl-3 pr-4',
+                                  'relative cursor-default select-none py-2 pl-3 pr-2',
                                   active ? 'bg-brand-primary-light text-white' : 'text-gray-900'
                                 )
                               }

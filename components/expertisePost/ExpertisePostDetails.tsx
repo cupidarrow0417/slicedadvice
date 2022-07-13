@@ -338,7 +338,7 @@ const ExpertisePostDetails = () => {
                                         </div>
 
                                         <div
-                                            className="mt-4 space-y-6 text-base italic text-gray-600"
+                                            className="mt-4 space-y-6 text-base text-gray-600"
                                             dangerouslySetInnerHTML={{
                                                 __html: review.content,
                                             }}
