@@ -50,7 +50,7 @@ const CreateReviewWidget = ({ user, expertisePostId }: any,) => {
         leaveTo="opacity-0 translate-y-1"
         show={true}
     >
-      <div className="mt-16 lg:mt-0 lg:col-start-6 lg:col-span-7">
+      <div className="mt-16 lg:mt-0 lg:col-start-6 lg:col-span-7 rounded-md ring-2 ring-black ring-opacity-5 p-6 shadow-md">
       <h3 className="sr-only">Recent reviews</h3>
 
         <div className="flow-root">
@@ -79,20 +79,20 @@ const CreateReviewWidget = ({ user, expertisePostId }: any,) => {
                         <textarea
                           rows={3}
                           name="review"
-                          className="bg-brand-bg-light italic block w-full border-0 border-b border-transparent p-0 pb-2 resize-none focus:ring-0 focus:border-brand-primary-light sm:text-sm"
+                          className="bg-brand-bg-light italic block w-full border-0 border-b border-grey p-0 pb-2 resize-none focus:ring-0 focus:border-brand-primary-light sm:text-sm"
                           placeholder="Add your review..."
                           defaultValue={""}
                           required = {true}
                           onChange={(e:any) => setContent(e.target.value)}
                         />
                       </div>
-                      <div className="pt-2 flex justify-between">
+                      <div className="pt-2 flex justify-evenly">
                         <div className="flex items-center space-x-5">
                         </div>
-                        <div className="flex-shrink-0">
+                        <div className="flex grow">
                           <button
                             type="submit"
-                            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-brand-primary-light hover:bg-brand-primary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-primary"
+                            className="mt-4 grow text-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-brand-primary-light hover:bg-brand-primary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-primary"
                             disabled={loading ? true : false}
                           >
                             Post
