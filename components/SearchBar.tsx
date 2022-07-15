@@ -96,7 +96,7 @@ export default function SearchBar() {
                         enter="ease-out duration-300"
                         enterFrom="opacity-0"
                         enterTo="opacity-100"
-                        leave="ease-in duration-200"
+                        leave="ease-in duration-300"
                         leaveFrom="opacity-100"
                         leaveTo="opacity-0"
                         className="fixed inset-0 bg-black bg-opacity-25 "
@@ -105,7 +105,7 @@ export default function SearchBar() {
                     <div className="fixed inset-0 overflow-y-auto">
                         {/* Entire popout div containing the actual search bar and the instant
                             search results  */}
-                        <div className="flex absolute lg:right-24 lg:top-7 min-h-full items-start lg:justify-end text-center">
+                        <div className="flex absolute lg:right-24 lg:top-7 h-fit items-start lg:justify-end text-center">
                             {/* Transition for Dialog.Panel  */}
                             <Transition.Child
                                 as={Fragment}
