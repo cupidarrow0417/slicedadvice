@@ -47,6 +47,11 @@ const ExpertisePostDetails = () => {
         userIsOwner = true;
     }
 
+    let userIsLoggedIn: boolean = false;
+    if (session?.user) {
+        userIsLoggedIn = true;
+    }
+
     const getCategoryHref = (categoryName: string) => {
         switch (categoryName) {
             case "Career Growth":
@@ -272,7 +277,7 @@ const ExpertisePostDetails = () => {
                                 ))}
                             </dl>
                         </div>
-                        {!userIsOwner ? (
+                        {!userIsOwner && userIsLoggedIn ? (
                             <div className="mt-10">
                                 <h3 className="text-lg font-medium text-gray-900">
                                     Share your thoughts
