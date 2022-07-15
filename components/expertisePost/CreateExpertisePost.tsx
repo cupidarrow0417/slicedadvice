@@ -128,7 +128,7 @@ const CreateExpertisePost = () => {
 
         interface postDataInterface {
             user: string;
-            stripeId: string;
+            stripeConnectId: string;
             title: string;
             description: string;
             submissionTypes: string[];
@@ -144,7 +144,7 @@ const CreateExpertisePost = () => {
 
         const postData: postDataInterface = {
             user: authUser?._id,
-            stripeId: authUser?.stripeId,
+            stripeConnectId: authUser?.stripeConnectId,
             title: title,
             description: description,
             submissionTypes: submissionTypes,

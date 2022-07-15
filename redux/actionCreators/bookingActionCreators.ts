@@ -34,7 +34,7 @@ interface CacheBookingDataInterface {
     bookingCreated: boolean;
 
     // stripe
-    expertStripeId: String;
+    expertStripeConnectId: String;
 }
 
 interface SubmittedBookingDataInterface {
@@ -48,7 +48,7 @@ interface SubmittedBookingDataInterface {
         expertResponse: String;
     };
     stripePaymentIntentId: String;
-    expertStripeId: String;
+    expertStripeConnectId: String;
 }
 
 /**

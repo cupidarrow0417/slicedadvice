@@ -106,7 +106,7 @@ const BookSingleTextResponse = () => {
 
                 // USED IN STRIPE PAYMENT INTENT TO PAYOUT
                 // TO EXPERT ONCE THEY FULFILL THE BOOKING
-                expertStripeId: expertisePost?.user?.stripeId,
+                expertStripeConnectId: expertisePost?.user?.stripeConnectId,
             };
             dispatch(cacheBookingData(bookingData));
 
@@ -136,7 +136,7 @@ const BookSingleTextResponse = () => {
             //                 console.log("result.paymentIntentt: ", result.paymentIntent);
             //                 // if (
             //                 //     result.paymentIntent.transfer_data.destination ===
-            //                 //     expertisePost?.user?.stripeId
+            //                 //     expertisePost?.user?.stripeConnectId
             //                 // ) {
             //                 //     dispatch(
             //                 //         updateStripePaymentIntent(

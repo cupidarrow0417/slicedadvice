@@ -111,7 +111,7 @@ export const getExpertisePostDetails =
 
 interface postDataInterface {
     user: string;
-    stripeId: string;
+    stripeConnectId: string;
     title: string;
     description: string;
     submissionTypes: string[];

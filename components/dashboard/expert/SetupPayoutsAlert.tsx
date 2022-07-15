@@ -103,9 +103,9 @@ const SetupPayoutsAlert = () => {
             <div className="flex flex-col gap-5 justify-center items-center max-w-md">
                 <CashIcon className=" w-16 h-16 text-brand-primary-light" />
                 <h1 className="text-3xl text-center -mt-4">
-                    {!user?.stripeId &&
+                    {!user?.stripeConnectId &&
                         "Setup payouts to be an expert on SlicedAdvice"}
-                    {user?.stripeId &&
+                    {user?.stripeConnectId &&
                         !chargesEnabled &&
                         "Continue to setup payouts to be an expert on SlicedAdvice"}
                 </h1>
@@ -128,7 +128,7 @@ const SetupPayoutsAlert = () => {
                 >
                     {setupPayoutsLinkLoading ? (
                         <ButtonLoader />
-                    ) : !user?.stripeId ? (
+                    ) : !user?.stripeConnectId ? (
                         "Setup Payouts"
                     ) : !chargesEnabled ? (
                         "Continue Setup"

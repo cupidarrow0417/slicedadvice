@@ -20,7 +20,7 @@ const sendEmail = async (options: any) => {
     });
 
     const mailOptions = {
-        from: process.env.GMAIL_DEFAULT_EMAIL, // sender address
+        from: 'SlicedAdvice ' + process.env.GMAIL_DEFAULT_EMAIL,
         to: options.email, // list of receivers
         subject: options.subject, // Subject line
         html: options.message, // plain text body

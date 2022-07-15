@@ -61,7 +61,7 @@ const createStripePaymentIntent = catchAsyncErrors(
             status,
 
             // stripe
-            expertStripeId,
+            expertStripeConnectId,
         } = req.body;
 
         // Set your secret key. Remember to switch to your live secret key in production.
@@ -71,6 +71,45 @@ const createStripePaymentIntent = catchAsyncErrors(
         const { totalInCents, serviceFeeInCents, marketplaceFee } =
             calculateBookingPriceDetails(total, serviceFee);
 
+        // Find customer by customerId
+        const customerInDatabase = await User.findById(customerId);
+        if (!customerInDatabase) {
+            return next(new ErrorHandler("Customer not found", 404));
+        }
+
+        // Retrieve stripeCustomerId from customer so that when this payment intent
+        // is confirmed (if it is), the payment info will be saved to the Stripe
+        // Customer object for future usage.
+        const stripeCustomerId = customerInDatabase.stripeCustomerId;
+
+        // If does not have a stripeCustomerId, create a new Stripe Customer object and
+        // attach it to the stripeCustomerId field in the customerInDatabase.
+        if (!stripeCustomerId) {
+            const stripeCustomer = await stripe.customers.create({
+                email: customerInDatabase.email,
+                description: `SlicedAdvice Stripe Customer for ${customerInDatabase.email}`,
+                metadata: {
+                    databaseId: customerInDatabase._id.toString(),
+                    slicedAdviceUsername: customerInDatabase.name,
+                },
+            });
+            customerInDatabase.stripeCustomerId = stripeCustomer.id;
+            await customerInDatabase.save();
+        }
+
+        // Attempt to get the user's payment method from the Stripe Customer object.
+
+        const paymentMethodsObject = await stripe.customers.listPaymentMethods(
+            stripeCustomerId,
+            { type: "card" }
+        );
+
+        let paymentMethodId;
+        if (paymentMethodsObject.data) {
+            const paymentMethod = paymentMethodsObject.data[0];
+            paymentMethodId = paymentMethod.id;
+        }
+
         // Create a PaymentIntent with the order amount and currency
         // NOTE: "amount" is in CENTS, NOT dollars.
         const paymentIntent = await stripe.paymentIntents.create({
@@ -79,10 +118,14 @@ const createStripePaymentIntent = catchAsyncErrors(
             automatic_payment_methods: {
                 enabled: true,
             },
+            // payment_method: paymentMethodId,
+            customer: customerInDatabase.stripeCustomerId,
+            receipt_email: customerInDatabase.email,
+            // setup_future_usage: "on_session",
             capture_method: "manual",
             application_fee_amount: marketplaceFee + serviceFeeInCents,
             transfer_data: {
-                destination: expertStripeId,
+                destination: expertStripeConnectId,
             },
             metadata: {
                 bookingType: bookingType,
@@ -107,6 +150,7 @@ const createStripePaymentIntent = catchAsyncErrors(
     }
 );
 
+//DEFUNCT FOR NOW UNTIL STRIPE ADDS UPDATING TRANSFER_DATA
 //Update Stripe Payment Intent => PATCH /api/stripe/paymentIntent
 const updateStripePaymentIntent = catchAsyncErrors(
     async (
@@ -125,7 +169,7 @@ const updateStripePaymentIntent = catchAsyncErrors(
             status,
 
             // stripe
-            expertStripeId,
+            expertStripeConnectId,
         } = req.body.bookingData;
 
         // Used to find the actual id for Payment Intent.
@@ -152,7 +196,7 @@ const updateStripePaymentIntent = catchAsyncErrors(
                 // STRIPE DOES NOT ALLOW UPDATING TRANSFER DATA, WHICH IS WHY IN THE FRONTEND OF BOOKSINGLEEXPERTISEPOST,
                 // WE CHECK IF THE CACHED PAYMENT INTENT HAS THE SAME TRANSFER DATA AS THE CURRENT BOOKING.
                 // transfer_data: {
-                //     destination: expertStripeId,
+                //     destination: expertStripeConnectId,
                 // },
                 metadata: {
                     bookingType: bookingType,

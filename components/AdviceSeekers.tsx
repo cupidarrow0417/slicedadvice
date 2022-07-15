@@ -60,10 +60,10 @@ export default function AdviceSeekers() {
                             Product
                         </h2>
                         <p className="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
-                            A marketplace of bite-sized advice.
+                            A marketplace of bite-sized life advice.
                         </p>
                         <p className="mt-4 max-w-2xl text-xl text-gray-500 lg:mx-auto">
-                            We believe that getting personalized advice begins
+                            We believe that changing your life begins
                             with asking single, impactful question to the right
                             expert. We created a focused marketplace to make
                             that a reality. It's as easy as 1-2-3!
@@ -88,7 +88,7 @@ export default function AdviceSeekers() {
                                         Browse the feed of advice
                                     </h2>
                                     <p className="mt-4 text-lg text-gray-500">
-                                        Whether it's career growth advice
+                                        Whether it's career growth advice,
                                         personal development tips, and more, our
                                         vetted, experienced experts are here to
                                         help you in any way you need.
@@ -108,7 +108,7 @@ export default function AdviceSeekers() {
                                     <div>
                                         <p className="text-base text-gray-500">
                                             &ldquo;The world's most valuable,
-                                            important knowledge is siloed into
+                                            important knowledge is trapped within
                                             the minds of the world's busiest
                                             people. SlicedAdvice is here to
                                             slice and serve that knowledge to

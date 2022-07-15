@@ -8,7 +8,7 @@ import { ExpertisePostAPIFeatures } from "../utils/apiFeatures";
 //Get all expertisePosts => GET /api/expertisePosts
 const allExpertisePosts = catchAsyncErrors(
     async (req: NextApiRequest, res: NextApiResponse) => {
-        const resPerPage = 20;
+        const resPerPage = 100;
         const expertisePostsCount = await ExpertisePost.countDocuments();
 
         //search with optional queries, handled via .search() method.
@@ -64,7 +64,7 @@ const createExpertisePost = catchAsyncErrors(
     ) => {
         const {
             user,
-            stripeId,
+            stripeConnectId,
             title,
             description,
             submissionTypes,
@@ -80,7 +80,7 @@ const createExpertisePost = catchAsyncErrors(
 
         const expertisePost = await ExpertisePost.create({
             user,
-            stripeId,
+            stripeConnectId,
             title,
             description,
             images: [

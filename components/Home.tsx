@@ -57,7 +57,7 @@ export default function Home() {
                 <PageHeader
                     heroPhrase={"Life changing advice, by the slice."}
                     supportingText={
-                        "Join our marketplace of bite-sized advice, one that's affordable for advice seekers and convenient for busy experts."
+                        "Join our marketplace of bite-sized life advice, one that's affordable for advice seekers and convenient for busy experts."
                     }
                 >
                     <Link href="/categories">
@@ -226,9 +226,9 @@ export default function Home() {
                                 can get personalized advice from anyone for a
                                 fair price.
                             </p>
-                            <Link href="">
+                            <Link href="/team">
                                 <a className="mt-8 w-full block bg-white border border-transparent rounded-md py-3 px-8 text-base font-medium text-gray-900 hover:bg-gray-100 sm:w-auto">
-                                    Read our story
+                                    Meet the team
                                 </a>
                             </Link>
                         </div>

@@ -38,7 +38,7 @@ const RefreshStripeMessage = () => {
         // Check if the user has charges enabled on their Stripe
         // Connect account
         if (user) {
-            if (user?.stripeId) {
+            if (user?.stripeConnectId) {
                 const field: any = {
                     field: "charges_enabled",
                 };

@@ -32,7 +32,7 @@ export default function Dashboard({ children, dashboardType }: DashboardInterfac
         // Check if the user has charges enabled on their Stripe
         // Connect account
         if (session) {
-            if (dashboardType === "Expert" && user?.stripeId) {
+            if (dashboardType === "Expert" && user?.stripeConnectId) {
                 const field: any = {
                     field: "charges_enabled",
                 };

@@ -11,7 +11,7 @@ interface ExpertisePostInterface {
     category: String;
     reviews: Array<Object>;
     user: mongoose.Schema.Types.ObjectId;
-    stripeId: String;
+    stripeConnectId: String;
     createdAt: Date;
 }
 
@@ -93,7 +93,7 @@ const expertisePostSchema = new mongoose.Schema<ExpertisePostInterface>({
         // `User`
         autopopulate: true,
     },
-    stripeId: {
+    stripeConnectId: {
         type: String,
         required: false,
     },

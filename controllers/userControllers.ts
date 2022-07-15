@@ -378,8 +378,8 @@ const getStripeSetupPayoutsLink = catchAsyncErrors(
         // See your keys here: https://dashboard.stripe.com/apikeys
         const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
-        let stripeId: string;
-        if (!user.stripeId) {
+        let stripeConnectId: string;
+        if (!user.stripeConnectId) {
             // Create a new Stripe Express account
 
             const account = await stripe.accounts.create({
@@ -391,11 +391,11 @@ const getStripeSetupPayoutsLink = catchAsyncErrors(
                 },
             });
 
-            user.stripeId = account.id;
-            stripeId = user.stripeId;
+            user.stripeConnectId = account.id;
+            stripeConnectId = user.stripeConnectId;
             user.save();
         } else {
-            stripeId = user.stripeId;
+            stripeConnectId = user.stripeConnectId;
         }
 
         //Get origin
@@ -403,7 +403,7 @@ const getStripeSetupPayoutsLink = catchAsyncErrors(
 
         // Create the account link to begin onboarding
         const accountLink = await stripe.accountLinks.create({
-            account: stripeId,
+            account: stripeConnectId,
             refresh_url: `${origin}/dashboard/expert/refresh`,
             return_url: `${origin}/dashboard/expert/home`,
             type: "account_onboarding",
@@ -439,7 +439,7 @@ const checkStripeAccountField = catchAsyncErrors(
         // See your keys here: https://dashboard.stripe.com/apikeys
         const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
-        const account = await stripe.accounts.retrieve(user.stripeId);
+        const account = await stripe.accounts.retrieve(user.stripeConnectId);
 
         if (!account) {
             return next(
@@ -488,7 +488,7 @@ const createStripeConnectLoginLink = catchAsyncErrors(
         // See your keys here: https://dashboard.stripe.com/apikeys
         const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
-        const account = await stripe.accounts.retrieve(user.stripeId);
+        const account = await stripe.accounts.retrieve(user.stripeConnectId);
         if (!account) {
             return next(
                 new ErrorHandler(
@@ -499,7 +499,7 @@ const createStripeConnectLoginLink = catchAsyncErrors(
         }
 
         // Create the login link
-        const loginLink = await stripe.accounts.createLoginLink(user.stripeId);
+        const loginLink = await stripe.accounts.createLoginLink(user.stripeConnectId);
         if (!loginLink) {
             return next(
                 new ErrorHandler(

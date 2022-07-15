@@ -15,7 +15,7 @@ const checkStripeField = async (
     // See your keys here: https://dashboard.stripe.com/apikeys
     const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
-    const account = await stripe.accounts.retrieve(user.stripeId);
+    const account = await stripe.accounts.retrieve(user.stripeConnectId);
 
     if (!account) {
         if (next) {

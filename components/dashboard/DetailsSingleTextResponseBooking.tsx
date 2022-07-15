@@ -161,8 +161,8 @@ const DetailsSingleTextResponseBooking = ({
                                     : textResponse
                             }
                             disabled={
-                                bookingsMetadata.loading ||
-                                booking?.status === "Completed"
+                                (bookingsMetadata.loading ||
+                                booking?.status === "Completed") ? true : false
                             }
                             onChange={(e) => setTextResponse(e.target.value)}
                         />

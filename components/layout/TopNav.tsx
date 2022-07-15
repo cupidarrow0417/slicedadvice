@@ -134,28 +134,9 @@ const TopNav = () => {
     const [open, setOpen] = useState(false);
     const dispatch = useAppDispatch();
 
-    const { user, loading, error } = useAppSelector((state) => state.auth);
-
-    // useEffect(() => {
-    //     if (!user) {
-    //         dispatch(loadUser());
-    //     }
-    // }, [dispatch, user]);
-
     const logoutHandler = () => {
         signOut();
     };
-
-    useEffect(() => {
-        if (error) {
-            // Don't think we actually wanna throw an error
-            // anytime the user isn't logged in haha.
-            // toast.error(error);
-        }
-        // if (user) {
-        //     console.log("User is: ", user)
-        // }
-    }, [error]);
     return (
         <div>
             {/* Mobile menu */}
@@ -367,7 +348,7 @@ const TopNav = () => {
                             </div>
                         </div>
                     </div>
-                    <SearchBar/>
+                    <SearchBar />
                     {!session ? (
                         <Link href="/login">
                             <a className="text-gray-800 hover:bg-brand-primary-light hover:text-white sm:ml-2 px-3 py-2 rounded-md text-sm font-medium">

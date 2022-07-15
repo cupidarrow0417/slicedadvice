@@ -7,7 +7,8 @@ interface UserInterface {
     name: String;
     email: String;
     password: any;
-    stripeId: String;
+    stripeCustomerId: String;
+    stripeConnectId: String;
     avatar: Object;
     role: String;
     createdAt: Date;
@@ -36,7 +37,8 @@ const userSchema = new mongoose.Schema<UserInterface>({
         minLength: [6, "Your password must be longer than 6 characters"],
         select: false,
     },
-    stripeId: String,
+    stripeCustomerId: String,
+    stripeConnectId: String,
     avatar: {
         public_id: {
             type: String,
@@ -75,6 +77,28 @@ userSchema.pre("save", async function (next) {
     }
 
     this.password = await bcrypt.hash(this.password, 10);
+});
+
+userSchema.post("save", async function (next) {
+    // Create Stripe Customer object and attach to the stripeCustomerId field
+    // of the user document.
+    if (this.stripeCustomerId) {
+        return;
+    }
+    // Set your secret key. Remember to switch to your live secret key in production.
+    // See your keys here: https://dashboard.stripe.com/apikeys
+    const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+    const customer = await stripe.customers.create({
+        email: this.email,
+        description: `SlicedAdvice Stripe Customer for ${this.email}`,
+        metadata: {
+            databaseId: this._id.toString(),
+            slicedAdviceUsername: this.name,
+        },
+    });
+
+    this.stripeCustomerId = customer.id;
+    await this.save();
 });
 
 //Compare user password
