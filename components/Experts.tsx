@@ -1,6 +1,11 @@
 import React from "react";
 import UniversalFadeAnimation from "./atoms/UniversalFadeAnimation";
 import AlanHeadshot from "../public/images/team/AlanHeadshot.jpg";
+// import HomePageHeroSectionScreenshot from '../public/images/appScreenshots/HomePageHeroSectionScreenshot.png';
+import BookingsPageScreenshot from '../public/images/appScreenshots/BookingsPageScreenshot.png';
+import ExpertisePostPageScreenshot from '../public/images/appScreenshots/ExpertisePostPageScreenshot.png';
+import BookingsPageMobileScreenshot from '../public/images/appScreenshots/BookingsPageMobileScreenshot.png';
+import StripeExpressPageScreenshot from '../public/images/appScreenshots/StripeExpressPageScreenshot.png';
 import {
     AnnotationIcon,
     GlobeAltIcon,
@@ -65,14 +70,14 @@ export default function Experts() {
                                         </a>
                                     </Link>
                                 </div>
-                                <div className="mt-3 sm:mt-0 sm:ml-3">
+                                {/* <div className="mt-3 sm:mt-0 sm:ml-3">
                                     <a
                                         href="#"
                                         className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-brand-primary-light bg-white hover:bg-gray-50 md:text-lg md:px-10 shadow"
                                     >
                                         Live demo
                                     </a>
-                                </div>
+                                </div> */}
                             </div>
                         </div>
                     </div>
@@ -200,7 +205,7 @@ export default function Experts() {
                             <div className="pl-4 -mr-48 sm:pl-6 md:-mr-16 lg:px-0 lg:m-0 lg:relative lg:h-full">
                                 <img
                                     className="w-full rounded-xl shadow-xl ring-1 ring-black ring-opacity-5 lg:absolute lg:left-0 lg:h-full lg:w-auto lg:max-w-none"
-                                    src="https://tailwindui.com/img/component-images/inbox-app-screenshot-1.jpg"
+                                    src={BookingsPageScreenshot.src}
                                     alt="Inbox user interface"
                                 />
                             </div>
@@ -247,8 +252,8 @@ export default function Experts() {
                             <div className="pr-4 -ml-48 sm:pr-6 md:-ml-16 lg:px-0 lg:m-0 lg:relative lg:h-full">
                                 <img
                                     className="w-full rounded-xl shadow-xl ring-1 ring-black ring-opacity-5 lg:absolute lg:right-0 lg:h-full lg:w-auto lg:max-w-none"
-                                    src="https://tailwindui.com/img/component-images/inbox-app-screenshot-2.jpg"
-                                    alt="Customer profile user interface"
+                                    src={ExpertisePostPageScreenshot.src}
+                                    alt="Expertise Post Screenshot"
                                 />
                             </div>
                         </div>
@@ -293,9 +298,9 @@ export default function Experts() {
                         <div className="mt-12 sm:mt-16 lg:mt-0">
                             <div className="pl-4 -mr-48 sm:pl-6 md:-mr-16 lg:px-0 lg:m-0 lg:relative lg:h-full">
                                 <img
-                                    className="w-full rounded-xl shadow-xl ring-1 ring-black ring-opacity-5 lg:absolute lg:left-0 lg:h-full lg:w-auto lg:max-w-none"
-                                    src="https://tailwindui.com/img/component-images/inbox-app-screenshot-1.jpg"
-                                    alt="Inbox user interface"
+                                    className="w-full rounded-xl lg:absolute lg:left-20 lg:-top-20 lg:h-[150%] lg:w-auto lg:max-w-none xl:left-32"
+                                    src={BookingsPageMobileScreenshot.src}
+                                    alt="Mobile Bookings Page"
                                 />
                             </div>
                         </div>
@@ -339,8 +344,8 @@ export default function Experts() {
                             <div className="pr-4 -ml-48 sm:pr-6 md:-ml-16 lg:px-0 lg:m-0 lg:relative lg:h-full">
                                 <img
                                     className="w-full rounded-xl shadow-xl ring-1 ring-black ring-opacity-5 lg:absolute lg:right-0 lg:h-full lg:w-auto lg:max-w-none"
-                                    src="https://tailwindui.com/img/component-images/inbox-app-screenshot-2.jpg"
-                                    alt="Customer profile user interface"
+                                    src={StripeExpressPageScreenshot.src}
+                                    alt="Stripe Express Page Screenshot"
                                 />
                             </div>
                         </div>

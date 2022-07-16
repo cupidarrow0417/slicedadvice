@@ -107,7 +107,7 @@ const BookingsDashboard = ({dashboardType}: {dashboardType: "Advice Seeker" | "E
                 </div>
                 {/* Desktop view of the booking details.  */}
                 {currentBookingSelected && window.innerWidth >= 768 && (
-                    <div className="hidden md:flex h-full w-3/5 p-2 overflow-auto">
+                    <div className="hidden md:flex h-full w-3/5 p-2 mx-4 overflow-auto">
                         <div className="hidden md:flex w-full h-full my-2">
                             <DetailsSingleTextResponseBooking
                                 key={currentBookingSelected._id}

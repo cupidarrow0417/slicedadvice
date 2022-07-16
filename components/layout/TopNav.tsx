@@ -25,17 +25,17 @@ const navigation = {
             name: "Career Growth",
             href: "/categories/careerGrowth",
             imageSrc:
-                "https://tailwindui.com/img/ecommerce-images/mega-menu-category-01.jpg",
+            "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1932&q=80",
             imageAlt:
-                "Models sitting back to back, wearing Basic Tee in black and bone.",
+                "A public speaker speaking to his audience about growing their career.",
         },
         {
             name: "Personal Development",
             href: "/categories/personalDevelopment",
             imageSrc:
-                "https://tailwindui.com/img/ecommerce-images/mega-menu-category-02.jpg",
+            "https://images.unsplash.com/photo-1581404917879-53e19259fdda?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1469&q=80",
             imageAlt:
-                "Close up of Basic Tee fall bundle with off-white, ochre, olive, and black tees.",
+                "A group of women smiling together.",
         },
     ],
     links: [
@@ -138,7 +138,7 @@ const TopNav = () => {
         signOut();
     };
     return (
-        <div>
+        <>
             {/* Mobile menu */}
             <Transition.Root show={open} as={Fragment}>
                 <Dialog
@@ -293,6 +293,9 @@ const TopNav = () => {
                     </div>
                 </Dialog>
             </Transition.Root>
+
+
+            {/* Desktop Top Nav  */}
             <div className="mx-auto max-w-[90rem]">
                 <div className="relative flex items-center justify-between h-16">
                     <div className="inset-y-0 left-0 flex items-center lg:hidden">
@@ -442,7 +445,7 @@ const TopNav = () => {
                     )}
                 </div>
             </div>
-        </div>
+        </>
     );
 };
 

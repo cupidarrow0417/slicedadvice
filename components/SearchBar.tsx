@@ -64,11 +64,10 @@ export default function SearchBar() {
     }
 
     return (
-        <Fragment>
+        <div className="relative">
             <Combobox as="div" value={""} onChange={() => setSearchResults}>
-                <div className="relative mt-1 mr-1 lg:mr-3">
                     {!hidePsuedoSearchBar && (
-                        <>
+                        <div className="relative mt-1 mr-1 lg:mr-3">
                             <Combobox.Input
                                 className="z-0 hidden lg:text-sm lg:block lg:w-full lg:max-w-80 rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 shadow-sm focus:border-brand-primary focus:outline-none focus:ring-1 focus:ring-brand-primary mr-20"
                                 onChange={(event) => search(event.target.value)}
@@ -83,9 +82,8 @@ export default function SearchBar() {
                                     onClick={() => openModalHandler()}
                                 />
                             </Combobox.Button>
-                        </>
+                        </div>
                     )}
-                </div>
             </Combobox>
 
             <Transition appear show={openModal} as={Fragment}>
@@ -105,7 +103,7 @@ export default function SearchBar() {
                     <div className="fixed inset-0 overflow-y-auto">
                         {/* Entire popout div containing the actual search bar and the instant
                             search results  */}
-                        <div className="flex absolute lg:right-24 lg:top-7 h-fit items-start lg:justify-end text-center">
+                        <div className="flex absolute lg:right-24 lg:top-7 xl:right-32 2xl:right-[calc(15vw)] h-fit items-start lg:justify-end text-center">
                             {/* Transition for Dialog.Panel  */}
                             <Transition.Child
                                 as={Fragment}
@@ -123,7 +121,7 @@ export default function SearchBar() {
                                         value={""}
                                         onChange={() => setSearchResults}
                                     >
-                                        <div className="relative mt-5 lg:mt-[1px] w-screen lg:w-fit">
+                                        <div className="relative top-12 md:top-20 lg:top-0 h-0 lg:mt-[1px] w-screen lg:w-fit">
                                             {/* <Combobox.Button className="lg:hidden rounded-r-md px-2 focus:outline-none">
                                                 <ArrowLeftIcon
                                                     className="h-6 w-6 text-gray-400"
@@ -342,6 +340,6 @@ export default function SearchBar() {
                     </div>
                 </Dialog>
             </Transition>
-        </Fragment>
+        </div>
     );
 }
