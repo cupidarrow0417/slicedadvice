@@ -8,11 +8,12 @@ import Loader from "../../../layout/Loader";
 import { useRouter } from "next/router";
 import DashboardHeader from "../../DashboardHeader";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 
 const HomeExpertDashboard = () => {
     // Get Session via useSession hook
     const { data: session }: any = useSession();
-    console.log("session", session)
+    console.log("session", session);
     const router = useRouter();
     const {
         accountField: chargesEnabled,
@@ -33,17 +34,14 @@ const HomeExpertDashboard = () => {
             <div className="bg-white px-4 pt-6 pb-4 flex items-center justify-between sm:px-6 rounded-t-xl lg:rounded-tl-none border-b-[1px] lg:px-8 border-black/10">
                 <DashboardHeader dashboardType="Expert" dashboardPage="Home" />
                 <div className="">
-                    {!chargesEnabled ? (
+                    {!chargesEnabled || !session ? (
                         ""
                     ) : (
-                        <button
-                            type="button"
-                            className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-brand-primary-light hover:bg-brand-primary-light/90"
-                            disabled={!session ? true : false}
-                            onClick={() => router.push("/expertisePost/create")}
-                        >
-                            {!session ? <ButtonLoader /> : "New Post"}
-                        </button>
+                        <Link href="/expertisePost/create">
+                            <a className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-brand-primary-light hover:bg-brand-primary-light/90">
+                                New Post
+                            </a>
+                        </Link>
                     )}
                 </div>
             </div>
