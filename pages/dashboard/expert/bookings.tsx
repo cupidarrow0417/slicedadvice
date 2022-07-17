@@ -30,7 +30,7 @@ export const getServerSideProps: GetServerSideProps =
         }
 
         const isOnboarded = await checkStripeField(session.user.email, "charges_enabled", undefined)
-
+        console.log("isOnboarded", isOnboarded);
         if (!isOnboarded) {
             return {
                 redirect: {
@@ -41,6 +41,7 @@ export const getServerSideProps: GetServerSideProps =
         }
         
         try {
+            console.log("about to dispatch getBookings");
             await store.dispatch(getBookings(req, 1, undefined, undefined, session.user._id));
             return { props: { session } };
         } catch (e) {
