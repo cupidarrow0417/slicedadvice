@@ -1,16 +1,16 @@
 import React from "react";
 import UniversalFadeAnimation from "./atoms/UniversalFadeAnimation";
-import AlanProfessionalHeadshot from "../public/images/team/AlanProfessionalHeadshot.jpeg";
-import AlecHeadshot from "../public/images/team/AlecHeadshot.png";
-import WesleyPicture from "../public/images/team/WesleyPicture.jpg";
-import FernandoHeadshot from "../public/images/team/FernandoHeadshot.jpeg";
+import AlanProfessionalHeadshot from "/images/team/AlanProfessionalHeadshot.jpeg";
+import AlecHeadshot from "/images/team/AlecHeadshot.png";
+import WesleyPicture from "/images/team/WesleyPicture.jpg";
+import FernandoHeadshot from "/images/team/FernandoHeadshot.jpeg";
 import Image from "next/image";
 
 const people = [
     {
         name: "Alan Duong",
         role: "Founder and CEO, Engineer, Designer",
-        image: AlanProfessionalHeadshot,
+        image: "/images/team/AlanProfessionalHeadshot.jpeg",
         bio: "Hey! I'm Alan, the founder of SlicedAdvice. I bootstrapped this company from the ground up and currently lead the team on all fronts: engineering, marketing, and design.",
         twitterUrl: "#",
         linkedinUrl: "https://www.linkedin.com/in/alan-duong-547095199/",
@@ -18,7 +18,7 @@ const people = [
     {
         name: "Alec Reiss",
         role: "Chief Operating Officer",
-        image: AlecHeadshot,
+        image: "/images/team/AlecHeadshot.png",
         bio: "Hello! I'm Alec, the COO of SlicedAdvice. I lead the company's marketing strategy, work on growth initiatives, and on product design.",
         twitterUrl: "#",
         linkedinUrl: "https://www.linkedin.com/in/alec-reiss-7b844a194/",
@@ -26,7 +26,7 @@ const people = [
     {
         name: "Fernando Cuello-Garcia",
         role: "Full Stack Engineer",
-        image: FernandoHeadshot,
+        image: "/images/team/FernandoHeadshot.jpeg",
         bio: "Hey! I'm Fernando! I'm a full stack engineer for SlicedAdvice, developing the product's backend and frontend. ",
         twitterUrl: "#",
         linkedinUrl: "https://www.linkedin.com/in/fernando-cuello-garcia/",
@@ -34,7 +34,7 @@ const people = [
     {
         name: "Wesley Le",
         role: "Marketing Intern",
-        image: WesleyPicture,
+        image: "/images/team/WesleyPicture.jpg",
         bio: "Hi! I'm Wesley, rising junior at Texas A&M and marketing intern for SlicedAdvice. I help with outreach, social media, and marketing ideation.",
         twitterUrl: "#",
         linkedinUrl: "#",
@@ -51,8 +51,8 @@ export default function Team() {
                             Our Team
                         </h2>
                         <p className="text-xl text-gray-500">
-                            We're a small team on a big mission to slice and
-                            serve the world's most important, inaccessible
+                            We&apos;re a small team on a big mission to slice and
+                            serve the world&apos;s most important, inaccessible
                             knowledge to everyone.
                         </p>
                     </div>
@@ -69,7 +69,7 @@ export default function Team() {
                                                 <Image
                                                     className="object-cover shadow-lg rounded-lg"
                                                     layout="fill"
-                                                    src={person?.image?.src!}
+                                                    src={person?.image}
                                                     alt=""
                                                 />
                                             )}
@@ -112,6 +112,7 @@ export default function Team() {
                                                 <a
                                                     href={person.linkedinUrl}
                                                     target="_blank"
+                                                    rel="noreferrer"
                                                     className="text-gray-400 hover:text-gray-500"
                                                 >
                                                     <span className="sr-only">

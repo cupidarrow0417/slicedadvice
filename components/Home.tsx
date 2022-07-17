@@ -220,8 +220,8 @@ export default function Home() {
                                 Our Mission
                             </h2>
                             <p className="mt-3 text-xl text-white">
-                                We're on a mission to slice and serve the
-                                world's most important, inaccessible knowledge
+                                We&apos;re on a mission to slice and serve the
+                                world&apos;s most important, inaccessible knowledge
                                 to everyone. We envision a world where everyone
                                 can get personalized advice from anyone for a
                                 fair price.

@@ -167,8 +167,8 @@ const ExpertisePostDetails = () => {
                                         </span>
                                     </div>
                                     <p className="text-sm font-light text-center opacity-60">
-                                        You'll get a response within 7 days, or
-                                        you'll never be charged.
+                                        You&apos;ll get a response within 7 days, or
+                                        you&apos;ll never be charged.
                                     </p>
                                     {loading ? (
                                         <Loader />

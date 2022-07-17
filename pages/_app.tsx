@@ -9,6 +9,7 @@ import { Elements } from "@stripe/react-stripe-js";
 import Crisp from "../components/atoms/Crisp";
 import { SessionProvider } from "next-auth/react";
 import MicrosoftClarity from "../components/atoms/MicrosoftClarity";
+import Script from "next/script";
 
 // Make sure to call loadStripe outside of a component’s render to avoid
 // recreating the Stripe object on every render.
@@ -17,13 +18,13 @@ const stripePromise = loadStripe(
     process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
 );
 
-// Where everything starts! 
+// Where everything starts!
 // Notes: SessionProvider is used to provide the login session to the entire app (NextAuth stuff)
 //       PersistGate is used to persist specific parts of the redux store even on page refresh.
 //       Elements is used to render the Stripe elements.
 //       Crisp is used to render the Crisp chat widget.
 //       The rest of the app is rendered in the Component prop.
-//       The weird isBrowser check has to do with a strange fix i did with redux persist. Not too 
+//       The weird isBrowser check has to do with a strange fix i did with redux persist. Not too
 //       familiar, to be honest. In general, just add anything new to both conditionals.
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
     const store: any = useStore();
@@ -35,6 +36,11 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
                     <MicrosoftClarity />
                     <Crisp />
                     <Component {...pageProps} />
+                    <Script
+                        src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+                        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+                        crossOrigin="anonymous"
+                    ></Script>
                 </Elements>
             </PersistGate>
         </SessionProvider>
@@ -45,6 +51,11 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
                     <MicrosoftClarity />
                     <Crisp />
                     <Component {...pageProps} />
+                    <Script
+                        src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+                        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+                        crossOrigin="anonymous"
+                    ></Script>
                 </Elements>
             </PersistGate>
         </SessionProvider>

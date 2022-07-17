@@ -1,6 +1,5 @@
 import React from "react";
 import UniversalFadeAnimation from "./atoms/UniversalFadeAnimation";
-import AlanHeadshot from "../public/images/team/AlanHeadshot.jpg";
 import {
     AnnotationIcon,
     GlobeAltIcon,
@@ -9,9 +8,9 @@ import {
     ScaleIcon,
     SparklesIcon,
 } from "@heroicons/react/outline";
-import CategoriesPageScreenshot from '../public/images/appScreenshots/CategoriesPageScreenshot.png';
-import BookSingleTextResponsePageScreenshot from '../public/images/appScreenshots/BookSingleTextResponsePageScreenshot.png';
-import BookingsPageAdviceSeekerScreenshot from '../public/images/appScreenshots/BookingsPageAdviceSeekerScreenshot.png';
+import CategoriesPageScreenshot from "../public/images/appScreenshots/CategoriesPageScreenshot.png";
+import BookSingleTextResponsePageScreenshot from "../public/images/appScreenshots/BookSingleTextResponsePageScreenshot.png";
+import BookingsPageAdviceSeekerScreenshot from "../public/images/appScreenshots/BookingsPageAdviceSeekerScreenshot.png";
 import Link from "next/link";
 
 export default function AdviceSeekers() {
@@ -66,10 +65,10 @@ export default function AdviceSeekers() {
                             A marketplace of bite-sized life advice.
                         </p>
                         <p className="mt-4 max-w-2xl text-xl text-gray-500 lg:mx-auto">
-                            We believe that changing your life begins
-                            with asking single, impactful question to the right
+                            We believe that changing your life begins with
+                            asking single, impactful question to the right
                             expert. We created a focused marketplace to make
-                            that a reality. It's as easy as 1-2-3!
+                            that a reality. It&apos;s as easy as 1-2-3!
                         </p>
                     </div>
                 </section>
@@ -91,18 +90,17 @@ export default function AdviceSeekers() {
                                         Browse the feed of advice
                                     </h2>
                                     <p className="mt-4 text-lg text-gray-500">
-                                        Whether it's career growth advice,
+                                        Whether it&apos;s career growth advice,
                                         personal development tips, and more, our
                                         vetted, experienced experts are here to
                                         help you in any way you need.
                                     </p>
                                     <div className="mt-6">
-                                        <a
-                                            href="/categories"
-                                            className="inline-flex px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-brand-primary-light hover:bg-indigo-700"
-                                        >
-                                            Browse Advice
-                                        </a>
+                                        <Link href="/categories">
+                                            <a className="inline-flex px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-brand-primary-light hover:bg-indigo-700">
+                                                Browse Advice
+                                            </a>
+                                        </Link>
                                     </div>
                                 </div>
                             </div>
@@ -110,11 +108,11 @@ export default function AdviceSeekers() {
                                 <blockquote>
                                     <div>
                                         <p className="text-base text-gray-500">
-                                            &ldquo;The world's most valuable,
-                                            important knowledge is trapped within
-                                            the minds of the world's busiest
-                                            people. SlicedAdvice is here to
-                                            slice and serve that knowledge to
+                                            &ldquo;The world&apos;s most valuable,
+                                            important knowledge is trapped
+                                            within the minds of the world&apos;s
+                                            busiest people. SlicedAdvice is here
+                                            to slice and serve that knowledge to
                                             you. &rdquo;
                                         </p>
                                     </div>
@@ -123,7 +121,7 @@ export default function AdviceSeekers() {
                                             <div className="flex-shrink-0">
                                                 <img
                                                     className="h-6 w-6 rounded-full"
-                                                    src={AlanHeadshot.src}
+                                                    src="/images/team/AlanHeadshot.jpg"
                                                     alt=""
                                                 />
                                             </div>
@@ -184,7 +182,9 @@ export default function AdviceSeekers() {
                             <div className="pr-4 -ml-48 sm:pr-6 md:-ml-16 lg:px-0 lg:m-0 lg:relative lg:h-full">
                                 <img
                                     className="w-full rounded-xl shadow-xl ring-1 ring-black ring-opacity-5 lg:absolute lg:right-0 lg:h-full lg:w-auto lg:max-w-none"
-                                    src={BookSingleTextResponsePageScreenshot.src}
+                                    src={
+                                        BookSingleTextResponsePageScreenshot.src
+                                    }
                                     alt="Booking Single Text Response Page Screenshot"
                                 />
                             </div>
@@ -210,7 +210,7 @@ export default function AdviceSeekers() {
                                     </h2>
                                     <p className="mt-4 text-lg text-gray-500">
                                         Your expert will answer within 7 days,
-                                        or you'll never even be charged. Your
+                                        or you&apos;ll never even be charged. Your
                                         advice will be personalized to your
                                         specific situation.
                                     </p>

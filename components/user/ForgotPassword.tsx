@@ -42,7 +42,7 @@ const ForgotPassword = () => {
                 </h3>
                 <div className="mt-2 max-w-xl text-sm text-gray-500">
                     <p>
-                        Just enter your email associated with the account and we'll send a link that
+                        Just enter your email associated with the account and we&apos;ll send a link that
                         you can use to reset your password. 
                     </p>
                 </div>
@@ -71,7 +71,7 @@ const ForgotPassword = () => {
                 </form>
                 <div className="mt-4 ml-[1px] max-w-xl text-xs opacity-60 text-gray-500">
                     <p>
-                        Can't find the email? Check your spam folder.
+                        Can&apos;t find the email? Check your spam folder.
                     </p>
                 </div>
             </div>

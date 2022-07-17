@@ -51,7 +51,7 @@ const PaymentsAdviceSeekerDashboard = () => {
                         )} */}
                     </button>
                     <p className="text-xs opacity-60 text-center ">
-                        You'll be redirected to Stripe to manage your payments.
+                        You&apos;ll be redirected to Stripe to manage your payments.
                     </p>
                 </div>
             </div>

@@ -146,7 +146,7 @@ const SetupPayoutsAlert = () => {
                     )}
                 </button>
                 <p className="text-xs opacity-60 text-center ">
-                    You'll be redirected to Stripe to complete the onboarding
+                    You&apos;ll be redirected to Stripe to complete the onboarding
                     process.
                 </p>
             </div>

@@ -103,7 +103,7 @@ const RefreshStripeMessage = () => {
     return (
         <div className=" h-60 flex flex-col gap-10 justify-center items-center">
             <h1 className="text-3xl font-bold">
-                Looking for Stripe onboarding? No worries, I'll redirect you to
+                Looking for Stripe onboarding? No worries, I&apos;ll redirect you to
                 the right place based on your Stripe account status.
             </h1>
             {authLoading && (

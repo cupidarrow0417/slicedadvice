@@ -53,9 +53,9 @@ export default function Support() {
                         </h1>
                         <p className="mt-6 max-w-3xl text-xl text-gray-300">
                             Our team is here to help you at any time! Whether
-                            it's personally helping you set up your account,
+                            it&apos;s personally helping you set up your account,
                             troubleshooting a problem, or just getting in touch,
-                            we're here at any time.
+                            we&apos;re here at any time.
                         </p>
                     </div>
                 </div>

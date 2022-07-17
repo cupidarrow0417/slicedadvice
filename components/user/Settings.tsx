@@ -300,6 +300,7 @@ export default function Settings() {
                                             <a
                                                 href="https://support.google.com/accounts/answer/41078?hl=en&co=GENIE.Platform%3DDesktop"
                                                 target="_blank"
+                                                rel="noreferrer"
                                                 className="w-fit mt-1 flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-black hover:bg-black/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-primary-light/70"
                                             >
                                                 Click here

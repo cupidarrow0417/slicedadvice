@@ -337,9 +337,10 @@ const TopNav = () => {
                                             name={item.name}
                                             href={item.href}
                                             key={item.name}
-                                            children={item.children}
                                             headerText={item.headerText}
-                                        />
+                                        >
+                                            {item.children}
+                                        </Flyout>
                                     ) : (
                                         <Link href={item.href} key={item.name}>
                                             <a className="text-gray-800 hover:bg-brand-primary-light hover:text-white px-3 py-2 rounded-md text-sm font-medium">

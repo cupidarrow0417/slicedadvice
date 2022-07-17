@@ -72,23 +72,28 @@ const navigation = {
 
 export default function Footer() {
     return (
-        <footer className="bg-white border-t border-black/10" aria-labelledby="footer-heading">
+        <footer
+            className="bg-white border-t border-black/10"
+            aria-labelledby="footer-heading"
+        >
             <h2 id="footer-heading" className="sr-only">
                 Footer
             </h2>
             <div className="mx-auto py-10 max-w-7xl px-2">
                 <div className="xl:grid xl:grid-cols-3 xl:gap-8">
                     <div className="space-y-2 border-gray-800 xl:col-span-1">
-                        <a href="/">
-                            <Image
-                                src={SlicedAdviceLogoBlack}
-                                width={197}
-                                height={47}
-                                alt="SlicedAdvice Logo"
-                            />
-                        </a>
+                        <Link href="/">
+                            <a>
+                                <Image
+                                    src={SlicedAdviceLogoBlack}
+                                    width={197}
+                                    height={47}
+                                    alt="SlicedAdvice Logo"
+                                />
+                            </a>
+                        </Link>
                         <p className="text-gray-500 text-base">
-                            Slicing and serving the world's most important,
+                            Slicing and serving the world&apos;s most important,
                             inaccessible knowledge to everyone.
                         </p>
                         <div className="flex space-x-6">

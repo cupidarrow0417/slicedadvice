@@ -5,7 +5,6 @@ import 'react-toastify/dist/ReactToastify.css'
 
 import TopNav from '../layout/TopNav'
 import Footer from "./Footer"
-import OldTopNav from "./OldTopNav"
 
 
 const Layout = ({children, title = 'SlicedAdvice - Marketplace for Bite-Sized Expert Advice'}: any) => {

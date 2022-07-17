@@ -106,9 +106,9 @@ const PaymentComplete = () => {
                             Thanks for booking!
                         </p>
                         <p className="mt-2 text-base text-gray-500">
-                            You haven't been charged yet, but a hold has been
+                            You haven&apos;t been charged yet, but a hold has been
                             put on your card. Your expert will be help you
-                            within 7 days, or you'll never be charged. To manage
+                            within 7 days, or you&apos;ll never be charged. To manage
                             bookings, view responses, and more, check the{" "}
                             <Link href="/dashboard/adviceSeeker/home">
                                 <a className="text-brand-primary-light">

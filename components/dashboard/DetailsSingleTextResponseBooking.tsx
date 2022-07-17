@@ -131,7 +131,7 @@ const DetailsSingleTextResponseBooking = ({
                 </div>
 
                 {/* Display the expert response */}
-                <h1 className="text-md">Expert's Response</h1>
+                <h1 className="text-md">Expert&apos;s Response</h1>
                 {dashboardType === "Advice Seeker" && (
                     <div className="w-full h-60 sm:h-72 border border-black/10 font-light leading-relaxed p-4 rounded-lg overflow-auto">
                         {booking?.singleTextResponse?.expertResponse}

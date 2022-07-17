@@ -1,11 +1,10 @@
 import React from "react";
 import UniversalFadeAnimation from "./atoms/UniversalFadeAnimation";
-import AlanHeadshot from "../public/images/team/AlanHeadshot.jpg";
 // import HomePageHeroSectionScreenshot from '../public/images/appScreenshots/HomePageHeroSectionScreenshot.png';
-import BookingsPageScreenshot from '../public/images/appScreenshots/BookingsPageScreenshot.png';
-import ExpertisePostPageScreenshot from '../public/images/appScreenshots/ExpertisePostPageScreenshot.png';
-import BookingsPageMobileScreenshot from '../public/images/appScreenshots/BookingsPageMobileScreenshot.png';
-import StripeExpressPageScreenshot from '../public/images/appScreenshots/StripeExpressPageScreenshot.png';
+import BookingsPageScreenshot from "../public/images/appScreenshots/BookingsPageScreenshot.png";
+import ExpertisePostPageScreenshot from "../public/images/appScreenshots/ExpertisePostPageScreenshot.png";
+import BookingsPageMobileScreenshot from "../public/images/appScreenshots/BookingsPageMobileScreenshot.png";
+import StripeExpressPageScreenshot from "../public/images/appScreenshots/StripeExpressPageScreenshot.png";
 import {
     AnnotationIcon,
     GlobeAltIcon,
@@ -161,12 +160,11 @@ export default function Experts() {
                                         and knowledge.
                                     </p>
                                     <div className="mt-6">
-                                        <a
-                                            href="/dashboard/expert/home"
-                                            className="inline-flex px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-brand-primary-light hover:bg-brand-primary-light/90"
-                                        >
-                                            Get started
-                                        </a>
+                                        <Link href="/dashboard/expert/home">
+                                            <a className="inline-flex px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-brand-primary-light hover:bg-brand-primary-light/90">
+                                                Get started
+                                            </a>
+                                        </Link>
                                     </div>
                                 </div>
                             </div>
@@ -174,12 +172,13 @@ export default function Experts() {
                                 <blockquote>
                                     <div>
                                         <p className="text-base text-gray-500">
-                                            &ldquo;The world's most valuable,
-                                            important knowledge is trapped within
-                                            the minds of the world's busiest
-                                            people. SlicedAdvice is here to help
-                                            you slice and serve that knowledge
-                                            to everyone, so you can conveniently
+                                            &ldquo;The world&apos;s most
+                                            valuable, important knowledge is
+                                            trapped within the minds of the
+                                            world&apos;s busiest people.
+                                            SlicedAdvice is here to help you
+                                            slice and serve that knowledge to
+                                            everyone, so you can conveniently
                                             earn money through your
                                             knowledge.&rdquo;
                                         </p>
@@ -189,7 +188,7 @@ export default function Experts() {
                                             <div className="flex-shrink-0">
                                                 <img
                                                     className="h-6 w-6 rounded-full"
-                                                    src={AlanHeadshot.src}
+                                                    src="/images/team/AlanHeadshot.jpg"
                                                     alt=""
                                                 />
                                             </div>

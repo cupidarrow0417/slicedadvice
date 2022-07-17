@@ -158,4 +158,5 @@ const FormSelectMenu = React.forwardRef(
     }
 );
 
+FormSelectMenu.displayName = "FormSelectMenu";
 export default FormSelectMenu

@@ -296,8 +296,8 @@ const CreateExpertisePost = () => {
                                             />
                                         </svg>
                                         <span className="mt-2 block text-sm font-medium text-gray-900">
-                                            Upload a picture by clicking "Choose
-                                            File" below
+                                            Upload a picture by clicking &quot;Choose
+                                            File&quot; below
                                         </span>
                                     </div>
                                 ) : (
@@ -425,8 +425,8 @@ const CreateExpertisePost = () => {
                                             </span>
                                         </div>
                                         <p className="text-sm font-light text-center opacity-60">
-                                            You'll get a response within 7 days,
-                                            or you'll never be charged.
+                                            You&apos;ll get a response within 7 days,
+                                            or you&apos;ll never be charged.
                                         </p>
                                         <button
                                             className="opacity-70 bg-brand-primary-light rounded-lg text-white w-full py-3 text-lg flex justify-center items-center"
