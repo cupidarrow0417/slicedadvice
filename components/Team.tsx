@@ -36,7 +36,6 @@ const people = [
         role: "Marketing Intern",
         image: "/images/team/WesleyPicture.jpg",
         bio: "Hi! I'm Wesley, rising junior at Texas A&M and marketing intern for SlicedAdvice. I help with outreach, social media, and marketing ideation.",
-        twitterUrl: "#",
         linkedinUrl: null,
     },
     // More people...
