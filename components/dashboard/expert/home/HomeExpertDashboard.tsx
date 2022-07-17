@@ -12,6 +12,7 @@ import { useSession } from "next-auth/react";
 const HomeExpertDashboard = () => {
     // Get Session via useSession hook
     const { data: session }: any = useSession();
+    console.log("session", session)
     const router = useRouter();
     const {
         accountField: chargesEnabled,

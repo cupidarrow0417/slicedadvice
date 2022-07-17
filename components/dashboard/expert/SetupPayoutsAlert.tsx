@@ -55,6 +55,7 @@ const SetupPayoutsAlert = () => {
 
     useEffect(() => {
         if (!user) {
+            console.log("hello from useEffect")
             dispatch(loadUser());
         }
     }, [dispatch, user]);
