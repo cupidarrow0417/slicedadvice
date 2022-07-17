@@ -4,6 +4,10 @@
 
 /* Mahad Adil Version */
 
+html {
+  background-color: #444;
+}
+
 .b {
   /* Super useful for debugging! */
   border: 2px solid red;
