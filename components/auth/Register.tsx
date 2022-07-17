@@ -204,7 +204,7 @@ const Register = () => {
                                     disabled={googleLoading}
                                 >
                                     <Image
-                                        src="/images/googleLogo.png"
+                                        src="/images/googlelogo.png"
                                         width={20}
                                         height={20}
                                     />

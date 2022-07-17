@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { getSession, signIn } from "next-auth/react";
 import { toast } from "react-toastify";
-
 import ButtonLoader from "../layout/ButtonLoader";
 import Router, { useRouter } from "next/router";
 import { useAppSelector } from "../../redux/hooks";
@@ -95,7 +94,7 @@ const Login = () => {
                             key={"Google"}
                             className="m-auto flex justify-center items-center gap-4 bg-white rounded-md p-3 border border-gray-300 hover:opacity-80"
                         >
-                            <Image src="/images/googleLogo.png" width={20} height={20} />
+                            <Image src="/images/googlelogo.png" width={20} height={20} />
                             <h1 className="text-sm font-semibold text-gray-600">
                                 Sign in with Google
                             </h1>

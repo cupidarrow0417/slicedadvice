@@ -21,8 +21,11 @@ import Loader from "../../layout/Loader";
 // getServerSideProps function for those other pages.
 const SetupPayoutsAlert = () => {
     useEffect(() => {
-        toast.success(
-            "Hey friends and family! Remember, you only have to use a test card when onboarding: 4242 4242 4242 4242, and then any other random numbers for the other fields."
+        toast(
+            "Hey friends and family! We highly recommend each of y'all to try out the expert onboarding and to create your first expertise post! Expect Stripe to verify your identity and collect payment info. Should take less than 5 minutes!",
+            {
+                autoClose: 10000,
+            }
         );
     }, []);
 
@@ -146,8 +149,8 @@ const SetupPayoutsAlert = () => {
                     )}
                 </button>
                 <p className="text-xs opacity-60 text-center ">
-                    You&apos;ll be redirected to Stripe to complete the onboarding
-                    process.
+                    You&apos;ll be redirected to Stripe to complete the
+                    onboarding process.
                 </p>
             </div>
         </div>

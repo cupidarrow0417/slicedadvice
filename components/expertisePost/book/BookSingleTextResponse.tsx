@@ -69,8 +69,11 @@ const BookSingleTextResponse = () => {
         if (!stripePaymentIntentError) {
             setUserClickedContinue(true);
             setFinalTextSubmission(textSubmission);
-            toast.success(
-                "Hey friends and family! Remember, you only have to use a test card here: 4242 4242 4242 4242, and then any other random numbers for the other fields."
+            toast(
+                "Hey friends and family! Remember, you only have to use a test card here: 4242 4242 4242 4242, and then any other random numbers for the other fields.",
+                {
+                    autoClose: 10000,
+                }
             );
         }
     };
