@@ -6,7 +6,6 @@ import ButtonLoader from "../layout/ButtonLoader";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import Link from "next/link";
 import { signIn, useSession } from "next-auth/react";
-import GoogleLogo from "../../public/images/googleLogo.png";
 import Image from "next/image";
 import axios from "axios";
 import UniversalFadeAnimation from "../atoms/UniversalFadeAnimation";
@@ -205,7 +204,7 @@ const Register = () => {
                                     disabled={googleLoading}
                                 >
                                     <Image
-                                        src={GoogleLogo}
+                                        src="/images/googleLogo.png"
                                         width={20}
                                         height={20}
                                     />
