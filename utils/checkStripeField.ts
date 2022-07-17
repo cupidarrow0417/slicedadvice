@@ -10,13 +10,11 @@ const checkStripeField = async (
     // the isAuthenticatedUser middleware), to retrieve
     // their Stripe account id.
     const user = await User.findOne({email: email});
-    console.log("user in checkStripeField", user);
-
+    
     // Set your secret key. Remember to switch to your live secret key in production.
     // See your keys here: https://dashboard.stripe.com/apikeys
     const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
     const account = await stripe.accounts.retrieve(user.stripeConnectId);
-    console.log("just tried to get stripe account")
     if (!account) {
         if (next) {
             return next(
@@ -35,7 +33,6 @@ const checkStripeField = async (
         accountField = account.charges_enabled;
     }
 
-    console.log("just checked stripe account field, accountField:", accountField);
     // Add more for new fields
 
     if (accountField === null || accountField === undefined) {
