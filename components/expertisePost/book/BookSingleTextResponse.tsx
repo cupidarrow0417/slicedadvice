@@ -69,6 +69,9 @@ const BookSingleTextResponse = () => {
         if (!stripePaymentIntentError) {
             setUserClickedContinue(true);
             setFinalTextSubmission(textSubmission);
+            toast.success(
+                "Hey friends and family! Remember, you only have to use a test card here: 4242 4242 4242 4242, and then any other random numbers for the other fields."
+            );
         }
     };
 
@@ -110,11 +113,11 @@ const BookSingleTextResponse = () => {
             };
             dispatch(cacheBookingData(bookingData));
 
-            // (LEAVING THIS HERE UNTIL STRIPE ISSUE IS FIXED. 
+            // (LEAVING THIS HERE UNTIL STRIPE ISSUE IS FIXED.
             // Check if a Stripe Payment Intent Client Secret
             // already exists in the global state.
             // If it does, check if the payment intent is still referring to the same
-            // expertise post (check transfer_data.destination). 
+            // expertise post (check transfer_data.destination).
             // If it is, update it with the latest data by
             // retrieving the payment intent via the client secret,
             // and calling the updateStripePaymentIntent action creator
@@ -131,7 +134,7 @@ const BookSingleTextResponse = () => {
             //                 return;
             //             } else if (result.paymentIntent) {
             //                 // If the payment intent is still referring to the same
-            //                 // expertise post, update it with the latest data. 
+            //                 // expertise post, update it with the latest data.
             //                 // Else, just create a new payment intent.
             //                 console.log("result.paymentIntentt: ", result.paymentIntent);
             //                 // if (
@@ -159,7 +162,6 @@ const BookSingleTextResponse = () => {
             dispatch(createStripePaymentIntent(bookingData));
         }
     }, [userClickedContinue, session, expertisePost]);
-
 
     const appearance = {
         theme: "stripe",

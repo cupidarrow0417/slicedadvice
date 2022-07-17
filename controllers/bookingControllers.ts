@@ -97,19 +97,6 @@ const createStripePaymentIntent = catchAsyncErrors(
             await customerInDatabase.save();
         }
 
-        // Attempt to get the user's payment method from the Stripe Customer object.
-
-        const paymentMethodsObject = await stripe.customers.listPaymentMethods(
-            stripeCustomerId,
-            { type: "card" }
-        );
-
-        let paymentMethodId;
-        if (paymentMethodsObject.data) {
-            const paymentMethod = paymentMethodsObject.data[0];
-            paymentMethodId = paymentMethod.id;
-        }
-
         // Create a PaymentIntent with the order amount and currency
         // NOTE: "amount" is in CENTS, NOT dollars.
         const paymentIntent = await stripe.paymentIntents.create({

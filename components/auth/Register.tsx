@@ -444,7 +444,7 @@ const Register = () => {
                                 />
                             </div>
                         </div> */}
-                            <div className="flex items-center justify-between">
+                            {/* <div className="flex items-center justify-between">
                                 <div className="flex items-center">
                                     <input
                                         id="mailing-list"
@@ -460,7 +460,7 @@ const Register = () => {
                                         updates sent occassionally to my email.
                                     </label>
                                 </div>
-                            </div>
+                            </div> */}
 
                             <div>
                                 <button

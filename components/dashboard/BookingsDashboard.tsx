@@ -9,12 +9,15 @@ import DashboardHeader from "./DashboardHeader";
 import DetailsSingleTextResponseBooking from "./DetailsSingleTextResponseBooking";
 import PreviewSingleTextResponseBooking from "./PreviewSingleTextResponseBooking";
 
-const BookingsDashboard = ({dashboardType}: {dashboardType: "Advice Seeker" | "Expert"}) => {
+const BookingsDashboard = ({
+    dashboardType,
+}: {
+    dashboardType: "Advice Seeker" | "Expert";
+}) => {
     const dispatch = useAppDispatch();
-    const {
-        bookings,
-        metadata: bookingsMetadata,
-    } = useAppSelector((state) => state.bookings);
+    const { bookings, metadata: bookingsMetadata } = useAppSelector(
+        (state) => state.bookings
+    );
     const { query: queryParams } = useRouter();
 
     // Local state to handle which booking is currently selected. Note:
@@ -32,7 +35,6 @@ const BookingsDashboard = ({dashboardType}: {dashboardType: "Advice Seeker" | "E
     const [modalOpen, setModalOpen] = useState(
         window.innerWidth < 768 && queryParams.booking ? true : false
     );
-
 
     useEffect(() => {
         if (window.innerWidth >= 768) {
@@ -55,7 +57,7 @@ const BookingsDashboard = ({dashboardType}: {dashboardType: "Advice Seeker" | "E
         // On mobile and desktop, currentBookingSelected is ALWAYS set to be the one
         // in the url. So, that means we can easily control which booking is focused from
         // anywhere in the component tree, by doing a shallow routed Router.push(). Woohoo!
-        if (bookings) {
+        if (bookings !== {}) {
             if (queryParams.booking) {
                 const booking = bookings.find(
                     (booking: any) => booking._id === queryParams.booking
@@ -68,6 +70,19 @@ const BookingsDashboard = ({dashboardType}: {dashboardType: "Advice Seeker" | "E
                     setModalOpen(true);
                 }
             } else {
+                // Add bookings query param to the url if it doesn't already exist,
+                // with the id of the first booking in the bookings global state
+                if (!queryParams.booking && bookings[0]) {
+                    Router.push(
+                        `/dashboard/${
+                            dashboardType === "Advice Seeker"
+                                ? 'adviceSeeker'
+                                : 'expert'
+                        }/bookings?booking=${bookings[0]._id}`,
+                        undefined,
+                        { shallow: true }
+                    );
+                }
                 // If the booking query param is empty, close the modal.
                 // Important and only for mobile; closing the popup modal deletes
                 // the query param from the url, triggering this part of the code.

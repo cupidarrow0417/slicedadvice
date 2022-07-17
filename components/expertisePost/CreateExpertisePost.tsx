@@ -117,6 +117,12 @@ const CreateExpertisePost = () => {
     const submitHandler = (e: any) => {
         e.preventDefault();
 
+        if (image === "") {
+            toast.error(
+                "Please check if you uploaded an image. Also, some problems may occur when your image was too large. Please refresh and try again with a smaller image. Sorry about that!"
+            );
+            return;
+        }
         // Combine the submission types into a list
         let submissionTypes: string[] = [];
         submissionType1.trim() !== "" &&
@@ -161,7 +167,13 @@ const CreateExpertisePost = () => {
     const onChange = (e: any) => {
         if (e.target.name === "image") {
             const reader: any = new FileReader();
-
+            //https://stackoverflow.com/questions/5697605/limit-the-size-of-a-file-upload-html-input-element
+            if (e.target?.files[0].size > 3145728) {
+                toast.error(
+                    "Hey, sorry about that! For now, the image must be less than 3MB. Here's a useful website to compress images while this is being fixed: https://imagecompressor.com/"
+                );
+                return;
+            }
             reader.onload = () => {
                 if (reader.readyState === 2) {
                     setImage(reader.result);
@@ -429,7 +441,11 @@ const CreateExpertisePost = () => {
                         <button
                             type="submit"
                             className="bg-brand-primary-light mx-auto rounded-lg text-white w-full sm:w-96 py-3 text-xl flex justify-center items-center"
-                            disabled={createExpertisePostLoading ? true : false}
+                            disabled={
+                                createExpertisePostLoading || image !== ""
+                                    ? true
+                                    : false
+                            }
                         >
                             {createExpertisePostLoading ? (
                                 <ButtonLoader />

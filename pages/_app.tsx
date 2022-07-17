@@ -8,6 +8,7 @@ import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import Crisp from "../components/atoms/Crisp";
 import { SessionProvider } from "next-auth/react";
+import MicrosoftClarity from "../components/atoms/MicrosoftClarity";
 
 // Make sure to call loadStripe outside of a component’s render to avoid
 // recreating the Stripe object on every render.
@@ -31,6 +32,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
         <SessionProvider session={session}>
             <PersistGate loading={null} persistor={store.__persistor}>
                 <Elements stripe={stripePromise}>
+                    <MicrosoftClarity />
                     <Crisp />
                     <Component {...pageProps} />
                 </Elements>
@@ -40,6 +42,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
         <SessionProvider session={session}>
             <PersistGate persistor={store}>
                 <Elements stripe={stripePromise}>
+                    <MicrosoftClarity />
                     <Crisp />
                     <Component {...pageProps} />
                 </Elements>

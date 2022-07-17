@@ -17,9 +17,15 @@ import Loader from "../../layout/Loader";
 // to visually notify the user that they need to setup payouts.
 // It isn't featured in the other expert dashboard pages because
 // the user can't even access those pages unless they have already
-// setup payouts, as I coded that into the frontend and the 
+// setup payouts, as I coded that into the frontend and the
 // getServerSideProps function for those other pages.
 const SetupPayoutsAlert = () => {
+    useEffect(() => {
+        toast.success(
+            "Hey friends and family! Remember, you only have to use a test card when onboarding: 4242 4242 4242 4242, and then any other random numbers for the other fields."
+        );
+    }, []);
+
     const dispatch = useAppDispatch();
 
     const { user, loading: authLoading } = useAppSelector((state) => {
@@ -96,7 +102,7 @@ const SetupPayoutsAlert = () => {
         return false;
     };
 
-    return (authLoading || checkStripeAccountFieldLoading) ? (
+    return authLoading || checkStripeAccountFieldLoading ? (
         <Loader />
     ) : (
         <div className="flex justify-center items-center rounded-xl bg-white w-full p-9">

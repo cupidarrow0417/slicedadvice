@@ -14,7 +14,7 @@ handler.use(isAuthenticatedUser).use(isStripeOnboardedUser).post(createExpertise
 export const config = {
     api: {
         bodyParser: {
-            sizeLimit: '10mb' // Set desired value here
+            sizeLimit: '5mb' // Set desired value here
         }
     }
 }
