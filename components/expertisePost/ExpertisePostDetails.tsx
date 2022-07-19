@@ -32,6 +32,25 @@ const ExpertisePostDetails = () => {
         (state) => state.reviews
     );
 
+    const { user: authUser } = useAppSelector((state) => {
+        return state.auth;
+    });
+
+    const [isPostOwner, setIsPostOwner] = useState(false);
+    
+    // Checking if the logged in user is the owner of the post
+    // isPostOwner decides whether to show the update button or not
+    useEffect(() => {
+        if (authUser) {
+            if (JSON.stringify(authUser) !== JSON.stringify(expertisePost.user)) {
+                setIsPostOwner(false)
+                console.log(isPostOwner)
+            } else {
+                setIsPostOwner(true)
+            }
+        }
+    }, [authUser]);
+
     // Check if user is logged in and is the owner of this post.
     // They shouldn't be able to Send a Submission if so, of course.
     const { user, loading } = useAppSelector((state) => {
@@ -112,20 +131,24 @@ const ExpertisePostDetails = () => {
                 <div className="flex flex-col items-start gap-5 px-4 py-4 max-w-2xl lg:max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <Breadcrumbs pages={pages} />
 
-                    <div className="flex justify-between  gap-5 py-4 w-full">
+
+                    <div className="flex justify-between w-full">
                         <h1 className="text-2xl font-semibold">
                             {expertisePost?.title}
                         </h1>
-                        
-                        <button
-                            type="button"
-                            className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-brand-primary-light hover:bg-brand-primary-light/90"
-                            disabled={!session ? true : false}
-                            onClick={() => router.push("/expertisePost/update/" + expertisePost._id)}
-                        >
-                            {!session ? <ButtonLoader /> : "Update Post"}
-                        </button>
+
+                        {isPostOwner &&
+                            <button
+                                type="button"
+                                className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-brand-primary-light hover:bg-brand-primary-light/90"
+                                disabled={!session ? true : false}
+                                onClick={() => router.push("/expertisePost/update/" + expertisePost._id)}
+                            >
+                                {!session ? <ButtonLoader /> : "Update Post"}
+                            </button>
+                        }
                     </div>
+
                     <RatingsWidget
                         reviewsTotal={reviewsTotal}
                         reviewsAverage={reviewsAverage}

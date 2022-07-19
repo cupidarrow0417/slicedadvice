@@ -52,8 +52,8 @@ const formSelectMenuOptions = [
 ];
 
 const UpdateExpertisePost = () => {
-    // Get Session via useSession hook
     const dispatch = useAppDispatch();
+    const router = useRouter();
 
     // Fetching the original expertise post
     const { expertisePost, error: expertisePostError } = useAppSelector(
@@ -67,6 +67,16 @@ const UpdateExpertisePost = () => {
     const { user: authUser } = useAppSelector((state) => {
         return state.auth;
     });
+
+    // Checking if the logged in user is the same as the account
+    // whose posting they're updating
+    useEffect(() => {
+        if (authUser) {
+            if (JSON.stringify(authUser) !== JSON.stringify(expertisePost.user)) {
+                router.push('/');
+            }
+        }
+    }, [authUser]);
 
     // Access global state that processes the updateExpertisePost process,
     // displaying appropriate UI based on progress + errors.
@@ -83,6 +93,8 @@ const UpdateExpertisePost = () => {
     // type, and a pricePerSubmission. Image is taken care of in the image local state,
     // as well as the submission type strings. The current user is inputted on submission
     // automatically.
+
+    // console.log(expertisePost.category);
     const [post, setPost] = useState({
         title: "",
         description: "",
@@ -105,6 +117,8 @@ const UpdateExpertisePost = () => {
     const [submissionType1, setSubmissionType1] = useState(expertisePost.submissionTypes[0]);
     const [submissionType2, setSubmissionType2] = useState(expertisePost.submissionTypes[1]);
     const [submissionType3, setSubmissionType3] = useState(expertisePost.submissionTypes[2]);
+
+
 
 
 
@@ -288,7 +302,7 @@ const UpdateExpertisePost = () => {
                                         inputTypeString="category"
                                         options={formSelectMenuOptions}
                                         required={true}
-                                        currentIndex={ parseInt(categoryCurrentIndex) }
+                                        currentIndex={parseInt(categoryCurrentIndex)}
                                         ref={formSelectMenuInputRef}
                                     />
                                 </li>

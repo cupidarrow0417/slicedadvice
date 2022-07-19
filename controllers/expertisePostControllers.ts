@@ -4,7 +4,7 @@ import ExpertisePost from "../models/expertisePost";
 import ErrorHandler from "../utils/errorhandler";
 import catchAsyncErrors from "../middlewares/catchAsyncErrors";
 import { ExpertisePostAPIFeatures } from "../utils/apiFeatures";
-import updateExpertisePost from "../components/expertisePost/UpdateExpertiesPost";
+import updateExpertisePost from "../components/expertisePost/UpdateExpertisePost";
 
 //Get all expertisePosts => GET /api/expertisePosts
 const allExpertisePosts = catchAsyncErrors(

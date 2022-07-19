@@ -1,11 +1,42 @@
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { useAppSelector } from "../../redux/hooks";
+import ButtonLoader from "../layout/ButtonLoader";
 
 interface expertisePostCardInterface {
     expertisePost: any;
 }
 
 const ExpertisePostCard = ({ expertisePost }: expertisePostCardInterface) => {
+    // Get Session via useSession hook
+    const { data: session }: any = useSession();
+    const { query: queryParams } = useRouter();
+    const router = useRouter();
+
+    const { user: authUser } = useAppSelector((state) => {
+        return state.auth;
+    });
+
+    const [isPostOwner, setIsPostOwner] = useState(false);
+
+    // Checking if the logged in user is the owner of the post
+    // isPostOwner decides whether to show the update button or not
+    useEffect(() => {
+        if (authUser) {
+            if (JSON.stringify(authUser) !== JSON.stringify(expertisePost.user)) {
+                setIsPostOwner(false)
+                console.log(isPostOwner)
+            } else {
+                setIsPostOwner(true)
+                console.log(isPostOwner)
+            }
+        }
+    }, [authUser]);
+
+    
     //These calculations allow us to slice the title at the right place so that
     //the title is always only two lines. Still a work in progress.
     // Updated as of June 23, 2022
@@ -16,7 +47,7 @@ const ExpertisePostCard = ({ expertisePost }: expertisePostCardInterface) => {
     return (
         <>
             <Link href={`/expertisePost/${expertisePost._id}`}>
-                <div className="flex flex-col min-w-[20rem] max-w-xs sm:min-w-[20rem] sm:max-w-[20rem] h-full rounded-2xl bg-brand-bg-light cursor-pointer hover:-mt-[2px] transition-all snap-start">
+                <div className="flex relative bg-transparent flex-col min-w-[20rem] max-w-xs sm:min-w-[20rem] sm:max-w-[20rem] h-full rounded-2xl bg-brand-bg-light cursor-pointer hover:-mt-[2px] transition-all snap-start">
                     <div className="expertisePostCardImageWrapper">
                         <a className="">
                             <Image
@@ -48,6 +79,12 @@ const ExpertisePostCard = ({ expertisePost }: expertisePostCardInterface) => {
                             </p>
                         </div>
                     </div>
+
+                    {isPostOwner &&
+                        <Link href={`/expertisePost/update/${expertisePost._id}`}>
+                            <a className="my-4 py-2 bg-brand-primary-light rounded-md text-white text-center">Update</a>
+                        </Link>
+                    }
                 </div>
             </Link>
         </>
