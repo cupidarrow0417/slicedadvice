@@ -172,6 +172,7 @@ const UpdateExpertisePost = () => {
             image: string;
             pricePerSubmission: any;
             category: any;
+            currentImage: any;
         }
 
         let category = ""
@@ -188,6 +189,7 @@ const UpdateExpertisePost = () => {
             image: image,
             pricePerSubmission,
             category,
+            currentImage: expertisePost.images[0]
         };
 
         // console.log(postData)

@@ -120,19 +120,27 @@ const updateSingleExpertisePost = catchAsyncErrors(
             });
         }
 
-        const result = await cloudinary.uploader.upload(req.body.image, {
-            folder: "slicedadvice/expertisePostImages",
-            width: "750",
-            crop: "scale",
-        });
-
         const {
             title,
             description,
             submissionTypes,
             pricePerSubmission,
             category,
+            image,
+            currentImage
         } = req.body;
+
+        // console.log("CURRENT IMAGE: ");
+        // console.log(currentImage);
+
+        const result = await cloudinary.uploader.upload(req.body.image, {
+            folder: "slicedadvice/expertisePostImages",
+            width: "750",
+            crop: "scale",
+        });
+        
+        const destroy = await cloudinary.uploader.destroy(currentImage.public_id);
+        console.log(destroy);
 
         updatedExpertisePost = await ExpertisePost.findByIdAndUpdate(
             req.query.id,
@@ -155,7 +163,7 @@ const updateSingleExpertisePost = catchAsyncErrors(
             }
         );
 
-        console.log(updatedExpertisePost);
+        // console.log(updatedExpertisePost);
 
         res.status(200).json({
             success: true,
