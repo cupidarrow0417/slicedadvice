@@ -33,7 +33,8 @@ const ExpertisePostCard = ({ expertisePost }: expertisePostCardInterface) => {
                         <a>
                             <h1 className="text-xl font-semibold text-black/80 hover:text-brand-primary transition-all">
                                 {expertisePost["title"].slice(0, slicePoint)}
-                                {expertisePost["title"].length > slicePoint && "..."}
+                                {expertisePost["title"].length > slicePoint &&
+                                    "..."}
                             </h1>
                         </a>
                         <div className="flex justify-between text-black/50 text-md font-light">
@@ -43,9 +44,11 @@ const ExpertisePostCard = ({ expertisePost }: expertisePostCardInterface) => {
                                 </span>{" "}
                                 / submission
                             </p>
-                            <p className="">
-                                Ratings: {expertisePost["ratings"]}
-                            </p>
+                            {expertisePost?.ratings?.length > 0 && (
+                                <p className="">
+                                    Ratings: {expertisePost.ratings}
+                                </p>
+                            )}
                         </div>
                     </div>
                 </div>
