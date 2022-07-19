@@ -15,12 +15,14 @@ import CreateReviewWidget from "../CreateReviewWidget";
 import UniversalFadeAnimation from "../atoms/UniversalFadeAnimation";
 import { useSession } from "next-auth/react";
 import { loadUser } from "../../redux/actionCreators/userActions";
+import ButtonLoader from "../layout/ButtonLoader";
 
 const ExpertisePostDetails = () => {
     // Get Session via useSession hook
     const { data: session }: any = useSession();
     const dispatch = useAppDispatch();
     const { query: queryParams } = useRouter();
+    const router = useRouter();
 
     const { expertisePost, error: expertisePostError } = useAppSelector(
         (state) => state.expertisePostDetails
@@ -109,6 +111,16 @@ const ExpertisePostDetails = () => {
                 </Head>
                 <div className="flex flex-col items-start gap-5 px-4 py-4 max-w-2xl lg:max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <Breadcrumbs pages={pages} />
+
+                    <button
+                        type="button"
+                        className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-brand-primary-light hover:bg-brand-primary-light/90"
+                        disabled={!session ? true : false}
+                        onClick={() => router.push("/expertisePost/update/" + expertisePost._id)}
+                    >
+                        {!session ? <ButtonLoader /> : "Update Post"}
+                    </button>
+
                     <h1 className="text-2xl font-semibold">
                         {expertisePost?.title}
                     </h1>
@@ -267,10 +279,10 @@ const ExpertisePostDetails = () => {
                                             {count.count === 0
                                                 ? 0
                                                 : Math.round(
-                                                      (count.count /
-                                                          reviewsTotal) *
-                                                          100
-                                                  )}
+                                                    (count.count /
+                                                        reviewsTotal) *
+                                                    100
+                                                )}
                                             %
                                         </dd>
                                     </div>

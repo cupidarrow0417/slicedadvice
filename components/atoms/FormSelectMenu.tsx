@@ -17,6 +17,7 @@ interface FormSelectMenuInterface {
     inputTypeString: string;
     options: FormOptionsInterface[];
     required: boolean;
+    currentIndex: number
 }
 
 
@@ -36,10 +37,11 @@ const FormSelectMenu = React.forwardRef(
             inputTypeString,
             options,
             required,
+            currentIndex
         }: FormSelectMenuInterface,
         ref: React.Ref<HTMLInputElement>
     ) => {
-        const [selected, setSelected] = useState(options[0]);
+        const [selected, setSelected] = useState(options[currentIndex]);
 
         return (
             <Listbox value={selected} onChange={setSelected}>
