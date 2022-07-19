@@ -39,6 +39,18 @@ const Login = () => {
                 email,
                 password,
             });
+
+            // Only run this code for after credentials login :)
+            if (result && result.error) {
+                toast.error(result.error);
+            } else if (queryParams.returnUrl) {
+                //else, successful login! Redirect to either the
+                //homepage or the returnUrl (the url from which the user
+                //was sent to the sign in page from)
+                Router.push(queryParams.returnUrl.toString());
+            } else {
+                Router.push("/");
+            }
         } else if (providerId === "google") {
             let callbackUrl = "/";
             if (queryParams.returnUrl) {
@@ -49,20 +61,10 @@ const Login = () => {
                 redirect: false,
                 callbackUrl: callbackUrl,
             });
+            // Nextauth will automatically redirect to the callbackUrl :)
         }
 
         setLoading(false);
-
-        if (result && result.error) {
-            toast.error(result.error);
-        } else if (queryParams.returnUrl) {
-            //else, successful login! Redirect to either the
-            //homepage or the returnUrl (the url from which the user
-            //was sent to the sign in page from)
-            Router.push(queryParams.returnUrl.toString());
-        } else {
-            Router.push("/");
-        }
     };
     return (
         <UniversalFadeAnimation animationType="appear">
@@ -94,7 +96,11 @@ const Login = () => {
                             key={"Google"}
                             className="m-auto flex justify-center items-center gap-4 bg-white rounded-md p-3 border border-gray-300 hover:opacity-80"
                         >
-                            <Image src="/images/googlelogo.png" width={20} height={20} />
+                            <Image
+                                src="/images/googlelogo.png"
+                                width={20}
+                                height={20}
+                            />
                             <h1 className="text-sm font-semibold text-gray-600">
                                 Sign in with Google
                             </h1>
