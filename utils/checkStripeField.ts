@@ -1,7 +1,6 @@
 import dbConnect from "../config/dbConnect";
 import User from "../models/user";
 import ErrorHandler from "./errorhandler";
-import dbConnect from "../config/dbConnect";
 const checkStripeField = async (
     email: string,
     checkedField: string,
