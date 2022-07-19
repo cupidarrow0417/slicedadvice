@@ -442,7 +442,7 @@ const CreateExpertisePost = () => {
                             type="submit"
                             className="bg-brand-primary-light mx-auto rounded-lg text-white w-full sm:w-96 py-3 text-xl flex justify-center items-center"
                             disabled={
-                                createExpertisePostLoading || image !== ""
+                                createExpertisePostLoading || image === ""
                                     ? true
                                     : false
                             }
