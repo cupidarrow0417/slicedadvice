@@ -76,8 +76,8 @@ const BookingsDashboard = ({
                     Router.push(
                         `/dashboard/${
                             dashboardType === "Advice Seeker"
-                                ? 'adviceSeeker'
-                                : 'expert'
+                                ? "adviceSeeker"
+                                : "expert"
                         }/bookings?booking=${bookings[0]._id}`,
                         undefined,
                         { shallow: true }
@@ -106,51 +106,52 @@ const BookingsDashboard = ({
                 />
             </div>
             {/* Main content */}
-            <div className="flex w-full h-[calc(100%-4.5rem)]">
-                {/* Preview always visible on all screen sizes  */}
-                <div className="flex flex-col gap-2 overflow-auto h-full w-full md:w-2/5">
-                    {bookings !== null &&
-                        bookings !== undefined &&
-                        bookings.length > 0 &&
-                        bookings.map((booking: any) => (
-                            <PreviewSingleTextResponseBooking
-                                key={booking._id}
-                                booking={booking}
-                                dashboardType={dashboardType}
-                            />
-                        ))}
-                </div>
-                {/* Desktop view of the booking details.  */}
-                {currentBookingSelected && window.innerWidth >= 768 && (
-                    <div className="hidden md:flex h-full w-3/5 p-2 mx-4 overflow-auto">
-                        <div className="hidden md:flex w-full h-full my-2">
-                            <DetailsSingleTextResponseBooking
-                                key={currentBookingSelected._id}
-                                booking={currentBookingSelected}
-                                dashboardType={dashboardType}
-                            />
+            {bookings !== null &&
+                bookings !== undefined &&
+                bookings.length > 0 && (
+                    <div className="flex w-full h-[calc(100%-4.5rem)]">
+                        {/* Preview always visible on all screen sizes  */}
+                        <div className="flex flex-col gap-2 overflow-auto h-full w-full md:w-2/5">
+                            {bookings.map((booking: any) => (
+                                <PreviewSingleTextResponseBooking
+                                    key={booking._id}
+                                    booking={booking}
+                                    dashboardType={dashboardType}
+                                />
+                            ))}
                         </div>
-                    </div>
-                )}
+                        {/* Desktop view of the booking details.  */}
+                        {currentBookingSelected && window.innerWidth >= 768 && (
+                            <div className="hidden md:flex h-full w-3/5 p-2 mx-4 overflow-auto">
+                                <div className="hidden md:flex w-full h-full my-2">
+                                    <DetailsSingleTextResponseBooking
+                                        key={currentBookingSelected._id}
+                                        booking={currentBookingSelected}
+                                        dashboardType={dashboardType}
+                                    />
+                                </div>
+                            </div>
+                        )}
 
-                {/* Mobile Modal containing booking details. */}
-                {window.innerWidth < 768 && (
-                    <div className="block md:hidden">
-                        <Modal
-                            openLocalState={modalOpen}
-                            closeButtonText="Return to Dashboard"
-                            key={currentBookingSelected._id}
-                            dashboardType={dashboardType}
-                        >
-                            <DetailsSingleTextResponseBooking
-                                key={currentBookingSelected._id}
-                                booking={currentBookingSelected}
-                                dashboardType={dashboardType}
-                            />
-                        </Modal>
+                        {/* Mobile Modal containing booking details. */}
+                        {window.innerWidth < 768 && (
+                            <div className="block md:hidden">
+                                <Modal
+                                    openLocalState={modalOpen}
+                                    closeButtonText="Return to Dashboard"
+                                    key={currentBookingSelected._id}
+                                    dashboardType={dashboardType}
+                                >
+                                    <DetailsSingleTextResponseBooking
+                                        key={currentBookingSelected._id}
+                                        booking={currentBookingSelected}
+                                        dashboardType={dashboardType}
+                                    />
+                                </Modal>
+                            </div>
+                        )}
                     </div>
                 )}
-            </div>
         </>
     );
 };
