@@ -16,7 +16,7 @@ interface DashboardInterface {
 }
 
 export default function Dashboard({ children, dashboardType }: DashboardInterface) {
-    // Get Session via useSession hook
+    // Get Session via useSession hook 
     const { data: session }: any = useSession();
     const dispatch = useAppDispatch();
 
