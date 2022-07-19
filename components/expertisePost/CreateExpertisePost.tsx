@@ -296,7 +296,7 @@ const CreateExpertisePost = () => {
                                             />
                                         </svg>
                                         <span className="mt-2 block text-sm font-medium text-gray-900">
-                                            Upload a picture by clicking &quot;Choose
+                                            Upload a picture of yourself by clicking &quot;Choose
                                             File&quot; below
                                         </span>
                                     </div>

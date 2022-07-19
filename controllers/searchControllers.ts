@@ -7,10 +7,12 @@ const searchExpertisePosts = catchAsyncErrors(
     try {
         const searchQuery = req.query.search;
 
+        const searchIndex = process.env.MONGODB_EXPERTISE_POST_SEARCH_INDEX;
+
         const agg = [
         {
             $search: {
-                index: 'expertisePostSearch',
+                index: searchIndex,
                 text: {
                     query: searchQuery,
                     path: "title",
