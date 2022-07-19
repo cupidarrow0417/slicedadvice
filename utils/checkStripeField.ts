@@ -20,7 +20,7 @@ const checkStripeField = async (
         if (next) {
             return next(
                 new ErrorHandler(
-                    `An error occurred when retrieving the Stripe account to check for the ${checkedField} field.`,
+                    `Oops! An error occurred when retrieving the Stripe account to check for the ${checkedField} field.`,
                     400
                 )
             );
