@@ -27,16 +27,16 @@ export async function getServerSideProps<GetServerSideProps>(context: any) {
         }
     }
 
-    // const isOnboarded = await checkStripeField(session.user.email, "charges_enabled", undefined)
+    const isOnboarded = await checkStripeField(session.user.email, "charges_enabled", undefined)
 
-    // if (!isOnboarded) {
-    //     return {
-    //         redirect: {
-    //             destination: "/",
-    //             permanent: false
-    //         }
-    //     }
-    // }
+    if (!isOnboarded) {
+        return {
+            redirect: {
+                destination: "/",
+                permanent: false
+            }
+        }
+    }
 
     return {
         props: { session }

@@ -1,11 +1,12 @@
 import User from "../models/user";
 import ErrorHandler from "./errorhandler";
-
+import dbConnect from "../config/dbConnect";
 const checkStripeField = async (
     email: string,
     checkedField: string,
     next: any | undefined
 ) => {
+    dbConnect();
     // Retrieve user via request (placed there during
     // the isAuthenticatedUser middleware), to retrieve
     // their Stripe account id.
