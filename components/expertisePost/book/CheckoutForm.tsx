@@ -13,13 +13,11 @@ export default function CheckoutForm() {
     const elements = useElements();
     const dispatch = useAppDispatch();
     const [isLoading, setIsLoading] = useState(false);
-
     const {
         stripePaymentIntentClientSecret,
         loading,
         error: stripePaymentIntentError,
     } = useAppSelector((state) => state.stripePaymentIntent);
-
     
     useEffect(() => {
         if (!stripe) {
@@ -67,12 +65,12 @@ export default function CheckoutForm() {
         }
 
         setIsLoading(true);
-        
+        console.log("nextauthurl", process.env.NEXT_PUBLIC_ORIGIN_URL)
         const { error } = await stripe.confirmPayment({
             elements,
             confirmParams: {
-                // Make sure to change this to your payment completion page
-                return_url: "http://localhost:3000/expertisePost/book/paymentComplete",
+                // Make sure to change this to your payment completion page,
+                return_url: `${process.env.NEXT_PUBLIC_ORIGIN_URL}/expertisePost/book/paymentComplete`,
             },
         })
 
