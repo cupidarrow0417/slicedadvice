@@ -70,9 +70,9 @@ const BookingsDashboard = ({
                     setModalOpen(true);
                 }
             } else {
-                // Add bookings query param to the url if it doesn't already exist,
-                // with the id of the first booking in the bookings global state
-                if (!queryParams.booking && bookings[0]) {
+                // For desktop mode, Add bookings query param to the url if it doesn't already exist,
+                // with the id of the first booking in the bookings global state. 
+                if (!queryParams.booking && bookings[0] && window.innerWidth >= 768) {
                     Router.push(
                         `/dashboard/${
                             dashboardType === "Advice Seeker"
