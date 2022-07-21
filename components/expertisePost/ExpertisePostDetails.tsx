@@ -14,12 +14,15 @@ import { useRouter } from "next/router";
 import CreateReviewWidget from "../CreateReviewWidget";
 import UniversalFadeAnimation from "../atoms/UniversalFadeAnimation";
 import { useSession } from "next-auth/react";
+import { loadUser } from "../../redux/actionCreators/userActions";
+import ButtonLoader from "../layout/ButtonLoader";
 
 const ExpertisePostDetails = () => {
     // Get Session via useSession hook
     const { data: session }: any = useSession();
     const dispatch = useAppDispatch();
     const { query: queryParams } = useRouter();
+    const router = useRouter();
 
     const { expertisePost, error: expertisePostError } = useAppSelector(
         (state) => state.expertisePostDetails
@@ -28,6 +31,25 @@ const ExpertisePostDetails = () => {
     const { reviews, metadata: reviewsMetadata } = useAppSelector(
         (state) => state.reviews
     );
+
+    const { user: authUser } = useAppSelector((state) => {
+        return state.auth;
+    });
+
+    const [isPostOwner, setIsPostOwner] = useState(false);
+    
+    // Checking if the logged in user is the owner of the post
+    // isPostOwner decides whether to show the update button or not
+    useEffect(() => {
+        if (authUser) {
+            if (JSON.stringify(authUser) !== JSON.stringify(expertisePost.user)) {
+                setIsPostOwner(false)
+                console.log(isPostOwner)
+            } else {
+                setIsPostOwner(true)
+            }
+        }
+    }, [authUser]);
 
     // Check if user is logged in and is the owner of this post.
     // They shouldn't be able to Send a Submission if so, of course.
@@ -102,9 +124,25 @@ const ExpertisePostDetails = () => {
                 </Head>
                 <div className="flex flex-col items-start gap-5 px-4 py-4 max-w-2xl lg:max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <Breadcrumbs pages={pages} />
-                    <h1 className="text-2xl font-semibold">
-                        {expertisePost?.title}
-                    </h1>
+
+
+                    <div className="flex justify-between w-full">
+                        <h1 className="text-2xl font-semibold">
+                            {expertisePost?.title}
+                        </h1>
+
+                        {isPostOwner &&
+                            <button
+                                type="button"
+                                className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-brand-primary-light hover:bg-brand-primary-light/90"
+                                disabled={!session ? true : false}
+                                onClick={() => router.push("/expertisePost/update/" + expertisePost._id)}
+                            >
+                                {!session ? <ButtonLoader /> : "Update Post"}
+                            </button>
+                        }
+                    </div>
+
                     <RatingsWidget
                         reviewsTotal={reviewsTotal}
                         reviewsAverage={reviewsAverage}
@@ -260,10 +298,10 @@ const ExpertisePostDetails = () => {
                                             {count.count === 0
                                                 ? 0
                                                 : Math.round(
-                                                      (count.count /
-                                                          reviewsTotal) *
-                                                          100
-                                                  )}
+                                                    (count.count /
+                                                        reviewsTotal) *
+                                                    100
+                                                )}
                                             %
                                         </dd>
                                     </div>

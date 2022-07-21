@@ -14,6 +14,9 @@ import {
     CREATE_EXPERTISE_POST_REQUEST,
     CREATE_EXPERTISE_POST_SUCCESS,
     CREATE_EXPERTISE_POST_FAIL,
+    UPDATE_EXPERTISE_POST_REQUEST,
+    UPDATE_EXPERTISE_POST_SUCCESS,
+    UPDATE_EXPERTISE_POST_FAIL,
     CLEAR_ERRORS,
 } from "../constants/expertisePostConstants";
 
@@ -26,63 +29,63 @@ import {
  */
 export const getExpertisePosts =
     (req: any = null, currentPage: Number = 1, category: string = "", expertId: string = "") =>
-    async (dispatch: any) => {
-        try {
-            const { origin } = absoluteUrl(req);
-            let link = `${origin}/api/expertisePosts?page=${currentPage}`;
-            if (category) link = link.concat(`&category=${category}`);
-            if (expertId) link = link.concat(`&expertId=${expertId}`);
-            const { data } = await axios.get(link);
+        async (dispatch: any) => {
+            try {
+                const { origin } = absoluteUrl(req);
+                let link = `${origin}/api/expertisePosts?page=${currentPage}`;
+                if (category) link = link.concat(`&category=${category}`);
+                if (expertId) link = link.concat(`&expertId=${expertId}`);
+                const { data } = await axios.get(link);
 
-            // Save the retrieved data to different global states based on category
-            if (category === "Career Growth") {
-                dispatch({
-                    type: ALL_CAREER_GROWTH_EXPERTISE_POSTS_SUCCESS,
-                    payload: data,
-                });
-            } else if (category === "College Application") {
-                dispatch({
-                    type: ALL_COLLEGE_APPLICATION_EXPERTISE_POSTS_SUCCESS,
-                    payload: data,
-                });
-            } else if (category === "Personal Development") {
-                dispatch({
-                    type: ALL_PERSONAL_DEVELOPMENT_EXPERTISE_POSTS_SUCCESS,
-                    payload: data,
-                });
-            } else {
-                // Basic general query of expertise posts.
-                dispatch({
-                    type: ALL_EXPERTISE_POSTS_SUCCESS,
-                    payload: data,
-                });
+                // Save the retrieved data to different global states based on category
+                if (category === "Career Growth") {
+                    dispatch({
+                        type: ALL_CAREER_GROWTH_EXPERTISE_POSTS_SUCCESS,
+                        payload: data,
+                    });
+                } else if (category === "College Application") {
+                    dispatch({
+                        type: ALL_COLLEGE_APPLICATION_EXPERTISE_POSTS_SUCCESS,
+                        payload: data,
+                    });
+                } else if (category === "Personal Development") {
+                    dispatch({
+                        type: ALL_PERSONAL_DEVELOPMENT_EXPERTISE_POSTS_SUCCESS,
+                        payload: data,
+                    });
+                } else {
+                    // Basic general query of expertise posts.
+                    dispatch({
+                        type: ALL_EXPERTISE_POSTS_SUCCESS,
+                        payload: data,
+                    });
+                }
+            } catch (error: any) {
+                // Dispatch errors based on advice category
+                if (category === "Career Growth") {
+                    dispatch({
+                        type: ALL_CAREER_GROWTH_EXPERTISE_POSTS_FAIL,
+                        payload: error.response.data.message,
+                    });
+                } else if (category === "College Application") {
+                    dispatch({
+                        type: ALL_COLLEGE_APPLICATION_EXPERTISE_POSTS_FAIL,
+                        payload: error.response.data.message,
+                    });
+                } else if (category === "Personal Development") {
+                    dispatch({
+                        type: ALL_PERSONAL_DEVELOPMENT_EXPERTISE_POSTS_FAIL,
+                        payload: error.response.data.message,
+                    });
+                } else {
+                    // Basic general query of expertise posts.
+                    dispatch({
+                        type: ALL_EXPERTISE_POSTS_FAIL,
+                        payload: error.response.data.message,
+                    });
+                }
             }
-        } catch (error: any) {
-            // Dispatch errors based on advice category
-            if (category === "Career Growth") {
-                dispatch({
-                    type: ALL_CAREER_GROWTH_EXPERTISE_POSTS_FAIL,
-                    payload: error.response.data.message,
-                });
-            } else if (category === "College Application") {
-                dispatch({
-                    type: ALL_COLLEGE_APPLICATION_EXPERTISE_POSTS_FAIL,
-                    payload: error.response.data.message,
-                });
-            } else if (category === "Personal Development") {
-                dispatch({
-                    type: ALL_PERSONAL_DEVELOPMENT_EXPERTISE_POSTS_FAIL,
-                    payload: error.response.data.message,
-                });
-            } else {
-                // Basic general query of expertise posts.
-                dispatch({
-                    type: ALL_EXPERTISE_POSTS_FAIL,
-                    payload: error.response.data.message,
-                });
-            }
-        }
-    };
+        };
 
 /**
  * Get the details of a single expertise post
@@ -141,6 +144,35 @@ export const createExpertisePost =
         } catch (error: any) {
             dispatch({
                 type: CREATE_EXPERTISE_POST_FAIL,
+                payload: error.response.data.message,
+            });
+        }
+    };
+
+// Update Expertise Action
+export const updateExpertisePost =
+    (id: any, postData: postDataInterface) => async (dispatch: any) => {
+        try {
+            dispatch({
+                type: UPDATE_EXPERTISE_POST_REQUEST
+            })
+
+            const config = {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }
+
+            const { data } = await axios.put(`/api/expertisePosts/${id}`, postData, config);
+            
+
+            dispatch({
+                type: UPDATE_EXPERTISE_POST_SUCCESS,
+                payload: data
+            })
+        } catch (error: any) {
+            dispatch({
+                type: UPDATE_EXPERTISE_POST_FAIL,
                 payload: error.response.data.message,
             });
         }

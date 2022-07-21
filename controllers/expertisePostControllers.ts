@@ -4,6 +4,7 @@ import ExpertisePost from "../models/expertisePost";
 import ErrorHandler from "../utils/errorhandler";
 import catchAsyncErrors from "../middlewares/catchAsyncErrors";
 import { ExpertisePostAPIFeatures } from "../utils/apiFeatures";
+import updateExpertisePost from "../components/expertisePost/UpdateExpertisePost";
 
 //Get all expertisePosts => GET /api/expertisePosts
 const allExpertisePosts = catchAsyncErrors(
@@ -110,27 +111,63 @@ const createExpertisePost = catchAsyncErrors(
 //Update single expertisePost => PUT /api/expertisePosts/:id
 const updateSingleExpertisePost = catchAsyncErrors(
     async (req: NextApiRequest, res: NextApiResponse) => {
-        let expertisePost = await ExpertisePost.findById(req.query.id);
+        let updatedExpertisePost = await ExpertisePost.findById(req.query.id);
 
-        if (!expertisePost) {
+        if (!updatedExpertisePost) {
             return res.status(404).json({
                 success: false,
                 error: "Expertise Post not found with this ID",
             });
         }
 
-        expertisePost = await ExpertisePost.findByIdAndUpdate(
+        const {
+            title,
+            description,
+            submissionTypes,
+            pricePerSubmission,
+            category,
+            image,
+            currentImage
+        } = req.body;
+
+        // console.log("CURRENT IMAGE: ");
+        // console.log(currentImage);
+
+        const result = await cloudinary.uploader.upload(req.body.image, {
+            folder: "slicedadvice/expertisePostImages",
+            width: "750",
+            crop: "scale",
+        });
+        
+        const destroy = await cloudinary.uploader.destroy(currentImage.public_id);
+        console.log(destroy);
+
+        updatedExpertisePost = await ExpertisePost.findByIdAndUpdate(
             req.query.id,
-            req.body,
+            {
+                title,
+                description,
+                images: [
+                    {
+                        public_id: result.public_id,
+                        url: result.secure_url,
+                    },
+                ],
+                submissionTypes,
+                pricePerSubmission,
+                category,
+            },
             {
                 new: true,
                 runValidators: true,
             }
         );
 
+        // console.log(updatedExpertisePost);
+
         res.status(200).json({
             success: true,
-            expertisePost,
+            updatedExpertisePostId: updatedExpertisePost._id,
         });
     }
 );

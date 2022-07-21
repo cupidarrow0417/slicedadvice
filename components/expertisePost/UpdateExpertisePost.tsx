@@ -4,15 +4,17 @@ import { toast } from "react-toastify";
 import { ChevronRightIcon, HomeIcon, StarIcon } from "@heroicons/react/solid";
 import {
     clearErrors,
-    createExpertisePost,
+    updateExpertisePost,
 } from "../../redux/actionCreators/expertisePostActions";
 
 import Image from "next/image";
 import RatingsWidget from "../atoms/RatingsWidget";
 import FormSelectMenu from "../atoms/FormSelectMenu";
-import Router from "next/router";
+import Router, { useRouter } from "next/router";
 import ButtonLoader from "../layout/ButtonLoader";
+import { loadUser } from "../../redux/actionCreators/userActions";
 import UniversalFadeAnimation from "../atoms/UniversalFadeAnimation";
+import { useSession } from "next-auth/react";
 
 // Used in form inputs, and also hard
 // coded into model schema for expertise posts.
@@ -24,15 +26,15 @@ const maxSubmissionExampleLength = 20;
 // Used for the Form Select Menu component
 const formSelectMenuOptions = [
     {
-        title: "Career Growth",
-        description:
-            "Advice that helps individuals navigate and improve their career.",
-        current: true,
-    },
-    {
         title: "College Application",
         description:
             "Advice that helps students on their college application process.",
+        current: true,
+    },
+    {
+        title: "Career Growth",
+        description:
+            "Advice that helps individuals navigate and improve their career.",
         current: false,
     },
     {
@@ -49,60 +51,113 @@ const formSelectMenuOptions = [
     // },
 ];
 
-const CreateExpertisePost = () => {
+const UpdateExpertisePost = () => {
     const dispatch = useAppDispatch();
+    const router = useRouter();
+
+    // Fetching the original expertise post
+    const { expertisePost, error: expertisePostError } = useAppSelector(
+        (state) => state.expertisePostDetails
+    );
+
+    // const { reviews, metadata: reviewsMetadata } = useAppSelector(
+    //     (state) => state.reviews
+    // );
 
     const { user: authUser } = useAppSelector((state) => {
         return state.auth;
     });
 
-    // Access global state that processes the createExpertisePost process,
+    // Checking if the logged in user is the same as the account
+    // whose posting they're updating
+    useEffect(() => {
+        if (authUser) {
+            if (
+                JSON.stringify(authUser) !== JSON.stringify(expertisePost.user)
+            ) {
+                router.push("/");
+            }
+        }
+    }, [authUser]);
+
+    // Access global state that processes the updateExpertisePost process,
     // displaying appropriate UI based on progress + errors.
     const {
         expertisePostId,
-        success: createExpertisePostSuccess,
-        error: createExpertisePostError,
-        loading: createExpertisePostLoading,
+        success: updateExpertisePostSuccess,
+        error: updateExpertisePostError,
+        loading: updateExpertisePostLoading,
     } = useAppSelector((state) => {
-        return state.createExpertisePost;
+        return state.updateExpertisePost;
     });
 
     // A post consists of a user, title, description, image, at least one submission
     // type, and a pricePerSubmission. Image is taken care of in the image local state,
     // as well as the submission type strings. The current user is inputted on submission
     // automatically.
+
+    // console.log(expertisePost.category);
     const [post, setPost] = useState({
         title: "",
         description: "",
         pricePerSubmission: "",
-        category: "Career Growth",
+        category: expertisePost.category,
     });
-    const { title, description, pricePerSubmission, category } = post;
 
-    const [image, setImage] = useState("");
-    const [imagePreview, setImagePreview] = useState("");
+    // const { title, description, pricePerSubmission, category } = post;
 
-    const [submissionType1, setSubmissionType1] = useState("");
-    const [submissionType2, setSubmissionType2] = useState("");
-    const [submissionType3, setSubmissionType3] = useState("");
+    const [title, setTitle] = useState(expertisePost.title);
+    const [categoryCurrentIndex, setCategoryCurrentIndex] = useState(
+        "" +
+            formSelectMenuOptions.findIndex(
+                (option) => option.title === expertisePost.category
+            )
+    );
+    const [description, setDescription] = useState(expertisePost.description);
+    const [pricePerSubmission, setPricePerSubmission] = useState(
+        expertisePost.pricePerSubmission
+    );
+
+    const [image, setImage] = useState(expertisePost.images[0].url);
+    const [imagePreview, setImagePreview] = useState(
+        expertisePost.images[0].url
+    );
+
+    console.log(expertisePost);
+
+    const [submissionType1, setSubmissionType1] = useState(
+        expertisePost.submissionTypes[0]
+    );
+    const [submissionType2, setSubmissionType2] = useState(
+        expertisePost.submissionTypes[1]
+    );
+    const [submissionType3, setSubmissionType3] = useState(
+        expertisePost.submissionTypes[2]
+    );
 
     const formSelectMenuInputRef = createRef<HTMLInputElement>();
 
-    // Listen to the global state of the createExpertisePost process
     useEffect(() => {
-        if (createExpertisePostError) {
-            toast.error(createExpertisePostError);
+        if (!authUser) {
+            dispatch(loadUser());
+        }
+    }, [dispatch, authUser]);
+
+    // Listen to the global state of the updateExpertisePost process
+    useEffect(() => {
+        if (updateExpertisePostError) {
+            toast.error(updateExpertisePostError);
             dispatch(clearErrors());
         }
 
-        if (createExpertisePostSuccess) {
-            toast.success("Created the expertise post successfully.");
+        if (updateExpertisePostSuccess) {
+            toast.success("Updated the expertise post successfully.");
         }
 
         if (expertisePostId) {
             Router.push(`/expertisePost/${expertisePostId}`);
         }
-    }, [createExpertisePostError, createExpertisePostSuccess]);
+    }, [updateExpertisePostError, updateExpertisePostSuccess]);
 
     // On submission of the form, process all of the accumulated
     // local state and pass it as a single object into the
@@ -110,19 +165,16 @@ const CreateExpertisePost = () => {
     const submitHandler = (e: any) => {
         e.preventDefault();
 
-        if (image === "") {
-            toast.error(
-                "Please check if you uploaded an image. Also, some problems may occur when your image was too large. Please refresh and try again with a smaller image. Sorry about that!"
-            );
-            return;
-        }
         // Combine the submission types into a list
         let submissionTypes: string[] = [];
-        submissionType1.trim() !== "" &&
+        submissionType1 &&
+            submissionType1.trim() !== "" &&
             submissionTypes.push(submissionType1.trim());
-        submissionType2.trim() !== "" &&
+        submissionType2 &&
+            submissionType2.trim() !== "" &&
             submissionTypes.push(submissionType2.trim());
-        submissionType3.trim() !== "" &&
+        submissionType3 &&
+            submissionType3.trim() !== "" &&
             submissionTypes.push(submissionType3.trim());
 
         interface postDataInterface {
@@ -134,6 +186,7 @@ const CreateExpertisePost = () => {
             image: string;
             pricePerSubmission: any;
             category: any;
+            currentImage: any;
         }
 
         let category = "";
@@ -150,23 +203,39 @@ const CreateExpertisePost = () => {
             image: image,
             pricePerSubmission,
             category,
+            currentImage: expertisePost.images[0],
         };
-        dispatch(createExpertisePost(postData));
+
+        // console.log(postData)
+        dispatch(updateExpertisePost(expertisePost._id, postData));
     };
 
     // onChange processes any of the changes in the form fields
     // and sets the local component state based off of the form field
     // values, in preparation for submission (above function)
     const onChange = (e: any) => {
+        // Tracking Changes to Title, description, pricePerSubmission and category
+        if (e.target.name === "title") {
+            setTitle(e.target.value);
+        }
+
+        if (e.target.name === "description") {
+            setDescription(e.target.value);
+        }
+
+        if (e.target.name === "pricePerSubmission") {
+            setPricePerSubmission(e.target.value);
+        }
+
+        // if(e.target.name === "category") {
+        //     setCategory(e.target.value);
+        // }
+
+        // Usual Image Changes
+
         if (e.target.name === "image") {
             const reader: any = new FileReader();
-            //https://stackoverflow.com/questions/5697605/limit-the-size-of-a-file-upload-html-input-element
-            if (e.target?.files[0].size > 3145728) {
-                toast.error(
-                    "Hey, sorry about that! For now, the image must be less than 3MB. Here's a useful website to compress images while this is being fixed: https://imagecompressor.com/"
-                );
-                return;
-            }
+
             reader.onload = () => {
                 if (reader.readyState === 2) {
                     setImage(reader.result);
@@ -210,11 +279,11 @@ const CreateExpertisePost = () => {
                     <div className="flex flex-col items-start gap-5 px-4 py-4 max-w-2xl lg:max-w-7xl mx-auto sm:px-6 lg:px-8">
                         <div className="flex flex-col gap-3 bg-brand-primary-light text-white w-full p-8 rounded-xl ">
                             <h1 className="text-xl sm:text-2xl md:text-3xl font-medium text-center">
-                                Welcome to the expertise post creation page!
+                                Welcome to the expertise post update page!
                             </h1>
                             <p className="text-sm md:text-md opacity-80 text-center">
-                                This is a preview of a post. Create your post by
-                                filling in the fields.
+                                This is a preview of your current post. Update
+                                your post by filling in the fields.
                             </p>
                         </div>
                         {/* <Breadcrumbs pages={pages} /> */}
@@ -249,7 +318,9 @@ const CreateExpertisePost = () => {
                                         inputTypeString="category"
                                         options={formSelectMenuOptions}
                                         required={true}
-                                        currentIndex={0}
+                                        currentIndex={parseInt(
+                                            categoryCurrentIndex
+                                        )}
                                         ref={formSelectMenuInputRef}
                                     />
                                 </li>
@@ -264,7 +335,7 @@ const CreateExpertisePost = () => {
                                 required
                                 maxLength={maxTitleLength}
                                 className="appearance-none block px-3 py-2 w-full border border-gray-300 rounded-md shadow-sm placeholder-gray-500 focus:outline-none focus:ring-brand-primary focus:border-brand-primary sm:text-xl"
-                                placeholder="Write your title describing your advice here..."
+                                placeholder="Modify your title describing your advice here..."
                                 value={title}
                                 onChange={onChange}
                             />
@@ -290,8 +361,8 @@ const CreateExpertisePost = () => {
                                             />
                                         </svg>
                                         <span className="mt-2 block text-sm font-medium text-gray-900">
-                                            Upload a picture of yourself by clicking &quot;Choose
-                                            File&quot; below
+                                            Upload a picture by clicking "Choose
+                                            File" below
                                         </span>
                                     </div>
                                 ) : (
@@ -314,7 +385,7 @@ const CreateExpertisePost = () => {
                                     type="file"
                                     id="file"
                                     name="image"
-                                    required
+                                    // required
                                     onChange={onChange}
                                     accept="images/*"
                                 />
@@ -333,7 +404,7 @@ const CreateExpertisePost = () => {
                                         rows={5}
                                         cols={70}
                                         className="appearance-none block px-3 py-2 w-full border border-gray-300 rounded-md shadow-sm placeholder-gray-600 focus:outline-none focus:ring-brand-primary focus:border-brand-primary sm:text-md"
-                                        placeholder="Write a detailed description describing your qualifications, experience, and the advice you want to give..."
+                                        placeholder="Modify your detailed description describing your qualifications, experience, and the advice you want to give..."
                                         value={description}
                                         onChange={onChange}
                                     />
@@ -419,8 +490,8 @@ const CreateExpertisePost = () => {
                                             </span>
                                         </div>
                                         <p className="text-sm font-light text-center opacity-60">
-                                            You&apos;ll get a response within 7 days,
-                                            or you&apos;ll never be charged.
+                                            You'll get a response within 7 days,
+                                            or you'll never be charged.
                                         </p>
                                         <button
                                             className="opacity-70 bg-brand-primary-light rounded-lg text-white w-full py-3 text-lg flex justify-center items-center"
@@ -435,16 +506,12 @@ const CreateExpertisePost = () => {
                         <button
                             type="submit"
                             className="bg-brand-primary-light mx-auto rounded-lg text-white w-full sm:w-96 py-3 text-xl flex justify-center items-center"
-                            disabled={
-                                createExpertisePostLoading || image === ""
-                                    ? true
-                                    : false
-                            }
+                            disabled={updateExpertisePostLoading ? true : false}
                         >
-                            {createExpertisePostLoading ? (
+                            {updateExpertisePostLoading ? (
                                 <ButtonLoader />
                             ) : (
-                                "Create Post"
+                                "Update Post"
                             )}
                         </button>
                     </div>
@@ -454,4 +521,4 @@ const CreateExpertisePost = () => {
     );
 };
 
-export default CreateExpertisePost;
+export default UpdateExpertisePost;
