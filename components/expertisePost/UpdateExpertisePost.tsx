@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import { ChevronRightIcon, HomeIcon, StarIcon } from "@heroicons/react/solid";
 import {
     clearErrors,
-    updateExpertisePost
+    updateExpertisePost,
 } from "../../redux/actionCreators/expertisePostActions";
 
 import Image from "next/image";
@@ -60,9 +60,9 @@ const UpdateExpertisePost = () => {
         (state) => state.expertisePostDetails
     );
 
-    const { reviews, metadata: reviewsMetadata } = useAppSelector(
-        (state) => state.reviews
-    );
+    // const { reviews, metadata: reviewsMetadata } = useAppSelector(
+    //     (state) => state.reviews
+    // );
 
     const { user: authUser } = useAppSelector((state) => {
         return state.auth;
@@ -72,8 +72,10 @@ const UpdateExpertisePost = () => {
     // whose posting they're updating
     useEffect(() => {
         if (authUser) {
-            if (JSON.stringify(authUser) !== JSON.stringify(expertisePost.user)) {
-                router.push('/');
+            if (
+                JSON.stringify(authUser) !== JSON.stringify(expertisePost.user)
+            ) {
+                router.push("/");
             }
         }
     }, [authUser]);
@@ -105,26 +107,35 @@ const UpdateExpertisePost = () => {
     // const { title, description, pricePerSubmission, category } = post;
 
     const [title, setTitle] = useState(expertisePost.title);
-    const [categoryCurrentIndex, setCategoryCurrentIndex] = useState("" + formSelectMenuOptions.findIndex((option) => option.title === expertisePost.category));
+    const [categoryCurrentIndex, setCategoryCurrentIndex] = useState(
+        "" +
+            formSelectMenuOptions.findIndex(
+                (option) => option.title === expertisePost.category
+            )
+    );
     const [description, setDescription] = useState(expertisePost.description);
-    const [pricePerSubmission, setPricePerSubmission] = useState(expertisePost.pricePerSubmission);
+    const [pricePerSubmission, setPricePerSubmission] = useState(
+        expertisePost.pricePerSubmission
+    );
 
     const [image, setImage] = useState(expertisePost.images[0].url);
-    const [imagePreview, setImagePreview] = useState(expertisePost.images[0].url);
+    const [imagePreview, setImagePreview] = useState(
+        expertisePost.images[0].url
+    );
 
     console.log(expertisePost);
 
-    const [submissionType1, setSubmissionType1] = useState(expertisePost.submissionTypes[0]);
-    const [submissionType2, setSubmissionType2] = useState(expertisePost.submissionTypes[1]);
-    const [submissionType3, setSubmissionType3] = useState(expertisePost.submissionTypes[2]);
-
-
-
-
+    const [submissionType1, setSubmissionType1] = useState(
+        expertisePost.submissionTypes[0]
+    );
+    const [submissionType2, setSubmissionType2] = useState(
+        expertisePost.submissionTypes[1]
+    );
+    const [submissionType3, setSubmissionType3] = useState(
+        expertisePost.submissionTypes[2]
+    );
 
     const formSelectMenuInputRef = createRef<HTMLInputElement>();
-
-
 
     useEffect(() => {
         if (!authUser) {
@@ -156,11 +167,14 @@ const UpdateExpertisePost = () => {
 
         // Combine the submission types into a list
         let submissionTypes: string[] = [];
-        submissionType1.trim() !== "" &&
+        submissionType1 &&
+            submissionType1.trim() !== "" &&
             submissionTypes.push(submissionType1.trim());
-        submissionType2.trim() !== "" &&
+        submissionType2 &&
+            submissionType2.trim() !== "" &&
             submissionTypes.push(submissionType2.trim());
-        submissionType3.trim() !== "" &&
+        submissionType3 &&
+            submissionType3.trim() !== "" &&
             submissionTypes.push(submissionType3.trim());
 
         interface postDataInterface {
@@ -175,7 +189,7 @@ const UpdateExpertisePost = () => {
             currentImage: any;
         }
 
-        let category = ""
+        let category = "";
         if (formSelectMenuInputRef.current) {
             category = formSelectMenuInputRef.current.value;
         }
@@ -189,7 +203,7 @@ const UpdateExpertisePost = () => {
             image: image,
             pricePerSubmission,
             category,
-            currentImage: expertisePost.images[0]
+            currentImage: expertisePost.images[0],
         };
 
         // console.log(postData)
@@ -268,8 +282,8 @@ const UpdateExpertisePost = () => {
                                 Welcome to the expertise post update page!
                             </h1>
                             <p className="text-sm md:text-md opacity-80 text-center">
-                                This is a preview of your current post. Update your post by
-                                filling in the fields.
+                                This is a preview of your current post. Update
+                                your post by filling in the fields.
                             </p>
                         </div>
                         {/* <Breadcrumbs pages={pages} /> */}
@@ -304,7 +318,9 @@ const UpdateExpertisePost = () => {
                                         inputTypeString="category"
                                         options={formSelectMenuOptions}
                                         required={true}
-                                        currentIndex={parseInt(categoryCurrentIndex)}
+                                        currentIndex={parseInt(
+                                            categoryCurrentIndex
+                                        )}
                                         ref={formSelectMenuInputRef}
                                     />
                                 </li>
