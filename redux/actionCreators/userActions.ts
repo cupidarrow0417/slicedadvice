@@ -166,37 +166,42 @@ export const resetPassword =
 
 // This action creates a Stripe Connect Express Account
 // and returns an Onboarding Link for the user.
-export const getStripeSetupPayoutsLink = () => async (dispatch: any) => {
-    try {
-        dispatch({
-            type: SETUP_PAYOUTS_LINK_REQUEST,
-        });
+export const getStripeSetupPayoutsLink =
+    (userData: { userId: string }) => async (dispatch: any) => {
+        try {
+            dispatch({
+                type: SETUP_PAYOUTS_LINK_REQUEST,
+            });
 
-        const config = {
-            headers: {
-                "Content-Type": "application/json",
-            },
-        };
-        const { data } = await axios.post(`/api/stripe/payouts/link`, config);
+            const config = {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            };
+            const { data } = await axios.post(
+                `/api/stripe/payouts/link`,
+                userData,
+                config
+            );
 
-        // Redirect Link to Connect Onboarding Successfully created
-        // Return data as payload
-        dispatch({
-            type: SETUP_PAYOUTS_LINK_SUCCESS,
-            payload: data,
-        });
-    } catch (error: any) {
-        dispatch({
-            type: SETUP_PAYOUTS_LINK_FAIL,
-            payload: error.response.data.message,
-        });
-    }
-};
+            // Redirect Link to Connect Onboarding Successfully created
+            // Return data as payload
+            dispatch({
+                type: SETUP_PAYOUTS_LINK_SUCCESS,
+                payload: data,
+            });
+        } catch (error: any) {
+            dispatch({
+                type: SETUP_PAYOUTS_LINK_FAIL,
+                payload: error.response.data.message,
+            });
+        }
+    };
 
 // This action checks and returns a specific inputted field on
 // a user's Stripe Express Account.
 export const checkStripeAccountField =
-    (field: { field: string }) => async (dispatch: any) => {
+    (postData: { userId: string, field: string }) => async (dispatch: any) => {
         try {
             dispatch({
                 type: CHECK_STRIPE_ACCOUNT_FIELD_REQUEST,
@@ -210,7 +215,7 @@ export const checkStripeAccountField =
 
             const { data } = await axios.post(
                 `/api/stripe/check`,
-                field,
+                postData,
                 config
             );
 

@@ -30,7 +30,7 @@ const SetupPayoutsAlert = () => {
 
     const dispatch = useAppDispatch();
 
-    const { user, loading: authLoading } = useAppSelector((state) => {
+    const { user: authUser, loading: authLoading } = useAppSelector((state) => {
         return state.auth;
     });
 
@@ -86,7 +86,7 @@ const SetupPayoutsAlert = () => {
 
     // Helper functions
     const submitHandler = () => {
-        dispatch(getStripeSetupPayoutsLink());
+        dispatch(getStripeSetupPayoutsLink({ userId: authUser._id }));
     };
 
     const isLoading = (...loadStates: any[]) => {
@@ -105,9 +105,9 @@ const SetupPayoutsAlert = () => {
             <div className="flex flex-col gap-5 justify-center items-center max-w-md">
                 <CashIcon className=" w-16 h-16 text-brand-primary-light" />
                 <h1 className="text-3xl text-center -mt-4">
-                    {!user?.stripeConnectId &&
+                    {!authUser?.stripeConnectId &&
                         "Setup payouts to be an expert on SlicedAdvice"}
-                    {user?.stripeConnectId &&
+                    {authUser?.stripeConnectId &&
                         !chargesEnabled &&
                         "Continue to setup payouts to be an expert on SlicedAdvice"}
                 </h1>
@@ -130,7 +130,7 @@ const SetupPayoutsAlert = () => {
                 >
                     {setupPayoutsLinkLoading ? (
                         <ButtonLoader />
-                    ) : !user?.stripeConnectId ? (
+                    ) : !authUser?.stripeConnectId ? (
                         "Setup Payouts"
                     ) : !chargesEnabled ? (
                         "Continue Setup"

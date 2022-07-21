@@ -14,7 +14,6 @@ import { useRouter } from "next/router";
 import CreateReviewWidget from "../CreateReviewWidget";
 import UniversalFadeAnimation from "../atoms/UniversalFadeAnimation";
 import { useSession } from "next-auth/react";
-import { loadUser } from "../../redux/actionCreators/userActions";
 import ButtonLoader from "../layout/ButtonLoader";
 
 const ExpertisePostDetails = () => {
@@ -32,7 +31,7 @@ const ExpertisePostDetails = () => {
         (state) => state.reviews
     );
 
-    const { user: authUser } = useAppSelector((state) => {
+    const { user: authUser, loading } = useAppSelector((state) => {
         return state.auth;
     });
 
@@ -50,12 +49,6 @@ const ExpertisePostDetails = () => {
             }
         }
     }, [authUser]);
-
-    // Check if user is logged in and is the owner of this post.
-    // They shouldn't be able to Send a Submission if so, of course.
-    const { user, loading } = useAppSelector((state) => {
-        return state.auth;
-    });
 
     let userIsOwner: boolean = false;
     if (session?.user._id === expertisePost?.user?._id) {
@@ -327,7 +320,7 @@ const ExpertisePostDetails = () => {
                                 ) : (
                                     <div className="mt-10">
                                         <CreateReviewWidget
-                                            user={user}
+                                            user={authUser}
                                             expertisePostId={expertisePost?._id}
                                         />
                                     </div>

@@ -58,7 +58,6 @@ const registerUserByCredentials = catchAsyncErrors(
 //getUserProfileById => GET /api/me/[id
 const getUserProfileById = catchAsyncErrors(
     async (req: any, res: NextApiResponse) => {
-        console.log("hello from currentUserProfile. req.query.id: ", req.query.id);
         const user = await User.findOne({
             _id: req.query.id,
         });
@@ -79,14 +78,23 @@ const getUserProfileById = catchAsyncErrors(
 //Update user profile => /api/me/update
 const updateUserProfile = catchAsyncErrors(
     async (req: any, res: NextApiResponse) => {
-        // const user = await User.findById(req.user._id);
-        const user = await User.findOne({
-            email: req.user.email,
-            name: req.user.name,
-        });
+        const user = await User.findById(req.body.userId)
 
         if (user) {
-            user.name = req.body.name;
+            if (req.body.name !== user.name) {
+                // Check if req.body.name is a duplicate username in the database of users
+                const duplicateUser = await User.findOne({
+                    name: req.body.name,
+                });
+
+                if (duplicateUser) {
+                    return res.status(400).json({
+                        message: "Username already exists, try another!",
+                    });
+                } else {
+                    user.name = req.body.name;
+                }
+            }
 
             // As of July 7th, this code should never run.
             // Email updating is not allowed, until we code in
@@ -265,7 +273,6 @@ const sendEmailVerification = catchAsyncErrors(
             }
         }
 
-
         if (user.verifiedEmail) {
             return next(
                 new ErrorHandler("User's email is already verified!", 400)
@@ -370,16 +377,11 @@ const checkDuplicateUser = catchAsyncErrors(
 // Get Stripe Setup Payouts Link => POST /api/stripe/payouts/link
 const getStripeSetupPayoutsLink = catchAsyncErrors(
     async (req: any, res: NextApiResponse, next: any) => {
-        // Retrieve user via request (placed there during
-        // the isAuthenticatedUser middleware), to first check
-        // for an existing stripe account, then eventually save
+        // Retrieve user, first check for an existing stripe account, then eventually save
         // a new stripe account id and also prepopulate
         // values in their onboarding process
-        // const user = await User.findById(req.user._id);
-        const user = await User.findOne({
-            email: req.user.email,
-            name: req.user.name,
-        });
+        console.log("req.body", req.body);
+        const user = await User.findById(req.body.userId);
 
         // Set your secret key. Remember to switch to your live secret key in production.
         // See your keys here: https://dashboard.stripe.com/apikeys
@@ -434,13 +436,8 @@ const getStripeSetupPayoutsLink = catchAsyncErrors(
 // Check stripe account field => POST /api/stripe/check
 const checkStripeAccountField = catchAsyncErrors(
     async (req: any, res: NextApiResponse, next: any) => {
-        // Retrieve user via request (placed there during
-        // the isAuthenticatedUser middleware), to retrieve
-        // their Stripe account id.
-        const user = await User.findOne({
-            email: req.user.email,
-            name: req.user.name,
-        });
+        // Retrieve user
+        const user = await User.findById(req.body.userId);
 
         // Set your secret key. Remember to switch to your live secret key in production.
         // See your keys here: https://dashboard.stripe.com/apikeys
@@ -483,14 +480,9 @@ const checkStripeAccountField = catchAsyncErrors(
 // Create Stripe Connect Login Link => POST /api/stripe/expertLoginLink
 const createStripeConnectLoginLink = catchAsyncErrors(
     async (req: any, res: NextApiResponse, next: any) => {
-        // Retrieve user via request (placed there during
-        // the isAuthenticatedUser middleware), to retrieve
-        // their Stripe account id.
-        const user = await User.findOne({
-            email: req.user.email,
-            name: req.user.name,
-        });
-        
+        // Retrieve user
+        const user = await User.findById(req.body.userId);
+
         // Set your secret key. Remember to switch to your live secret key in production.
         // See your keys here: https://dashboard.stripe.com/apikeys
         const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
@@ -506,7 +498,9 @@ const createStripeConnectLoginLink = catchAsyncErrors(
         }
 
         // Create the login link
-        const loginLink = await stripe.accounts.createLoginLink(user.stripeConnectId);
+        const loginLink = await stripe.accounts.createLoginLink(
+            user.stripeConnectId
+        );
         if (!loginLink) {
             return next(
                 new ErrorHandler(

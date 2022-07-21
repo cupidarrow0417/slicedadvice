@@ -87,19 +87,18 @@ export default function Settings() {
 
         if (isUpdated) {
             dispatch({ type: UPDATE_USER_PROFILE_RESET });
-            Router.push("/me/settings/");
+            toast.success("Profile updated successfully!");
+            // Refresh to make sure the session is reloaded with the right info.
+            setTimeout(() => {
+                window.location.href = "/me/settings/";
+            }, 1500);
         }
     }, [dispatch, isUpdated, error, authUser, userAfterUpdating]);
 
     const submitHandler = async (e: any) => {
         e.preventDefault();
-        // Firstly, check if the newly inputted username doesn't have a duplicate
-        // in the database by doing GET request to /api/auth/duplicate
-        // If it does, show error message.
-        // If it doesn't, continue.
-        const { data } = await axios.get(`/api/auth/duplicate?name=${name}`);
-        if (data.duplicateName) {
-            toast.error("Username is already taken. Try another!");
+        // Only run if authUser is loaded from getServerSideProps
+        if (!authUser) {
             return;
         }
 
@@ -113,8 +112,9 @@ export default function Settings() {
                 toast.error("Password must be at least 6 characters!");
                 return;
             }
+
             // Else, all good to go. Update user
-            dispatch(updateUserProfile({ name, email: "", password, avatar }));
+            dispatch(updateUserProfile({ userId: authUser._id, name, email: "", password, avatar }));
         } else {
             // Case where user doesn't try to change password (aka password and
             // confirmPassword are empty strings)
@@ -122,6 +122,7 @@ export default function Settings() {
             // avatar if changedAvatar === true. Else, send empty string.
             dispatch(
                 updateUserProfile({
+                    userId: authUser._id,
                     name,
                     email: "",
                     avatar: changedAvatar ? avatar : "",

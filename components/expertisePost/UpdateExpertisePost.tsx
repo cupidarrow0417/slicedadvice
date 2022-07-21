@@ -137,12 +137,6 @@ const UpdateExpertisePost = () => {
 
     const formSelectMenuInputRef = createRef<HTMLInputElement>();
 
-    useEffect(() => {
-        if (!authUser) {
-            dispatch(loadUser());
-        }
-    }, [dispatch, authUser]);
-
     // Listen to the global state of the updateExpertisePost process
     useEffect(() => {
         if (updateExpertisePostError) {

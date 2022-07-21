@@ -7,6 +7,7 @@ import { getSession } from 'next-auth/react'
 import checkStripeField from '../../../utils/checkStripeField'
 import { getExpertisePostDetails } from '../../../redux/actionCreators/expertisePostActions'
 import { getReviews } from '../../../redux/actionCreators/reviewActionCreator'
+import { loadUser } from '../../../redux/actionCreators/userActions'
 
 
 export default function ExpertisePostCreationPage() {
@@ -43,7 +44,7 @@ export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps
         }
 
         await store.dispatch(getExpertisePostDetails(req, params?.id))
-        await store.dispatch(getReviews(req, params?.id))
+        await store.dispatch(loadUser(req, session.user._id));
         return { props: { session } }
     } catch (e) {
         return { props: {} }

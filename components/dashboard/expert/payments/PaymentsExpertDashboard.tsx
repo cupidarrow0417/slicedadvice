@@ -14,7 +14,11 @@ import SetupPayoutsAlert from "../SetupPayoutsAlert";
 const PaymentsExpertDashboard = () => {
     const [loadingStripeLoginLink, setLoadingStripeLoginLink] = useState(false);
 
-    const { user, loading, error } = useAppSelector((state) => state.auth);
+    const {
+        user: authUser,
+        loading,
+        error,
+    } = useAppSelector((state) => state.auth);
 
     // Check the global state that has info on whether
     // the user has charges enabled on their Stripe.
@@ -30,7 +34,15 @@ const PaymentsExpertDashboard = () => {
     // Then, redirect the user to that link.
     const handleContinueToStripeClick = async () => {
         setLoadingStripeLoginLink(true);
-        const { data } = await axios.post("/api/stripe/expertLoginLink");
+        const { data } = await axios.post(
+            "/api/stripe/expertLoginLink",
+            { userId: authUser._id },
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }
+        );
         setLoadingStripeLoginLink(false);
         window.location.href = data.loginLink.url;
     };

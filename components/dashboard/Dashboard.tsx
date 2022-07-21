@@ -19,7 +19,7 @@ export default function Dashboard({ children, dashboardType }: DashboardInterfac
     const { data: session }: any = useSession();
     const dispatch = useAppDispatch();
 
-    const { user, loading: authLoading } = useAppSelector((state) => {
+    const { user: authUser, loading: authLoading } = useAppSelector((state) => {
         return state.auth;
     });
 
@@ -31,14 +31,15 @@ export default function Dashboard({ children, dashboardType }: DashboardInterfac
         // Check if the user has charges enabled on their Stripe
         // Connect account
         if (session) {
-            if (dashboardType === "Expert" && user?.stripeConnectId) {
-                const field: any = {
+            if (dashboardType === "Expert" && authUser?.stripeConnectId) {
+                const postData: any = {
+                    userId: authUser._id,
                     field: "charges_enabled",
                 };
-                dispatch(checkStripeAccountField(field));
+                dispatch(checkStripeAccountField(postData));
             }
         }
-    }, [user]);
+    }, [authUser]);
 
     // Check the global state that has info on whether
     // the user has charges enabled on their Stripe.

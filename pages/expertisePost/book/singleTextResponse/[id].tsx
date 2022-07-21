@@ -6,6 +6,7 @@ import { wrapper } from "../../../../redux/store";
 import Layout from "../../../../components/layout/Layout";
 import BookSingleTextResponse from "../../../../components/expertisePost/book/BookSingleTextResponse";
 import { getSession } from "next-auth/react";
+import { loadUser } from "../../../../redux/actionCreators/userActions";
 
 export default function BookSingleTextResponsePage() {
     return (
@@ -30,6 +31,7 @@ export const getServerSideProps: GetServerSideProps =
             }
 
             await store.dispatch(getExpertisePostDetails(req, params?.id));
+            await store.dispatch(loadUser(req, session.user._id));
             return { props: {} };
         } catch (e) {
             return { props: {} };
