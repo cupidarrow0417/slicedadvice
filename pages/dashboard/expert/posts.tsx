@@ -4,6 +4,7 @@ import Dashboard from "../../../components/dashboard/Dashboard";
 import PostsExpertDashboard from "../../../components/dashboard/expert/posts/PostsExpertDashboard";
 import Layout from "../../../components/layout/Layout";
 import { getExpertisePosts } from "../../../redux/actionCreators/expertisePostActions";
+import { loadUser } from "../../../redux/actionCreators/userActions";
 import { wrapper } from "../../../redux/store";
 import checkStripeField from "../../../utils/checkStripeField";
 const ExpertDashboardPostsPage = () => {
@@ -41,6 +42,7 @@ export const getServerSideProps: GetServerSideProps =
         }
         try {
             await store.dispatch(getExpertisePosts(req, undefined, undefined, session.user._id));
+            await store.dispatch(loadUser(req, session.user._id));
             return { props: { session } };
         } catch (e) {
             return { props: { session } };

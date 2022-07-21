@@ -12,7 +12,6 @@ import RatingsWidget from "../atoms/RatingsWidget";
 import FormSelectMenu from "../atoms/FormSelectMenu";
 import Router from "next/router";
 import ButtonLoader from "../layout/ButtonLoader";
-import { loadUser } from "../../redux/actionCreators/userActions";
 import UniversalFadeAnimation from "../atoms/UniversalFadeAnimation";
 
 // Used in form inputs, and also hard
@@ -88,12 +87,6 @@ const CreateExpertisePost = () => {
     const [submissionType3, setSubmissionType3] = useState("");
 
     const formSelectMenuInputRef = createRef<HTMLInputElement>();
-
-    useEffect(() => {
-        if (!authUser) {
-            dispatch(loadUser());
-        }
-    }, [dispatch, authUser]);
 
     // Listen to the global state of the createExpertisePost process
     useEffect(() => {

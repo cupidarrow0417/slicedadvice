@@ -55,13 +55,20 @@ const registerUserByCredentials = catchAsyncErrors(
     }
 );
 
-//Current user profile => /api/me
-const currentUserProfile = catchAsyncErrors(
+//getUserProfileById => GET /api/me/[id
+const getUserProfileById = catchAsyncErrors(
     async (req: any, res: NextApiResponse) => {
+        console.log("hello from currentUserProfile. req.query.id: ", req.query.id);
         const user = await User.findOne({
-            email: req.user.email,
-            name: req.user.name,
+            _id: req.query.id,
         });
+
+        if (!user) {
+            return res.status(404).json({
+                message: "User not found",
+            });
+        }
+
         res.status(200).json({
             success: true,
             user,
@@ -517,7 +524,7 @@ const createStripeConnectLoginLink = catchAsyncErrors(
 
 export {
     registerUserByCredentials,
-    currentUserProfile,
+    getUserProfileById,
     updateUserProfile,
     forgotPassword,
     resetPassword,

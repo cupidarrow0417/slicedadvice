@@ -35,9 +35,7 @@ const PaymentsExpertDashboard = () => {
         window.location.href = data.loginLink.url;
     };
 
-    return checkStripeAccountFieldLoading ? (
-        <Loader />
-    ) : (
+    return (
         <>
             {/* Page title & actions */}
             <section className="bg-white px-4 py-4 flex items-center justify-between sm:px-6 rounded-t-xl lg:rounded-tl-none lg:px-8 border-b-[1px] border-black/10">
@@ -48,34 +46,40 @@ const PaymentsExpertDashboard = () => {
             </section>
             {/* Page content */}
             <div className="flex justify-center items-center rounded-xlbg-white w-full p-9">
-                {!chargesEnabled ? (
-                    <SetupPayoutsAlert />
+                {checkStripeAccountFieldLoading ? (
+                    <Loader />
                 ) : (
-                    <div className="flex flex-col gap-5 justify-center items-center max-w-md">
-                        <CashIcon className=" w-16 h-16 text-brand-primary-light" />
-                        <h1 className="text-3xl text-center -mt-4">
-                            Continue to Stripe to manage your payments
-                        </h1>
-                        <p className="text-sm opacity-60 text-center ">
-                            SlicedAdvice partners with Stripe to transfer
-                            earnings to your bank account.
-                        </p>
-                        <button
-                            onClick={handleContinueToStripeClick}
-                            className="bg-brand-primary-light rounded-lg text-white w-full py-3 text-lg flex justify-center items-center"
-                            disabled={loadingStripeLoginLink}
-                        >
-                            {loadingStripeLoginLink ? (
-                                <ButtonLoader />
-                            ) : (
-                                "Continue to Stripe"
-                            )}
-                        </button>
-                        <p className="text-xs opacity-60 text-center ">
-                            You&apos;ll be redirected to Stripe to manage your
-                            payments.
-                        </p>
-                    </div>
+                    <>
+                        {!chargesEnabled && !checkStripeAccountFieldLoading ? (
+                            <SetupPayoutsAlert />
+                        ) : (
+                            <div className="flex flex-col gap-5 justify-center items-center max-w-md">
+                                <CashIcon className=" w-16 h-16 text-brand-primary-light" />
+                                <h1 className="text-3xl text-center -mt-4">
+                                    Continue to Stripe to manage your payments
+                                </h1>
+                                <p className="text-sm opacity-60 text-center ">
+                                    SlicedAdvice partners with Stripe to
+                                    transfer earnings to your bank account.
+                                </p>
+                                <button
+                                    onClick={handleContinueToStripeClick}
+                                    className="bg-brand-primary-light rounded-lg text-white w-full py-3 text-lg flex justify-center items-center"
+                                    disabled={loadingStripeLoginLink}
+                                >
+                                    {loadingStripeLoginLink ? (
+                                        <ButtonLoader />
+                                    ) : (
+                                        "Continue to Stripe"
+                                    )}
+                                </button>
+                                <p className="text-xs opacity-60 text-center ">
+                                    You&apos;ll be redirected to Stripe to
+                                    manage your payments.
+                                </p>
+                            </div>
+                        )}
+                    </>
                 )}
             </div>
         </>

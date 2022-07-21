@@ -2,7 +2,6 @@ import { Fragment, useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {
     checkStripeAccountField,
-    loadUser,
 } from "../../redux/actionCreators/userActions";
 import UniversalFadeAnimation from "../atoms/UniversalFadeAnimation";
 import ExpertDashboardSidebar from "./expert/ExpertDashboardSidebar";

@@ -6,7 +6,6 @@ import { toast } from "react-toastify";
 import {
     checkStripeAccountField,
     getStripeSetupPayoutsLink,
-    loadUser,
 } from "../../../redux/actionCreators/userActions";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import ButtonLoader from "../../layout/ButtonLoader";
@@ -52,13 +51,6 @@ const SetupPayoutsAlert = () => {
     } = useAppSelector((state) => {
         return state.stripeSetupPayoutsLink;
     });
-
-    useEffect(() => {
-        if (!user) {
-            console.log("hello from useEffect")
-            dispatch(loadUser());
-        }
-    }, [dispatch, user]);
 
     // Use effect that checks status of the charges_enabled field, called above.
     // End goal is to figure out whether charges are enabled. The chargesEnabled

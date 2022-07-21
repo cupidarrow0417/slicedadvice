@@ -1,4 +1,5 @@
 import axios from "axios";
+import absoluteUrl from "next-absolute-url";
 import {
     REGISTER_USER_REQUEST,
     REGISTER_USER_SUCCESS,
@@ -53,11 +54,14 @@ import {
 // };
 
 //Load user
-export const loadUser = () => async (dispatch: any) => {
+export const loadUser = (req: any, userId: any) => async (dispatch: any) => {
     try {
         dispatch({ type: LOAD_USER_REQUEST });
+        const { origin } = absoluteUrl(req);
 
-        const { data } = await axios.get(`/api/me`);
+        // STOPPED HERE. I THINK ADDING IN ORIGIN IS PROBABLY SUPER IMPORTANT?
+        // NEED TO DO MORE THOUGH. SESSION ISN"T BEING FOUND FOR SOME REASON.
+        const { data } = await axios.get(`${origin}/api/me/${userId}`);
 
         dispatch({
             type: LOAD_USER_SUCCESS,

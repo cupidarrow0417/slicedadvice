@@ -9,7 +9,7 @@ import Footer from "./Footer"
 
 const Layout = ({children, title = 'SlicedAdvice - Marketplace for Bite-Sized Expert Advice'}: any) => {
   return (
-    <div className="bg-brand-bg-light px-2 sm:px-6 md:px-8 md:py-4 lg:px-10 overflow-clip">
+    <div className="bg-brand-bg-light px-2 sm:px-6 md:px-8 md:py-4 lg:px-10 overflow-hidden">
         <Head>
             <title>{title}</title>
             <meta charSet="utf-8" />

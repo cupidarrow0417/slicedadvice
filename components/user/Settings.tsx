@@ -7,7 +7,6 @@ import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {
     updateUserProfile,
     clearErrors,
-    loadUser,
 } from "../../redux/actionCreators/userActions";
 import { UPDATE_USER_PROFILE_RESET } from "../../redux/constants/userConstants";
 
@@ -58,13 +57,6 @@ export default function Settings() {
         user: userAfterUpdating,
         loading: userLoading,
     } = useAppSelector((state) => state.user);
-
-    // Load full user immediately.
-    useEffect(() => {
-        if (!authUser) {
-            dispatch(loadUser());
-        }
-    }, [dispatch, authUser]);
 
     useEffect(() => {
         // After updating, set frontend user state to match new

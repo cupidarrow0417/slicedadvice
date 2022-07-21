@@ -3,6 +3,7 @@ import { getSession } from "next-auth/react";
 import Dashboard from "../../../components/dashboard/Dashboard";
 import PaymentsExpertDashboard from "../../../components/dashboard/expert/payments/PaymentsExpertDashboard";
 import Layout from "../../../components/layout/Layout";
+import { loadUser } from "../../../redux/actionCreators/userActions";
 import { wrapper } from "../../../redux/store";
 const ExpertDashboardPaymentsPage = () => {
     return (
@@ -16,7 +17,7 @@ const ExpertDashboardPaymentsPage = () => {
 
 export const getServerSideProps: GetServerSideProps =
     wrapper.getServerSideProps((store) => async ({ req }) => {
-        const session = await getSession({ req });
+        const session: any = await getSession({ req });
 
         if (!session) {
             return {
@@ -27,7 +28,7 @@ export const getServerSideProps: GetServerSideProps =
             };
         }
         try {
-            // await store.dispatch(getExpertisePosts(req));
+            await store.dispatch(loadUser(req, session.user._id));
             return { props: { session } };
         } catch (e) {
             return { props: { session } };

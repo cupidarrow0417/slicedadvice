@@ -14,7 +14,6 @@ import { useRouter } from "next/router";
 import CreateReviewWidget from "../CreateReviewWidget";
 import UniversalFadeAnimation from "../atoms/UniversalFadeAnimation";
 import { useSession } from "next-auth/react";
-import { loadUser } from "../../redux/actionCreators/userActions";
 
 const ExpertisePostDetails = () => {
     // Get Session via useSession hook
@@ -35,12 +34,6 @@ const ExpertisePostDetails = () => {
     const { user, loading } = useAppSelector((state) => {
         return state.auth;
     });
-
-    useEffect(() => {
-        if (session && !user) {
-            dispatch(loadUser());
-        }
-    }, [dispatch, user, session]);
 
     let userIsOwner: boolean = false;
     if (session?.user._id === expertisePost?.user?._id) {
