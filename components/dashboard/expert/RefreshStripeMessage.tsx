@@ -68,7 +68,7 @@ const RefreshStripeMessage = () => {
         if (chargesEnabled === false) {
             // Charges not enabled yet, so create new account link and
             // redirect the user automatically
-            dispatch(getStripeSetupPayoutsLink());
+            dispatch(getStripeSetupPayoutsLink({ userId: user._id }));
         }
 
         if (chargesEnabled === true) {
