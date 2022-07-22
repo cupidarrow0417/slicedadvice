@@ -96,7 +96,7 @@ const DetailsSingleTextResponseBooking = ({
             </div>
             <div className="flex flex-col gap-2">
                 <div className="flex justify-between items-center gap-4">
-                    <h1 className="text-md">
+                    <h1 className="text-sm md:text-md">
                         {/* Display different text depending on the booking type  */}
                         {dashboardType === "Advice Seeker"
                             ? `Your submission`
@@ -110,7 +110,7 @@ const DetailsSingleTextResponseBooking = ({
                     >
                         <a
                             target="_blank"
-                            className="text-xs max-w-[10rem] sm:max-w-[13rem] opacity-60 hover:opacity-100 overflow-scroll whitespace-nowrap"
+                            className="text-xs max-w-[8rem] sm:max-w-[13rem] opacity-60 hover:opacity-100 overflow-scroll whitespace-nowrap"
                         >
                             Expertise Post: {booking?.expertisePost?.title}
                         </a>
@@ -129,15 +129,14 @@ const DetailsSingleTextResponseBooking = ({
                 >
                     {booking?.singleTextResponse?.customerSubmission}
                 </div>
-
-                {/* Display the expert response */}
-                <h1 className="text-md">Expert&apos;s Response</h1>
-                {dashboardType === "Advice Seeker" && (
-                    <div className="w-full h-60 sm:h-72 border border-black/10 font-light leading-relaxed p-4 rounded-lg overflow-auto">
-                        {booking?.singleTextResponse?.expertResponse}
-                    </div>
-                )}
             </div>
+            {/* Display the expert response */}
+            <h1 className="text-md -mb-2">Expert&apos;s Response</h1>
+            {dashboardType === "Advice Seeker" && (
+                <div className="b w-full h-60 sm:h-72 border border-black/10 font-light leading-relaxed p-4 rounded-lg overflow-auto">
+                    {booking?.singleTextResponse?.expertResponse}
+                </div>
+            )}
 
             {/* If the dashboardType is Expert, display the textarea for expert input,
                 and a reactive button that changes values based on the expert's response, 
@@ -161,8 +160,10 @@ const DetailsSingleTextResponseBooking = ({
                                     : textResponse
                             }
                             disabled={
-                                (bookingsMetadata.loading ||
-                                booking?.status === "Completed") ? true : false
+                                bookingsMetadata.loading ||
+                                booking?.status === "Completed"
+                                    ? true
+                                    : false
                             }
                             onChange={(e) => setTextResponse(e.target.value)}
                         />
