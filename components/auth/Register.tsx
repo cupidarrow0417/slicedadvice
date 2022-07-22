@@ -421,7 +421,8 @@ const Register = () => {
                                             id="formFile"
                                             name="avatar"
                                             onChange={onChange}
-                                            accept="images/*"
+                                            accept="image/*"
+                                            capture="user"
                                         />
                                     </div>
                                 </div>

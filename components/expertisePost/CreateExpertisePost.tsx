@@ -316,7 +316,8 @@ const CreateExpertisePost = () => {
                                     name="image"
                                     required
                                     onChange={onChange}
-                                    accept="images/*"
+                                    accept="image/*"
+                                    capture="user"
                                 />
                             </div>
                             <div className="flex flex-col gap-5 self-start w-full h-full md:max-w-2xl mx-auto">

@@ -381,7 +381,7 @@ const UpdateExpertisePost = () => {
                                     name="image"
                                     // required
                                     onChange={onChange}
-                                    accept="images/*"
+                                    accept="image/*"
                                 />
                             </div>
                             <div className="flex flex-col gap-5 self-start w-full h-full md:max-w-2xl mx-auto">
