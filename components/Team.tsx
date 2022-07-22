@@ -34,7 +34,7 @@ const people = [
     {
         name: "Wesley Le",
         role: "Marketing Intern",
-        image: "/images/team/WesleyPicture.jpg",
+        image: "/images/team/WesleyPicture.png",
         bio: "Hi! I'm Wesley, rising junior at Texas A&M and marketing intern for SlicedAdvice. I help with outreach, social media, and marketing ideation.",
         linkedinUrl: null,
     },

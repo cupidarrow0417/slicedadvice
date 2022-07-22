@@ -96,11 +96,11 @@ export default function Home() {
                         <div className="mt-6 grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:grid-rows-2 sm:gap-x-6 lg:gap-8">
                             <div className="group aspect-w-2 aspect-h-1 rounded-lg overflow-hidden sm:aspect-h-1 sm:aspect-w-1 sm:row-span-2">
                                 <Image
-                                    src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1932&q=80"
+                                    src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1932&q=20"
                                     alt="A public speaker speaking to his audience about growing their career."
                                     className="object-center object-cover group-hover:opacity-75"
-                                    width={1932}
-                                    height={1292}
+                                    width={500}
+                                    height={500}
                                 />
                                 <div
                                     aria-hidden="true"
@@ -127,11 +127,11 @@ export default function Home() {
                             </div>
                             <div className="group aspect-w-2 aspect-h-1 rounded-lg overflow-hidden sm:relative sm:aspect-none sm:h-full">
                                 <Image
-                                    src="https://images.unsplash.com/photo-1627556704290-2b1f5853ff78?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
+                                    src="https://images.unsplash.com/photo-1627556704290-2b1f5853ff78?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=20"
                                     alt="A group of recent graduates throwing their caps in the air."
                                     className="object-center object-cover group-hover:opacity-75 sm:absolute sm:inset-0 sm:w-full sm:h-full"
-                                    width={1470}
-                                    height={1470}
+                                    width={500}
+                                    height={500}
                                 />
                                 <div
                                     aria-hidden="true"
@@ -158,11 +158,11 @@ export default function Home() {
                             </div>
                             <div className="group aspect-w-2 aspect-h-1 rounded-lg overflow-hidden sm:relative sm:aspect-none sm:h-full">
                                 <Image
-                                    src="https://images.unsplash.com/photo-1581404917879-53e19259fdda?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1469&q=80"
+                                    src="https://images.unsplash.com/photo-1581404917879-53e19259fdda?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1469&q=20"
                                     alt="A group of women smiling together."
                                     className="object-center object-cover group-hover:opacity-75 sm:absolute sm:inset-0 sm:w-full sm:h-full"
-                                    width={1469}
-                                    height={1469}
+                                    width={500}
+                                    height={500}
                                 />
                                 <div
                                     aria-hidden="true"
@@ -205,11 +205,11 @@ export default function Home() {
                     <div className="relative bg-gray-800 py-32 px-6 sm:py-40 sm:px-12 lg:px-16">
                         <div className="absolute inset-0 overflow-hidden">
                             <Image
-                                src="https://images.unsplash.com/photo-1535227798054-e4373ef3795a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1462&q=80"
+                                src="https://images.unsplash.com/photo-1535227798054-e4373ef3795a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1462&q=20"
                                 alt=""
                                 className="w-full h-full object-center object-cover"
-                                width={1462}
-                                height={1462}
+                                width={500}
+                                height={500}
                             />
                         </div>
                         <div
@@ -373,7 +373,7 @@ export default function Home() {
                                                 <div className="flex-shrink-0">
                                                     <Image
                                                         className="h-64 w-64 rounded-lg object-cover md:h-72 md:w-72"
-                                                        src="https://images.unsplash.com/photo-1607990283143-e81e7a2c9349?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2882&q=80"
+                                                        src="https://images.unsplash.com/photo-1607990283143-e81e7a2c9349?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2882&q=20"
                                                         alt=""
                                                         height={256}
                                                         width={256}
@@ -383,7 +383,7 @@ export default function Home() {
                                                 <div className="mt-6 flex-shrink-0 sm:mt-0">
                                                     <Image
                                                         className="h-64 w-64 rounded-lg object-cover md:h-72 md:w-72"
-                                                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
+                                                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=10"
                                                         alt=""
                                                         height={256}
                                                         width={256}
@@ -394,7 +394,7 @@ export default function Home() {
                                                 <div className="flex-shrink-0">
                                                     <Image
                                                         className="h-64 w-64 rounded-lg object-cover md:h-72 md:w-72"
-                                                        src="https://images.unsplash.com/photo-1639747277258-28312ae9505b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+                                                        src="https://images.unsplash.com/photo-1639747277258-28312ae9505b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=10"
                                                         alt=""
                                                         height={256}
                                                         width={256}
@@ -404,7 +404,7 @@ export default function Home() {
                                                 <div className="mt-6 flex-shrink-0 sm:mt-0">
                                                     <Image
                                                         className="h-64 w-64 rounded-lg object-cover md:h-72 md:w-72"
-                                                        src="https://images.unsplash.com/photo-1556157382-97eda2d62296?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
+                                                        src="https://images.unsplash.com/photo-1556157382-97eda2d62296?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=10"
                                                         alt=""
                                                         height={256}
                                                         width={256}
@@ -415,7 +415,7 @@ export default function Home() {
                                                 <div className="flex-shrink-0">
                                                     <Image
                                                         className="h-64 w-64 rounded-lg object-cover md:h-72 md:w-72"
-                                                        src="https://images.unsplash.com/photo-1629425733761-caae3b5f2e50?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+                                                        src="https://images.unsplash.com/photo-1629425733761-caae3b5f2e50?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=10"
                                                         alt=""
                                                         height={256}
                                                         width={256}
@@ -425,7 +425,7 @@ export default function Home() {
                                                 <div className="mt-6 flex-shrink-0 sm:mt-0">
                                                     <Image
                                                         className="h-64 w-64 rounded-lg object-cover md:h-72 md:w-72"
-                                                        src="https://images.unsplash.com/photo-1589386417686-0d34b5903d23?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
+                                                        src="https://images.unsplash.com/photo-1589386417686-0d34b5903d23?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=10"
                                                         alt=""
                                                         height={256}
                                                         width={256}
