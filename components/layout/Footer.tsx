@@ -1,7 +1,7 @@
 import { SVGProps } from "react";
 import Image from "next/image";
 
-import SlicedAdviceLogoBlack from "../../public/images/SlicedAdviceLogoBlack.svg";
+import SlicedAdviceLogoTransparent from "../../public/images/SlicedAdviceLogoTransparent.svg";
 import Link from "next/link";
 const navigation = {
     product: [
@@ -85,7 +85,7 @@ export default function Footer() {
                         <Link href="/">
                             <a>
                                 <Image
-                                    src={SlicedAdviceLogoBlack}
+                                    src={SlicedAdviceLogoTransparent}
                                     width={197}
                                     height={47}
                                     alt="SlicedAdvice Logo"
