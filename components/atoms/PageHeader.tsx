@@ -1,5 +1,6 @@
 import Link from "next/link";
 import React from "react";
+import Image from "next/future/image"
 
 interface PageHeaderInterface {
     heroPhrase: string;
@@ -36,56 +37,77 @@ const PageHeader = ({
                                     <div className="flex items-center space-x-6 lg:space-x-8">
                                         <div className="flex-shrink-0 grid grid-cols-1 gap-y-6 lg:gap-y-8">
                                             <div className="w-44 h-64 rounded-lg overflow-hidden sm:opacity-0 lg:opacity-100">
-                                                <img
+                                                <Image
                                                     src="https://images.unsplash.com/photo-1607990283143-e81e7a2c9349?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2882&q=80"
                                                     alt=""
                                                     className="w-full h-full object-center object-cover"
+                                                    width={2882}
+                                                    height={2882}
+                                                    priority={true}
                                                 />
                                             </div>
                                             <div className="w-44 h-64 rounded-lg overflow-hidden">
-                                                <img
+                                                <Image
                                                     src="https://images.unsplash.com/photo-1573496799515-eebbb63814f2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1469&q=80"
                                                     alt=""
                                                     className="w-full h-full object-center object-cover"
+                                                    width={1469}
+                                                    height={1469}
+                                                    priority={true}
                                                 />
                                             </div>
                                         </div>
                                         <div className="flex-shrink-0 grid grid-cols-1 gap-y-6 lg:gap-y-8">
                                             <div className="w-44 h-64 rounded-lg overflow-hidden">
-                                                <img
+                                                <Image
                                                     src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
                                                     alt=""
                                                     className="w-full h-full object-center object-cover"
+                                                    width={1470}
+                                                    height={1470}
+                                                    priority={true}
                                                 />
                                             </div>
                                             <div className="w-44 h-64 rounded-lg overflow-hidden">
-                                                <img
+                                                <Image
                                                     src="https://images.unsplash.com/photo-1639747277258-28312ae9505b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
                                                     alt=""
                                                     className="w-full h-full object-center object-cover"
+                                                    width={687}
+                                                    height={687}
+                                                    priority={true}
                                                 />
                                             </div>
                                             <div className="w-44 h-64 rounded-lg overflow-hidden">
-                                                <img
+                                                <Image
                                                     src="https://images.unsplash.com/photo-1556157382-97eda2d62296?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
                                                     alt=""
                                                     className="w-full h-full object-center object-cover"
+                                                    width={1470}
+                                                    height={1470}
+                                                    priority={true}
                                                 />
                                             </div>
                                         </div>
                                         <div className="flex-shrink-0 grid grid-cols-1 gap-y-6 lg:gap-y-8">
                                             <div className="w-44 h-64 rounded-lg overflow-hidden">
-                                                <img
+                                                <Image
                                                     src="https://images.unsplash.com/photo-1629425733761-caae3b5f2e50?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
                                                     alt=""
                                                     className="w-full h-full object-center object-cover"
+                                                    width={687}
+                                                    height={687}
+                                                    priority={true}
                                                 />
                                             </div>
                                             <div className="w-44 h-64 rounded-lg overflow-hidden">
-                                                <img
+                                                <Image
                                                     src="https://images.unsplash.com/photo-1589386417686-0d34b5903d23?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
                                                     alt=""
                                                     className="w-full h-full object-center object-cover"
+                                                    width={1470}
+                                                    height={1470}
+                                                    priority={true}
                                                 />
                                             </div>
                                         </div>

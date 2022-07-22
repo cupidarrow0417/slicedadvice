@@ -50,7 +50,7 @@ const RefreshStripeMessage = () => {
                 Router.push("/dashboard/expert/home");
             }
         }
-    }, [user]);
+    }, [dispatch, user]);
 
     // Use effect that checks status of the charges_enabled field.
     // End goal is to either dispatch the getStripeSetupPayoutsLink
@@ -77,6 +77,8 @@ const RefreshStripeMessage = () => {
             Router.push("/dashboard/expert/home");
         }
     }, [
+        dispatch, 
+        user._id,
         checkStripeAccountFieldError,
         checkStripeAccountFieldSuccess,
         chargesEnabled,

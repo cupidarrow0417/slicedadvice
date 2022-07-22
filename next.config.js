@@ -2,7 +2,12 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ['res.cloudinary.com', 'images.unsplash.com', "lh3.googleusercontent.com"],
+    domains: ['res.cloudinary.com', 'images.unsplash.com', "lh3.googleusercontent.com", "tailwindui.com"],
+  },
+  experimental: {
+    images: {
+      allowFutureImage: true,
+    }
   }
 }
 

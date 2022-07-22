@@ -24,7 +24,7 @@ const ResetPassword = () => {
         if (success) {
             router.push("/login");
         }
-    }, [dispatch, error, success]);
+    }, [dispatch, error, success, router]);
 
     const submitHandler = (e: any) => {
         e.preventDefault();

@@ -98,6 +98,7 @@ const Login = () => {
                         >
                             <Image
                                 src="/images/googlelogo.png"
+                                alt="Google Logo"
                                 width={20}
                                 height={20}
                             />

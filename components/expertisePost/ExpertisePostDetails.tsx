@@ -6,12 +6,12 @@ import { StarIcon } from "@heroicons/react/solid";
 import { clearErrors } from "../../redux/actionCreators/expertisePostActions";
 
 import Breadcrumbs from "../atoms/Breadcrumbs";
-import Image from "next/image";
+import Image from "next/future/image";
 import RatingsWidget from "../atoms/RatingsWidget";
 import Loader from "../layout/Loader";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import CreateReviewWidget from "../CreateReviewWidget";
+import CreateReviewWidget from "../atoms/CreateReviewWidget";
 import UniversalFadeAnimation from "../atoms/UniversalFadeAnimation";
 import { useSession } from "next-auth/react";
 import ButtonLoader from "../layout/ButtonLoader";
@@ -36,19 +36,21 @@ const ExpertisePostDetails = () => {
     });
 
     const [isPostOwner, setIsPostOwner] = useState(false);
-    
+
     // Checking if the logged in user is the owner of the post
     // isPostOwner decides whether to show the update button or not
     useEffect(() => {
         if (authUser) {
-            if (JSON.stringify(authUser) !== JSON.stringify(expertisePost.user)) {
-                setIsPostOwner(false)
-                console.log(isPostOwner)
+            if (
+                JSON.stringify(authUser) !== JSON.stringify(expertisePost.user)
+            ) {
+                setIsPostOwner(false);
+                console.log(isPostOwner);
             } else {
-                setIsPostOwner(true)
+                setIsPostOwner(true);
             }
         }
-    }, [authUser]);
+    }, [expertisePost.user, isPostOwner, authUser]);
 
     let userIsOwner: boolean = false;
     if (session?.user._id === expertisePost?.user?._id) {
@@ -107,7 +109,7 @@ const ExpertisePostDetails = () => {
             toast.error(reviewsMetadata.error);
             dispatch(clearErrors());
         }
-    }, [reviewsMetadata.error]);
+    }, [dispatch, reviewsMetadata.error]);
 
     return (
         <div className="">
@@ -118,23 +120,25 @@ const ExpertisePostDetails = () => {
                 <div className="flex flex-col items-start gap-5 px-4 py-4 max-w-2xl lg:max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <Breadcrumbs pages={pages} />
 
-
                     <div className="flex justify-between w-full">
                         <h1 className="text-2xl font-semibold">
                             {expertisePost?.title}
                         </h1>
-
-                        {isPostOwner &&
-                            <button
-                                type="button"
-                                className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-brand-primary-light hover:bg-brand-primary-light/90"
-                                disabled={!session ? true : false}
-                                onClick={() => router.push("/expertisePost/update/" + expertisePost._id)}
-                            >
-                                {!session ? <ButtonLoader /> : "Update Post"}
-                            </button>
-                        }
                     </div>
+                    {isPostOwner && (
+                        <button
+                            type="button"
+                            className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-brand-primary-light hover:bg-brand-primary-light/90"
+                            disabled={!session ? true : false}
+                            onClick={() =>
+                                router.push(
+                                    "/expertisePost/update/" + expertisePost._id
+                                )
+                            }
+                        >
+                            {!session ? <ButtonLoader /> : "Update Post"}
+                        </button>
+                    )}
 
                     <RatingsWidget
                         reviewsTotal={reviewsTotal}
@@ -146,10 +150,9 @@ const ExpertisePostDetails = () => {
                             {expertisePost?.images[0] && (
                                 <Image
                                     src={expertisePost?.images[0].url}
-                                    layout="responsive"
-                                    width={1.5}
-                                    height={1}
-                                    className="object-cover"
+                                    width={1200}
+                                    height={800}
+                                    className="object-cover w-full h-72 lg:h-96 rounded-xl"
                                     alt="Picture for expertise posting"
                                 />
                             )}
@@ -191,8 +194,8 @@ const ExpertisePostDetails = () => {
                                         </span>
                                     </div>
                                     <p className="text-sm font-light text-center opacity-60">
-                                        You&apos;ll get a response within 7 days, or
-                                        you&apos;ll never be charged.
+                                        You&apos;ll get a response within 7
+                                        days, or you&apos;ll never be charged.
                                     </p>
                                     {loading ? (
                                         <Loader />
@@ -291,10 +294,10 @@ const ExpertisePostDetails = () => {
                                             {count.count === 0
                                                 ? 0
                                                 : Math.round(
-                                                    (count.count /
-                                                        reviewsTotal) *
-                                                    100
-                                                )}
+                                                      (count.count /
+                                                          reviewsTotal) *
+                                                          100
+                                                  )}
                                             %
                                         </dd>
                                     </div>
@@ -339,7 +342,7 @@ const ExpertisePostDetails = () => {
                                 {reviews?.map((review: any) => (
                                     <div key={review._id} className="py-12">
                                         <div className="flex items-center">
-                                            <img
+                                            <Image
                                                 src={review.user.avatar.url}
                                                 alt={`${review.user}.`}
                                                 className="h-12 w-12 rounded-full"

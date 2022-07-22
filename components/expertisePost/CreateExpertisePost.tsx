@@ -102,7 +102,7 @@ const CreateExpertisePost = () => {
         if (expertisePostId) {
             Router.push(`/expertisePost/${expertisePostId}`);
         }
-    }, [createExpertisePostError, createExpertisePostSuccess]);
+    }, [dispatch, expertisePostId, createExpertisePostError, createExpertisePostSuccess]);
 
     // On submission of the form, process all of the accumulated
     // local state and pass it as a single object into the

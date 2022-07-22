@@ -1,5 +1,5 @@
 import { Transition, Dialog, Tab, Popover, Menu } from "@headlessui/react";
-import Image from "next/image";
+import Image from "next/future/image";
 import {
     GlobeIcon,
     ViewGridIcon,
@@ -12,7 +12,7 @@ import {
 } from "@heroicons/react/solid";
 import { signOut, useSession } from "next-auth/react";
 import { toast } from "react-toastify";
-import SearchBar from "../SearchBar";
+import SearchBar from "../atoms/SearchBar";
 import Link from "next/link";
 import React, { Fragment, useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
@@ -202,10 +202,12 @@ const TopNav = () => {
                                                     className="group relative text-sm"
                                                 >
                                                     <div className="aspect-w-1 aspect-h-1 rounded-lg bg-gray-100 overflow-hidden group-hover:opacity-75">
-                                                        <img
+                                                        <Image
                                                             src={item.imageSrc}
                                                             alt={item.imageAlt}
                                                             className="object-center object-cover"
+                                                            width={1932}
+                                                            height={1932}
                                                         />
                                                     </div>
                                                     <Link href={item.href}>
@@ -376,9 +378,12 @@ const TopNav = () => {
                                         <span className="sr-only">
                                             Open user menu
                                         </span>
-                                        <img
+                                        <Image
                                             className="h-8 w-8 rounded-full"
                                             src={session.user.image}
+                                            alt="User Profile Picture"
+                                            width={32}
+                                            height={32}
                                         />
                                     </Menu.Button>
                                 </div>

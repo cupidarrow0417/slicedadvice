@@ -3,6 +3,7 @@ import { CheckIcon, SearchIcon, SelectorIcon, ArrowLeftIcon } from "@heroicons/r
 import { Combobox, Dialog, Transition } from "@headlessui/react";
 import axios from "axios";
 import Link from "next/link";
+import Image from "next/future/image";
 
 function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(" ");
@@ -192,7 +193,7 @@ export default function SearchBar() {
                                                                             >
                                                                                 <a>
                                                                                     <div className="flex items-center">
-                                                                                        <img
+                                                                                        <Image
                                                                                             src={
                                                                                                 result
                                                                                                     .images[0]
@@ -200,6 +201,8 @@ export default function SearchBar() {
                                                                                             }
                                                                                             alt=""
                                                                                             className="h-10 w-10 flex-shrink-0 rounded-full"
+                                                                                            width={40}
+                                                                                            height={40}
                                                                                         />
                                                                                         <div className="flex flex-col items-start overflow-hidden">
                                                                                             <span

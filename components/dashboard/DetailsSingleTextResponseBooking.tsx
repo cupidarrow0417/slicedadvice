@@ -69,7 +69,7 @@ const DetailsSingleTextResponseBooking = ({
             toast.success("Responded to booking successfully!");
             dispatch(clearBookingsSuccess());
         }
-    }, [bookingsMetadata]);
+    }, [dispatch, bookingsMetadata]);
     return (
         <div className="mx-auto flex flex-col gap-4 p-6 py-8 bg-white shadow-lg rounded-lg w-full max-w-xl h-fit border border-black/10">
             <div className="flex justify-between items-start gap-4">
@@ -133,7 +133,7 @@ const DetailsSingleTextResponseBooking = ({
             {/* Display the expert response */}
             <h1 className="text-md -mb-2">Expert&apos;s Response</h1>
             {dashboardType === "Advice Seeker" && (
-                <div className="b w-full h-60 sm:h-72 border border-black/10 font-light leading-relaxed p-4 rounded-lg overflow-auto">
+                <div className="w-full h-60 sm:h-72 border border-black/10 font-light leading-relaxed p-4 rounded-lg overflow-auto">
                     {booking?.singleTextResponse?.expertResponse}
                 </div>
             )}

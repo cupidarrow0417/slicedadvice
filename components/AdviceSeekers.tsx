@@ -12,6 +12,7 @@ import CategoriesPageScreenshot from "../public/images/appScreenshots/Categories
 import BookSingleTextResponsePageScreenshot from "../public/images/appScreenshots/BookSingleTextResponsePageScreenshot.png";
 import BookingsPageAdviceSeekerScreenshot from "../public/images/appScreenshots/BookingsPageAdviceSeekerScreenshot.png";
 import Link from "next/link";
+import Image from "next/future/image"
 
 export default function AdviceSeekers() {
     return (
@@ -49,10 +50,13 @@ export default function AdviceSeekers() {
                         </div>
                     </div>
                     <div className="relative w-full h-64 sm:h-72 md:h-96 lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2 lg:h-full">
-                        <img
+                        <Image
                             className="absolute inset-0 w-full h-full object-cover"
                             src="https://images.unsplash.com/photo-1573497620053-ea5300f94f21?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2940&q=80"
                             alt=""
+                            width={2940}
+                            height={2940}
+                            priority={true}
                         />
                     </div>
                 </section>
@@ -119,10 +123,12 @@ export default function AdviceSeekers() {
                                     <footer className="mt-3">
                                         <div className="flex items-center space-x-3">
                                             <div className="flex-shrink-0">
-                                                <img
+                                                <Image
                                                     className="h-6 w-6 rounded-full"
                                                     src="/images/team/AlanHeadshot.jpg"
                                                     alt=""
+                                                    width="24"
+                                                    height="24"
                                                 />
                                             </div>
                                             <div className="text-base font-medium text-gray-700">
@@ -135,10 +141,12 @@ export default function AdviceSeekers() {
                         </div>
                         <div className="mt-12 sm:mt-16 lg:mt-0">
                             <div className="pl-4 -mr-48 sm:pl-6 md:-mr-16 lg:px-0 lg:m-0 lg:relative lg:h-full">
-                                <img
+                                <Image
                                     className="w-full rounded-xl shadow-xl ring-1 ring-black ring-opacity-5 lg:absolute lg:left-0 lg:h-full lg:w-auto lg:max-w-none"
                                     src={CategoriesPageScreenshot.src}
                                     alt="Categories Page Screenshot"
+                                    width={CategoriesPageScreenshot.width}
+                                    height={CategoriesPageScreenshot.height}
                                 />
                             </div>
                         </div>
@@ -180,12 +188,14 @@ export default function AdviceSeekers() {
                         </div>
                         <div className="mt-12 sm:mt-16 lg:mt-0 lg:col-start-1">
                             <div className="pr-4 -ml-48 sm:pr-6 md:-ml-16 lg:px-0 lg:m-0 lg:relative lg:h-full">
-                                <img
+                                <Image
                                     className="w-full rounded-xl shadow-xl ring-1 ring-black ring-opacity-5 lg:absolute lg:right-0 lg:h-full lg:w-auto lg:max-w-none"
                                     src={
                                         BookSingleTextResponsePageScreenshot.src
                                     }
                                     alt="Booking Single Text Response Page Screenshot"
+                                    width={BookSingleTextResponsePageScreenshot.width}
+                                    height={BookSingleTextResponsePageScreenshot.height}
                                 />
                             </div>
                         </div>
@@ -227,10 +237,12 @@ export default function AdviceSeekers() {
                         </div>
                         <div className="mt-12 sm:mt-16 lg:mt-0">
                             <div className="pl-4 -mr-48 sm:pl-6 md:-mr-16 lg:px-0 lg:m-0 lg:relative lg:h-full">
-                                <img
+                                <Image
                                     className="w-full rounded-xl shadow-xl ring-1 ring-black ring-opacity-5 lg:absolute lg:left-0 lg:h-full lg:w-auto lg:max-w-none"
                                     src={BookingsPageAdviceSeekerScreenshot.src}
                                     alt="Bookings Page for an Advice Seeker"
+                                    width={BookingsPageAdviceSeekerScreenshot.width}
+                                    height={BookingsPageAdviceSeekerScreenshot.height}
                                 />
                             </div>
                         </div>

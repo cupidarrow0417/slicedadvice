@@ -39,7 +39,7 @@ export default function Dashboard({ children, dashboardType }: DashboardInterfac
                 dispatch(checkStripeAccountField(postData));
             }
         }
-    }, [authUser]);
+    }, [dispatch, dashboardType, authUser, session]);
 
     // Check the global state that has info on whether
     // the user has charges enabled on their Stripe.

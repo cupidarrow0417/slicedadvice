@@ -5,6 +5,7 @@ import {
     SupportIcon,
 } from "@heroicons/react/outline";
 import UniversalFadeAnimation from "./atoms/UniversalFadeAnimation";
+import Image from "next/future/image"
 
 const supportLinks = [
     {
@@ -37,10 +38,12 @@ export default function Support() {
                 {/* Header */}
                 <div className="relative pb-32 bg-gray-800">
                     <div className="absolute inset-0">
-                        <img
+                        <Image
                             className="w-full h-full object-cover"
                             src="https://images.unsplash.com/photo-1525130413817-d45c1d127c42?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1920&q=60&&sat=-100"
                             alt=""
+                            width={1920}
+                            height={1080}
                         />
                         <div
                             className="absolute inset-0 bg-gray-800 mix-blend-multiply"

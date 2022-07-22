@@ -78,7 +78,7 @@ const UpdateExpertisePost = () => {
                 router.push("/");
             }
         }
-    }, [authUser]);
+    }, [expertisePost.user, router, authUser]);
 
     // Access global state that processes the updateExpertisePost process,
     // displaying appropriate UI based on progress + errors.
@@ -151,7 +151,7 @@ const UpdateExpertisePost = () => {
         if (expertisePostId) {
             Router.push(`/expertisePost/${expertisePostId}`);
         }
-    }, [updateExpertisePostError, updateExpertisePostSuccess]);
+    }, [dispatch, expertisePostId, updateExpertisePostError, updateExpertisePostSuccess]);
 
     // On submission of the form, process all of the accumulated
     // local state and pass it as a single object into the

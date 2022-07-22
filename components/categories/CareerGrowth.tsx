@@ -21,7 +21,7 @@ const CareerGrowth = () => {
             toast.error(careerGrowthError);
             dispatch(clearErrors());
         }
-    }, [careerGrowthError]);
+    }, [dispatch, careerGrowthError]);
 
     return (
         <div className="max-w-7xl mx-auto flex flex-col gap-6">

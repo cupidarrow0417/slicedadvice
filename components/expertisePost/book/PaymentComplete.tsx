@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import { cacheBookingData, clearBookingsErrors, createBooking } from "../../../redux/actionCreators/bookingActionCreators";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import Loader from "../../layout/Loader";
+import Image from "next/future/image"
 
 const PaymentComplete = () => {
     const dispatch = useAppDispatch();
@@ -74,7 +75,7 @@ const PaymentComplete = () => {
             dispatch({ type: 'CLEAR_STRIPE_PAYMENT_INTENT' });
             dispatch(createBooking(finalBookingData));
         }
-    }, [bookingData, paymentIntentId]);
+    }, [dispatch, bookingData, paymentIntentId]);
 
     // Developer tool: To listen to createBooking process
     // Actually, don't think the user would get here if there
@@ -85,14 +86,16 @@ const PaymentComplete = () => {
             toast.error(errorCreateBooking)
             dispatch(clearBookingsErrors);
         } 
-    }, [errorCreateBooking]);
+    }, [dispatch, errorCreateBooking]);
     return (
         <main className="relative lg:min-h-full">
             <div className="h-80 overflow-hidden lg:absolute lg:w-1/2 lg:h-full lg:pr-4 xl:pr-12">
-                <img
+                <Image
                     src="https://tailwindui.com/img/ecommerce-images/confirmation-page-06-hero.jpg"
-                    alt="TODO"
+                    alt=""
                     className="h-full w-full object-center object-cover"
+                    width={1920}
+                    height={1080}
                 />
             </div>
 

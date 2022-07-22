@@ -35,7 +35,8 @@ const HomeAdviceSeekerDashboard = () => {
                 </div>
             </div>
             <div className="flex items-center justify-center sm:p-4 border-black/10">
-                Welcome to the home page of the advice seeker dashboard!
+                Welcome to the home page of the advice seeker dashboard! To view your bookings, click 
+                the dropdown menu button to head to the &quot;Bookings&quot; page.
             </div>
         </div>
     );

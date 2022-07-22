@@ -22,7 +22,7 @@ const CollegeApplication = () => {
             toast.error(collegeApplicationError);
             dispatch(clearErrors());
         }
-    }, [collegeApplicationError]);
+    }, [dispatch, collegeApplicationError]);
 
     return (
         <div className="max-w-7xl mx-auto flex flex-col gap-6">

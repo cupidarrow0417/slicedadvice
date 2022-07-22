@@ -58,18 +58,19 @@ const DashboardHeader = ({
     } = useAppSelector((state) => {
         return state.checkStripeAccountField;
     });
+    let finalNavigationDropdownContentsRef = React.useRef(
+        expertNavigationDropdownContents
+    );
 
-
-    // Assign finalNavigationDropdownContents based on dashboardType, 
+    // Assign finalNavigationDropdownContents based on dashboardType,
     // and the chargesEnabled prop (for experts only)
-    let finalNavigationDropdownContents = expertNavigationDropdownContents;
     useEffect(() => {
         if (chargesEnabled !== null || chargesEnabled !== undefined) {
             if (chargesEnabled === false) {
                 // Once the chargesEnabled state is loaded, check if it is false.
                 // If it is, then the user has not enabled charges on their Stripe account.
                 // Don't render the Posts and Bookings links in the navigation dropdown.
-                finalNavigationDropdownContents = [
+                finalNavigationDropdownContentsRef.current = [
                     {
                         title: "Home",
                         href: "/dashboard/expert/home",
@@ -86,7 +87,8 @@ const DashboardHeader = ({
     // Assign nav contents for advice seeker. This one is simple since there isn't
     // any stripe stuff we need to check for advice seekers.
     if (dashboardType === "Advice Seeker") {
-        finalNavigationDropdownContents = adviceSeekerNavigationDropdownContents;
+        finalNavigationDropdownContentsRef.current =
+            adviceSeekerNavigationDropdownContents;
     }
     return (
         <div className="flex gap-2 items-center sm:w-fit">
@@ -98,7 +100,7 @@ const DashboardHeader = ({
             </h1>
             <Dropdown
                 label="Dashboard Navigation Dropdown"
-                contents={finalNavigationDropdownContents}
+                contents={finalNavigationDropdownContentsRef.current}
             >
                 <ChevronDownIcon
                     className="h-8 w-8 group-hover:text-white "

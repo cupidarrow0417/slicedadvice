@@ -20,6 +20,7 @@ import {
 import UniversalFadeAnimation from "../atoms/UniversalFadeAnimation";
 import axios from "axios";
 import Loader from "../layout/Loader";
+import Image from "next/future/image"
 
 const navigation = [
     { name: "Profile", href: "#", icon: UserCircleIcon, current: true },
@@ -329,10 +330,12 @@ export default function Settings() {
                                             Avatar
                                         </label>
                                         <div className="flex justify-start gap-3 items-center mt-1">
-                                            <img
+                                            <Image
                                                 className="inline-block h-14 w-14 rounded-full"
                                                 src={avatarPreview}
-                                                alt=""
+                                                alt="Preview of profile picture"
+                                                width={56}
+                                                height={56}
                                             />
                                             <input
                                                 className="appearance-none block  px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-brand-primary-light/70 focus:border-brand-primary-light/70 sm:text-sm"

@@ -24,7 +24,7 @@ const PersonalDevelopment = () => {
             toast.error(personalDevelopmentError);
             dispatch(clearErrors());
         }
-    }, [personalDevelopmentError]);
+    }, [dispatch, personalDevelopmentError]);
 
     return (
         <div className="max-w-7xl mx-auto flex flex-col gap-6">

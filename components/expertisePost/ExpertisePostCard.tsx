@@ -34,7 +34,7 @@ const ExpertisePostCard = ({ expertisePost }: expertisePostCardInterface) => {
                 console.log(isPostOwner)
             }
         }
-    }, [authUser]);
+    }, [expertisePost.user, isPostOwner, authUser]);
 
     
     //These calculations allow us to slice the title at the right place so that
@@ -46,7 +46,7 @@ const ExpertisePostCard = ({ expertisePost }: expertisePostCardInterface) => {
 
     return (
         <>
-            <Link href={`/expertisePost/${expertisePost._id}`}>
+            <Link href={`/expertisePost/${expertisePost._id}`} passHref>
                 <div className="flex relative bg-transparent flex-col min-w-[20rem] max-w-xs sm:min-w-[20rem] sm:max-w-[20rem] h-full rounded-2xl bg-brand-bg-light cursor-pointer hover:-mt-[2px] transition-all snap-start">
                     <div className="expertisePostCardImageWrapper">
                         <a className="">

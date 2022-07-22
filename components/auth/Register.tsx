@@ -205,6 +205,7 @@ const Register = () => {
                                 >
                                     <Image
                                         src="/images/googlelogo.png"
+                                        alt="Google logo"
                                         width={20}
                                         height={20}
                                     />
@@ -401,10 +402,12 @@ const Register = () => {
                                     </span>
                                 </div>
                                 <div className="flex justify-start gap-5 items-center mt-1">
-                                    <img
+                                    <Image
                                         className="inline-block h-14 w-14 rounded-full"
                                         src={avatarPreview}
                                         alt=""
+                                        width={56}
+                                        height={56}
                                     />
                                     <div className="flex justify-center">
                                         <input

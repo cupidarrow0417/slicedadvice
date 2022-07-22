@@ -36,7 +36,7 @@ const Categories = () => {
             toast.error(personalDevelopmentError);
             dispatch(clearErrors());
         }
-    }, [careerGrowthError, collegeApplicationError, personalDevelopmentError]);
+    }, [dispatch, careerGrowthError, collegeApplicationError, personalDevelopmentError]);
 
     return (
         <div className="max-w-7xl mx-auto  flex flex-col gap-6">

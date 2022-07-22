@@ -36,14 +36,6 @@ const BookingsDashboard = ({
         window.innerWidth < 768 && queryParams.booking ? true : false
     );
 
-    useEffect(() => {
-        if (window.innerWidth >= 768) {
-            setModalOpen(false);
-        } else {
-            setModalOpen(true);
-        }
-    }, [window.innerWidth]);
-
     /* Main useEffect for BookingsExpertDashboard that sets local state the moment
         allBookings is retrieved from the global state.*/
     useEffect(() => {
@@ -95,7 +87,7 @@ const BookingsDashboard = ({
             //     allBookings
             // );
         }
-    }, [bookingsMetadata.error, bookings, queryParams.booking]);
+    }, [bookingsMetadata.error, bookings, queryParams.booking, dashboardType, dispatch]);
 
     return (
         <>

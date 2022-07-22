@@ -17,6 +17,7 @@ import Loader from "../../layout/Loader";
 import CheckoutForm from "./CheckoutForm";
 import OldPageHeader from "../../atoms/OldPageHeader";
 import { useSession } from "next-auth/react";
+import Image from "next/future/image";
 
 // REINSTANTIATE STRIPE ELEMENTS PROVIDER, as for payment intent, we require
 // an options that contains the paymentIntentClientSecret for the current
@@ -164,7 +165,16 @@ const BookSingleTextResponse = () => {
             // }
             dispatch(createStripePaymentIntent(bookingData));
         }
-    }, [userClickedContinue, session, expertisePost]);
+    }, [
+        dispatch,
+        userClickedContinue,
+        session,
+        expertisePost,
+        finalTextSubmission,
+        pricePerSubmission,
+        serviceFee,
+        total,
+    ]);
 
     const appearance = {
         theme: "stripe",
@@ -183,7 +193,7 @@ const BookSingleTextResponse = () => {
             toast.error(stripePaymentIntentError);
             dispatch(clearStripePaymentIntentErrors());
         }
-    }, [stripePaymentIntentClientSecret, stripePaymentIntentError]);
+    }, [dispatch, stripePaymentIntentClientSecret, stripePaymentIntentError]);
 
     // Check if user is logged in and is the owner of this post.
     // They shouldn't be able to Send a Submission if so, of course.
@@ -240,7 +250,7 @@ const BookSingleTextResponse = () => {
                             }
                             onChange={(e) => setTextSubmission(e.target.value)}
                         />
-                        <Link href="#">
+                        <Link href="#" passHref>
                             <button
                                 className={classNames(
                                     textSubmission.length < 20
@@ -270,10 +280,12 @@ const BookSingleTextResponse = () => {
                             </div>
 
                             <div className="flex flex-col items-center p-8 mt-4 gap-6 bg-white w-full sm:w-[32rem] h-fit border border-black/10 shadow rounded-xl">
-                                <img
+                                <Image
                                     className=" h-16 w-16 rounded-full"
                                     src={expertisePost.user.avatar.url}
                                     alt={`User Profile Pic for ${expertisePost.user.name}`}
+                                    height={64}
+                                    width={64}
                                 />
                                 <h1 className="text-2xl font-semibold w-fit text-center ">
                                     Personalized Expert Advice: Text Response
