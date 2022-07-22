@@ -343,7 +343,6 @@ export default function Settings() {
                                                 id="formFile"
                                                 name="avatar"
                                                 accept="image/*"
-                                                capture="user"
                                                 onChange={onChange}
                                             />
                                         </div>

@@ -422,7 +422,6 @@ const Register = () => {
                                             name="avatar"
                                             onChange={onChange}
                                             accept="image/*"
-                                            capture="user"
                                         />
                                     </div>
                                 </div>
