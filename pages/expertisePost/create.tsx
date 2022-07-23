@@ -29,7 +29,7 @@ export const getServerSideProps: GetServerSideProps =
         }
 
         const isOnboarded = await checkStripeField(
-            session.user.email,
+            session.user._id,
             "charges_enabled",
             undefined
         );
