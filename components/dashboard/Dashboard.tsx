@@ -68,7 +68,7 @@ export default function Dashboard({ children, dashboardType }: DashboardInterfac
                         )}
                     </div>
                     {/* Main column */}
-                    <div className="flex flex-col w-full">
+                    <div className="flex flex-col w-full overflow-x-auto">
                         <main className="px-4 sm:px-6 lg:px-8 flex-1 relative border-[1px] rounded-xl lg:rounded-r-xl lg:rounded-l-none overflow-auto">
                             {children}
                         </main>

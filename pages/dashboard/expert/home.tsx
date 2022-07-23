@@ -5,6 +5,7 @@ import HomeExpertDashboard from "../../../components/dashboard/expert/home/HomeE
 import Layout from "../../../components/layout/Layout";
 import { getBookings } from "../../../redux/actionCreators/bookingActionCreators";
 import { loadUser } from "../../../redux/actionCreators/userActions";
+import { getExpertisePosts } from "../../../redux/actionCreators/expertisePostActions";
 import { wrapper } from "../../../redux/store";
 const ExpertDashboardHomePage = () => {
     return (
@@ -48,6 +49,8 @@ export const getServerSideProps: GetServerSideProps =
         }
         try {
             await store.dispatch(loadUser(req, session.user._id));
+            await store.dispatch(getExpertisePosts(req, undefined, undefined, session.user._id));
+            await store.dispatch(getBookings(req, 1, undefined, undefined, session.user._id));
             return { props: { session } };
         } catch (e) {
             return { props: { session } };

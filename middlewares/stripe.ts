@@ -8,7 +8,6 @@ import checkStripeField from "../utils/checkStripeField";
 /* A middleware function that checks if the user has enabled Stripe charges. */
 const isStripeOnboardedUser = catchAsyncErrors(
     async (req: any, res: any, next: any) => {
-        console.log("req.body", req.body);
         let isOnboarded: boolean = await checkStripeField(req.body.user, "charges_enabled", next);
         if (isOnboarded) {
             next();

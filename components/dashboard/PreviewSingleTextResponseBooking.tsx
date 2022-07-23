@@ -6,6 +6,7 @@ import Router from "next/router";
 interface PreviewSingleTextResponseBookingInterface {
     booking: any;
     dashboardType: "Advice Seeker" | "Expert";
+    shallowPush: boolean;
 }
 
 {
@@ -29,6 +30,7 @@ interface PreviewSingleTextResponseBookingInterface {
 const PreviewSingleTextResponseBooking = ({
     booking,
     dashboardType,
+    shallowPush,
 }: PreviewSingleTextResponseBookingInterface) => {
     /* Parsing the date into a more readable format. */
     let parsedDate: any = moment(booking.createdAt).format("MMM Do, YYYY");
@@ -76,7 +78,7 @@ const PreviewSingleTextResponseBooking = ({
                             Router.push(
                                 buttonLink,
                                 undefined,
-                                { shallow: true }
+                                { shallow: shallowPush, }
                             )
                         }
                     >

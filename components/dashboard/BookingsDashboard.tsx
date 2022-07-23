@@ -109,6 +109,7 @@ const BookingsDashboard = ({
                                     key={booking._id}
                                     booking={booking}
                                     dashboardType={dashboardType}
+                                    shallowPush={true}
                                 />
                             ))}
                         </div>
