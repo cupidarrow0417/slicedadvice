@@ -250,7 +250,7 @@ const updateBooking = catchAsyncErrors(
             let customerEmailMessage = `Hi there, ${customer.name}, \n\n
             ${expert.name} has completed your booking! \n\n
             You can view the details of your booking here: \n
-            ${process.env.NEXT_PUBLIC_ORIGIN_URL}/dashboard/adviceSeeker/bookings?booking=${_id} \n\n
+            ${process.env.NEXT_PUBLIC_ORIGIN_URL?.toString()}/dashboard/adviceSeeker/bookings?booking=${_id} \n\n
             Make sure to leave a review on the expertise post, and feel free to contact us if you have any questions. \n\n
             Thanks for using SlicedAdvice! \n\n
             SlicedAdvice Team`;
@@ -325,7 +325,7 @@ const createBooking = catchAsyncErrors(
             booking.customer.name
         } has booked you for a ${booking.bookingType.toLowerCase()}! \n\n
         You can respond to the booking here: \n
-        ${process.env.NEXT_PUBLIC_ORIGIN_URL}/dashboard/expert/bookings?booking=${
+        ${process.env.NEXT_PUBLIC_ORIGIN_URL?.toString()}/dashboard/expert/bookings?booking=${
             booking._id
         } \n\n
         As a reminder, the window to respond is 7 days. Feel free to contact us if you have any questions. \n\n
