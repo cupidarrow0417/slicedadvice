@@ -56,7 +56,7 @@ export default function Dashboard({ children, dashboardType }: DashboardInterfac
             <UniversalFadeAnimation animationType="appear">
                 <div className="h-screen flex rounded-xl shadow-md">
                     {/* Static sidebar for desktop */}
-                    <div className="hidden lg:flex lg:flex-col lg:w-56 lg:border-r-0 lg:border-black/10 lg:border-[1px] lg:pt-5 lg:pb-4 lg:bg-white rounded-tl-xl rounded-bl-xl">
+                    <div className="hidden xl:flex lg:flex-col lg:w-56 lg:border-r-0 lg:border-black/10 lg:border-[1px] lg:pt-5 lg:pb-4 lg:bg-white rounded-tl-xl rounded-bl-xl">
                         <div className="flex items-center flex-shrink-0 px-6"></div>
                         {dashboardType === "Expert" && (
                             <ExpertDashboardSidebar

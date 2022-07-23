@@ -4,6 +4,7 @@ import BookingsDashboard from "../../../components/dashboard/BookingsDashboard";
 import Dashboard from "../../../components/dashboard/Dashboard";
 import Layout from "../../../components/layout/Layout";
 import { getBookings } from "../../../redux/actionCreators/bookingActionCreators";
+import { loadUser } from "../../../redux/actionCreators/userActions";
 import { wrapper } from "../../../redux/store";
 import checkStripeField from "../../../utils/checkStripeField";
 const ExpertDashboardBookingsPage = () => {
@@ -40,6 +41,7 @@ export const getServerSideProps: GetServerSideProps =
         }
         
         try {
+            await store.dispatch(loadUser(req, session.user._id));
             await store.dispatch(getBookings(req, 1, undefined, undefined, session.user._id));
             return { props: { session } };
         } catch (e) {

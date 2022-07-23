@@ -40,7 +40,7 @@ const PreviewSingleTextResponseBooking = ({
             ? `/dashboard/adviceSeeker/bookings?booking=${booking._id}`
             : `/dashboard/expert/bookings?booking=${booking._id}`;
     return (
-        <div className="flex flex-col justify-between gap-3 w-full h-fit py-5 bg-white border-b">
+        <div className="flex flex-col justify-between gap-3 w-full h-fit py-5 bg-white border-b min-w-[20rem]">
             <div className="flex justify-between items-center">
                 {/* Customer and date */}
                 <div className="text-brand-primary-light">
@@ -78,7 +78,7 @@ const PreviewSingleTextResponseBooking = ({
                             Router.push(
                                 buttonLink,
                                 undefined,
-                                { shallow: shallowPush, }
+                                { shallow: shallowPush }
                             )
                         }
                     >

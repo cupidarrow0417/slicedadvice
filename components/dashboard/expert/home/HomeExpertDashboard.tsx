@@ -36,7 +36,6 @@ const HomeExpertDashboard = () => {
         (state) => state.bookings
     );
 
-
     const [lastFivePosts, setLastFivePosts] = useState<any>([]);
     const [lastFiveBookings, setLastFiveBookings] = useState<any>([]);
 
@@ -44,7 +43,6 @@ const HomeExpertDashboard = () => {
     // Then storing five most recent in lastFivePosts
     useEffect(() => {
         if (allExpertisePosts) {
-
             // Converting String format date to JS Date Object
             for (let i = 0; i < allExpertisePosts.length; i++) {
                 // console.log(Date.parse(allExpertisePosts[i].createdAt));
@@ -55,24 +53,26 @@ const HomeExpertDashboard = () => {
 
             // Sorting the bookings array by date (Newest to oldest)
             allExpertisePosts.sort((a: any, b: any) => {
-                return Number(new Date(b.createdAt)) - Number(new Date(a.createdAt));
-            })
+                return (
+                    Number(new Date(b.createdAt)) -
+                    Number(new Date(a.createdAt))
+                );
+            });
 
             // console.log("\nSorted Array") For Debugging Purposes
             // console.log(allExpertisePosts) For Debugging Purposes
 
             // Pushing five most recent bookings into lastFivePosts array
             for (let i = 0; i < 5; i++) {
-                lastFivePosts.push(allExpertisePosts[i])
+                lastFivePosts.push(allExpertisePosts[i]);
             }
         }
-    }, [])
+    }, []);
 
     // Sorting all bookings by Date Newest to oldest
     // Then storing five most recent in lastFiveBookings
     useEffect(() => {
         if (bookings) {
-
             // Converting String format date to JS Date Object
             for (let i = 0; i < bookings.length; i++) {
                 // console.log(Date.parse(allExpertisePosts[i].createdAt));
@@ -83,18 +83,21 @@ const HomeExpertDashboard = () => {
 
             // Sorting the bookings array by date (Newest to oldest)
             bookings.sort((a: any, b: any) => {
-                return Number(new Date(b.createdAt)) - Number(new Date(a.createdAt));
-            })
+                return (
+                    Number(new Date(b.createdAt)) -
+                    Number(new Date(a.createdAt))
+                );
+            });
 
             // console.log("\nSorted Array") For Debugging Purposes
             // console.log(bookings)  For Debugging Purposes
 
             // Pushing five most recent bookings into lastFiveBookings array
             for (let i = 0; i < 5; i++) {
-                lastFiveBookings.push(bookings[i])
+                lastFiveBookings.push(bookings[i]);
             }
         }
-    }, [])
+    }, []);
 
     return !session ? (
         <div className="flex flex-col">
@@ -135,12 +138,15 @@ const HomeExpertDashboard = () => {
                             >
                                 {lastFivePosts &&
                                     lastFivePosts.map(
-                                        (expertisePost: any) => (
-                                            <ExpertisePostCard
-                                                key={expertisePost._id}
-                                                expertisePost={expertisePost}
-                                            />
-                                        )
+                                        (expertisePost: any) =>
+                                            expertisePost && (
+                                                <ExpertisePostCard
+                                                    key={expertisePost._id}
+                                                    expertisePost={
+                                                        expertisePost
+                                                    }
+                                                />
+                                            )
                                     )}
                             </SingleShelf>
                         </section>
@@ -152,21 +158,22 @@ const HomeExpertDashboard = () => {
                             >
                                 {lastFiveBookings &&
                                     lastFiveBookings.map(
-                                        (booking: any) => (
-                                            <PreviewSingleTextResponseBooking
-                                                key={booking._id}
-                                                booking={booking}
-                                                dashboardType={"Expert"}
-                                                shallowPush={false}
-                                            />
-                                        )
+                                        (booking: any) =>
+                                            booking && (
+                                                <PreviewSingleTextResponseBooking
+                                                    key={booking._id}
+                                                    booking={booking}
+                                                    dashboardType={"Expert"}
+                                                    shallowPush={false}
+                                                />
+                                            )
                                     )}
                             </SingleShelf>
                         </section>
                     </div>
                 )}
             </div>
-        </div >
+        </div>
     );
 };
 

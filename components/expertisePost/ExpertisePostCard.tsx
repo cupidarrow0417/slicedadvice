@@ -85,7 +85,7 @@ const ExpertisePostCard = ({ expertisePost }: expertisePostCardInterface) => {
 
                     {isPostOwner &&
                         <Link href={`/expertisePost/update/${expertisePost._id}`}>
-                            <a className="my-4 py-2 bg-brand-primary-light rounded-md text-white text-center">Update</a>
+                            <a className="my-4 py-2 px-4 w-fit bg-brand-primary-light rounded-md text-white text-center">Update</a>
                         </Link>
                     }
                 </div>

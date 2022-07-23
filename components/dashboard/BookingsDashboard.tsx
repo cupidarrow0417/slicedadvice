@@ -33,7 +33,7 @@ const BookingsDashboard = ({
     and the user is on mobile, automatically open the modal with that booking 
     On desktop, the modal never opens. */
     const [modalOpen, setModalOpen] = useState(
-        window.innerWidth < 768 && queryParams.booking ? true : false
+        window.innerWidth < 1024 && queryParams.booking ? true : false
     );
 
     /* Main useEffect for BookingsExpertDashboard that sets local state the moment
@@ -58,13 +58,13 @@ const BookingsDashboard = ({
                     setCurrentBookingSelected(booking);
                 }
                 // For mobile, open the modal.
-                if (window.innerWidth < 768) {
+                if (window.innerWidth < 1024) {
                     setModalOpen(true);
                 }
             } else {
                 // For desktop mode, Add bookings query param to the url if it doesn't already exist,
                 // with the id of the first booking in the bookings global state. 
-                if (!queryParams.booking && bookings[0] && window.innerWidth >= 768) {
+                if (!queryParams.booking && bookings[0] && window.innerWidth >= 1024) {
                     Router.push(
                         `/dashboard/${
                             dashboardType === "Advice Seeker"
@@ -78,7 +78,7 @@ const BookingsDashboard = ({
                 // If the booking query param is empty, close the modal.
                 // Important and only for mobile; closing the popup modal deletes
                 // the query param from the url, triggering this part of the code.
-                if (window.innerWidth < 768) {
+                if (window.innerWidth < 1024) {
                     setModalOpen(false);
                 }
             }
@@ -103,7 +103,7 @@ const BookingsDashboard = ({
                 bookings.length > 0 && (
                     <div className="flex w-full h-[calc(100%-4.5rem)]">
                         {/* Preview always visible on all screen sizes  */}
-                        <div className="flex flex-col gap-2 overflow-auto h-full w-full md:w-2/5">
+                        <div className="flex flex-col gap-2 overflow-auto h-full w-full lg:w-2/5">
                             {bookings.map((booking: any) => (
                                 <PreviewSingleTextResponseBooking
                                     key={booking._id}
@@ -114,9 +114,9 @@ const BookingsDashboard = ({
                             ))}
                         </div>
                         {/* Desktop view of the booking details.  */}
-                        {currentBookingSelected && window.innerWidth >= 768 && (
-                            <div className="hidden md:flex h-full w-3/5 p-2 mx-4 overflow-auto">
-                                <div className="hidden md:flex w-full h-full my-2">
+                        {currentBookingSelected && window.innerWidth >= 1024 && (
+                            <div className="hidden lg:flex h-full w-3/5 p-2 mx-4 overflow-auto">
+                                <div className="hidden lg:flex w-full h-full my-2">
                                     <DetailsSingleTextResponseBooking
                                         key={currentBookingSelected._id}
                                         booking={currentBookingSelected}
@@ -127,7 +127,7 @@ const BookingsDashboard = ({
                         )}
 
                         {/* Mobile Modal containing booking details. */}
-                        {window.innerWidth < 768 && (
+                        {window.innerWidth < 1024 && (
                             <div className="block md:hidden">
                                 <Modal
                                     openLocalState={modalOpen}
