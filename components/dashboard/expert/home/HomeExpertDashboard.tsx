@@ -44,7 +44,7 @@ const HomeExpertDashboard = () => {
     // Then storing five most recent in lastFivePosts
     useEffect(() => {
         if (allExpertisePosts) {
-            
+
             // Converting String format date to JS Date Object
             for (let i = 0; i < allExpertisePosts.length; i++) {
                 // console.log(Date.parse(allExpertisePosts[i].createdAt));
@@ -62,7 +62,7 @@ const HomeExpertDashboard = () => {
             // console.log(allExpertisePosts) For Debugging Purposes
 
             // Pushing five most recent bookings into lastFivePosts array
-            for(let i = 0; i < 5; i++) {
+            for (let i = 0; i < 5; i++) {
                 lastFivePosts.push(allExpertisePosts[i])
             }
         }
@@ -90,7 +90,7 @@ const HomeExpertDashboard = () => {
             // console.log(bookings)  For Debugging Purposes
 
             // Pushing five most recent bookings into lastFiveBookings array
-            for(let i = 0; i < 5; i++) {
+            for (let i = 0; i < 5; i++) {
                 lastFiveBookings.push(bookings[i])
             }
         }
@@ -161,6 +161,7 @@ const HomeExpertDashboard = () => {
                                                 key={booking._id}
                                                 booking={booking}
                                                 dashboardType={dashboardType}
+                                                shallowPush={false}
                                             />
                                         )
                                     )}
