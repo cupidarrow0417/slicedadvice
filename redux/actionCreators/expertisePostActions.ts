@@ -34,7 +34,7 @@ export const getExpertisePosts =
                 const { origin } = absoluteUrl(req);
                 let link = `${origin}/api/expertisePosts?page=${currentPage}`;
                 if (category) link = link.concat(`&category=${category}`);
-                if (expertId) link = link.concat(`&expertId=${expertId}`);
+                if (expertId) link = link.concat(`&user=${expertId}`);
                 const { data } = await axios.get(link);
 
                 // Save the retrieved data to different global states based on category

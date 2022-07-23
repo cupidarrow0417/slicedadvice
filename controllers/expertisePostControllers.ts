@@ -11,7 +11,6 @@ const allExpertisePosts = catchAsyncErrors(
     async (req: NextApiRequest, res: NextApiResponse) => {
         const resPerPage = 100;
         const expertisePostsCount = await ExpertisePost.countDocuments();
-
         //search with optional queries, handled via .search() method.
         const apiFeatures = new ExpertisePostAPIFeatures(
             ExpertisePost.find(),

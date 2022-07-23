@@ -125,19 +125,19 @@ const HomeExpertDashboard = () => {
             <div className="w-full flex items-center justify-center sm:p-4 border-black/10">
                 {!chargesEnabled ? (
                     <SetupPayoutsAlert />
-                ) : !allExpertisePosts ? (
-                    <div className="flex items-center rounded-xl border-y-[1px] sm:border-x-[1px] border-black/10 bg-white w-full p-9">
+                ) : allExpertisePosts.length === 0 ? (
+                    <div className="flex items-center rounded-xl bg-white w-full p-9">
                         <h1>{`Charges have been enabled! Woohoo! Click the "New Post" button to create your first expertise posting.`}</h1>
                     </div>
                 ) : (
                     <div className="block overflow-hidden">
-                        <section className="w-full mx-0 my-10 overflow-x-auto">
-                            <SingleShelf
-                                title="Latest Posts"
-                                link="/dashboard/expert/posts"
-                            >
-                                {lastFivePosts &&
-                                    lastFivePosts.map(
+                        {lastFivePosts && (
+                            <section className="w-full mx-0 my-10 overflow-x-auto">
+                                <SingleShelf
+                                    title="Your Latest Posts"
+                                    link="/dashboard/expert/posts"
+                                >
+                                    {lastFivePosts.map(
                                         (expertisePost: any) =>
                                             expertisePost && (
                                                 <ExpertisePostCard
@@ -148,16 +148,16 @@ const HomeExpertDashboard = () => {
                                                 />
                                             )
                                     )}
-                            </SingleShelf>
-                        </section>
-
-                        <section className="w-full mx-0 my-20 overflow-x-auto">
-                            <SingleShelf
-                                title="Latest Bookings"
-                                link="/dashboard/expert/bookings"
-                            >
-                                {lastFiveBookings &&
-                                    lastFiveBookings.map(
+                                </SingleShelf>
+                            </section>
+                        )}
+                        {lastFiveBookings && (
+                            <section className="w-full mx-0 my-20 overflow-x-auto">
+                                <SingleShelf
+                                    title="Your Latest Bookings"
+                                    link="/dashboard/expert/bookings"
+                                >
+                                    {lastFiveBookings.map(
                                         (booking: any) =>
                                             booking && (
                                                 <PreviewSingleTextResponseBooking
@@ -168,8 +168,9 @@ const HomeExpertDashboard = () => {
                                                 />
                                             )
                                     )}
-                            </SingleShelf>
-                        </section>
+                                </SingleShelf>
+                            </section>
+                        )}
                     </div>
                 )}
             </div>

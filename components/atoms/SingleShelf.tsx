@@ -20,7 +20,7 @@ const Shelf = ({ children, title, link }: ShelfPropsInterface) => {
                 <h1 className="text-3xl sm:text-4xl tracking-tight font-semibold cursor-pointer">{title}</h1>
                 </Link>
                 <Link href={link} passHref>
-                    <button className="px-4 py-2 rounded-full font-semibold md:bg-white md:hover:bg-white/20 md:border-[1px] cursor-pointer">
+                    <button className="whitespace-nowrap px-4 py-2 rounded-full font-semibold md:bg-white md:hover:bg-white/20 md:border-[1px] cursor-pointer">
                         View All
                     </button>
                 </Link>
