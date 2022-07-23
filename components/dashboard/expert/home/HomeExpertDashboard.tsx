@@ -98,7 +98,7 @@ const HomeExpertDashboard = () => {
 
 
 
-    const [dashboardType, setDashboardType] = useState("Expert")
+    const [dashboardType, setDashboardType] = useState<"Advice Seeker" | "Expert">()
 
     return !session ? (
         <div className="flex flex-col">
