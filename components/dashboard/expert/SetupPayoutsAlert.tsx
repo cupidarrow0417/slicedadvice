@@ -19,15 +19,6 @@ import Loader from "../../layout/Loader";
 // setup payouts, as I coded that into the frontend and the
 // getServerSideProps function for those other pages.
 const SetupPayoutsAlert = () => {
-    useEffect(() => {
-        toast(
-            "Hey friends and family! We highly recommend each of y'all to try out the expert onboarding and to create your first expertise post! Expect Stripe to verify your identity and collect payment info. Should take less than 5 minutes!",
-            {
-                autoClose: 10000,
-            }
-        );
-    }, []);
-
     const dispatch = useAppDispatch();
 
     const { user: authUser, loading: authLoading } = useAppSelector((state) => {
@@ -84,6 +75,17 @@ const SetupPayoutsAlert = () => {
         }
     }, [setupPayoutsLinkSuccess, setupPayoutsLinkError, accountLink]);
 
+    useEffect(() => {
+        if (chargesEnabled === false) {
+            toast(
+                "Hey friends and family! We highly recommend each of y'all to try out the expert onboarding and to create your first expertise post! Expect Stripe to verify your identity and collect payment info. Should take less than 5 minutes!",
+                {
+                    autoClose: 10000,
+                }
+            );
+        }
+    }, []);
+
     // Helper functions
     const submitHandler = () => {
         dispatch(getStripeSetupPayoutsLink({ userId: authUser._id }));
@@ -97,6 +99,14 @@ const SetupPayoutsAlert = () => {
         });
         return false;
     };
+
+    useEffect(() => {
+        if (authUser?.stripeConnectId && chargesEnabled === false) {
+            toast(
+                "Hey! If you just completed the Stripe onboarding, give it a few minutes to complete verification. You'll be good to go soon, promise!"
+            );
+        }
+    }, []);
 
     return authLoading || checkStripeAccountFieldLoading ? (
         <Loader />
