@@ -96,10 +96,6 @@ const HomeExpertDashboard = () => {
         }
     }, [])
 
-
-
-    const [dashboardType, setDashboardType] = useState<"Advice Seeker" | "Expert">()
-
     return !session ? (
         <div className="flex flex-col">
             <div className="bg-white px-4 py-4 flex items-center justify-between sm:px-6 rounded-t-xl lg:rounded-tl-none lg:px-8 border-b-[1px] border-black/10">
@@ -160,7 +156,7 @@ const HomeExpertDashboard = () => {
                                             <PreviewSingleTextResponseBooking
                                                 key={booking._id}
                                                 booking={booking}
-                                                dashboardType={dashboardType}
+                                                dashboardType={"Expert"}
                                                 shallowPush={false}
                                             />
                                         )
