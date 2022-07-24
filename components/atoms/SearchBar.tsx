@@ -200,7 +200,7 @@ export default function SearchBar() {
                                                                                                     .url
                                                                                             }
                                                                                             alt=""
-                                                                                            className="h-10 w-10 flex-shrink-0 rounded-full"
+                                                                                            className="h-10 w-10 flex-shrink-0 rounded-full object-cover"
                                                                                             width={40}
                                                                                             height={40}
                                                                                         />
