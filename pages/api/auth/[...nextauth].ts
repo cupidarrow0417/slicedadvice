@@ -114,9 +114,9 @@ export default NextAuth({
                     // Create the user in the database 
                     // and attach the same info to the token.
                     
-                    // Set the name to be the email. They can change
+                    // Set the name to be their username from Google. They can change
                     // it later. Ofc, we'll have to check just in case 
-                    // a user (troll) already used that name.
+                    // a user already used that name
                     const checkDuplicateUser = await UserModel.findOne({ name: token.name });
                     
                     // If no duplicate, this new user's name will be their email. If there's a dup,
