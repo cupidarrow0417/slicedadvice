@@ -30,7 +30,7 @@ const people = [
     {
         name: "Mahad Adil",
         role: "Full Stack Engineer",
-        image: "",
+        image: "/images/team/MahadPicture.png",
         bio: "Hi! I'm Mahad! I'm from Pakistan! I'm a full stack engineer for SlicedAdvice, building out full stack features for the product.",
         twitterUrl: "#",
         linkedinUrl: "",
