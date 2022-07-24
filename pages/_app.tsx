@@ -6,10 +6,10 @@ import { useStore } from "react-redux";
 
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
-import Crisp from "../components/atoms/Crisp";
 import { SessionProvider } from "next-auth/react";
 import MicrosoftClarity from "../components/atoms/MicrosoftClarity";
 import Script from "next/script";
+import HubSpot from "../components/atoms/HubSpot";
 
 // Make sure to call loadStripe outside of a component’s render to avoid
 // recreating the Stripe object on every render.
@@ -34,7 +34,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
             <PersistGate loading={null} persistor={store.__persistor}>
                 <Elements stripe={stripePromise}>
                     <MicrosoftClarity />
-                    <Crisp />
+                    <HubSpot />
                     <Component {...pageProps} />
                     <Script
                         src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
@@ -49,7 +49,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
             <PersistGate persistor={store}>
                 <Elements stripe={stripePromise}>
                     <MicrosoftClarity />
-                    <Crisp />
+                    <HubSpot />
                     <Component {...pageProps} />
                     <Script
                         src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
