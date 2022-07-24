@@ -2,13 +2,20 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ['res.cloudinary.com', 'images.unsplash.com', "lh3.googleusercontent.com", "tailwindui.com"],
+    domains: [
+      "res.cloudinary.com",
+      "images.unsplash.com",
+      "lh3.googleusercontent.com",
+      "tailwindui.com",
+    ],
   },
   experimental: {
     images: {
       allowFutureImage: true,
-    }
-  }
-}
+    },
+  },
 
-module.exports = nextConfig
+  compress: true,
+};
+
+module.exports = nextConfig;
