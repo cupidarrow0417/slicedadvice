@@ -57,7 +57,7 @@ const PreviewSingleTextResponseBooking = ({
                     </div>
                     <p className="text-xs opacity-50">{parsedDate}</p>
                 </div>
-                <div className="">
+                <div>
                     {/* Customer submission */}
                     <div className="p-2 w-full rounded-md border border-black/10 ">
                         {booking.singleTextResponse.customerSubmission.slice(
