@@ -292,8 +292,10 @@ const sendEmailVerification = catchAsyncErrors(
 
         const message = `Hey there! Welcome to SlicedAdvice! We're so happy you're here. 
             Here is your email verification code: ${emailVerificationCode} \n\n
-            You can get to the verification page by going to the link below: \n\n
-            ${absoluteUrl(req)}/emailVerification?email=${user.email} \n\n
+            Please enter it in the already open verification page. \n\n
+            \n\n
+            Need to generate a new code? Head to the link below.\n\n
+            ${process.env.NEXT_PUBLIC_ORIGIN_URL?.toString()}/emailVerification?email=${user.email} \n\n
             If you did not request this email, then please ignore it. Have a great day!`;
 
         try {
