@@ -117,11 +117,11 @@ export default NextAuth({
                     // Set the name to be the email. They can change
                     // it later. Ofc, we'll have to check just in case 
                     // a user (troll) already used that name.
-                    const checkDuplicateUser = await UserModel.findOne({ name: token.email });
+                    const checkDuplicateUser = await UserModel.findOne({ name: token.name });
                     
                     // If no duplicate, this new user's name will be their email. If there's a dup,
                     // just append the current date. Should be unique.
-                    const newUserName = !checkDuplicateUser ? token.email : `${token.email}_${Date.now()}`;
+                    const newUserName = !checkDuplicateUser ? token.name : `${token.name}_${Date.now()}`;
 
                     // Hash the email. Gonna set this to be their password, just in case something crazy 
                     // happens. Never know when it could be useful.
