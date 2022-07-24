@@ -281,7 +281,7 @@ const BookSingleTextResponse = () => {
 
                             <div className="flex flex-col items-center p-8 mt-4 gap-6 bg-white w-full sm:w-[32rem] h-fit border border-black/10 shadow rounded-xl">
                                 <Image
-                                    className=" h-16 w-16 rounded-full"
+                                    className=" h-16 w-16 rounded-full object-cover"
                                     src={expertisePost.user.avatar.url}
                                     alt={`User Profile Pic for ${expertisePost.user.name}`}
                                     height={64}

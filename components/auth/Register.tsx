@@ -403,7 +403,7 @@ const Register = () => {
                                 </div>
                                 <div className="flex justify-start gap-5 items-center mt-1">
                                     <Image
-                                        className="inline-block h-14 w-14 rounded-full"
+                                        className="inline-block h-14 w-14 rounded-full object-cover"
                                         src={avatarPreview}
                                         alt=""
                                         width={56}

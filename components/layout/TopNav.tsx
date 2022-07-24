@@ -379,7 +379,7 @@ const TopNav = () => {
                                             Open user menu
                                         </span>
                                         <Image
-                                            className="h-8 w-8 rounded-full"
+                                            className="h-8 w-8 rounded-full object-cover"
                                             src={session.user.image}
                                             alt="User Profile Picture"
                                             width={32}
