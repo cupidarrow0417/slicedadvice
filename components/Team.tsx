@@ -1,9 +1,5 @@
 import React from "react";
 import UniversalFadeAnimation from "./atoms/UniversalFadeAnimation";
-import AlanProfessionalHeadshot from "/images/team/AlanProfessionalHeadshot.jpeg";
-import AlecHeadshot from "/images/team/AlecHeadshot.png";
-import WesleyPicture from "/images/team/WesleyPicture.jpg";
-import FernandoHeadshot from "/images/team/FernandoHeadshot.jpeg";
 import Image from "next/image";
 
 const people = [
@@ -11,7 +7,7 @@ const people = [
         name: "Alan Duong",
         role: "Founder and CEO, Engineer, Designer",
         image: "/images/team/AlanProfessionalHeadshot.jpeg",
-        bio: "Hey! I'm Alan, the founder of SlicedAdvice. I bootstrapped this company from the ground up and currently lead the team on all fronts: engineering, marketing, and design.",
+        bio: "Hey! I'm Alan, the founder of SlicedAdvice! I'm from Houston, Texas! I bootstrapped this company from the ground up and currently lead the team on all fronts: engineering, marketing, and design.",
         twitterUrl: "#",
         linkedinUrl: "https://www.linkedin.com/in/alan-duong-547095199/",
     },
@@ -19,7 +15,7 @@ const people = [
         name: "Alec Reiss",
         role: "Chief Operating Officer",
         image: "/images/team/AlecHeadshot.png",
-        bio: "Hello! I'm Alec, the COO of SlicedAdvice. I lead the company's marketing strategy, work on growth initiatives, and on product design.",
+        bio: "Hello! I'm Alec, the COO of SlicedAdvice! I'm from Los Gatos, California! I lead the company's marketing strategy, work on growth initiatives, and on product design.",
         twitterUrl: "#",
         linkedinUrl: "https://www.linkedin.com/in/alec-reiss-7b844a194/",
     },
@@ -27,15 +23,23 @@ const people = [
         name: "Fernando Cuello-Garcia",
         role: "Full Stack Engineer",
         image: "/images/team/FernandoHeadshot.jpeg",
-        bio: "Hey! I'm Fernando! I'm a full stack engineer for SlicedAdvice, developing the product's backend and frontend. ",
+        bio: "Hey! I'm Fernando! I'm from Santo Domingo! I'm a full stack engineer for SlicedAdvice, developing the product's frontend and backend.",
         twitterUrl: "#",
         linkedinUrl: "https://www.linkedin.com/in/fernando-cuello-garcia/",
     },
     {
+        name: "Mahad Adil",
+        role: "Full Stack Engineer",
+        image: "",
+        bio: "Hi! I'm Mahad! I'm from Pakistan! I'm a full stack engineer for SlicedAdvice, building out full stack features for the product.",
+        twitterUrl: "#",
+        linkedinUrl: "",
+    },
+    {
         name: "Wesley Le",
-        role: "Marketing Intern",
+        role: "Community Ambassador",
         image: "/images/team/WesleyPicture.png",
-        bio: "Hi! I'm Wesley, rising junior at Texas A&M and marketing intern for SlicedAdvice. I help with outreach, social media, and marketing ideation.",
+        bio: "Hi! I'm Wesley, from Houston, Texas! I'm a community ambassador for SlicedAdvice. I engage SlicedAdvice's community and help make it a better place for everyone.",
         linkedinUrl: null,
     },
     // More people...
@@ -50,7 +54,7 @@ export default function Team() {
                             Our Team
                         </h2>
                         <p className="text-xl text-gray-500">
-                            We&apos;re a small team on a big mission to slice
+                            We&apos;re a small, global team on a big mission to slice
                             and serve the world&apos;s most important,
                             inaccessible knowledge to everyone.
                         </p>

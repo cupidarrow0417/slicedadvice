@@ -79,6 +79,9 @@ userSchema.pre("save", async function (next) {
     this.password = await bcrypt.hash(this.password, 10);
 });
 
+// When a user is created, we want to instantly create a Stripe Customer,
+// HubSpot contact, and more. Important for customer relationship management
+// and payments.
 userSchema.post("save", async function (next) {
     // Create Stripe Customer object and attach to the stripeCustomerId field
     // of the user document.
@@ -98,7 +101,32 @@ userSchema.post("save", async function (next) {
     });
 
     this.stripeCustomerId = customer.id;
+    // Save the user
     await this.save();
+
+    // Create HubSpot Contact Object by email
+    const hubspot = require("@hubspot/api-client");
+
+    const hubspotClient = new hubspot.Client({
+        accessToken: process.env.HUBSPOT_AUTOMATIC_CONTACT_CREATION_PRIVATE_KEY,
+    });
+
+    const properties = {
+        email: this.email,
+    };
+    const SimplePublicObjectInput = { properties };
+
+    try {
+        const apiResponse = await hubspotClient.crm.contacts.basicApi.create(
+            SimplePublicObjectInput
+        );
+        console.log(JSON.stringify(apiResponse.body, null, 2));
+    } catch (e: any) {
+        console.log(e);
+        e.message === "HTTP request failed"
+            ? console.error(JSON.stringify(e.response, null, 2))
+            : console.error(e);
+    }
 });
 
 //Compare user password
