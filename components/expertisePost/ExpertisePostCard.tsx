@@ -62,7 +62,7 @@ const ExpertisePostCard = ({ expertisePost }: expertisePostCardInterface) => {
                     </div>
                     <div className="flex flex-col justify-start items-between mt-2 gap-2">
                         <a>
-                            <h1 className="text-xl font-semibold text-black/80 hover:text-brand-primary transition-all">
+                            <h1 className="text-xl line-clamp-2 font-semibold text-black/80 hover:text-brand-primary transition-all">
                                 {expertisePost["title"].slice(0, slicePoint)}
                                 {expertisePost["title"].length > slicePoint &&
                                     "..."}
