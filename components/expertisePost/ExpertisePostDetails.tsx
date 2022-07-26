@@ -345,6 +345,8 @@ const ExpertisePostDetails = () => {
                                             <Image
                                                 src={review.user.avatar.url}
                                                 alt={`${review.user}.`}
+                                                width={48}
+                                                height={48}
                                                 className="h-12 w-12 rounded-full"
                                             />
                                             <div className="ml-4">
