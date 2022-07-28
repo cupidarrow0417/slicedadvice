@@ -57,6 +57,16 @@ const DetailsSingleTextResponseBooking = ({
         }
     };
 
+    const [isVideoRecEnabled, setIsVideoRecEnabled] = useState(false)
+
+    const openVideoPopup = () => {
+        if (isVideoRecEnabled === false) {
+            setIsVideoRecEnabled(true);
+        } else {
+            setIsVideoRecEnabled(false);
+        }
+    }
+
     /* Checking if there is an error or success message in the bookingsMetadata object. If there is, it
     will display a toast message. */
     useEffect(() => {
@@ -161,13 +171,14 @@ const DetailsSingleTextResponseBooking = ({
                             }
                             disabled={
                                 bookingsMetadata.loading ||
-                                booking?.status === "Completed"
+                                    booking?.status === "Completed"
                                     ? true
                                     : false
                             }
                             onChange={(e) => setTextResponse(e.target.value)}
                         />
                     </div>
+
                     <button
                         className={classNames(
                             booking?.status === "Completed" ||
@@ -180,8 +191,8 @@ const DetailsSingleTextResponseBooking = ({
                         onClick={handleSendResponseClick}
                         disabled={
                             bookingsMetadata.loading ||
-                            textResponse.length < 30 ||
-                            booking?.status === "Completed"
+                                textResponse.length < 30 ||
+                                booking?.status === "Completed"
                                 ? true
                                 : false
                         }
