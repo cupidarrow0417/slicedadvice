@@ -15,6 +15,7 @@ import {
 } from "@heroicons/react/outline";
 import Link from "next/link";
 import Image from "next/future/image";
+import Modal from "./atoms/Modal";
 
 const features = [
     {
@@ -44,6 +45,7 @@ const features = [
 ];
 
 export default function Experts() {
+    const [openHubspotModal, setOpenHubspotModal] = React.useState(false);
     return (
         <div className="flex flex-col gap-24">
             <UniversalFadeAnimation>
@@ -65,12 +67,26 @@ export default function Experts() {
                             </p>
                             <div className="mt-10 sm:flex sm:justify-center lg:justify-start">
                                 <div className="">
-                                    <Link href="/dashboard/expert/home">
-                                        <a className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-brand-primary-light hover:bg-brand-primary-light/90 md:text-lg md:px-10 shadow">
-                                            Get started
-                                        </a>
-                                    </Link>
+                                    <a
+                                        href="https://meetings.hubspot.com/alan-duong"
+                                        target={"_blank"}
+                                        rel={"noopener noreferrer"}
+                                        className="w-full flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-brand-primary-light hover:bg-brand-primary-light/90 md:text-lg shadow"
+                                    >
+                                        Free Intro and Onboarding Meeting
+                                    </a>
+                                    {/* <a className="text-sm text-gray-400 hover:text-gray-600 mx-2 my-6">
+                                        Or start now
+                                    </a> */}
                                 </div>
+                                {/* <div className="mt-3 sm:mt-0 sm:ml-3">
+                                    <a
+                                        href="#"
+                                        className="w-full flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-brand-primary-light bg-white hover:bg-gray-50 md:text-lg shadow"
+                                    >
+                                        Live demo
+                                    </a>
+                                </div> */}
                                 {/* <div className="mt-3 sm:mt-0 sm:ml-3">
                                     <a
                                         href="#"
@@ -85,10 +101,10 @@ export default function Experts() {
                     <div className="relative w-full h-64 sm:h-72 md:h-96 lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2 lg:h-full">
                         <Image
                             className="absolute inset-0 w-full h-full object-cover"
-                            src="https://images.unsplash.com/photo-1520333789090-1afc82db536a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2102&q=30"
+                            src="https://images.unsplash.com/photo-1520333789090-1afc82db536a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2102&q=50"
                             alt=""
-                            width="500"
-                            height="500"
+                            width="600"
+                            height="600"
                             priority={true}
                         />
                     </div>
@@ -161,11 +177,19 @@ export default function Experts() {
                                     your unique experience and knowledge.
                                 </p>
                                 <div className="mt-6">
-                                    <Link href="/dashboard/expert/home">
+                                    {/* <Link href="/dashboard/expert/home">
                                         <a className="inline-flex px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-brand-primary-light hover:bg-brand-primary-light/90">
                                             Get started
                                         </a>
-                                    </Link>
+                                    </Link> */}
+                                    <a
+                                        href="https://meetings.hubspot.com/alan-duong"
+                                        target={"_blank"}
+                                        rel={"noopener noreferrer"}
+                                        className="w-fit flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-brand-primary-light hover:bg-brand-primary-light/90 md:text-lg shadow"
+                                    >
+                                        Free Intro and Onboarding Meeting
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -353,16 +377,24 @@ export default function Experts() {
                         <h2 className="text-3xl font-extrabold tracking-tight text-gray-900 md:text-4xl">
                             <span className="block">Ready to dive in?</span>
                             <span className="block text-brand-primary-light">
-                                Become an expert today.
+                                Book a free, personalized intro and onboarding session.
                             </span>
                         </h2>
                         <div className="mt-8 flex lg:mt-0 lg:flex-shrink-0">
                             <div className="inline-flex rounded-md shadow">
-                                <Link href="/dashboard/expert/home">
+                                {/* <Link href="/dashboard/expert/home">
                                     <a className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-brand-primary-light hover:bg-brand-primary-light/90">
                                         Get started
                                     </a>
-                                </Link>
+                                </Link> */}
+                                <a
+                                    href="https://meetings.hubspot.com/alan-duong"
+                                    target={"_blank"}
+                                    rel={"noopener noreferrer"}
+                                    className="w-fit flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-brand-primary-light hover:bg-brand-primary-light/90 md:text-lg shadow"
+                                >
+                                    Get Started
+                                </a>
                             </div>
                         </div>
                     </div>
