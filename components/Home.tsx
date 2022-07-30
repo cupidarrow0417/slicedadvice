@@ -20,36 +20,45 @@ function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(" ");
 }
 
-export default function Home() {
+export default function Home({
+    careerGrowthExpertisePosts,
+    collegeApplicationExpertisePosts,
+    personalDevelopmentExpertisePosts,
+}: any) {
     const [open, setOpen] = useState(false);
     const dispatch = useAppDispatch();
 
     // Select all categories from Redux store.
-    const { careerGrowthExpertisePosts, error: careerGrowthError } =
-        useAppSelector((state) => state.allCareerGrowthExpertisePosts);
-    const { collegeApplicationExpertisePosts, error: collegeApplicationError } =
-        useAppSelector((state) => state.allCollegeApplicationExpertisePosts);
-    const {
-        personalDevelopmentExpertisePosts,
-        error: personalDevelopmentError,
-    } = useAppSelector((state) => state.allPersonalDevelopmentExpertisePosts);
+    // const { careerGrowthExpertisePosts, error: careerGrowthError } =
+    //     useAppSelector((state) => state.allCareerGrowthExpertisePosts);
+    // const { collegeApplicationExpertisePosts, error: collegeApplicationError } =
+    //     useAppSelector((state) => state.allCollegeApplicationExpertisePosts);
+    // const {
+    //     personalDevelopmentExpertisePosts,
+    //     error: personalDevelopmentError,
+    // } = useAppSelector((state) => state.allPersonalDevelopmentExpertisePosts);
 
     // Toast errors based on which category it came from.
-    useEffect(() => {
-        if (careerGrowthError) {
-            console.log("careerGrowth error!");
-            toast.error(careerGrowthError);
-            dispatch(clearErrors());
-        } else if (collegeApplicationError) {
-            console.log("collegeApplication error!");
-            toast.error(collegeApplicationError);
-            dispatch(clearErrors());
-        } else if (personalDevelopmentError) {
-            console.log("personalDevelopment error!");
-            toast.error(personalDevelopmentError);
-            dispatch(clearErrors());
-        }
-    }, [careerGrowthError, collegeApplicationError, personalDevelopmentError, dispatch]);
+    // useEffect(() => {
+    //     if (careerGrowthError) {
+    //         console.log("careerGrowth error!");
+    //         toast.error(careerGrowthError);
+    //         dispatch(clearErrors());
+    //     } else if (collegeApplicationError) {
+    //         console.log("collegeApplication error!");
+    //         toast.error(collegeApplicationError);
+    //         dispatch(clearErrors());
+    //     } else if (personalDevelopmentError) {
+    //         console.log("personalDevelopment error!");
+    //         toast.error(personalDevelopmentError);
+    //         dispatch(clearErrors());
+    //     }
+    // }, [
+    //     careerGrowthError,
+    //     collegeApplicationError,
+    //     personalDevelopmentError,
+    //     dispatch,
+    // ]);
 
     return (
         <div className="bg-white">
@@ -269,10 +278,10 @@ export default function Home() {
                             </h2>
                             <p className="mt-3 text-xl text-white">
                                 We&apos;re on a mission to slice and serve the
-                                world&apos;s most important, inaccessible knowledge
-                                to everyone. We envision a world where everyone
-                                can get personalized advice from anyone for a
-                                fair price.
+                                world&apos;s most important, inaccessible
+                                knowledge to everyone. We envision a world where
+                                everyone can get personalized advice from anyone
+                                for a fair price.
                             </p>
                             <Link href="/team">
                                 <a className="mt-8 w-full block bg-white border border-transparent rounded-md py-3 px-8 text-base font-medium text-gray-900 hover:bg-gray-100 sm:w-auto">

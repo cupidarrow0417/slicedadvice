@@ -12,6 +12,7 @@ const dbConnect = () => {
     mongoose.connect(`${process.env.MONGODB_URI}`)
 }
 
-var review = require("../models/review.ts")
+require("../models/review.ts")
+require("../models/user.ts")
 
 export default dbConnect
