@@ -321,7 +321,7 @@ const TopNav = () => {
                         </button>
                     </div>
                     <div className="flex-1 flex items-center justify-center lg:justify-start">
-                        <div className="flex-shrink-0 flex justify-center items-center mt-1">
+                        <div className="flex-shrink-0 flex justify-center items-center">
                             <Link href="/">
                                 <a className="w-48 lg:w-56">
                                     <Image
@@ -331,7 +331,7 @@ const TopNav = () => {
                                 </a>
                             </Link>
                         </div>
-                        <div className="hidden lg:block lg:ml-6">
+                        <div className="hidden lg:block lg:ml-6 ">
                             <div className="flex">
                                 {navigation.links.map((item, index) =>
                                     item.flyout ? (
