@@ -56,7 +56,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         context?.params?.id
     ).lean();
     const reviews = await Review.find({
-        expertisePost: context?.params?.id,
+        expertisePostId: context?.params?.id,
     });
 
     if (user) {
