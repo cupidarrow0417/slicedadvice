@@ -16,20 +16,24 @@ import UniversalFadeAnimation from "../atoms/UniversalFadeAnimation";
 import { useSession } from "next-auth/react";
 import ButtonLoader from "../layout/ButtonLoader";
 
-const ExpertisePostDetails = () => {
+const ExpertisePostDetails = ({
+    expertisePost,
+    reviews,
+    user,
+}: any) => {
     // Get Session via useSession hook
     const { data: session }: any = useSession();
     const dispatch = useAppDispatch();
     const { query: queryParams } = useRouter();
     const router = useRouter();
 
-    const { expertisePost, error: expertisePostError } = useAppSelector(
-        (state) => state.expertisePostDetails
-    );
+    // const { expertisePost, error: expertisePostError } = useAppSelector(
+    //     (state) => state.expertisePostDetails
+    // );
 
-    const { reviews, metadata: reviewsMetadata } = useAppSelector(
-        (state) => state.reviews
-    );
+    // const { reviews, metadata: reviewsMetadata } = useAppSelector(
+    //     (state) => state.reviews
+    // );
 
     const { user: authUser, loading } = useAppSelector((state) => {
         return state.auth;
@@ -104,12 +108,12 @@ const ExpertisePostDetails = () => {
 
     const [isVisible, setIsVisible] = useState(false);
 
-    useEffect(() => {
-        if (reviewsMetadata.error) {
-            toast.error(reviewsMetadata.error);
-            dispatch(clearErrors());
-        }
-    }, [dispatch, reviewsMetadata.error]);
+    // useEffect(() => {
+    //     if (reviewsMetadata.error) {
+    //         toast.error(reviewsMetadata.error);
+    //         dispatch(clearErrors());
+    //     }
+    // }, [dispatch, reviewsMetadata.error]);
 
     return (
         <div className="">
@@ -343,15 +347,15 @@ const ExpertisePostDetails = () => {
                                     <div key={review._id} className="py-12">
                                         <div className="flex items-center">
                                             <Image
-                                                src={review.user.avatar.url}
-                                                alt={`${review.user}.`}
+                                                src={review?.user?.avatar?.url}
+                                                alt={`${review?.user}.`}
                                                 width={48}
                                                 height={48}
                                                 className="h-12 w-12 rounded-full"
                                             />
                                             <div className="ml-4">
                                                 <h4 className="text-sm font-bold text-gray-900">
-                                                    {review.user.name}
+                                                    {review?.user?.name}
                                                 </h4>
                                                 <div className="mt-1 flex items-center">
                                                     {[0, 1, 2, 3, 4].map(
@@ -359,7 +363,7 @@ const ExpertisePostDetails = () => {
                                                             <StarIcon
                                                                 key={rating}
                                                                 className={classNames(
-                                                                    review.rating >
+                                                                    review?.rating >
                                                                         rating
                                                                         ? "text-yellow-400"
                                                                         : "text-gray-300",

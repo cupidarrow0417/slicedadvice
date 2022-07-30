@@ -8,35 +8,39 @@ import SingleShelf from "../atoms/SingleShelf";
 import { ArrowDownIcon } from "@heroicons/react/outline";
 import UniversalFadeAnimation from "../atoms/UniversalFadeAnimation";
 
-const Categories = () => {
+const Categories = ({
+    careerGrowthExpertisePosts,
+    collegeApplicationExpertisePosts,
+    personalDevelopmentExpertisePosts,
+}: any) => {
     const dispatch = useAppDispatch();
 
     // Select all categories from Redux store.
-    const { careerGrowthExpertisePosts, error: careerGrowthError } =
-        useAppSelector((state) => state.allCareerGrowthExpertisePosts);
-    const { collegeApplicationExpertisePosts, error: collegeApplicationError } =
-        useAppSelector((state) => state.allCollegeApplicationExpertisePosts);
-    const {
-        personalDevelopmentExpertisePosts,
-        error: personalDevelopmentError,
-    } = useAppSelector((state) => state.allPersonalDevelopmentExpertisePosts);
+    // const { careerGrowthExpertisePosts, error: careerGrowthError } =
+    //     useAppSelector((state) => state.allCareerGrowthExpertisePosts);
+    // const { collegeApplicationExpertisePosts, error: collegeApplicationError } =
+    //     useAppSelector((state) => state.allCollegeApplicationExpertisePosts);
+    // const {
+    //     personalDevelopmentExpertisePosts,
+    //     error: personalDevelopmentError,
+    // } = useAppSelector((state) => state.allPersonalDevelopmentExpertisePosts);
 
-    // Toast errors based on which category it came from.
-    useEffect(() => {
-        if (careerGrowthError) {
-            console.log("careerGrowth error!");
-            toast.error(careerGrowthError);
-            dispatch(clearErrors());
-        } else if (collegeApplicationError) {
-            console.log("collegeApplication error!");
-            toast.error(collegeApplicationError);
-            dispatch(clearErrors());
-        } else if (personalDevelopmentError) {
-            console.log("personalDevelopment error!");
-            toast.error(personalDevelopmentError);
-            dispatch(clearErrors());
-        }
-    }, [dispatch, careerGrowthError, collegeApplicationError, personalDevelopmentError]);
+    // // Toast errors based on which category it came from.
+    // useEffect(() => {
+    //     if (careerGrowthError) {
+    //         console.log("careerGrowth error!");
+    //         toast.error(careerGrowthError);
+    //         dispatch(clearErrors());
+    //     } else if (collegeApplicationError) {
+    //         console.log("collegeApplication error!");
+    //         toast.error(collegeApplicationError);
+    //         dispatch(clearErrors());
+    //     } else if (personalDevelopmentError) {
+    //         console.log("personalDevelopment error!");
+    //         toast.error(personalDevelopmentError);
+    //         dispatch(clearErrors());
+    //     }
+    // }, [dispatch, careerGrowthError, collegeApplicationError, personalDevelopmentError]);
 
     return (
         <div className="max-w-7xl mx-auto  flex flex-col gap-6">
