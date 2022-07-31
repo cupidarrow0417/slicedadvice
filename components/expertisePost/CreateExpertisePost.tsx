@@ -24,21 +24,21 @@ const maxSubmissionExampleLength = 20;
 // Used for the Form Select Menu component
 const formSelectMenuOptions = [
     {
-        title: "Career Growth",
+        title: "Engineering",
         description:
-            "Advice that helps individuals navigate and improve their career.",
+            "Advice that helps aspiring engineers build a successful career in software, hardware, or other engineering fields.",
         current: true,
     },
     {
-        title: "College Application",
+        title: "Business",
         description:
-            "Advice that helps students on their college application process.",
+            "Advice that helps people build an impactful career in any business field, including growing their own business.",
         current: false,
     },
     {
-        title: "Personal Development",
+        title: "Healthcare",
         description:
-            "Advice that enhances people's inner strength, capabilities, and quality of life.",
+            "Advice that helps people break into and progress through the healthcare industry.",
         current: false,
     },
     // {
@@ -75,7 +75,7 @@ const CreateExpertisePost = () => {
         title: "",
         description: "",
         pricePerSubmission: "",
-        category: "Career Growth",
+        category: "Engineering",
     });
     const { title, description, pricePerSubmission, category } = post;
 
@@ -116,6 +116,7 @@ const CreateExpertisePost = () => {
             );
             return;
         }
+        console.log("image", image);
         // Combine the submission types into a list
         let submissionTypes: string[] = [];
         submissionType1.trim() !== "" &&
@@ -151,6 +152,7 @@ const CreateExpertisePost = () => {
             pricePerSubmission,
             category,
         };
+        console.log("postData", postData);
         dispatch(createExpertisePost(postData));
     };
 

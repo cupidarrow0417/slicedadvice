@@ -71,12 +71,13 @@ const createExpertisePost = catchAsyncErrors(
             pricePerSubmission,
             category,
         } = req.body;
-
+        console.log("req.body", req.body);
         const result = await cloudinary.uploader.upload(req.body.image, {
             folder: "slicedadvice/expertisePostImages",
             width: "750",
             crop: "scale",
         });
+        console.log("result image cloudinary", result);
 
         const expertisePost = await ExpertisePost.create({
             user,
@@ -93,6 +94,7 @@ const createExpertisePost = catchAsyncErrors(
             pricePerSubmission,
             category,
         });
+        console.log("expertisePost", expertisePost);
 
         if (!expertisePost) {
             return next(

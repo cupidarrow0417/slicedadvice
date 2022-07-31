@@ -8,13 +8,14 @@ const handler = nc({ onError });
 
 dbConnect();
 
+console.log('expertisePosts/index.ts');
 handler.get(allExpertisePosts);
 handler.use(isAuthenticatedUser).use(isStripeOnboardedUser).post(createExpertisePost);
 
 export const config = {
     api: {
         bodyParser: {
-            sizeLimit: '5mb' // Set desired value here
+            sizeLimit: '10mb' // Set desired value here
         }
     }
 }

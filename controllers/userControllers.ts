@@ -79,7 +79,7 @@ const getUserProfileById = catchAsyncErrors(
 const updateUserProfile = catchAsyncErrors(
     async (req: any, res: NextApiResponse) => {
         const user = await User.findById(req.body.userId)
-
+        console.log("req.body.avatar", req.body.avatar);
         if (user) {
             if (req.body.name !== user.name) {
                 // Check if req.body.name is a duplicate username in the database of users

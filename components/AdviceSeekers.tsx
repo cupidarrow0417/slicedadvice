@@ -12,7 +12,7 @@ import CategoriesPageScreenshot from "../public/images/appScreenshots/Categories
 import BookSingleTextResponsePageScreenshot from "../public/images/appScreenshots/BookSingleTextResponsePageScreenshot.png";
 import BookingsPageAdviceSeekerScreenshot from "../public/images/appScreenshots/BookingsPageAdviceSeekerScreenshot.png";
 import Link from "next/link";
-import Image from "next/future/image"
+import Image from "next/future/image";
 
 export default function AdviceSeekers() {
     return (
@@ -66,7 +66,7 @@ export default function AdviceSeekers() {
                             Product
                         </h2>
                         <p className="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
-                            A marketplace of bite-sized life advice.
+                            A marketplace of bite-sized career advice.
                         </p>
                         <p className="mt-4 max-w-2xl text-xl text-gray-500 lg:mx-auto">
                             We believe that changing your life begins with
@@ -94,10 +94,11 @@ export default function AdviceSeekers() {
                                         Browse the feed of advice
                                     </h2>
                                     <p className="mt-4 text-lg text-gray-500">
-                                        Whether it&apos;s career growth advice,
-                                        personal development tips, and more, our
-                                        vetted, experienced experts are here to
-                                        help you in any way you need.
+                                        Whether it&apos;s advice on breaking
+                                        into top engineering industries, running
+                                        a business, or more, our vetted,
+                                        experienced experts are here to help you
+                                        progress your career.
                                     </p>
                                     <div className="mt-6">
                                         <Link href="/categories">
@@ -112,12 +113,12 @@ export default function AdviceSeekers() {
                                 <blockquote>
                                     <div>
                                         <p className="text-base text-gray-500">
-                                            &ldquo;The world&apos;s most valuable,
-                                            important knowledge is trapped
-                                            within the minds of the world&apos;s
-                                            busiest people. SlicedAdvice is here
-                                            to slice and serve that knowledge to
-                                            you. &rdquo;
+                                            &ldquo;The world&apos;s most
+                                            valuable, important knowledge is
+                                            trapped within the minds of the
+                                            world&apos;s busiest people.
+                                            SlicedAdvice is here to slice and
+                                            serve that knowledge to you. &rdquo;
                                         </p>
                                     </div>
                                     <footer className="mt-3">
@@ -194,8 +195,12 @@ export default function AdviceSeekers() {
                                         BookSingleTextResponsePageScreenshot.src
                                     }
                                     alt="Booking Single Text Response Page Screenshot"
-                                    width={BookSingleTextResponsePageScreenshot.width}
-                                    height={BookSingleTextResponsePageScreenshot.height}
+                                    width={
+                                        BookSingleTextResponsePageScreenshot.width
+                                    }
+                                    height={
+                                        BookSingleTextResponsePageScreenshot.height
+                                    }
                                 />
                             </div>
                         </div>
@@ -216,12 +221,12 @@ export default function AdviceSeekers() {
                                 </div>
                                 <div className="mt-6">
                                     <h2 className="text-3xl font-extrabold tracking-tight text-gray-900">
-                                        Get personalized advice quickly
+                                        Get personalized career advice quickly
                                     </h2>
                                     <p className="mt-4 text-lg text-gray-500">
                                         Your expert will answer within 7 days,
-                                        or you&apos;ll never even be charged. Your
-                                        advice will be personalized to your
+                                        or you&apos;ll never even be charged.
+                                        Your advice will be personalized to your
                                         specific situation.
                                     </p>
                                     {/* <div className="mt-6">
@@ -241,8 +246,12 @@ export default function AdviceSeekers() {
                                     className="w-full rounded-xl shadow-xl ring-1 ring-black ring-opacity-5 lg:absolute lg:left-0 lg:h-full lg:w-auto lg:max-w-none"
                                     src={BookingsPageAdviceSeekerScreenshot.src}
                                     alt="Bookings Page for an Advice Seeker"
-                                    width={BookingsPageAdviceSeekerScreenshot.width}
-                                    height={BookingsPageAdviceSeekerScreenshot.height}
+                                    width={
+                                        BookingsPageAdviceSeekerScreenshot.width
+                                    }
+                                    height={
+                                        BookingsPageAdviceSeekerScreenshot.height
+                                    }
                                 />
                             </div>
                         </div>
@@ -253,7 +262,7 @@ export default function AdviceSeekers() {
                         <h2 className="text-3xl font-extrabold tracking-tight text-gray-900 md:text-4xl">
                             <span className="block">Ready to dive in?</span>
                             <span className="block text-brand-primary-light">
-                                Book personalized advice today.
+                                Book personalized career advice today.
                             </span>
                         </h2>
                         <div className="mt-8 flex lg:mt-0 lg:flex-shrink-0">

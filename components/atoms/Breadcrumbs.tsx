@@ -2,10 +2,6 @@
 import { ChevronRightIcon, HomeIcon } from "@heroicons/react/solid";
 import Link from "next/link";
 
-const samplePages = [
-    { name: "College Application", href: "#", current: false },
-];
-
 interface BreadcrumbsInterface {
     pages: { name: string; href: string; current: boolean }[];
 }

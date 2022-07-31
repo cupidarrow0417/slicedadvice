@@ -55,6 +55,7 @@
     "@types/react": "17.0.41",
     "@types/validator": "^13.7.2",
     "autoprefixer": "^10.4.4",
+    "dotenv": "^16.0.1",
     "eslint": "8.11.0",
     "eslint-config-next": "12.1.0",
     "postcss": "^8.4.12",

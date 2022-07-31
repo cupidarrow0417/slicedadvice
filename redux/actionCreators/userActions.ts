@@ -78,7 +78,7 @@ export const loadUser = (req: any, userId: any) => async (dispatch: any) => {
 export const updateUserProfile = (userData: any) => async (dispatch: any) => {
     try {
         dispatch({ type: UPDATE_USER_PROFILE_REQUEST });
-
+        console.log("userData", userData);
         const config = {
             headers: {
                 "Content-Type": "application/json",

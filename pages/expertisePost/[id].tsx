@@ -20,7 +20,7 @@ export default function ExpertisePostDetailsPage({
 }: any) {
     return (
         <Layout>
-            <ExpertisePostDetails 
+            <ExpertisePostDetails
                 expertisePost={expertisePost}
                 reviews={reviews}
                 user={user}

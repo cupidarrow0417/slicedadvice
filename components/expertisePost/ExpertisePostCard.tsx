@@ -16,17 +16,13 @@ const ExpertisePostCard = ({ expertisePost }: expertisePostCardInterface) => {
     const { query: queryParams } = useRouter();
     const router = useRouter();
 
-    const { user: authUser } = useAppSelector((state) => {
-        return state.auth;
-    });
-
     const [isPostOwner, setIsPostOwner] = useState(false);
 
     // Checking if the logged in user is the owner of the post
     // isPostOwner decides whether to show the update button or not
     useEffect(() => {
-        if (authUser) {
-            if (JSON.stringify(authUser) !== JSON.stringify(expertisePost.user)) {
+        if (session) {
+            if (JSON.stringify(session.user._id) !== JSON.stringify(expertisePost.user)) {
                 setIsPostOwner(false)
                 console.log(isPostOwner)
             } else {
@@ -34,7 +30,7 @@ const ExpertisePostCard = ({ expertisePost }: expertisePostCardInterface) => {
                 console.log(isPostOwner)
             }
         }
-    }, [expertisePost.user, isPostOwner, authUser]);
+    }, [expertisePost.user, isPostOwner, session]);
 
     
     //These calculations allow us to slice the title at the right place so that

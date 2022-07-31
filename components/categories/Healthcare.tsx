@@ -8,30 +8,13 @@ import { ArrowDownIcon } from "@heroicons/react/outline";
 import VerticalCardArray from "../atoms/MultiShelf";
 import UniversalFadeAnimation from "../atoms/UniversalFadeAnimation";
 
-const PersonalDevelopment = () => {
-    const dispatch = useAppDispatch();
-
-    // Select all categories from Redux store.
-    const {
-        personalDevelopmentExpertisePosts,
-        error: personalDevelopmentError,
-    } = useAppSelector((state) => state.allPersonalDevelopmentExpertisePosts);
-
-    // Toast errors based on which category it came from.
-    useEffect(() => {
-        if (personalDevelopmentError) {
-            console.log("personalDevelopment error!");
-            toast.error(personalDevelopmentError);
-            dispatch(clearErrors());
-        }
-    }, [dispatch, personalDevelopmentError]);
-
+const Healthcare = ({ healthcareExpertisePosts }: any) => {
     return (
         <div className="max-w-7xl mx-auto flex flex-col gap-6">
             <UniversalFadeAnimation>
                 <PageHeader
-                    heroPhrase="Cultivate your ideal life."
-                    supportingText="Browse our personal development advice, ranging from mindfulness advice to confidence tips"
+                    heroPhrase="Cultivate your ideal healthcare career."
+                    supportingText="Browse our healthcare career advice, ranging from testing and interview guidance to insider healthcare experience."
                 >
                     <button
                         onClick={() =>
@@ -47,11 +30,11 @@ const PersonalDevelopment = () => {
 
                 <div id="scrollHere"></div>
                 <VerticalCardArray
-                    title="Personal Development"
-                    link="/categories/personalDevelopment"
+                    title="Healthcare"
+                    link="/categories/healthcare"
                 >
-                    {personalDevelopmentExpertisePosts &&
-                        personalDevelopmentExpertisePosts.map(
+                    {healthcareExpertisePosts &&
+                        healthcareExpertisePosts.map(
                             (expertisePost: any) => (
                                 <ExpertisePostCard
                                     key={expertisePost._id}
@@ -65,4 +48,4 @@ const PersonalDevelopment = () => {
     );
 };
 
-export default PersonalDevelopment;
+export default Healthcare;

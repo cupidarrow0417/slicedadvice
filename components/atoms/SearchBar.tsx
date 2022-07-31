@@ -30,22 +30,22 @@ export default function SearchBar() {
 
     const categories = [
         {
-            name: "Career Growth",
-            href: "/careerGrowth",
+            name: "Engineering",
+            href: "/categories/engineering",
             description:
-                "Boost your trajectory with expertise from accomplished professionals.",
+                "Build your dream engineering career with advice from experienced engineers.",
         },
         {
-            name: "College Application",
-            href: "/collegeApplication",
+            name: "Business",
+            href: "/categories/business",
             description:
-                "Get guidance on your application from experienced applicants.",
+                "Grow your business career or your own business with guidance from experienced business professionals.",
         },
         {
-            name: "Personal Development",
-            href: "/personalDevelopment",
+            name: "Healthcare",
+            href: "/categories/healthcare",
             description:
-                "Cultivate your ideal life with personal development experts.",
+                "Cultivate your ideal healthcare career with advice from experienced healthcare professionals.",
         },
     ];
 
