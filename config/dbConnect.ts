@@ -13,6 +13,6 @@ const dbConnect = () => {
 }
 
 require("../models/review.ts")
-require("../models/user.ts")
+// require("../models/user.ts")
 
 export default dbConnect
