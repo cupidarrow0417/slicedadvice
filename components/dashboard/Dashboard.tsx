@@ -12,10 +12,10 @@ import { useSession } from "next-auth/react";
 interface DashboardInterface {
     children: any;
     dashboardType: "Advice Seeker" | "Expert";
-    user: any;
+    user?: any;
 }
 
-export default function Dashboard({ children, dashboardType, user }: DashboardInterface) {
+export default function Dashboard({ children, dashboardType, user = null }: DashboardInterface) {
     // Get Session via useSession hook 
     const { data: session }: any = useSession();
     const dispatch = useAppDispatch();

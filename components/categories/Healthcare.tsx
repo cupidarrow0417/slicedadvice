@@ -14,7 +14,7 @@ const Healthcare = ({ healthcareExpertisePosts }: any) => {
             <UniversalFadeAnimation>
                 <PageHeader
                     heroPhrase="Cultivate your ideal healthcare career."
-                    supportingText="Browse our healthcare career advice, ranging from testing and interview guidance to insider healthcare experience."
+                    supportingText="Browse our healthcare career advice, ranging from testing and interview guidance to insider healthcare knowledge."
                 >
                     <button
                         onClick={() =>

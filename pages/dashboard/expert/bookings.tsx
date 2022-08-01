@@ -59,7 +59,7 @@ export const getServerSideProps: GetServerSideProps =
                 },
             };
         } catch (e) {
-            return { props: { session } };
+            return { props: { user: null } };
         }
     });
 

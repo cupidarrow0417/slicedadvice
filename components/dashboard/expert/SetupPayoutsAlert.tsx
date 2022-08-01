@@ -80,7 +80,7 @@ const SetupPayoutsAlert = ({ user }: any) => {
                 }
             );
         }
-    }, []);
+    }, [chargesEnabled]);
 
     // Helper functions
     const submitHandler = () => {
@@ -102,7 +102,7 @@ const SetupPayoutsAlert = ({ user }: any) => {
                 "Hey! If you just completed the Stripe onboarding, give it a few minutes to complete verification. You'll be good to go soon, promise!"
             );
         }
-    }, []);
+    }, [chargesEnabled, user?.stripeConnectId]);
 
     return !session || checkStripeAccountFieldLoading ? (
         <Loader />

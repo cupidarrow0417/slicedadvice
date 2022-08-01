@@ -16,6 +16,7 @@ const ExpertDashboardPaymentsPage = ({ user }: any) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+    try {
     dbConnect();
     const session: any = await getSession({ req: context.req });
 
@@ -34,5 +35,13 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
             user: JSON.parse(JSON.stringify(user)),
         },
     };
+    } catch (e) {
+        console.log(e);
+        return {
+            props: {
+                user: {},
+            },
+        };
+    }
 };
 export default ExpertDashboardPaymentsPage;

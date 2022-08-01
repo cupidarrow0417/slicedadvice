@@ -34,7 +34,7 @@ const ExpertisePostDetails = ({ expertisePost, reviews, user }: any) => {
                 setIsPostOwner(true);
             }
         }
-    }, [expertisePost.user, isPostOwner, user]);
+    }, [expertisePost, isPostOwner, user]);
 
     const getCategoryHref = (categoryName: string) => {
         switch (categoryName) {

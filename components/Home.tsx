@@ -319,7 +319,7 @@ export default function Home({
 
                 {/* CTA section */}
                 <section aria-labelledby="sale-heading">
-                    <div className="pt-32 overflow-hidden sm:pt-14">
+                    <div className="mt-14 pt-32 overflow-hidden sm:pt-14 b">
                         <div className="bg-gray-800">
                             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                                 <div className="relative pt-48 pb-16 sm:pb-24">
