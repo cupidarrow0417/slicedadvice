@@ -103,6 +103,7 @@ export default NextAuth({
         // session itself (via the token). This session is easily available anywhere, anytime in 
         // our app! Really useful to get the currently logged in user's info anytime.
         async jwt({ token, account }) {
+            dbConnect();
             if (token.email) {
                 const user = await UserModel.findOne({ email: token.email });
                 if (user) {
