@@ -7,6 +7,16 @@ const handler = nc({ onError });
 
 dbConnect();
 
+console.log("hello from update.ts");
 handler.use(isAuthenticatedUser).put(updateUserProfile);
+
+// Body Parser limit should be set to 10mb
+export const config = {
+    api: {
+        bodyParser: {
+            sizeLimit: '10mb',
+        }
+    }
+}
 
 export default handler;

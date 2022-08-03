@@ -8,17 +8,14 @@ import Loader from "../../../layout/Loader";
 import { CashIcon } from "@heroicons/react/outline";
 import { toast } from "react-toastify";
 import SetupPayoutsAlert from "../SetupPayoutsAlert";
+import { useSession } from "next-auth/react";
 
 // No need to check Stripe status, since they'll never even get here unless they're good to go!
 // It's coded into the Expert Dashboard, and also the getServerSideProps.
 const PaymentsExpertDashboard = () => {
     const [loadingStripeLoginLink, setLoadingStripeLoginLink] = useState(false);
-
-    const {
-        user: authUser,
-        loading,
-        error,
-    } = useAppSelector((state) => state.auth);
+    const { data } = useSession();
+    let session: any = data;
 
     // Check the global state that has info on whether
     // the user has charges enabled on their Stripe.
@@ -34,9 +31,14 @@ const PaymentsExpertDashboard = () => {
     // Then, redirect the user to that link.
     const handleContinueToStripeClick = async () => {
         setLoadingStripeLoginLink(true);
+        if (!session) {
+            toast.error("You must be logged in to continue.");
+            setLoadingStripeLoginLink(false);
+            return;
+        }
         const { data } = await axios.post(
             "/api/stripe/expertLoginLink",
-            { userId: authUser._id },
+            { userId: session.user._id },
             {
                 headers: {
                     "Content-Type": "application/json",

@@ -9,11 +9,11 @@ const navigation = {
         { name: "For Advice Seekers", href: "/adviceSeekers" },
     ],
     categories: [
-        { name: "Career Growth", href: "/categories/careerGrowth" },
-        { name: "College Application", href: "/categories/collegeApplication" },
+        { name: "Engineering", href: "/categories/engineering" },
+        { name: "Business", href: "/categories/business" },
         {
-            name: "Personal Development",
-            href: "/categories/personalDevelopment",
+            name: "Healthcare",
+            href: "/categories/healthcare",
         },
     ],
     more: [

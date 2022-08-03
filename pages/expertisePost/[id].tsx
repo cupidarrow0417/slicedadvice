@@ -20,7 +20,7 @@ export default function ExpertisePostDetailsPage({
 }: any) {
     return (
         <Layout>
-            <ExpertisePostDetails 
+            <ExpertisePostDetails
                 expertisePost={expertisePost}
                 reviews={reviews}
                 user={user}
@@ -45,34 +45,45 @@ export default function ExpertisePostDetailsPage({
 //         }
 //     });
 export const getServerSideProps: GetServerSideProps = async (context) => {
-    dbConnect();
-    const session: any = await getSession({ req: context.req });
+    try {
+        dbConnect();
+        const session: any = await getSession({ req: context.req });
 
-    let user;
-    if (session) {
-        user = await User.findById(session.user._id).lean();
-    }
-    const expertisePost = await ExpertisePost.findById(
-        context?.params?.id
-    ).lean();
-    const reviews = await Review.find({
-        expertisePostId: context?.params?.id,
-    });
+        let user;
+        if (session) {
+            user = await User.findById(session.user._id).lean();
+        }
+        const expertisePost = await ExpertisePost.findById(
+            context?.params?.id
+        ).lean();
+        const reviews = await Review.find({
+            expertisePostId: context?.params?.id,
+        });
 
-    if (user) {
-        return {
-            props: {
-                user: JSON.parse(JSON.stringify(user)),
-                expertisePost: JSON.parse(JSON.stringify(expertisePost)),
-                reviews: JSON.parse(JSON.stringify(reviews)),
-            },
-        };
-    } else {
+        if (user) {
+            return {
+                props: {
+                    user: JSON.parse(JSON.stringify(user)),
+                    expertisePost: JSON.parse(JSON.stringify(expertisePost)),
+                    reviews: JSON.parse(JSON.stringify(reviews)),
+                },
+            };
+        } else {
+            return {
+                props: {
+                    user: null,
+                    expertisePost: JSON.parse(JSON.stringify(expertisePost)),
+                    reviews: JSON.parse(JSON.stringify(reviews)),
+                },
+            };
+        }
+    } catch (e) {
+        console.log(e);
         return {
             props: {
                 user: null,
-                expertisePost: JSON.parse(JSON.stringify(expertisePost)),
-                reviews: JSON.parse(JSON.stringify(reviews)),
+                expertisePost: null,
+                reviews: null,
             },
         };
     }

@@ -21,44 +21,10 @@ function classNames(...classes: string[]) {
 }
 
 export default function Home({
-    careerGrowthExpertisePosts,
-    collegeApplicationExpertisePosts,
-    personalDevelopmentExpertisePosts,
+    engineeringExpertisePosts,
+    businessExpertisePosts,
+    healthcareExpertisePosts,
 }: any) {
-    const [open, setOpen] = useState(false);
-    const dispatch = useAppDispatch();
-
-    // Select all categories from Redux store.
-    // const { careerGrowthExpertisePosts, error: careerGrowthError } =
-    //     useAppSelector((state) => state.allCareerGrowthExpertisePosts);
-    // const { collegeApplicationExpertisePosts, error: collegeApplicationError } =
-    //     useAppSelector((state) => state.allCollegeApplicationExpertisePosts);
-    // const {
-    //     personalDevelopmentExpertisePosts,
-    //     error: personalDevelopmentError,
-    // } = useAppSelector((state) => state.allPersonalDevelopmentExpertisePosts);
-
-    // Toast errors based on which category it came from.
-    // useEffect(() => {
-    //     if (careerGrowthError) {
-    //         console.log("careerGrowth error!");
-    //         toast.error(careerGrowthError);
-    //         dispatch(clearErrors());
-    //     } else if (collegeApplicationError) {
-    //         console.log("collegeApplication error!");
-    //         toast.error(collegeApplicationError);
-    //         dispatch(clearErrors());
-    //     } else if (personalDevelopmentError) {
-    //         console.log("personalDevelopment error!");
-    //         toast.error(personalDevelopmentError);
-    //         dispatch(clearErrors());
-    //     }
-    // }, [
-    //     careerGrowthError,
-    //     collegeApplicationError,
-    //     personalDevelopmentError,
-    //     dispatch,
-    // ]);
 
     return (
         <div className="bg-white">
@@ -66,7 +32,7 @@ export default function Home({
                 <PageHeader
                     heroPhrase={"Life changing advice, by the slice."}
                     supportingText={
-                        "Join our marketplace of bite-sized life advice, one that's affordable for advice seekers and convenient for busy experts."
+                        "Join our marketplace of bite-sized career advice, one that's affordable for advice seekers and convenient for busy experts."
                     }
                 >
                     <Link href="/categories">
@@ -105,11 +71,12 @@ export default function Home({
                         <div className="mt-6 grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:grid-rows-2 sm:gap-x-6 lg:gap-8">
                             <div className="group aspect-w-2 aspect-h-1 rounded-lg overflow-hidden sm:aspect-h-1 sm:aspect-w-1 sm:row-span-2">
                                 <Image
-                                    src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1932&q=20"
-                                    alt="A public speaker speaking to his audience about growing their career."
+                                    src="https://images.unsplash.com/photo-1581091226033-d5c48150dbaa?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=20"
+                                    alt="A group of engineers working on their project in a lab."
                                     className="object-center object-cover group-hover:opacity-75"
                                     width={500}
                                     height={500}
+                                    sizes="(max-width: 767px) 250px, 700px"
                                 />
                                 <div
                                     aria-hidden="true"
@@ -118,10 +85,10 @@ export default function Home({
                                 <div className="p-6 flex items-end">
                                     <div>
                                         <h3 className="font-semibold text-white">
-                                            <Link href="/categories/careerGrowth">
+                                            <Link href="/categories/engineering">
                                                 <a>
                                                     <span className="absolute inset-0" />
-                                                    Career Growth
+                                                    Engineering
                                                 </a>
                                             </Link>
                                         </h3>
@@ -136,11 +103,12 @@ export default function Home({
                             </div>
                             <div className="group aspect-w-2 aspect-h-1 rounded-lg overflow-hidden sm:relative sm:aspect-none sm:h-full">
                                 <Image
-                                    src="https://images.unsplash.com/photo-1627556704290-2b1f5853ff78?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=20"
-                                    alt="A group of recent graduates throwing their caps in the air."
+                                    src="https://images.unsplash.com/photo-1573497701240-345a300b8d36?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=20"
+                                    alt="A group of business professionals talking at a table."
                                     className="object-center object-cover group-hover:opacity-75 sm:absolute sm:inset-0 sm:w-full sm:h-full"
-                                    width={500}
-                                    height={500}
+                                    width={700}
+                                    height={700}
+                                    sizes="(max-width: 767px) 250px, 700px"
                                 />
                                 <div
                                     aria-hidden="true"
@@ -149,10 +117,10 @@ export default function Home({
                                 <div className="p-6 flex items-end sm:absolute sm:inset-0">
                                     <div>
                                         <h3 className="font-semibold text-white">
-                                            <Link href="/categories/collegeApplication">
+                                            <Link href="/categories/business">
                                                 <a>
                                                     <span className="absolute inset-0" />
-                                                    College Application
+                                                    Business
                                                 </a>
                                             </Link>
                                         </h3>
@@ -167,11 +135,12 @@ export default function Home({
                             </div>
                             <div className="group aspect-w-2 aspect-h-1 rounded-lg overflow-hidden sm:relative sm:aspect-none sm:h-full">
                                 <Image
-                                    src="https://images.unsplash.com/photo-1581404917879-53e19259fdda?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1469&q=20"
-                                    alt="A group of women smiling together."
+                                    src="https://images.unsplash.com/photo-1631558556874-1d127211f574?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=20"
+                                    alt="A doctor talking to a patient in a hospital."
                                     className="object-center object-cover group-hover:opacity-75 sm:absolute sm:inset-0 sm:w-full sm:h-full"
-                                    width={500}
-                                    height={500}
+                                    width={700}
+                                    height={700}
+                                    sizes="(max-width: 767px) 250px, 700px"
                                 />
                                 <div
                                     aria-hidden="true"
@@ -180,10 +149,10 @@ export default function Home({
                                 <div className="p-6 flex items-end sm:absolute sm:inset-0">
                                     <div>
                                         <h3 className="font-semibold text-white">
-                                            <Link href="/categories/personalDevelopment">
+                                            <Link href="/categories/healthcare">
                                                 <a>
                                                     <span className="absolute inset-0" />
-                                                    Personal Development
+                                                    Healthcare
                                                 </a>
                                             </Link>
                                         </h3>
@@ -212,11 +181,11 @@ export default function Home({
                 {/* Featured section */}
                 <section className="flex flex-col gap-10 my-20">
                     <SingleShelf
-                        title="Career Growth"
-                        link="/categories/careerGrowth"
+                        title="Engineering"
+                        link="/categories/engineering"
                     >
-                        {careerGrowthExpertisePosts &&
-                            careerGrowthExpertisePosts.map(
+                        {engineeringExpertisePosts &&
+                            engineeringExpertisePosts.map(
                                 (expertisePost: any) => (
                                     <ExpertisePostCard
                                         key={expertisePost._id}
@@ -226,11 +195,11 @@ export default function Home({
                             )}
                     </SingleShelf>
                     <SingleShelf
-                        title="College Application"
-                        link="/categories/collegeApplication"
+                        title="Business"
+                        link="/categories/business"
                     >
-                        {collegeApplicationExpertisePosts &&
-                            collegeApplicationExpertisePosts.map(
+                        {businessExpertisePosts &&
+                            businessExpertisePosts.map(
                                 (expertisePost: any) => (
                                     <ExpertisePostCard
                                         key={expertisePost._id}
@@ -240,11 +209,11 @@ export default function Home({
                             )}
                     </SingleShelf>
                     <SingleShelf
-                        title="Personal Development"
-                        link="/categories/personalDevelopment"
+                        title="Healthcare"
+                        link="/categories/healthcare"
                     >
-                        {personalDevelopmentExpertisePosts &&
-                            personalDevelopmentExpertisePosts.map(
+                        {healthcareExpertisePosts &&
+                            healthcareExpertisePosts.map(
                                 (expertisePost: any) => (
                                     <ExpertisePostCard
                                         key={expertisePost._id}
@@ -350,7 +319,7 @@ export default function Home({
 
                 {/* CTA section */}
                 <section aria-labelledby="sale-heading">
-                    <div className="pt-32 overflow-hidden sm:pt-14">
+                    <div className="mt-14 pt-32 overflow-hidden sm:pt-14">
                         <div className="bg-gray-800">
                             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                                 <div className="relative pt-48 pb-16 sm:pb-24">

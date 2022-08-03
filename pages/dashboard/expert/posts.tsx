@@ -3,23 +3,27 @@ import { getSession } from "next-auth/react";
 import Dashboard from "../../../components/dashboard/Dashboard";
 import PostsExpertDashboard from "../../../components/dashboard/expert/posts/PostsExpertDashboard";
 import Layout from "../../../components/layout/Layout";
-import { getExpertisePosts } from "../../../redux/actionCreators/expertisePostActions";
-import { loadUser } from "../../../redux/actionCreators/userActions";
-import { wrapper } from "../../../redux/store";
-import checkStripeField from "../../../utils/checkStripeField";
-const ExpertDashboardPostsPage = () => {
+import dbConnect from "../../../config/dbConnect";
+import User from "../../../models/user";
+import ExpertisePost from "../../../models/expertisePost";
+
+const ExpertDashboardPostsPage = ({ user, expertisePosts }: any) => {
     return (
         <Layout title="Posts | Expert Dashboard | SlicedAdvice">
-            <Dashboard dashboardType="Expert">
-                <PostsExpertDashboard />
+            <Dashboard dashboardType="Expert" user={user}>
+                <PostsExpertDashboard
+                    expertisePosts={expertisePosts}
+                    user={user}
+                />
             </Dashboard>
         </Layout>
     );
 };
 
-export const getServerSideProps: GetServerSideProps =
-    wrapper.getServerSideProps((store) => async ({ req }) => {
-        const session: any = await getSession({ req });
+export const getServerSideProps: GetServerSideProps = async (context) => {
+    try {
+        dbConnect();
+        const session: any = await getSession({ req: context.req });
 
         if (!session) {
             return {
@@ -30,23 +34,32 @@ export const getServerSideProps: GetServerSideProps =
             };
         }
 
-        const isOnboarded = await checkStripeField(session.user._id, "charges_enabled", undefined)
+        let user;
+        let expertisePosts;
+        if (session) {
+            user = await User.findById(session.user._id).lean();
+            expertisePosts = await ExpertisePost.find({
+                user: session?.user._id,
+            })
+                .sort({ createdAt: -1 })
+                .lean();
+        }
 
-        if (!isOnboarded) {
-            return {
-                redirect: {
-                    destination: `/dashboard/expert/home`,
-                    permanent: false,
-                },
-            };
-        }
-        try {
-            await store.dispatch(getExpertisePosts(req, undefined, undefined, session.user._id));
-            await store.dispatch(loadUser(req, session.user._id));
-            return { props: { session } };
-        } catch (e) {
-            return { props: { session } };
-        }
-    });
+        return {
+            props: {
+                user: JSON.parse(JSON.stringify(user)),
+                expertisePosts: JSON.parse(JSON.stringify(expertisePosts)),
+            },
+        };
+    } catch (e) {
+        console.log(e);
+        return {
+            props: {
+                user: null,
+                expertisePosts: null,
+            },
+        };
+    }
+};
 
 export default ExpertDashboardPostsPage;

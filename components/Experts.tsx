@@ -27,7 +27,7 @@ const features = [
     {
         name: "Showcase your expertise",
         description:
-            "Create easily discoverable expertise posts that showcase your knowledge to the entire world. In a few seconds, advice seekers can book paid advice from you.",
+            "Create easily discoverable expertise posts that showcase your industry knowledge to the entire world. In a few seconds, advice seekers can book paid advice from you.",
         icon: GlobeAltIcon,
     },
     {
@@ -61,7 +61,7 @@ export default function Experts() {
                                 </span>
                             </h1>
                             <p className="mt-3 max-w-md mx-auto text-lg text-gray-500 sm:text-xl md:mt-5 md:max-w-3xl">
-                                Join our thriving advice marketplace and
+                                Join our thriving career advice marketplace and
                                 leverage our full suite of tools to conveniently
                                 make money online.
                             </p>
@@ -101,11 +101,12 @@ export default function Experts() {
                     <div className="relative w-full h-64 sm:h-72 md:h-96 lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2 lg:h-full">
                         <Image
                             className="absolute inset-0 w-full h-full object-cover"
-                            src="https://images.unsplash.com/photo-1520333789090-1afc82db536a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2102&q=50"
+                            src="https://images.unsplash.com/photo-1522881193457-37ae97c905bf?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=50"
                             alt=""
-                            width="600"
-                            height="600"
+                            width="800"
+                            height="800"
                             priority={true}
+                            sizes="(max-width: 600px) 100vw, 800px"
                         />
                     </div>
                 </section>
@@ -115,7 +116,7 @@ export default function Experts() {
                             Product
                         </h2>
                         <p className="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
-                            A marketplace of bite-sized life advice.
+                            A marketplace of bite-sized career advice.
                         </p>
                         <p className="mt-4 max-w-2xl text-xl text-gray-500 lg:mx-auto">
                             We believe that monetizing your expertise should be

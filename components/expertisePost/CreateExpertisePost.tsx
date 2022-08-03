@@ -13,6 +13,8 @@ import FormSelectMenu from "../atoms/FormSelectMenu";
 import Router from "next/router";
 import ButtonLoader from "../layout/ButtonLoader";
 import UniversalFadeAnimation from "../atoms/UniversalFadeAnimation";
+import newCloudinaryImage from "../../utils/newCloudinaryImage";
+import resizeFile from "../../utils/resizeFile";
 
 // Used in form inputs, and also hard
 // coded into model schema for expertise posts.
@@ -24,21 +26,21 @@ const maxSubmissionExampleLength = 20;
 // Used for the Form Select Menu component
 const formSelectMenuOptions = [
     {
-        title: "Career Growth",
+        title: "Engineering",
         description:
-            "Advice that helps individuals navigate and improve their career.",
+            "Advice that helps aspiring engineers build a successful career in software, hardware, or other engineering fields.",
         current: true,
     },
     {
-        title: "College Application",
+        title: "Business",
         description:
-            "Advice that helps students on their college application process.",
+            "Advice that helps people build an impactful career in any business field, including growing their own business.",
         current: false,
     },
     {
-        title: "Personal Development",
+        title: "Healthcare",
         description:
-            "Advice that enhances people's inner strength, capabilities, and quality of life.",
+            "Advice that helps people break into and progress through the healthcare industry.",
         current: false,
     },
     // {
@@ -67,6 +69,7 @@ const CreateExpertisePost = () => {
         return state.createExpertisePost;
     });
 
+    const [loading, setLoading] = useState(false);
     // A post consists of a user, title, description, image, at least one submission
     // type, and a pricePerSubmission. Image is taken care of in the image local state,
     // as well as the submission type strings. The current user is inputted on submission
@@ -75,7 +78,7 @@ const CreateExpertisePost = () => {
         title: "",
         description: "",
         pricePerSubmission: "",
-        category: "Career Growth",
+        category: "Engineering",
     });
     const { title, description, pricePerSubmission, category } = post;
 
@@ -102,20 +105,20 @@ const CreateExpertisePost = () => {
         if (expertisePostId) {
             Router.push(`/expertisePost/${expertisePostId}`);
         }
-    }, [dispatch, expertisePostId, createExpertisePostError, createExpertisePostSuccess]);
+    }, [
+        dispatch,
+        expertisePostId,
+        createExpertisePostError,
+        createExpertisePostSuccess,
+    ]);
 
     // On submission of the form, process all of the accumulated
     // local state and pass it as a single object into the
     // appropriate redux action.
-    const submitHandler = (e: any) => {
+    const submitHandler = async (e: any) => {
         e.preventDefault();
+        setLoading(true);
 
-        if (image === "") {
-            toast.error(
-                "Please check if you uploaded an image. Also, some problems may occur when your image was too large. Please refresh and try again with a smaller image. Sorry about that!"
-            );
-            return;
-        }
         // Combine the submission types into a list
         let submissionTypes: string[] = [];
         submissionType1.trim() !== "" &&
@@ -131,7 +134,10 @@ const CreateExpertisePost = () => {
             title: string;
             description: string;
             submissionTypes: string[];
-            image: string;
+            cloudinaryImageData: {
+                public_id: string;
+                url: string;
+            };
             pricePerSubmission: any;
             category: any;
         }
@@ -139,6 +145,33 @@ const CreateExpertisePost = () => {
         let category = "";
         if (formSelectMenuInputRef.current) {
             category = formSelectMenuInputRef.current.value;
+            if (!category) {
+                setLoading(false);
+                toast.error("Please select a category.");
+                return;
+            }
+        }
+
+        let cloudinaryImageData;
+        if (image === "") {
+            toast.error("Please check if you uploaded an image.");
+            setLoading(false);
+            return;
+        } else {
+            try {
+                let result: any = await newCloudinaryImage(
+                    image,
+                    "expertisePosts_unsigned_upload_preset_slicedadvice"
+                );
+                cloudinaryImageData = {
+                    public_id: result.public_id,
+                    url: result.secure_url,
+                };
+            } catch (error) {
+                console.log(error);
+                setLoading(false);
+                return;
+            }
         }
 
         const postData: postDataInterface = {
@@ -147,10 +180,11 @@ const CreateExpertisePost = () => {
             title: title,
             description: description,
             submissionTypes: submissionTypes,
-            image: image,
+            cloudinaryImageData: cloudinaryImageData,
             pricePerSubmission,
             category,
         };
+        console.log("postData", postData);
         dispatch(createExpertisePost(postData));
     };
 
@@ -159,23 +193,12 @@ const CreateExpertisePost = () => {
     // values, in preparation for submission (above function)
     const onChange = (e: any) => {
         if (e.target.name === "image") {
-            const reader: any = new FileReader();
-            //https://stackoverflow.com/questions/5697605/limit-the-size-of-a-file-upload-html-input-element
-            if (e.target?.files[0].size > 3145728) {
-                toast.error(
-                    "Hey, sorry about that! For now, the image must be less than 3MB. Here's a useful website to compress images while this is being fixed: https://imagecompressor.com/"
-                );
-                return;
-            }
-            reader.onload = () => {
-                if (reader.readyState === 2) {
-                    setImage(reader.result);
-                    setImagePreview(reader.result);
+            resizeFile(e.target?.files[0], 700, 700).then(
+                (resizedFile: any) => {
+                    setImagePreview(resizedFile);
+                    setImage(resizedFile);
                 }
-            };
-            if (e.target?.files[0]) {
-                reader.readAsDataURL(e.target?.files[0]);
-            }
+            );
         } else if (e.target.name.includes("submissionType")) {
             switch (e.target.name) {
                 case "submissionType1":
@@ -290,8 +313,9 @@ const CreateExpertisePost = () => {
                                             />
                                         </svg>
                                         <span className="mt-2 block text-sm font-medium text-gray-900">
-                                            Upload a picture of yourself by clicking &quot;Choose
-                                            File&quot; below
+                                            Upload a picture of yourself by
+                                            clicking &quot;Choose File&quot;
+                                            below
                                         </span>
                                     </div>
                                 ) : (
@@ -419,8 +443,9 @@ const CreateExpertisePost = () => {
                                             </span>
                                         </div>
                                         <p className="text-sm font-light text-center opacity-60">
-                                            You&apos;ll get a response within 7 days,
-                                            or you&apos;ll never be charged.
+                                            You&apos;ll get a response within 7
+                                            days, or you&apos;ll never be
+                                            charged.
                                         </p>
                                         <button
                                             className="opacity-70 bg-brand-primary-light rounded-lg text-white w-full py-3 text-lg flex justify-center items-center"
@@ -436,12 +461,14 @@ const CreateExpertisePost = () => {
                             type="submit"
                             className="bg-brand-primary-light mx-auto rounded-lg text-white w-full sm:w-96 py-3 text-xl flex justify-center items-center"
                             disabled={
-                                createExpertisePostLoading || image === ""
+                                createExpertisePostLoading ||
+                                loading ||
+                                image === ""
                                     ? true
                                     : false
                             }
                         >
-                            {createExpertisePostLoading ? (
+                            {createExpertisePostLoading || loading ? (
                                 <ButtonLoader />
                             ) : (
                                 "Create Post"

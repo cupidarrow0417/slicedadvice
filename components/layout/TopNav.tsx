@@ -22,20 +22,20 @@ import Flyout from "../atoms/Flyout";
 const navigation = {
     mobileFeatured: [
         {
-            name: "Career Growth",
-            href: "/categories/careerGrowth",
+            name: "Engineering",
+            href: "/categories/engineering",
             imageSrc:
-            "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1932&q=80",
+            "https://images.unsplash.com/photo-1581091226033-d5c48150dbaa?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=20",
             imageAlt:
-                "A public speaker speaking to his audience about growing their career.",
+                "",
         },
         {
-            name: "Personal Development",
-            href: "/categories/personalDevelopment",
+            name: "Business",
+            href: "/categories/business",
             imageSrc:
-            "https://images.unsplash.com/photo-1581404917879-53e19259fdda?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1469&q=80",
+            "https://images.unsplash.com/photo-1573497701240-345a300b8d36?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=20",
             imageAlt:
-                "A group of women smiling together.",
+                "",
         },
     ],
     links: [
@@ -55,7 +55,7 @@ const navigation = {
                     name: "For Advice Seekers",
                     href: "/adviceSeekers",
                     description:
-                        "Welcome to the most affordable place to get personalized expert advice. Get started in seconds.",
+                        "Welcome to the most affordable place to get personalized career advice. Get started in seconds.",
                 },
             ],
         },
@@ -66,22 +66,22 @@ const navigation = {
             icon: <ViewGridIcon className="text-brand-primary-light" />,
             children: [
                 {
-                    name: "Career Growth",
-                    href: "/categories/careerGrowth",
+                    name: "Engineering",
+                    href: "/categories/engineering",
                     description:
-                        "Boost your trajectory with expertise from accomplished professionals.",
+                        "Build your dream engineering career with advice from experienced engineers.",
                 },
                 {
-                    name: "College Application",
-                    href: "/categories/collegeApplication",
+                    name: "Business",
+                    href: "/categories/business",
                     description:
-                        "Get guidance on your application from experienced applicants.",
+                        "Grow your business career or your own business with guidance from experienced business professionals.",
                 },
                 {
-                    name: "Personal Development",
-                    href: "/categories/personalDevelopment",
+                    name: "Healthcare",
+                    href: "/categories/healthcare",
                     description:
-                        "Cultivate your ideal life with personal development experts.",
+                        "Cultivate your ideal healthcare career with advice from experienced healthcare professionals.",
                 },
             ],
             headerText: "See all categories",

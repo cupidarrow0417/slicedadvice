@@ -12,24 +12,6 @@ const UserSettingsPage = () => {
     );
 };
 
-// export async function getServerSideProps<GetServerSideProps>(context: any) {
-//     const session = await getSession({ req: context.req })
-
-//     if (!session) {
-//         return {
-//             redirect: {
-//                 destination: `/login?returnUrl=/me/settings&returnContext=user%20settings%20page`,
-//                 permanent: false
-//             }
-//         }
-//     }
-
-//     return {
-//         props: { session }
-//     }
-
-// }
-
 export const getServerSideProps: GetServerSideProps =
     wrapper.getServerSideProps((store) => async ({ req }) => {
         try {

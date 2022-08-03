@@ -16,64 +16,34 @@ import UniversalFadeAnimation from "../atoms/UniversalFadeAnimation";
 import { useSession } from "next-auth/react";
 import ButtonLoader from "../layout/ButtonLoader";
 
-const ExpertisePostDetails = ({
-    expertisePost,
-    reviews,
-    user,
-}: any) => {
+const ExpertisePostDetails = ({ expertisePost, reviews, user }: any) => {
     // Get Session via useSession hook
     const { data: session }: any = useSession();
     const dispatch = useAppDispatch();
     const { query: queryParams } = useRouter();
     const router = useRouter();
 
-    // const { expertisePost, error: expertisePostError } = useAppSelector(
-    //     (state) => state.expertisePostDetails
-    // );
-
-    // const { reviews, metadata: reviewsMetadata } = useAppSelector(
-    //     (state) => state.reviews
-    // );
-
-    const { user: authUser, loading } = useAppSelector((state) => {
-        return state.auth;
-    });
-
     const [isPostOwner, setIsPostOwner] = useState(false);
 
     // Checking if the logged in user is the owner of the post
     // isPostOwner decides whether to show the update button or not
     useEffect(() => {
-        if (authUser) {
-            if (
-                JSON.stringify(authUser) !== JSON.stringify(expertisePost.user)
-            ) {
-                setIsPostOwner(false);
-                console.log(isPostOwner);
-            } else {
+        if (user && expertisePost) {
+            console.log("user", user);
+            if (user._id === expertisePost.user) {
                 setIsPostOwner(true);
             }
         }
-    }, [expertisePost.user, isPostOwner, authUser]);
-
-    let userIsOwner: boolean = false;
-    if (session?.user._id === expertisePost?.user?._id) {
-        userIsOwner = true;
-    }
-
-    let userIsLoggedIn: boolean = false;
-    if (session?.user) {
-        userIsLoggedIn = true;
-    }
+    }, [expertisePost, isPostOwner, user]);
 
     const getCategoryHref = (categoryName: string) => {
         switch (categoryName) {
-            case "Career Growth":
-                return "/categories/careerGrowth";
-            case "College Application":
-                return "/categories/collegeApplication";
-            case "Personal Development":
-                return "/categories/personalDevelopment";
+            case "Engineering":
+                return "/categories/engineering";
+            case "Business":
+                return "/categories/business";
+            case "Healthcare":
+                return "/categories/healthcare";
             case "Other":
                 return "/categories/other";
             default:
@@ -201,16 +171,14 @@ const ExpertisePostDetails = ({
                                         You&apos;ll get a response within 7
                                         days, or you&apos;ll never be charged.
                                     </p>
-                                    {loading ? (
-                                        <Loader />
-                                    ) : userIsOwner ? (
+                                    {isPostOwner ? (
                                         ""
                                     ) : (
                                         <Link
                                             href={`/expertisePost/book/singleTextResponse/${queryParams?.id}`}
                                         >
                                             <a className="bg-brand-primary-light rounded-lg text-white w-full py-3 text-lg flex justify-center items-center">
-                                                Send Submission
+                                                Book Advice
                                             </a>
                                         </Link>
                                     )}
@@ -308,7 +276,7 @@ const ExpertisePostDetails = ({
                                 ))}
                             </dl>
                         </div>
-                        {!userIsOwner && userIsLoggedIn ? (
+                        {!isPostOwner && session ? (
                             <div className="mt-10">
                                 <h3 className="text-lg font-medium text-gray-900">
                                     Share your thoughts
@@ -327,7 +295,7 @@ const ExpertisePostDetails = ({
                                 ) : (
                                     <div className="mt-10">
                                         <CreateReviewWidget
-                                            user={authUser}
+                                            user={user}
                                             expertisePostId={expertisePost?._id}
                                         />
                                     </div>

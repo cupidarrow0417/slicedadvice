@@ -1,9 +1,5 @@
 import { combineReducers } from "redux";
 import {
-    allExpertisePostsReducer,
-    allCareerGrowthExpertisePostsReducer,
-    allCollegeApplicationExpertisePostsReducer,
-    allPersonalDevelopmentExpertisePostsReducer,
     expertisePostDetailsReducer,
     createExpertisePostReducer,
     updateExpertisePostReducer
@@ -28,12 +24,6 @@ import {
 /* Creating a new reducer that combines all of the individual reducers into one. */
 const reducer = combineReducers({
     // Expertise Post Global State
-    allExpertisePosts: allExpertisePostsReducer,
-    allCareerGrowthExpertisePosts: allCareerGrowthExpertisePostsReducer,
-    allCollegeApplicationExpertisePosts:
-        allCollegeApplicationExpertisePostsReducer,
-    allPersonalDevelopmentExpertisePosts:
-        allPersonalDevelopmentExpertisePostsReducer,
     expertisePostDetails: expertisePostDetailsReducer,
     createExpertisePost: createExpertisePostReducer,
     updateExpertisePost: updateExpertisePostReducer,
