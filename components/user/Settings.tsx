@@ -179,7 +179,7 @@ export default function Settings() {
             //     }
             // };
             // reader.readAsDataURL(e.target.files[0]);
-            resizeFile(e.target.files[0], 150, 150).then((resizedFile: any) => {
+            resizeFile(e.target.files[0], 400, 400).then((resizedFile: any) => {
                 setAvatar(resizedFile);
                 setAvatarPreview(resizedFile);
             });
