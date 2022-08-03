@@ -42,7 +42,10 @@ interface postDataInterface {
     title: string;
     description: string;
     submissionTypes: string[];
-    image: string;
+    cloudinaryImageData: {
+        public_id: string;
+        url: string;
+    }
     pricePerSubmission: number;
     category: string;
 }

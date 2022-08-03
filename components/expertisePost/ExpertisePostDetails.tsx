@@ -30,7 +30,7 @@ const ExpertisePostDetails = ({ expertisePost, reviews, user }: any) => {
     useEffect(() => {
         if (user && expertisePost) {
             console.log("user", user);
-            if (JSON.stringify(user) === JSON.stringify(expertisePost.user)) {
+            if (user._id === expertisePost.user) {
                 setIsPostOwner(true);
             }
         }

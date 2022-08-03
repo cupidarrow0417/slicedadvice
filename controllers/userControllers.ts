@@ -79,7 +79,6 @@ const getUserProfileById = catchAsyncErrors(
 const updateUserProfile = catchAsyncErrors(
     async (req: any, res: NextApiResponse) => {
         const user = await User.findById(req.body.userId)
-        console.log("req.body.avatar", req.body.avatar);
         if (user) {
             if (req.body.name !== user.name) {
                 // Check if req.body.name is a duplicate username in the database of users
@@ -106,7 +105,7 @@ const updateUserProfile = catchAsyncErrors(
             if (req.body.password) {
                 user.password = req.body.password;
             }
-            if (req.body.avatar !== "") {
+            if (req.body.cloudinaryImageData !== null) {
                 const image_id = user.avatar.public_id;
 
                 if (image_id !== "slicedadvice/avatars/default_avatar") {
@@ -115,18 +114,18 @@ const updateUserProfile = catchAsyncErrors(
                 }
 
                 //Upload user's new avatar
-                const result = await cloudinary.uploader.upload(
-                    req.body.avatar,
-                    {
-                        folder: "slicedadvice/avatars",
-                        width: "150",
-                        crop: "scale",
-                    }
-                );
+                // const result = await cloudinary.uploader.upload(
+                //     req.body.avatar,
+                //     {
+                //         folder: "slicedadvice/avatars",
+                //         width: "150",
+                //         crop: "scale",
+                //     }
+                // );
 
                 user.avatar = {
-                    public_id: result.public_id,
-                    url: result.secure_url,
+                    public_id: req.body.cloudinaryImageData.public_id,
+                    url: req.body.cloudinaryImageData.url,
                 };
             }
             await user.save();

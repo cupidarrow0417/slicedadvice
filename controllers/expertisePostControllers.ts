@@ -70,14 +70,9 @@ const createExpertisePost = catchAsyncErrors(
             submissionTypes,
             pricePerSubmission,
             category,
+            cloudinaryImageData,
         } = req.body;
         console.log("req.body", req.body);
-        const result = await cloudinary.uploader.upload(req.body.image, {
-            folder: "slicedadvice/expertisePostImages",
-            width: "750",
-            crop: "scale",
-        });
-        console.log("result image cloudinary", result);
 
         const expertisePost = await ExpertisePost.create({
             user,
@@ -85,10 +80,7 @@ const createExpertisePost = catchAsyncErrors(
             title,
             description,
             images: [
-                {
-                    public_id: result.public_id,
-                    url: result.secure_url,
-                },
+                cloudinaryImageData
             ],
             submissionTypes,
             pricePerSubmission,
@@ -127,20 +119,19 @@ const updateSingleExpertisePost = catchAsyncErrors(
             submissionTypes,
             pricePerSubmission,
             category,
-            image,
-            currentImage
+            cloudinaryImageData
         } = req.body;
 
         // console.log("CURRENT IMAGE: ");
         // console.log(currentImage);
 
-        const result = await cloudinary.uploader.upload(req.body.image, {
-            folder: "slicedadvice/expertisePostImages",
-            width: "750",
-            crop: "scale",
-        });
+        // const result = await cloudinary.uploader.upload(req.body.image, {
+        //     folder: "slicedadvice/expertisePostImages",
+        //     width: "750",
+        //     crop: "scale",
+        // });
         
-        const destroy = await cloudinary.uploader.destroy(currentImage.public_id);
+        const destroy = await cloudinary.uploader.destroy(updatedExpertisePost.images[0].public_id);
         console.log(destroy);
 
         updatedExpertisePost = await ExpertisePost.findByIdAndUpdate(
@@ -150,8 +141,8 @@ const updateSingleExpertisePost = catchAsyncErrors(
                 description,
                 images: [
                     {
-                        public_id: result.public_id,
-                        url: result.secure_url,
+                        public_id: cloudinaryImageData.public_id,
+                        url: cloudinaryImageData.url,
                     },
                 ],
                 submissionTypes,
