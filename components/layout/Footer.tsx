@@ -157,7 +157,7 @@ export default function Footer() {
                                     ))}
                                 </ul>
                             </div>
-                            <div className="mt-12 md:mt-0">
+                            {/* <div className="mt-12 md:mt-0">
                                 <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">
                                     Legal
                                 </h3>
@@ -172,7 +172,7 @@ export default function Footer() {
                                         </li>
                                     ))}
                                 </ul>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                 </div>

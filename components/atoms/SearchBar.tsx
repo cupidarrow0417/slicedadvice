@@ -284,10 +284,6 @@ export default function SearchBar() {
                                                                         <>
                                                                             <Link
                                                                                 href={
-                                                                                    window
-                                                                                        .location
-                                                                                        .origin +
-                                                                                    "/categories" +
                                                                                     category.href
                                                                                 }
                                                                             >
