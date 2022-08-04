@@ -74,9 +74,9 @@ const SetupPayoutsAlert = ({ user }: any) => {
     useEffect(() => {
         if (chargesEnabled === false) {
             toast(
-                "Hey friends and family! We highly recommend each of y'all to try out the expert onboarding and to create your first expertise post! Expect Stripe to verify your identity and collect payment info. Should take less than 5 minutes!",
+                "Hey there! Just as a reminder, our team would love to personally guide you through the entire setup process to establish your presence on SlicedAdvice. Book an onboarding session here: https://meetings.hubspot.com/alan-duong",
                 {
-                    autoClose: 10000,
+                    autoClose: 15000,
                 }
             );
         }
