@@ -8,28 +8,14 @@ import VerticalCardArray from "../atoms/MultiShelf";
 import { ArrowDownIcon } from "@heroicons/react/outline";
 import UniversalFadeAnimation from "../atoms/UniversalFadeAnimation";
 
-const CollegeApplication = () => {
-    const dispatch = useAppDispatch();
-
-    // Select all categories from Redux store.
-    const { collegeApplicationExpertisePosts, error: collegeApplicationError } =
-        useAppSelector((state) => state.allCollegeApplicationExpertisePosts);
-
-    // Toast errors based on which category it came from.
-    useEffect(() => {
-        if (collegeApplicationError) {
-            console.log("collegeApplication error!");
-            toast.error(collegeApplicationError);
-            dispatch(clearErrors());
-        }
-    }, [dispatch, collegeApplicationError]);
+const Engineering = ({ engineeringExpertisePosts }: any) => {
 
     return (
         <div className="max-w-7xl mx-auto flex flex-col gap-6">
             <UniversalFadeAnimation>
                 <PageHeader
-                    heroPhrase="Learn from experienced applicants."
-                    supportingText="Browse advice from experienced applicants ranging from tailored essay advice to interview preparation tips"
+                    heroPhrase="Build your dream engineering career."
+                    supportingText="Browse advice from accomplished engineers ranging from insider industry knowledge to interview guidance."
                 >
                     <button
                         onClick={() =>
@@ -45,22 +31,20 @@ const CollegeApplication = () => {
 
                 <div id="scrollHere"></div>
                 <VerticalCardArray
-                    title="College Application"
-                    link="/categories/collegeApplication"
+                    title="Engineering"
+                    link="/categories/engineering"
                 >
-                    {collegeApplicationExpertisePosts &&
-                        collegeApplicationExpertisePosts.map(
-                            (expertisePost: any) => (
-                                <ExpertisePostCard
-                                    key={expertisePost._id}
-                                    expertisePost={expertisePost}
-                                />
-                            )
-                        )}
+                    {engineeringExpertisePosts &&
+                        engineeringExpertisePosts.map((expertisePost: any) => (
+                            <ExpertisePostCard
+                                key={expertisePost._id}
+                                expertisePost={expertisePost}
+                            />
+                        ))}
                 </VerticalCardArray>
             </UniversalFadeAnimation>
         </div>
     );
 };
 
-export default CollegeApplication;
+export default Engineering;

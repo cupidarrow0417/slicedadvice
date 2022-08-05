@@ -18,13 +18,9 @@ import Loader from "../../layout/Loader";
 // the user can't even access those pages unless they have already
 // setup payouts, as I coded that into the frontend and the
 // getServerSideProps function for those other pages.
-const SetupPayoutsAlert = () => {
+const SetupPayoutsAlert = ({ user }: any) => {
     const dispatch = useAppDispatch();
-
-    const { user: authUser, loading: authLoading } = useAppSelector((state) => {
-        return state.auth;
-    });
-
+    const { data: session } = useSession();
     const {
         accountField: chargesEnabled,
         loading: checkStripeAccountFieldLoading,
@@ -78,17 +74,17 @@ const SetupPayoutsAlert = () => {
     useEffect(() => {
         if (chargesEnabled === false) {
             toast(
-                "Hey friends and family! We highly recommend each of y'all to try out the expert onboarding and to create your first expertise post! Expect Stripe to verify your identity and collect payment info. Should take less than 5 minutes!",
+                "Hey there! Just as a reminder, our team would love to personally guide you through the entire setup process to establish your presence on SlicedAdvice. Book an onboarding session here: https://meetings.hubspot.com/alan-duong",
                 {
-                    autoClose: 10000,
+                    autoClose: 15000,
                 }
             );
         }
-    }, []);
+    }, [chargesEnabled]);
 
     // Helper functions
     const submitHandler = () => {
-        dispatch(getStripeSetupPayoutsLink({ userId: authUser._id }));
+        dispatch(getStripeSetupPayoutsLink({ userId: user._id }));
     };
 
     const isLoading = (...loadStates: any[]) => {
@@ -101,23 +97,23 @@ const SetupPayoutsAlert = () => {
     };
 
     useEffect(() => {
-        if (authUser?.stripeConnectId && chargesEnabled === false) {
+        if (user?.stripeConnectId && chargesEnabled === false) {
             toast(
                 "Hey! If you just completed the Stripe onboarding, give it a few minutes to complete verification. You'll be good to go soon, promise!"
             );
         }
-    }, []);
+    }, [chargesEnabled, user?.stripeConnectId]);
 
-    return authLoading || checkStripeAccountFieldLoading ? (
+    return !session || checkStripeAccountFieldLoading ? (
         <Loader />
     ) : (
         <div className="flex justify-center items-center rounded-xl bg-white w-full p-9">
             <div className="flex flex-col gap-5 justify-center items-center max-w-md">
                 <CashIcon className=" w-16 h-16 text-brand-primary-light" />
                 <h1 className="text-3xl text-center -mt-4">
-                    {!authUser?.stripeConnectId &&
+                    {!user?.stripeConnectId &&
                         "Setup payouts to be an expert on SlicedAdvice"}
-                    {authUser?.stripeConnectId &&
+                    {user?.stripeConnectId &&
                         !chargesEnabled &&
                         "Continue to setup payouts to be an expert on SlicedAdvice"}
                 </h1>
@@ -130,7 +126,6 @@ const SetupPayoutsAlert = () => {
                     className="bg-brand-primary-light rounded-lg text-white w-full py-3 text-lg flex justify-center items-center"
                     disabled={
                         isLoading(
-                            authLoading,
                             checkStripeAccountFieldLoading,
                             setupPayoutsLinkLoading
                         )
@@ -140,7 +135,7 @@ const SetupPayoutsAlert = () => {
                 >
                     {setupPayoutsLinkLoading ? (
                         <ButtonLoader />
-                    ) : !authUser?.stripeConnectId ? (
+                    ) : !user?.stripeConnectId ? (
                         "Setup Payouts"
                     ) : !chargesEnabled ? (
                         "Continue Setup"

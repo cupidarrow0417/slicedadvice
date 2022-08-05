@@ -16,60 +16,34 @@ import UniversalFadeAnimation from "../atoms/UniversalFadeAnimation";
 import { useSession } from "next-auth/react";
 import ButtonLoader from "../layout/ButtonLoader";
 
-const ExpertisePostDetails = () => {
+const ExpertisePostDetails = ({ expertisePost, reviews, user }: any) => {
     // Get Session via useSession hook
     const { data: session }: any = useSession();
     const dispatch = useAppDispatch();
     const { query: queryParams } = useRouter();
     const router = useRouter();
 
-    const { expertisePost, error: expertisePostError } = useAppSelector(
-        (state) => state.expertisePostDetails
-    );
-
-    const { reviews, metadata: reviewsMetadata } = useAppSelector(
-        (state) => state.reviews
-    );
-
-    const { user: authUser, loading } = useAppSelector((state) => {
-        return state.auth;
-    });
-
     const [isPostOwner, setIsPostOwner] = useState(false);
 
     // Checking if the logged in user is the owner of the post
     // isPostOwner decides whether to show the update button or not
     useEffect(() => {
-        if (authUser) {
-            if (
-                JSON.stringify(authUser) !== JSON.stringify(expertisePost.user)
-            ) {
-                setIsPostOwner(false);
-                console.log(isPostOwner);
-            } else {
+        if (user && expertisePost) {
+            console.log("user", user);
+            if (user._id === expertisePost.user) {
                 setIsPostOwner(true);
             }
         }
-    }, [expertisePost.user, isPostOwner, authUser]);
-
-    let userIsOwner: boolean = false;
-    if (session?.user._id === expertisePost?.user?._id) {
-        userIsOwner = true;
-    }
-
-    let userIsLoggedIn: boolean = false;
-    if (session?.user) {
-        userIsLoggedIn = true;
-    }
+    }, [expertisePost, isPostOwner, user]);
 
     const getCategoryHref = (categoryName: string) => {
         switch (categoryName) {
-            case "Career Growth":
-                return "/categories/careerGrowth";
-            case "College Application":
-                return "/categories/collegeApplication";
-            case "Personal Development":
-                return "/categories/personalDevelopment";
+            case "Engineering":
+                return "/categories/engineering";
+            case "Business":
+                return "/categories/business";
+            case "Healthcare":
+                return "/categories/healthcare";
             case "Other":
                 return "/categories/other";
             default:
@@ -104,12 +78,12 @@ const ExpertisePostDetails = () => {
 
     const [isVisible, setIsVisible] = useState(false);
 
-    useEffect(() => {
-        if (reviewsMetadata.error) {
-            toast.error(reviewsMetadata.error);
-            dispatch(clearErrors());
-        }
-    }, [dispatch, reviewsMetadata.error]);
+    // useEffect(() => {
+    //     if (reviewsMetadata.error) {
+    //         toast.error(reviewsMetadata.error);
+    //         dispatch(clearErrors());
+    //     }
+    // }, [dispatch, reviewsMetadata.error]);
 
     return (
         <div className="">
@@ -197,16 +171,14 @@ const ExpertisePostDetails = () => {
                                         You&apos;ll get a response within 7
                                         days, or you&apos;ll never be charged.
                                     </p>
-                                    {loading ? (
-                                        <Loader />
-                                    ) : userIsOwner ? (
+                                    {isPostOwner ? (
                                         ""
                                     ) : (
                                         <Link
                                             href={`/expertisePost/book/singleTextResponse/${queryParams?.id}`}
                                         >
                                             <a className="bg-brand-primary-light rounded-lg text-white w-full py-3 text-lg flex justify-center items-center">
-                                                Send Submission
+                                                Book Advice
                                             </a>
                                         </Link>
                                     )}
@@ -304,7 +276,7 @@ const ExpertisePostDetails = () => {
                                 ))}
                             </dl>
                         </div>
-                        {!userIsOwner && userIsLoggedIn ? (
+                        {!isPostOwner && session ? (
                             <div className="mt-10">
                                 <h3 className="text-lg font-medium text-gray-900">
                                     Share your thoughts
@@ -323,7 +295,7 @@ const ExpertisePostDetails = () => {
                                 ) : (
                                     <div className="mt-10">
                                         <CreateReviewWidget
-                                            user={authUser}
+                                            user={user}
                                             expertisePostId={expertisePost?._id}
                                         />
                                     </div>
@@ -343,13 +315,15 @@ const ExpertisePostDetails = () => {
                                     <div key={review._id} className="py-12">
                                         <div className="flex items-center">
                                             <Image
-                                                src={review.user.avatar.url}
-                                                alt={`${review.user}.`}
+                                                src={review?.user?.avatar?.url}
+                                                alt={`${review?.user}.`}
+                                                width={48}
+                                                height={48}
                                                 className="h-12 w-12 rounded-full"
                                             />
                                             <div className="ml-4">
                                                 <h4 className="text-sm font-bold text-gray-900">
-                                                    {review.user.name}
+                                                    {review?.user?.name}
                                                 </h4>
                                                 <div className="mt-1 flex items-center">
                                                     {[0, 1, 2, 3, 4].map(
@@ -357,7 +331,7 @@ const ExpertisePostDetails = () => {
                                                             <StarIcon
                                                                 key={rating}
                                                                 className={classNames(
-                                                                    review.rating >
+                                                                    review?.rating >
                                                                         rating
                                                                         ? "text-yellow-400"
                                                                         : "text-gray-300",

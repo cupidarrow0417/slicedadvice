@@ -12,16 +12,13 @@ import { useSession } from "next-auth/react";
 interface DashboardInterface {
     children: any;
     dashboardType: "Advice Seeker" | "Expert";
+    user?: any;
 }
 
-export default function Dashboard({ children, dashboardType }: DashboardInterface) {
+export default function Dashboard({ children, dashboardType, user = null }: DashboardInterface) {
     // Get Session via useSession hook 
     const { data: session }: any = useSession();
     const dispatch = useAppDispatch();
-
-    const { user: authUser, loading: authLoading } = useAppSelector((state) => {
-        return state.auth;
-    });
 
     // Initial useEffect that checks for stripe id and dispatches
     // redux action to check whether charges are enabled. Important
@@ -29,17 +26,17 @@ export default function Dashboard({ children, dashboardType }: DashboardInterfac
     //  as we want to display different messages based on those Stripe account fields.
     useEffect(() => {
         // Check if the user has charges enabled on their Stripe
-        // Connect account
+        // Connect account (if they have started that process)
         if (session) {
-            if (dashboardType === "Expert" && authUser?.stripeConnectId) {
+            if (dashboardType === "Expert" && user?.stripeConnectId) {
                 const postData: any = {
-                    userId: authUser._id,
+                    userId: user._id,
                     field: "charges_enabled",
                 };
                 dispatch(checkStripeAccountField(postData));
             }
         }
-    }, [dispatch, dashboardType, authUser, session]);
+    }, [dispatch, dashboardType, user, session]);
 
     // Check the global state that has info on whether
     // the user has charges enabled on their Stripe.

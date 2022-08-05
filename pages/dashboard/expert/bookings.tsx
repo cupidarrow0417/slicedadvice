@@ -3,15 +3,17 @@ import { getSession } from "next-auth/react";
 import BookingsDashboard from "../../../components/dashboard/BookingsDashboard";
 import Dashboard from "../../../components/dashboard/Dashboard";
 import Layout from "../../../components/layout/Layout";
+import dbConnect from "../../../config/dbConnect";
 import { getBookings } from "../../../redux/actionCreators/bookingActionCreators";
-import { loadUser } from "../../../redux/actionCreators/userActions";
 import { wrapper } from "../../../redux/store";
 import checkStripeField from "../../../utils/checkStripeField";
-const ExpertDashboardBookingsPage = () => {
+import User from "../../../models/user";
+
+const ExpertDashboardBookingsPage = ({ user }: any) => {
     return (
         <Layout title="Bookings | Expert Dashboard | SlicedAdvice">
-            <Dashboard dashboardType="Expert">
-                <BookingsDashboard dashboardType = "Expert"/>
+            <Dashboard dashboardType="Expert" user={user}>
+                <BookingsDashboard dashboardType="Expert" />
             </Dashboard>
         </Layout>
     );
@@ -19,6 +21,7 @@ const ExpertDashboardBookingsPage = () => {
 
 export const getServerSideProps: GetServerSideProps =
     wrapper.getServerSideProps((store) => async ({ req }) => {
+        dbConnect();
         const session: any = await getSession({ req });
 
         if (!session) {
@@ -30,7 +33,11 @@ export const getServerSideProps: GetServerSideProps =
             };
         }
 
-        const isOnboarded = await checkStripeField(session.user._id, "charges_enabled", undefined)
+        const isOnboarded = await checkStripeField(
+            session.user._id,
+            "charges_enabled",
+            undefined
+        );
         if (!isOnboarded) {
             return {
                 redirect: {
@@ -39,13 +46,20 @@ export const getServerSideProps: GetServerSideProps =
                 },
             };
         }
-        
+
         try {
-            await store.dispatch(loadUser(req, session.user._id));
-            await store.dispatch(getBookings(req, 1, undefined, undefined, session.user._id));
-            return { props: { session } };
+            // Get user from database
+            const user = await User.findById(session.user._id).lean();
+            await store.dispatch(
+                getBookings(req, 1, undefined, undefined, session.user._id)
+            );
+            return {
+                props: {
+                    user: JSON.parse(JSON.stringify(user)),
+                },
+            };
         } catch (e) {
-            return { props: { session } };
+            return { props: { user: null } };
         }
     });
 

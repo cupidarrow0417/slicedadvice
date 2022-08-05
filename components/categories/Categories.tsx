@@ -8,42 +8,18 @@ import SingleShelf from "../atoms/SingleShelf";
 import { ArrowDownIcon } from "@heroicons/react/outline";
 import UniversalFadeAnimation from "../atoms/UniversalFadeAnimation";
 
-const Categories = () => {
-    const dispatch = useAppDispatch();
-
-    // Select all categories from Redux store.
-    const { careerGrowthExpertisePosts, error: careerGrowthError } =
-        useAppSelector((state) => state.allCareerGrowthExpertisePosts);
-    const { collegeApplicationExpertisePosts, error: collegeApplicationError } =
-        useAppSelector((state) => state.allCollegeApplicationExpertisePosts);
-    const {
-        personalDevelopmentExpertisePosts,
-        error: personalDevelopmentError,
-    } = useAppSelector((state) => state.allPersonalDevelopmentExpertisePosts);
-
-    // Toast errors based on which category it came from.
-    useEffect(() => {
-        if (careerGrowthError) {
-            console.log("careerGrowth error!");
-            toast.error(careerGrowthError);
-            dispatch(clearErrors());
-        } else if (collegeApplicationError) {
-            console.log("collegeApplication error!");
-            toast.error(collegeApplicationError);
-            dispatch(clearErrors());
-        } else if (personalDevelopmentError) {
-            console.log("personalDevelopment error!");
-            toast.error(personalDevelopmentError);
-            dispatch(clearErrors());
-        }
-    }, [dispatch, careerGrowthError, collegeApplicationError, personalDevelopmentError]);
+const Categories = ({
+    engineeringExpertisePosts,
+    businessExpertisePosts,
+    healthcareExpertisePosts,
+}: any) => {
 
     return (
         <div className="max-w-7xl mx-auto  flex flex-col gap-6">
             <UniversalFadeAnimation>
                 <PageHeader
-                    heroPhrase="Advice that makes a difference."
-                    supportingText="Browse our categories ranging from career growth to personal development"
+                    heroPhrase="Career advice that makes a difference."
+                    supportingText="Browse our categories ranging from engineering to healthcare."
                 >
                     <button
                         onClick={() =>
@@ -59,11 +35,11 @@ const Categories = () => {
 
                 <div id="scrollHere"></div>
                 <SingleShelf
-                    title="Career Growth"
-                    link="/categories/careerGrowth"
+                    title="Engineering"
+                    link="/categories/engineering"
                 >
-                    {careerGrowthExpertisePosts &&
-                        careerGrowthExpertisePosts.map((expertisePost: any) => (
+                    {engineeringExpertisePosts &&
+                        engineeringExpertisePosts.map((expertisePost: any) => (
                             <ExpertisePostCard
                                 key={expertisePost._id}
                                 expertisePost={expertisePost}
@@ -71,11 +47,11 @@ const Categories = () => {
                         ))}
                 </SingleShelf>
                 <SingleShelf
-                    title="College Application"
-                    link="/categories/collegeApplication"
+                    title="Business"
+                    link="/categories/business"
                 >
-                    {collegeApplicationExpertisePosts &&
-                        collegeApplicationExpertisePosts.map(
+                    {businessExpertisePosts &&
+                        businessExpertisePosts.map(
                             (expertisePost: any) => (
                                 <ExpertisePostCard
                                     key={expertisePost._id}
@@ -85,11 +61,11 @@ const Categories = () => {
                         )}
                 </SingleShelf>
                 <SingleShelf
-                    title="Personal Development"
-                    link="/categories/personalDevelopment"
+                    title="Healthcare"
+                    link="/categories/healthcare"
                 >
-                    {personalDevelopmentExpertisePosts &&
-                        personalDevelopmentExpertisePosts.map(
+                    {healthcareExpertisePosts &&
+                        healthcareExpertisePosts.map(
                             (expertisePost: any) => (
                                 <ExpertisePostCard
                                     key={expertisePost._id}

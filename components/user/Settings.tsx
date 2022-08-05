@@ -20,7 +20,9 @@ import {
 import UniversalFadeAnimation from "../atoms/UniversalFadeAnimation";
 import axios from "axios";
 import Loader from "../layout/Loader";
-import Image from "next/future/image"
+import Image from "next/future/image";
+import resizeFile from "../../utils/resizeFile";
+import newCloudinaryImage from "../../utils/newCloudinaryImage";
 
 const navigation = [
     { name: "Profile", href: "#", icon: UserCircleIcon, current: true },
@@ -34,6 +36,7 @@ export default function Settings() {
     const dispatch = useAppDispatch();
 
     // All local state
+    const [loading, setLoading] = useState(false);
     const [userInteracted, setUserInteracted] = useState(false);
     const [user, setUser] = useState({
         name: "",
@@ -98,24 +101,52 @@ export default function Settings() {
 
     const submitHandler = async (e: any) => {
         e.preventDefault();
+        setLoading(true);
         // Only run if authUser is loaded from getServerSideProps
         if (!authUser) {
+            setLoading(false);
             return;
+        }
+        let cloudinaryImageData;
+        if (changedAvatar) {
+            try {
+                let result: any = await newCloudinaryImage(avatar, "avatars_unsigned_upload_preset_slicedadvice");
+                cloudinaryImageData = {
+                    public_id: result.public_id,
+                    url: result.secure_url,
+                };
+            } catch (error) {
+                console.log(error);
+                setLoading(false);
+                return;
+            }
         }
 
         // Case where user does anything with change password fields
         if (password || confirmPassword) {
             if (password !== confirmPassword) {
                 toast.error("Passwords do not match!");
+                setLoading(false);
                 return;
             }
             if (password.length < 6) {
                 toast.error("Password must be at least 6 characters!");
+                setLoading(false);
                 return;
             }
 
             // Else, all good to go. Update user
-            dispatch(updateUserProfile({ userId: authUser._id, name, email: "", password, avatar }));
+            dispatch(
+                updateUserProfile({
+                    userId: authUser._id,
+                    name,
+                    email: "",
+                    password,
+                    cloudinaryImageData: changedAvatar
+                        ? cloudinaryImageData
+                        : null,
+                })
+            );
         } else {
             // Case where user doesn't try to change password (aka password and
             // confirmPassword are empty strings)
@@ -126,25 +157,32 @@ export default function Settings() {
                     userId: authUser._id,
                     name,
                     email: "",
-                    avatar: changedAvatar ? avatar : "",
+                    cloudinaryImageData: changedAvatar
+                        ? cloudinaryImageData
+                        : null,
                 })
             );
         }
+        setLoading(false);
     };
 
     const onChange = (e: any) => {
         setUserInteracted(true);
         if (e.target.name === "avatar") {
             setChangedAvatar(true);
-            const reader: any = new FileReader();
+            // const reader: any = new FileReader();
 
-            reader.onload = () => {
-                if (reader.readyState === 2) {
-                    setAvatar(reader.result);
-                    setAvatarPreview(reader.result);
-                }
-            };
-            reader.readAsDataURL(e.target.files[0]);
+            // reader.onload = () => {
+            //     if (reader.readyState === 2) {
+            //         setAvatar(reader.result);
+            //         setAvatarPreview(reader.result);
+            //     }
+            // };
+            // reader.readAsDataURL(e.target.files[0]);
+            resizeFile(e.target.files[0], 400, 400).then((resizedFile: any) => {
+                setAvatar(resizedFile);
+                setAvatarPreview(resizedFile);
+            });
         } else if (e.target.name === "confirm-password") {
             setConfirmPassword(e.target.value);
         } else {
@@ -183,7 +221,6 @@ export default function Settings() {
                         ))}
                     </nav>
                 </aside>
-
                 <div className="space-y-6 sm:px-6 lg:px-0 lg:col-span-9">
                     <form action="#" method="PUT" onSubmit={submitHandler}>
                         <div className="shadow sm:rounded-md sm:overflow-hidden">
@@ -397,13 +434,19 @@ export default function Settings() {
                                 <button
                                     type="submit"
                                     disabled={
-                                        !userInteracted || userLoading
+                                        !userInteracted ||
+                                        userLoading ||
+                                        loading
                                             ? true
                                             : false
                                     }
                                     className="bg-brand-primary-light border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-brand-primary-light/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-primary-light"
                                 >
-                                    {userLoading ? <ButtonLoader /> : "Save"}
+                                    {userLoading || loading ? (
+                                        <ButtonLoader />
+                                    ) : (
+                                        "Save"
+                                    )}
                                 </button>
                             </div>
                         </div>

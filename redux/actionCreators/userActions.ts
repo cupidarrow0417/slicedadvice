@@ -78,13 +78,9 @@ export const loadUser = (req: any, userId: any) => async (dispatch: any) => {
 export const updateUserProfile = (userData: any) => async (dispatch: any) => {
     try {
         dispatch({ type: UPDATE_USER_PROFILE_REQUEST });
-
-        const config = {
-            headers: {
-                "Content-Type": "application/json",
-            },
-        };
-        const { data } = await axios.put(`/api/me/update`, userData, config);
+        console.log("userData", userData);
+        
+        const { data } = await axios.put(`/api/me/update`, userData);
 
         dispatch({
             type: UPDATE_USER_PROFILE_SUCCESS,

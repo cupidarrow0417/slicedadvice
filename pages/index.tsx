@@ -1,33 +1,47 @@
-import { Elements } from "@stripe/react-stripe-js";
-import { loadStripe } from "@stripe/stripe-js";
 import { GetServerSideProps } from "next";
 import Home from "../components/Home";
 import Layout from "../components/layout/Layout";
-import { getExpertisePosts } from "../redux/actionCreators/expertisePostActions";
-import { wrapper } from "../redux/store";
+import dbConnect from "../config/dbConnect";
+import ExpertisePost from "../models/expertisePost";
 
-export default function Index() {
+export default function Index({
+    engineeringExpertisePosts,
+    businessExpertisePosts,
+    healthcareExpertisePosts,
+}: any) {
     return (
         <Layout>
-            <Home />
+            <Home
+                engineeringExpertisePosts={engineeringExpertisePosts}
+                businessExpertisePosts={
+                    businessExpertisePosts
+                }
+                healthcareExpertisePosts={
+                    healthcareExpertisePosts
+                }
+            />
         </Layout>
     );
 }
 
-export const getServerSideProps: GetServerSideProps =
-    wrapper.getServerSideProps((store) => async ({ req }) => {
-        try {
-            await store.dispatch(
-                getExpertisePosts(req, 1, "Career Growth")
-            )
-            await store.dispatch(
-                getExpertisePosts(req, 1, "College Application")
-            )
-            await store.dispatch(
-                getExpertisePosts(req, 1, "Personal Development")
-            )
-            return { props: {} };
-        } catch (e) {
-            return { props: {} };
-        }
-    });
+export const getServerSideProps: GetServerSideProps = async (context) => {
+    dbConnect();
+    // Load 20 expertise posts from database
+    const engineeringExpertisePosts = await ExpertisePost.find({
+        category: "Engineering",
+    }).limit(20);
+    const businessExpertisePosts = await ExpertisePost.find({
+        category: "Business",
+    }).limit(20);
+    const healthcareExpertisePosts = await ExpertisePost.find({
+        category: "Healthcare",
+    }).limit(20);
+
+    return {
+        props: {
+            engineeringExpertisePosts: JSON.parse(JSON.stringify(engineeringExpertisePosts)),
+            businessExpertisePosts: JSON.parse(JSON.stringify(businessExpertisePosts)),
+            healthcareExpertisePosts: JSON.parse(JSON.stringify(healthcareExpertisePosts)),
+        },
+    };
+};

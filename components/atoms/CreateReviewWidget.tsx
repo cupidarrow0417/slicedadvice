@@ -33,6 +33,8 @@ const CreateReviewWidget = ({ user, expertisePostId }: any) => {
         setLoading(false);
 
         dispatch(createReview(reviewData));
+        // TODO: Fix this haha. But for now, just reload the page.
+        window.location.reload();
     };
 
     if (wroteReview) {
@@ -69,7 +71,7 @@ const CreateReviewWidget = ({ user, expertisePostId }: any) => {
                                     />
                                     <div className="ml-4">
                                         <h4 className="text-sm font-bold text-gray-900">
-                                            {user.name}
+                                            {user?.name}
                                         </h4>
                                         <div className="mt-1 flex items-center">
                                             <InteractiveRating

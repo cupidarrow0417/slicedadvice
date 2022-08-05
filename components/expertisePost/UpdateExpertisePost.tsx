@@ -15,6 +15,8 @@ import ButtonLoader from "../layout/ButtonLoader";
 import { loadUser } from "../../redux/actionCreators/userActions";
 import UniversalFadeAnimation from "../atoms/UniversalFadeAnimation";
 import { useSession } from "next-auth/react";
+import newCloudinaryImage from "../../utils/newCloudinaryImage";
+import resizeFile from "../../utils/resizeFile";
 
 // Used in form inputs, and also hard
 // coded into model schema for expertise posts.
@@ -26,21 +28,21 @@ const maxSubmissionExampleLength = 20;
 // Used for the Form Select Menu component
 const formSelectMenuOptions = [
     {
-        title: "College Application",
+        title: "Engineering",
         description:
-            "Advice that helps students on their college application process.",
+            "Advice that helps aspiring engineers build a successful career in software, hardware, or other engineering fields.",
         current: true,
     },
     {
-        title: "Career Growth",
+        title: "Business",
         description:
-            "Advice that helps individuals navigate and improve their career.",
+            "Advice that helps people build an impactful career in any business field, including growing their own business.",
         current: false,
     },
     {
-        title: "Personal Development",
+        title: "Healthcare",
         description:
-            "Advice that enhances people's inner strength, capabilities, and quality of life.",
+            "Advice that helps people break into and progress through the healthcare industry.",
         current: false,
     },
     // {
@@ -106,6 +108,7 @@ const UpdateExpertisePost = () => {
 
     // const { title, description, pricePerSubmission, category } = post;
 
+    const [loading, setLoading] = useState(false);
     const [title, setTitle] = useState(expertisePost.title);
     const [categoryCurrentIndex, setCategoryCurrentIndex] = useState(
         "" +
@@ -123,7 +126,7 @@ const UpdateExpertisePost = () => {
         expertisePost.images[0].url
     );
 
-    console.log(expertisePost);
+    // console.log(expertisePost);
 
     const [submissionType1, setSubmissionType1] = useState(
         expertisePost.submissionTypes[0]
@@ -156,8 +159,9 @@ const UpdateExpertisePost = () => {
     // On submission of the form, process all of the accumulated
     // local state and pass it as a single object into the
     // appropriate redux action.
-    const submitHandler = (e: any) => {
+    const submitHandler = async (e: any) => {
         e.preventDefault();
+        setLoading(true);
 
         // Combine the submission types into a list
         let submissionTypes: string[] = [];
@@ -177,15 +181,35 @@ const UpdateExpertisePost = () => {
             title: string;
             description: string;
             submissionTypes: string[];
-            image: string;
+            cloudinaryImageData: {
+                public_id: string;
+                url: string;
+            }
             pricePerSubmission: any;
             category: any;
-            currentImage: any;
         }
 
         let category = "";
         if (formSelectMenuInputRef.current) {
             category = formSelectMenuInputRef.current.value;
+        }
+
+        let cloudinaryImageData: any;
+        if (image) {
+            try {
+                let result: any = await newCloudinaryImage(
+                    image,
+                    "expertisePosts_unsigned_upload_preset_slicedadvice"
+                );
+                cloudinaryImageData = {
+                    public_id: result.public_id,
+                    url: result.secure_url,
+                };
+            } catch (error) {
+                console.log(error);
+                setLoading(false);
+                return;
+            }
         }
 
         const postData: postDataInterface = {
@@ -194,14 +218,14 @@ const UpdateExpertisePost = () => {
             title: title,
             description: description,
             submissionTypes: submissionTypes,
-            image: image,
+            cloudinaryImageData,
             pricePerSubmission,
             category,
-            currentImage: expertisePost.images[0],
         };
 
         // console.log(postData)
         dispatch(updateExpertisePost(expertisePost._id, postData));
+        setLoading(false);
     };
 
     // onChange processes any of the changes in the form fields
@@ -228,17 +252,12 @@ const UpdateExpertisePost = () => {
         // Usual Image Changes
 
         if (e.target.name === "image") {
-            const reader: any = new FileReader();
-
-            reader.onload = () => {
-                if (reader.readyState === 2) {
-                    setImage(reader.result);
-                    setImagePreview(reader.result);
+            resizeFile(e.target?.files[0], 700, 700).then(
+                (resizedFile: any) => {
+                    setImagePreview(resizedFile);
+                    setImage(resizedFile);
                 }
-            };
-            if (e.target?.files[0]) {
-                reader.readAsDataURL(e.target?.files[0]);
-            }
+            );
         } else if (e.target.name.includes("submissionType")) {
             switch (e.target.name) {
                 case "submissionType1":
@@ -491,7 +510,7 @@ const UpdateExpertisePost = () => {
                                             className="opacity-70 bg-brand-primary-light rounded-lg text-white w-full py-3 text-lg flex justify-center items-center"
                                             disabled={true}
                                         >
-                                            Send Submission
+                                            Book Advice
                                         </button>
                                     </div>
                                 </div>
@@ -500,9 +519,9 @@ const UpdateExpertisePost = () => {
                         <button
                             type="submit"
                             className="bg-brand-primary-light mx-auto rounded-lg text-white w-full sm:w-96 py-3 text-xl flex justify-center items-center"
-                            disabled={updateExpertisePostLoading ? true : false}
+                            disabled={updateExpertisePostLoading || loading ? true : false}
                         >
-                            {updateExpertisePostLoading ? (
+                            {(updateExpertisePostLoading || loading) ? (
                                 <ButtonLoader />
                             ) : (
                                 "Update Post"

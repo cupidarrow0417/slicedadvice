@@ -4,6 +4,8 @@ import { Dialog, Transition } from "@headlessui/react";
 import { CheckIcon, XIcon } from "@heroicons/react/outline";
 import Router from "next/router";
 
+// Edit: Oops nvm this isn't really reusable haha.
+// I will refactor this sometime :)
 // The modal is a reusable component that
 // represents a popup modal that covers the screen.=
 // Follow these steps to use it properly:
@@ -25,7 +27,7 @@ export default function Modal({
     children: any;
     openLocalState: boolean;
     closeButtonText: string;
-    dashboardType: "Advice Seeker" | "Expert" | undefined;
+    dashboardType?: "Advice Seeker" | "Expert" | undefined;
 }) {
     const [open, setOpen] = useState(false);
 
