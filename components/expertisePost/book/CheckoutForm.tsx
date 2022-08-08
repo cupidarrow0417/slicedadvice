@@ -65,13 +65,11 @@ export default function CheckoutForm() {
         }
 
         setIsLoading(true);
-        console.log("nextauthurl", process.env.NEXT_PUBLIC_ORIGIN_URL)
         const { error } = await stripe.confirmPayment({
             elements,
             confirmParams: {
                 // Make sure to change this to your payment completion page,
-                // return_url: `${process.env.NEXTAUTH_URL_INTERNAL}/expertisePost/book/paymentComplete`,
-                return_url: 'http://localhost:3000/expertisePost/book/paymentComplete'
+                return_url: `${process.env.NEXT_PUBLIC_ORIGIN_URL}/expertisePost/book/paymentComplete`,
             },
         })
 
