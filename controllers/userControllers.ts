@@ -6,6 +6,7 @@ import catchAsyncErrors from "../middlewares/catchAsyncErrors";
 import absoluteUrl from "next-absolute-url";
 import sendEmail from "../utils/sendEmail";
 import crypto from "crypto";
+import flexibleEmailTemplate from "../components/emailTemplates/flexibleEmailTemplate";
 
 //Setting up cloudinary config
 cloudinary.config({
@@ -78,7 +79,7 @@ const getUserProfileById = catchAsyncErrors(
 //Update user profile => /api/me/update
 const updateUserProfile = catchAsyncErrors(
     async (req: any, res: NextApiResponse) => {
-        const user = await User.findById(req.body.userId)
+        const user = await User.findById(req.body.userId);
         if (user) {
             if (req.body.name !== user.name) {
                 // Check if req.body.name is a duplicate username in the database of users
@@ -178,7 +179,13 @@ const forgotPassword = catchAsyncErrors(
         //Create reset password url that will be sent in email
         const resetUrl = `${origin}/password/reset/${resetToken}`;
 
-        const message = `Hey there! Looking to reset your password? 
+        const htmlBody = flexibleEmailTemplate(
+            "Reset Password",
+            `Hey there! Looking to reset your password? 
+            Here is your password reset url: \n\n ${resetUrl} \n\n`,
+            `If you did not request this email, then please ignore it. Have a great day!`
+        );
+        const plainTextBody = `Hey there! Looking to reset your password? 
             Here is your password reset url: \n\n ${resetUrl} \n\n
             If you did not request this email, then please ignore it. Have a great day!`;
 
@@ -186,7 +193,8 @@ const forgotPassword = catchAsyncErrors(
             await sendEmail({
                 email: user.email,
                 subject: "SlicedAdvice Password Recovery",
-                message,
+                htmlBody,
+                plainTextBody,
             });
             res.status(200).json({
                 success: true,
@@ -289,19 +297,35 @@ const sendEmailVerification = catchAsyncErrors(
 
         await user.save({ validateBeforeSave: false });
 
-        const message = `Hey there! Welcome to SlicedAdvice! We're so happy you're here. 
+        const htmlBody = flexibleEmailTemplate(
+            `Your email verification code: ${emailVerificationCode}`,
+            `Hey there! Welcome to SlicedAdvice! We're so happy you're here. 
             Here is your email verification code: ${emailVerificationCode} \n\n
             Please enter it in the already open verification page. \n\n
             \n\n
             Need to generate a new code? Head to the link below.\n\n
-            ${process.env.NEXT_PUBLIC_ORIGIN_URL?.toString()}/emailVerification?email=${user.email} \n\n
+            ${process.env.NEXT_PUBLIC_ORIGIN_URL?.toString()}/emailVerification?email=${
+                user.email
+            } \n\n`,
+            `If you did not request this email, then please ignore it. Have a great day!`
+        );
+
+        const plainTextBody = `Hey there! Welcome to SlicedAdvice! We're so happy you're here. 
+            Here is your email verification code: ${emailVerificationCode} \n\n
+            Please enter it in the already open verification page. \n\n
+            \n\n
+            Need to generate a new code? Head to the link below.\n\n
+            ${process.env.NEXT_PUBLIC_ORIGIN_URL?.toString()}/emailVerification?email=${
+            user.email
+        } \n\n
             If you did not request this email, then please ignore it. Have a great day!`;
 
         try {
             await sendEmail({
                 email: user.email,
                 subject: `SlicedAdvice: ${emailVerificationCode} is your email verification code`,
-                message,
+                htmlBody,
+                plainTextBody,
             });
             res.status(200).json({
                 success: true,
