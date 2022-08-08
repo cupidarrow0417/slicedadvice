@@ -4,38 +4,60 @@ import catchAsyncErrors from "../middlewares/catchAsyncErrors";
 import { buffer } from "micro";
 import Stripe from 'stripe';
 import nodemailer from 'nodemailer';
+import User from "../models/user";
+import Booking from "../models/booking";
+import { format } from 'date-fns';
+import emailTemplate from "../components/emailTemplates/template";
 
 //Stripe Webhook => POST /api/stripe/webhook
-async function sendRefundEmail(userEmail: String, amount: Number) {
+async function sendRefundEmail(details: any) {
+
+    // --- ETHEREAL TEST STUFF ---
     // Generate test SMTP service account from ethereal.email
     // Only needed if you don't have a real mail account for testing
-    let testAccount = await nodemailer.createTestAccount();
+    // let testAccount = await nodemailer.createTestAccount();
 
     // create reusable transporter object using the default SMTP transport
+    // let transporter = nodemailer.createTransport({
+    //     host: "smtp.ethereal.email",
+    //     port: 587,
+    //     secure: false, // true for 465, false for other ports
+    //     auth: {
+    //         user: testAccount.user, // generated ethereal user
+    //         pass: testAccount.pass, // generated ethereal password
+    //     },
+    // });
+
     let transporter = nodemailer.createTransport({
-        host: "smtp.ethereal.email",
-        port: 587,
-        secure: false, // true for 465, false for other ports
+        service: "Gmail",
+        port: 465,
+        secure: true,
         auth: {
-            user: testAccount.user, // generated ethereal user
-            pass: testAccount.pass, // generated ethereal password
+            type: 'OAuth2',
+            user: process.env.GMAIL_DEFAULT_EMAIL,
+            clientId: process.env.OAUTH2_CLIENT_ID,
+            clientSecret: process.env.OAUTH2_CLIENT_SECRET,
+            refreshToken: process.env.OAUTH2_REFRESH_TOKEN
         },
     });
 
     // send mail with defined transport object
     let info = await transporter.sendMail({
-        from: '"Alan Duong 👻" <alan@slicedadvice.com>', // sender address
-        to: `${userEmail}`, // list of receivers
-        subject: "Your Booking has been Cancelled and Your Refund has been sent", // Subject line
-        text: `Your booking was cancelled and ${amount} cents were refunded to your account!`, // plain text body
-        // html: "<b>Hello world?</b>", // html body
+        from: 'SlicedAdvice ' + process.env.GMAIL_DEFAULT_EMAIL, // sender address
+        to: `${details.userEmail}`, // list of receivers
+        subject: "Your Booking Has Expired", // Subject line
+        // text: ``, // plain text body
+        html: emailTemplate(details), // html body
     });
 
     console.log("Message sent: %s", info.messageId);
+    await transporter.sendMail(info);
+
+    // --- ETHEREAL TESTING STUFF ---
     // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
 
     // Preview only available when sending through an Ethereal account
-    console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+    // console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
     // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
 }
 
@@ -96,8 +118,12 @@ const stripeWebhook = async (req: any, res: any) => {
                 paymentIntent = event.data.object;
                 // This case runs after payment_intent.cancelled when payment is cancelled in stripe dashboard
                 console.log("Refunded");
+                const dateOfBooking = format(new Date(paymentIntent.created * 1000), 'd LLLL yyyy');
+                const user = await User.findById(paymentIntent.metadata.expertId);
+                const userName = user.name;
+                const details = { dateOfBooking, expertName: userName, userEmail: paymentIntent.receipt_email };
                 // Here send an email if the booking was deemed invalid
-                sendRefundEmail(paymentIntent.receipt_email, paymentIntent.amount_refunded);
+                sendRefundEmail(details);
                 break;
             case "charge.pending":
                 console.log("pending");

@@ -50,6 +50,7 @@
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",
+    "@types/date-fns": "^2.6.0",
     "@types/micro": "^7.3.7",
     "@types/multiparty": "^0.0.33",
     "@types/next": "^9.0.0",
