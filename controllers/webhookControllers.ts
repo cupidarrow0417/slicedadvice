@@ -64,7 +64,7 @@ async function sendRefundEmail(details: any) {
 
 const stripeWebhook = async (req: any, res: any) => {
     console.log("Function Start!");
-    const stripe: any = new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: "2020-08-27" });
+    const stripe: any = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: "2020-08-27" });
 
     if (req.method === "POST") {
         console.log("Here after post declaration!");
