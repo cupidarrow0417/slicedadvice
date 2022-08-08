@@ -5,12 +5,12 @@ import onError from "../../../middlewares/errors";
 
 const handler = nc({ onError });
 
-handler.post(stripeWebhook);
-
 export const config = {
     api: {
         bodyParser: false,
     },
 };
+
+handler.post(stripeWebhook);
 
 export default handler;

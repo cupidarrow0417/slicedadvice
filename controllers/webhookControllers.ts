@@ -2,65 +2,108 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import ErrorHandler from "../utils/errorhandler";
 import catchAsyncErrors from "../middlewares/catchAsyncErrors";
 import { buffer } from "micro";
+import Stripe from "stripe";
+import nodemailer from "nodemailer";
+import User from "../models/user";
+import Booking from "../models/booking";
+import { format } from "date-fns";
+import bookingCancelledEmailTemplate from "../components/emailTemplates/bookingCancelledEmailTemplate";
+import sendEmail from "../utils/sendEmail";
 
 //Stripe Webhook => POST /api/stripe/webhook
-const stripeWebhook = catchAsyncErrors(
-    async (req: NextApiRequest, res: NextApiResponse) => {
+const stripeWebhook = async (req: any, res: any) => {
+    console.log("Function Start!");
+    const stripe: any = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+        apiVersion: "2020-08-27",
+    });
+
+    if (req.method === "POST") {
+        console.log("Here after post declaration!");
+        const buf = await buffer(req);
+        const sig = req.headers["stripe-signature"];
+        const webhookSecret = process.env.STRIPE_WEBHOOK_SIGNING_SECRET;
+        let event;
+        let paymentIntent;
+
         try {
-            const requestBuffer = await buffer(req);
-            const signature = req.headers["stripe-signature"] as string;
-            // Set your secret key. Remember to switch to your live secret key in production.
-            // See your keys here: https://dashboard.stripe.com/apikeys
-            const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
-            const event = stripe.webhooks.constructEvent(
-                requestBuffer.toString(), // Stringify the request for the Stripe library
-                signature,
-                process.env.STRIPE_WEBHOOK_SIGNING_SECRET // you get this secret when you register a new webhook endpoint
-            );
-            // you can now safely work with the request. The event returned is the parsed request body.
-            res.send(200);
-            // Handle the event
-            let paymentIntent;
-            switch (event.type) {
-                case "payment_intent.succeeded":
-                    paymentIntent = event.data.object;
-                    console.log(
-                        `PaymentIntent for ${paymentIntent.amount} was successful!`
-                    );
-                    // Then define and call a method to handle the successful payment intent.
-                    // handlePaymentIntentSucceeded(paymentIntent);
-                    break;
-                case "payment_intent.processing":
-                    paymentIntent = event.data.object;
-                    console.log(
-                        `PaymentIntent for ${paymentIntent.amount} is processing!`
-                    );
-                    // Then define and call a method to handle the processing of a payment intent.
-                    // handlePaymentIntentProcessing(paymentIntent);
-                    break;
-                case "payment_intent.payment_failed":
-                    paymentIntent = event.data.object;
-                    console.log(
-                        `PaymentIntent for ${paymentIntent.amount} failed.`
-                    );
-                    // Then define and call a method to handle the failed payment attempt.
-                    // handlePaymentIntentFailed(paymentIntent);
-                    break;
-                default:
-                    // Unexpected event type
-                    console.log(`Unhandled event type ${event.type}.`);
-            }
+            if (!sig || !webhookSecret) return;
+            event = stripe.webhooks.constructEvent(buf, sig, webhookSecret);
         } catch (error: any) {
-            console.log(
-                `⚠️  Webhook signature verification failed.`,
-                error.message
-            );
-            return res.send(400);
+            console.log(`Webhook Error: ${error.message}`);
+            return res.status(400).send(error.message);
         }
+
+        switch (event.type) {
+            case "payment_intent.created":
+                paymentIntent = event.data.object;
+                console.log(`A Intent was created!`);
+                console.log(
+                    `PaymentIntent for ${paymentIntent.amount} was successful!`
+                );
+                break;
+            case "payment_intent.succeeded":
+                paymentIntent = event.data.object;
+                console.log(`A Intnet was successful!`);
+                console.log(
+                    `PaymentIntent for ${paymentIntent.amount} was successful!`
+                );
+                break;
+            case "payment_intent.cancelled":
+                // This case runs first when payment is cancelled in stripe dashboard
+                paymentIntent = event.data.object;
+                console.log(
+                    `PaymentIntent for ${paymentIntent.amount} failed.`
+                );
+                break;
+            case "charge.failed":
+                console.log(`A Charge was failed!`);
+                window.location.assign("/");
+                break;
+            case "charge.expired":
+                console.log("Charge Expired!");
+                break;
+            case "charge.updated":
+                console.log("Charge Updated");
+                break;
+            case "charge.refunded":
+                paymentIntent = event.data.object;
+                // This case runs after payment_intent.cancelled when payment is cancelled in stripe dashboard
+                console.log("Refunded");
+                const dateOfBooking = format(
+                    new Date(paymentIntent.created * 1000),
+                    "d LLLL yyyy"
+                );
+                const expertUser = await User.findById(
+                    paymentIntent.metadata.expertId
+                );
+                const expertUserName = expertUser.name;
+                // const details = { dateOfBooking, expertName: userName, userEmail: paymentIntent.receipt_email };
+
+                // Create email template string
+                const htmlBody: string = bookingCancelledEmailTemplate(
+                    expertUserName,
+                    dateOfBooking
+                );
+                const plainTextBody: string = `Hello,\n\n>We're sorry to see that your booking with ${expertUserName} placed on ${dateOfBooking} has expired, because the expert didn't respond in time. We've taken the hold off your credit card and you won't be charged for this booking. We hope you'll give us another chance and book with us again soon!\n\nSincerely,\nSlicedAdvice`;
+                // Send the email!
+                sendEmail({
+                    email: paymentIntent.receipt_email,
+                    subject: "SlicedAdvice: Your Booking has Expired",
+                    htmlBody,
+                    plainTextBody,
+                });
+                break;
+            case "charge.pending":
+                console.log("pending");
+                break;
+            default:
+                console.log(`Unhandled event type ${event.type}.`);
+                break;
+        }
+
+        console.log("event", event);
+        res.status(200).send();
     }
-);
+};
 
-
-export {
-    stripeWebhook,
-}
+export { stripeWebhook };

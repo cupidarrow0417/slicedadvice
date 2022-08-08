@@ -1,7 +1,7 @@
 import { PencilAltIcon } from "@heroicons/react/outline";
-import moment from "moment";
+import moment from 'moment';
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import {
     clearBookingsErrors,
@@ -12,6 +12,7 @@ import {
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import Badge from "../atoms/Badge";
 import ButtonLoader from "../layout/ButtonLoader";
+import { format, intervalToDuration } from 'date-fns';
 
 interface DetailsSingleTextResponseBookingInterface {
     booking: any;
@@ -36,6 +37,19 @@ const DetailsSingleTextResponseBooking = ({
 
     // Holds text that expert types in
     const [textResponse, setTextResponse] = useState("");
+    const expertResponseRef: any = useRef();
+
+    useEffect(() => {
+        const today: Date = new Date();
+        const createdAt: Date = new Date(booking.createdAt);
+        let difference: any = intervalToDuration({ start: createdAt, end: today });
+        if(difference.days >= 7) {
+            console.log(expertResponseRef.current.disabled);
+            expertResponseRef.current.style.cursor = "not-allowed";
+            expertResponseRef.current.disabled = true;
+            expertResponseRef.current.placeholder = "This booking is expired as you haven't responded to the client within 7 days, their payment has be returned to them.";
+        }
+    }, [])
 
     // Handle the send response button click, updating the booking
     // if the current booking's status is "Not Completed",
@@ -147,6 +161,7 @@ const DetailsSingleTextResponseBooking = ({
                         <textarea
                             id="textareaInput"
                             name="textareaInput"
+                            ref={expertResponseRef}
                             autoComplete="none"
                             required
                             // maxLength={maxDescriptionLength}
@@ -161,13 +176,14 @@ const DetailsSingleTextResponseBooking = ({
                             }
                             disabled={
                                 bookingsMetadata.loading ||
-                                booking?.status === "Completed"
+                                    booking?.status === "Completed"
                                     ? true
                                     : false
                             }
                             onChange={(e) => setTextResponse(e.target.value)}
                         />
                     </div>
+
                     <button
                         className={classNames(
                             booking?.status === "Completed" ||
@@ -180,8 +196,8 @@ const DetailsSingleTextResponseBooking = ({
                         onClick={handleSendResponseClick}
                         disabled={
                             bookingsMetadata.loading ||
-                            textResponse.length < 30 ||
-                            booking?.status === "Completed"
+                                textResponse.length < 30 ||
+                                booking?.status === "Completed"
                                 ? true
                                 : false
                         }

@@ -5,6 +5,7 @@ import Booking from "../models/booking";
 import User from "../models/user";
 import { BookingAPIFeatures } from "../utils/apiFeatures";
 import sendEmail from "../utils/sendEmail";
+import flexibleEmailTemplate from "../components/emailTemplates/flexibleEmailTemplate";
 
 // interface OrderDataInterface {
 //     price: number;
@@ -247,7 +248,16 @@ const updateBooking = catchAsyncErrors(
             }
 
             let customerEmailSubject = `SlicedAdvice: ${expert.name} has completed your booking!`;
-            let customerEmailMessage = `Hi there, ${customer.name}, \n\n
+
+            // Create the HTML email string using the flexibleEmailTemplate function.
+            let htmlBody = flexibleEmailTemplate(
+                `${expert.name} has completed your booking!`,
+                `You can view the details of your booking here: \n
+                ${process.env.NEXT_PUBLIC_ORIGIN_URL?.toString()}/dashboard/adviceSeeker/bookings?booking=${_id} \n\n
+                Make sure to leave a review on the expertise post, and feel free to contact us if you have any questions. \n\n`,
+                "Thanks for using SlicedAdvice! \n\n"
+            );
+            let plainTextBody = `Hi there, ${customer.name}, \n\n
             ${expert.name} has completed your booking! \n\n
             You can view the details of your booking here: \n
             ${process.env.NEXT_PUBLIC_ORIGIN_URL?.toString()}/dashboard/adviceSeeker/bookings?booking=${_id} \n\n
@@ -258,7 +268,8 @@ const updateBooking = catchAsyncErrors(
             await sendEmail({
                 email: customer.email,
                 subject: customerEmailSubject,
-                message: customerEmailMessage,
+                htmlBody,
+                plainTextBody,
             });
         }
 
@@ -318,9 +329,21 @@ const createBooking = catchAsyncErrors(
         }
 
         let expertEmailSubject = `SlicedAdvice: ${booking.customer.name} has booked you for advice!`;
-        let expertEmailMessage = `Hi there, ${
-            booking.expertisePost.user.name
-        }, \n\n
+
+        // Create the HTML email string using the flexibleEmailTemplate function.
+        let htmlBody = flexibleEmailTemplate(
+            `${
+                booking.customer.name
+            } has booked you for a ${booking.bookingType.toLowerCase()}!\n\n`,
+            `You can respond to the booking here: \n
+            ${process.env.NEXT_PUBLIC_ORIGIN_URL?.toString()}/dashboard/expert/bookings?booking=${
+                booking._id
+            } \n\n`,
+            `As a reminder, the window to respond is 7 days. Feel free to contact us if you have any questions. \n\n
+            Thanks for using SlicedAdvice! \n\n`
+        );
+
+        let plainTextBody = `Hi there, ${booking.expertisePost.user.name}, \n\n
         ${
             booking.customer.name
         } has booked you for a ${booking.bookingType.toLowerCase()}! \n\n
@@ -335,7 +358,8 @@ const createBooking = catchAsyncErrors(
         await sendEmail({
             email: booking.expertisePost.user.email,
             subject: expertEmailSubject,
-            message: expertEmailMessage,
+            htmlBody,
+            plainTextBody,
         });
 
         res.status(200).json({

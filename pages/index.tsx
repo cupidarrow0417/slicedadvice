@@ -4,11 +4,16 @@ import Layout from "../components/layout/Layout";
 import dbConnect from "../config/dbConnect";
 import ExpertisePost from "../models/expertisePost";
 
+import { loadStripe } from "@stripe/stripe-js";
+
 export default function Index({
     engineeringExpertisePosts,
     businessExpertisePosts,
     healthcareExpertisePosts,
 }: any) {
+
+    const stripe = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
+
     return (
         <Layout>
             <Home

@@ -25,7 +25,8 @@
     "axios": "^0.26.1",
     "bcryptjs": "^2.4.3",
     "cloudinary": "^1.29.0",
-    "micro": "^9.3.4",
+    "date-fns": "^2.29.1",
+    "micro": "^9.4.1",
     "moment": "^2.29.3",
     "mongoose": "^6.2.8",
     "mongoose-autopopulate": "^0.16.1",
@@ -49,6 +50,7 @@
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",
+    "@types/date-fns": "^2.6.0",
     "@types/micro": "^7.3.7",
     "@types/multiparty": "^0.0.33",
     "@types/next": "^9.0.0",
