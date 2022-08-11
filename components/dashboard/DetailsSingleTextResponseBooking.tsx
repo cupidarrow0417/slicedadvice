@@ -43,13 +43,13 @@ const DetailsSingleTextResponseBooking = ({
         const today: Date = new Date();
         const createdAt: Date = new Date(booking.createdAt);
         let difference: any = intervalToDuration({ start: createdAt, end: today });
-        if(difference.days >= 7) {
+        if(difference.days >= 7 && expertResponseRef.current) {
             console.log(expertResponseRef.current.disabled);
             expertResponseRef.current.style.cursor = "not-allowed";
             expertResponseRef.current.disabled = true;
             expertResponseRef.current.placeholder = "This booking is expired as you haven't responded to the client within 7 days, their payment has be returned to them.";
         }
-    }, [booking.createdAt])
+    }, [booking.createdAt, expertResponseRef]);
 
     // Handle the send response button click, updating the booking
     // if the current booking's status is "Not Completed",
