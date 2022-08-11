@@ -30,7 +30,7 @@ export default function Home({
         <div className="bg-white">
             <UniversalFadeAnimation>
                 <PageHeader
-                    heroPhrase={"Life changing advice, by the slice."}
+                    heroPhrase={"Life changing career advice, by the slice."}
                     supportingText={
                         "Join our marketplace of bite-sized career advice, one that's affordable for advice seekers and convenient for busy experts."
                     }

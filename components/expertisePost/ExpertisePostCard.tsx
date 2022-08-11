@@ -44,8 +44,8 @@ const ExpertisePostCard = ({ expertisePost }: expertisePostCardInterface) => {
         <>
             <Link href={`/expertisePost/${expertisePost._id}`} passHref>
                 <div className="flex relative bg-transparent flex-col min-w-[20rem] max-w-xs sm:min-w-[20rem] sm:max-w-[20rem] h-full rounded-2xl bg-brand-bg-light cursor-pointer hover:-mt-[2px] transition-all snap-start">
-                    <div className="expertisePostCardImageWrapper">
-                        <a className="">
+                    <div className="expertisePostCardImageWrapper ">
+                        {/* <a className=""> */}
                             <Image
                                 src={expertisePost["images"][0]["url"]}
                                 layout="responsive"
@@ -54,7 +54,7 @@ const ExpertisePostCard = ({ expertisePost }: expertisePostCardInterface) => {
                                 className="rounded-md w-full h-full object-center object-cover"
                                 alt={expertisePost["title"]}
                             />
-                        </a>
+                        {/* </a> */}
                     </div>
                     <div className="flex flex-col justify-start items-between mt-2 gap-2">
                         <a>
