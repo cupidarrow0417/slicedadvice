@@ -13,7 +13,7 @@ const Business = ({ businessExpertisePosts }: any) => {
         <div className="max-w-7xl mx-auto flex flex-col gap-6">
             <UniversalFadeAnimation>
                 <PageHeader
-                    heroPhrase="Learn from accomplished business experts"
+                    heroPhrase="Learn from accomplished business experts."
                     supportingText="Browse advice from experienced business professionals ranging from startup advice to insider industry knowledge."
                 >
                     <button
