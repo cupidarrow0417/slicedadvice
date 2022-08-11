@@ -12,13 +12,11 @@ import sendEmail from "../utils/sendEmail";
 
 //Stripe Webhook => POST /api/stripe/webhook
 const stripeWebhook = async (req: any, res: any) => {
-    console.log("Function Start!");
     const stripe: any = new Stripe(process.env.STRIPE_SECRET_KEY!, {
         apiVersion: "2020-08-27",
     });
 
     if (req.method === "POST") {
-        console.log("Here after post declaration!");
         const buf = await buffer(req);
         const sig = req.headers["stripe-signature"];
         const webhookSecret = process.env.STRIPE_WEBHOOK_SIGNING_SECRET;
@@ -68,7 +66,15 @@ const stripeWebhook = async (req: any, res: any) => {
             case "charge.refunded":
                 paymentIntent = event.data.object;
                 // This case runs after payment_intent.cancelled when payment is cancelled in stripe dashboard
-                console.log("Refunded");
+                console.log("Charge Refunded");
+
+                // Updating Booking Status
+                const booking = await Booking.find({ stripePaymentIntentId: paymentIntent.payment_intent });
+                Booking.updateOne({ _id: booking[0]._id }, { $set: { status: "Expired" } })
+                .then(result => {
+                    console.log(result);
+                });
+
                 const dateOfBooking = format(
                     new Date(paymentIntent.created * 1000),
                     "d LLLL yyyy"
@@ -85,6 +91,7 @@ const stripeWebhook = async (req: any, res: any) => {
                     dateOfBooking
                 );
                 const plainTextBody: string = `Hello,\n\n>We're sorry to see that your booking with ${expertUserName} placed on ${dateOfBooking} has expired, because the expert didn't respond in time. We've taken the hold off your credit card and you won't be charged for this booking. We hope you'll give us another chance and book with us again soon!\n\nSincerely,\nSlicedAdvice`;
+
                 // Send the email!
                 sendEmail({
                     email: paymentIntent.receipt_email,

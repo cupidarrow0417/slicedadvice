@@ -64,6 +64,7 @@ const PaymentComplete = () => {
 
             // dispatch the creation of a new booking model.
             const finalBookingData = {
+                bookingId: bookingData._id,
                 bookingType: bookingData.bookingType,
                 expertisePostId: bookingData.expertisePostId,
                 expertId: bookingData.expertId,
