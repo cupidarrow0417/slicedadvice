@@ -357,7 +357,7 @@ const TopNav = () => {
                     <SearchBar />
                     {!session ? (
                         <Link href="/login">
-                            <a className="text-gray-800 hover:bg-brand-primary-light hover:text-white sm:ml-2 px-3 py-2 rounded-md text-sm font-medium">
+                            <a className=" bg-brand-primary-light text-white hover:opacity-90 sm:ml-2 px-2 md:px-3 py-2 rounded-md text-sm font-medium">
                                 Login
                             </a>
                         </Link>

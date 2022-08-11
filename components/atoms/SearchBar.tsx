@@ -76,7 +76,7 @@ export default function SearchBar() {
                                 onFocus={(e: any) => e.target.blur()}
                                 placeholder="Search for advice..."
                             />
-                            <Combobox.Button className="absolute inset-y-0 -right-2 lg:right-0 flex items-center rounded-r-md px-2 focus:outline-none">
+                            <Combobox.Button className="absolute inset-y-0 -right-1 lg:right-0 flex items-center rounded-r-md px-2 focus:outline-none">
                                 <SearchIcon
                                     className="h-7 w-7 lg:h-5 lg:w-5 text-gray-400"
                                     aria-hidden="true"
