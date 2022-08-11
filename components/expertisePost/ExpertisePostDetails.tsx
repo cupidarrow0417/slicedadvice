@@ -120,7 +120,7 @@ const ExpertisePostDetails = ({ expertisePost, reviews, user }: any) => {
                     />
 
                     <div className="flex flex-col lg:flex-row justify-start lg:justify-around items-start w-full gap-7 lg:-mt-2">
-                        <div className="expertisePostDetailImageWrapper w-full max-w-lg self-center">
+                        <div className="expertisePostDetailImageWrapper w-full max-w-lg self-center lg:self-start lg:mt-8">
                             {expertisePost?.images[0] && (
                                 <Image
                                     src={expertisePost?.images[0].url}
