@@ -18,6 +18,7 @@ const PaymentComplete = () => {
     const [loading, setLoading] = useState(true);
     const paymentIntentClientSecret =
         queryParams.payment_intent_client_secret!.toString();
+    console.log(paymentIntentClientSecret);
     const { bookingData } = useAppSelector((state) => state.cacheBookingData);
     const {
         error: errorCreateBooking,
@@ -85,7 +86,7 @@ const PaymentComplete = () => {
         if (errorCreateBooking) {
             toast.error(errorCreateBooking)
             dispatch(clearBookingsErrors);
-        } 
+        }
     }, [dispatch, errorCreateBooking]);
     return (
         <main className="relative lg:min-h-full">
