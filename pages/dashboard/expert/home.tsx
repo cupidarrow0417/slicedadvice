@@ -52,7 +52,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
             })
                 .sort({ createdAt: -1 })
                 .limit(5)
-                .lean();
         }
 
         return {
