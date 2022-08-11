@@ -103,6 +103,9 @@ const DetailsSingleTextResponseBooking = ({
                     {booking?.status === "Completed" && (
                         <Badge color="green" text={booking?.status} />
                     )}
+                    {booking?.status === "Expired" && (
+                        <Badge color="red" text={booking?.status} />
+                    )}
                     <p className="text-xs opacity-50 whitespace-nowrap">
                         {moment(booking?.createdAt).format("MMM Do, YYYY")}
                     </p>

@@ -12,7 +12,7 @@ export default function Index({
     healthcareExpertisePosts,
 }: any) {
 
-    const stripe = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
+    // const stripe = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
     return (
         <Layout>

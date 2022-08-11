@@ -7,12 +7,20 @@ import Layout from "../../../../components/layout/Layout";
 import BookSingleTextResponse from "../../../../components/expertisePost/book/BookSingleTextResponse";
 import { getSession } from "next-auth/react";
 import { loadUser } from "../../../../redux/actionCreators/userActions";
+import { Elements } from '@stripe/react-stripe-js'
+import { loadStripe } from '@stripe/stripe-js'
+
+const stripePromise = loadStripe(
+    process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
+);
 
 export default function BookSingleTextResponsePage() {
     return (
-        <Layout>
-            <BookSingleTextResponse />
-        </Layout>
+        <Elements stripe={stripePromise} >
+            <Layout>
+                <BookSingleTextResponse />
+            </Layout>
+        </Elements>
     );
 }
 
