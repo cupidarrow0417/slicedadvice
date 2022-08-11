@@ -416,14 +416,16 @@ const getStripeSetupPayoutsLink = catchAsyncErrors(
         if (!user.stripeConnectId) {
             // Create a new Stripe Express account
 
+            //https://stackoverflow.com/a/72851089/16435056
+            // DON'T SET CAPABILITIES !!! i think lol
             const account = await stripe.accounts.create({
                 type: "express",
                 email: user.email,
                 business_type: "individual",
-                capabilities: {
-                    card_payments: { requested: true },
-                    transfers: { requested: true },
-                },
+                // capabilities: {
+                //     card_payments: { requested: true },
+                //     transfers: { requested: true },
+                // },
             });
 
             user.stripeConnectId = account.id;
