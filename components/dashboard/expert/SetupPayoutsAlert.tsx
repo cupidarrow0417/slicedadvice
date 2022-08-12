@@ -72,7 +72,7 @@ const SetupPayoutsAlert = ({ user }: any) => {
     }, [setupPayoutsLinkSuccess, setupPayoutsLinkError, accountLink]);
 
     useEffect(() => {
-        if (chargesEnabled === false) {
+        if (!user?.stripeConnectId && chargesEnabled === false) {
             toast(
                 "Hey there! Just as a reminder, our team would love to personally guide you through the entire setup process to establish your presence on SlicedAdvice. Book an onboarding session here: https://meetings.hubspot.com/alan-duong",
                 {
@@ -99,7 +99,10 @@ const SetupPayoutsAlert = ({ user }: any) => {
     useEffect(() => {
         if (user?.stripeConnectId && chargesEnabled === false) {
             toast(
-                "Hey! If you just completed the Stripe onboarding, give it a few minutes to complete verification. You'll be good to go soon, promise!"
+                "Hey! If you just fully completed the Stripe onboarding, give it a few minutes to complete verification. You'll be good to go soon, promise!",
+                {
+                    autoClose: 15000,
+                }
             );
         }
     }, [chargesEnabled, user?.stripeConnectId]);
